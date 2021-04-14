@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * 
+ * KeywordSERPBusiness
+ */
+
+// importar dependências
+require_once '../interfaces/BusinessObject.php';
+
+interface KeywordSERPBusiness extends BusinessObject
+{
+ 	public function listarKeywordSERP($daofactory, $keywordParentId);
+
+}
+
+?>

@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * 
+ * UsuarioBacklinkBusiness
+ */
+
+// importar dependências
+require_once '../interfaces/BusinessObject.php';
+
+interface UsuarioBacklinkBusiness extends BusinessObject
+{
+	public function loadMaximoIdPorUsuario($daofactory, $usuarioid);
+ 	public function cadastrarBacklinks($daofactory, $usuarioid, $lstbacklink);
+ 	public function popularUsuarioBacklink($daofactory, $usuarioid, $funcionalidade);
+	public function listarTudoPorUsuarioID($daofactory, $usuarioid);
+	public function atualizarStatus($daofactory, $usuarioid, $usbaid, $novostatus);
+
+}
+
+?>

@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * 
+ * BacklinkBusiness
+ */
+
+// importar dependências
+require_once '../interfaces/BusinessObject.php';
+
+interface CampanhaQrCodeBusiness extends BusinessObject
+{
+	public function listarPagina($daofactory, $pag, $qtde);
+	public function atualizarStatusPorTicket($daofactory, $ticket, $status);
+	public function atualizarStatusPorCarimbo($daofactory, $carimboqr, $status);
+	public function criarCarimbosCampanha($daofactory, $idcampanha);
+	public function carregarTicketLivre($daofactory, $ticket);
+	public function carregarQRCodeLivre($daofactory, $qrc);
+
+}
+
+?>

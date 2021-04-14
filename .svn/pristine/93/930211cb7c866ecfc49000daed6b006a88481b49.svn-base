@@ -1,0 +1,20 @@
+<?php  
+
+require_once 'UsuarioBacklinkServiceImpl.php';
+require_once '../variavel/ConstantesVariavel.php';
+
+$usuarioid = 200;
+$usbaid = 364;
+$novostatus = ConstantesVariavel::STATUS_REALIZADO; // R
+//$novostatus = ConstantesVariavel:: STATUS_REPORTAR_BUG; // B
+
+var_dump($usbaid);
+var_dump($novostatus);
+
+
+$usbasi = new UsuarioBacklinkServiceImpl();
+$retorno = $usbasi->atualizarStatus($usuarioid, $usbaid, $novostatus);
+
+var_dump($retorno);
+
+?>

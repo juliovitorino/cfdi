@@ -1,0 +1,12 @@
+<?php
+
+require_once '../interfaces/DAO.php';
+
+/**
+ * HeadlineHistoricoDAO - Extensão da interface padrão de DAO
+ */
+interface HeadlineHistoricoDAO extends DAO
+{
+	public function listHeadlinesPorSessao($sessaoid);
+}
+?>

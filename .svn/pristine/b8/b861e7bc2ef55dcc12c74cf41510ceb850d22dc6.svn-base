@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * FacebookConcrete - Busca os posts para rede social do facebook
+ */
+ class InstagramConcrete extends RedesSociaisFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'post-instagram';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.RedesSociaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.InstagramConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.RedesSociaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.InstagramConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'postinstgm','10072018174800');
+ 	}
+
+ } 
+
+?>

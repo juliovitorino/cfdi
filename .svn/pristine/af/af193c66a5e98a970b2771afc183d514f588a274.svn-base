@@ -1,0 +1,15 @@
+<?php 
+
+/**
+* 
+*/
+class ConstantesArtigosFactory
+{
+	/* Constantes para uso das factories */
+	const CONCRETE_PBN = '0';
+	const CONCRETE_WEB20 = '1';
+	const CONCRETE_GOOGLE_LOVELY = '2';
+	
+}
+
+?>

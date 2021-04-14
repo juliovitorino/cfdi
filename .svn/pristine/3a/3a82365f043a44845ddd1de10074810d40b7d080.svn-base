@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * AutoridadeConcrete - Busca os modelos de gatilhos
+ */
+ class AutoridadeConcrete extends GatilhosMentaisFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'gatilho-autoridade';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.GatilhosMentaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.AutoridadeConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.GatilhosMentaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.AutoridadeConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'autoridade','11072018110201');
+ 	}
+
+ } 
+
+?>

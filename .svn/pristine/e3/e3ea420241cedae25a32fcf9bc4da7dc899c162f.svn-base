@@ -1,0 +1,24 @@
+<?php  
+
+require_once 'HeadlineBuilder.php';
+require_once '../headline/HeadlineHistoricoDTO.php';
+require_once '../headline/HeadlineHistoricoServiceImpl.php';
+
+$date = new DateTime();
+$ts = $date->getTimestamp();
+$hhdto = new HeadlineHistoricoDTO();
+$hhdto->usuarioid = 1;
+$hhdto->sessaoid = $ts;
+$hhdto->palavra_chave_seo = ' criar cachorro em apartamento';
+$hhdto->objetivo = ' sem aborrecer a vizinhança';
+
+$hb = new HeadlineBuilder($hhdto->palavra_chave_seo, $hhdto->objetivo, true);
+$hhdto->headline = $hb->getHeadline();
+
+echo $hhdto->headline;
+
+$hhsi = new HeadlineHistoricoServiceImpl();
+$hhsi->cadastrar($hhdto);
+var_dump($hhsi->listarTudoPorSessao($ts));
+
+?>

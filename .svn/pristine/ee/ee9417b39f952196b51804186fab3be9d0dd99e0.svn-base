@@ -1,0 +1,17 @@
+<?php  
+
+require_once 'ArtigosFactory.php';
+require_once 'ConstantesArtigosFactory.php';
+
+echo 'rsclient.php em ação...';
+
+//$fcbk = ArtigosFactory::getInstance(ConstantesArtigosFactory::CONCRETE_PBN, 'emagrecimento');
+//$fcbk = ArtigosFactory::getInstance(ConstantesArtigosFactory::CONCRETE_WEB20, 'emagrecimento');
+$fcbk = ArtigosFactory::getInstance(ConstantesArtigosFactory::CONCRETE_GOOGLE_LOVELY, 'emagrecimento');
+
+$fcbk->carregarTemplate();
+echo $fcbk->getPost();
+
+
+
+?>

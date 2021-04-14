@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * EscassezConcrete - Busca os modelos de gatilhos
+ */
+ class EscassezConcrete extends GatilhosMentaisFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'gatilho-escassez';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.GatilhosMentaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.EscassezConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.GatilhosMentaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.EscassezConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'escassez','11072018114805');
+ 	}
+
+ } 
+
+?>

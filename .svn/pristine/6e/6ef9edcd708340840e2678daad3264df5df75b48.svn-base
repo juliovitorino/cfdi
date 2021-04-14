@@ -1,0 +1,37 @@
+<?php  
+
+// importar dependencias
+require_once 'HeadlineHistoricoBusiness.php';
+
+/**
+ * HeadlineHistoricoBusinessImpl - Implementação da classe de negocio
+ */
+class HeadlineHistoricoBusinessImpl implements HeadlineHistoricoBusiness
+{
+	
+	function __construct()	{	}
+
+	public function carregar($daofactory, $dto)	{	}
+	public function carregarPorID($daofactory, $id)	{	}
+	public function deletar($daofactory, $dto)	{	}
+	public function atualizar($daofactory, $dto)	{	}
+	public function listarTudo($daofactory)	{	}
+	public function listarPagina($daofactory, $pag, $qtde)	{	}
+
+
+	public function inserir($daofactory, $dto)
+	{ 
+		$dao = $daofactory->getHeadlineHistoricoDAO($daofactory);
+		return $dao->insert($dto);
+
+	}
+
+	public function listarTudoPorSessao($daofactory, $sessaoid) 
+	{ 
+		$dao = $daofactory->getHeadlineHistoricoDAO($daofactory);
+		return $dao->listHeadlinesPorSessao($sessaoid);
+
+	}
+
+}
+?>

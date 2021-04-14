@@ -1,0 +1,15 @@
+<?php  
+
+require_once 'RedesSociaisFactory.php';
+require_once 'ConstantesFactory.php';
+
+echo 'rsclient.php em ação...';
+
+//$fcbk = RedesSociaisFactory::getInstance(ConstantesFactory::CONCRETE_GOOGLE_PLUS, 'emagrecimento');
+$fcbk = RedesSociaisFactory::getInstance(ConstantesFactory::CONCRETE_FACEBOOK, 'emagrecimento');
+$fcbk->carregarTemplate();
+echo $fcbk->getPost();
+
+
+
+?>

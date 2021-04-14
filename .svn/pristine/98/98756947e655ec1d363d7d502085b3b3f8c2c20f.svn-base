@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * FacebookConcrete - Busca os posts para rede social do facebook
+ */
+ class WhatsappConcrete extends RedesSociaisFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'post-whatsapp';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.RedesSociaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.WhatsappConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.RedesSociaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.WhatsappConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'postwhats','10072018182801');
+ 	}
+
+ } 
+
+?>

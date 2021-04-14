@@ -1,0 +1,122 @@
+<?php 
+
+/**
+* GatilhosMentaisFactory - Abstração para criação de classes concretas 
+* para resolver gatilhos mentais
+* @author Julio Vitorino
+* @since 11/07/2018
+*/
+
+/* importa referencias necessárias ao projeto */
+require_once 'ConstantesGatilhosMentaisFactory.php';
+require_once 'ReciprocidadeConcrete.php';
+require_once 'AfeicaoConcrete.php';
+require_once 'AutoridadeConcrete.php';
+require_once 'CompromissoCoerenciaConcrete.php';
+require_once 'EscassezConcrete.php';
+require_once 'InfluenciaInstantaneaConcrete.php';
+require_once 'ProvaSocialConcrete.php';
+require_once 'ReciprocidadeConcrete.php';
+
+require_once '../../spinner.php';
+require_once '../composite/TemplateLoader.php';
+
+abstract class GatilhosMentaisFactory
+{
+
+	/* constantes */
+	const PATH_HOME_REPOSITORIO = '../../../repositorio/';
+
+	/* atributos da classe */
+	protected $nicho;
+	protected $post;
+	protected $fullpath;
+	protected $fullhome;
+
+	/**
+	* getInstance() - Retorna uma instância concreta de um objeto específico
+	* de tratamento de redes sociais
+	*/
+	public static function getInstance($tipo, $nicho)
+    {
+    	switch ($tipo) {
+    		case ConstantesGatilhosMentaisFactory::CONCRETE_RECIPROCIDADE:
+    			return new ReciprocidadeConcrete($nicho);
+    		case ConstantesGatilhosMentaisFactory::CONCRETE_AFEICAO:
+    			return new AfeicaoConcrete($nicho);
+    		case ConstantesGatilhosMentaisFactory::CONCRETE_AUTORIDADE:
+    			return new AutoridadeConcrete($nicho);
+    		case ConstantesGatilhosMentaisFactory::CONCRETE_COMPROMISSO_COERENCIA:
+    			return new CompromissoCoerenciaConcrete($nicho);
+    		case ConstantesGatilhosMentaisFactory::CONCRETE_ESCASSEZ:
+    			return new EscassezConcrete($nicho);
+    		case ConstantesGatilhosMentaisFactory::CONCRETE_INFLUENCIA_INSTANTANEA:
+    			return new InfluenciaInstantaneaConcrete($nicho);
+    		case ConstantesGatilhosMentaisFactory::CONCRETE_PROVA_SOCIAL:
+    			return new ProvaSocialConcrete($nicho);    		
+    		default:
+    			break;
+    	}
+        
+    }
+
+ 	public function carregarTemplate() {
+ 		$tl = new TemplateLoader($this->fullpath);
+ 		$spinner = new Spinner($tl->getConteudo());
+ 		$this->post = $spinner->getConteudo();
+ 	}
+
+
+	/**
+	* getPost() - Retorna o texto do post da factory invocada
+	*/
+	public function getPost() 
+	{
+		return $this->post;
+	}
+
+ 	protected function getModelo($nicho, $tipo, $timestamp)
+ 	{
+ 		return 'modelo-'.$this->controlador($nicho, $tipo, $timestamp).'.txt';
+ 	}
+
+	private function controlador($nicho, $tipo, $timestamp)
+	{
+		$tag = $nicho.'-'.$tipo.'-'.$timestamp;
+		$controlador = 0;
+
+		if(file_exists(getcwd().'/controlador/'.$tag)){
+			$myfile = fopen(getcwd().'/controlador/'.$tag, "rw");
+			$controlador = (int) fread($myfile, filesize(getcwd().'/controlador/'.$tag));
+			fclose($myfile);
+
+			$controlador++;
+
+			$fi = new FilesystemIterator($this->fullhome, FilesystemIterator::SKIP_DOTS);
+			$controlador = rand(1, iterator_count($fi)-1);
+
+			if($controlador > iterator_count($fi)){
+				$controlador = 1;
+			}
+
+			if(file_exists(getcwd().'/controlador/'.$tag)){
+				$myfile = fopen(getcwd().'/controlador/'.$tag, "w");
+				fwrite($myfile, $controlador);
+				fclose($myfile);
+			}
+		} else {
+			$myfile = fopen(getcwd().'/controlador/'.$tag, "w");
+			fwrite($myfile, '1');
+			fclose($myfile);
+			$controlador = 1;
+		}
+
+		return $controlador;
+	}
+
+
+}
+
+
+
+?>

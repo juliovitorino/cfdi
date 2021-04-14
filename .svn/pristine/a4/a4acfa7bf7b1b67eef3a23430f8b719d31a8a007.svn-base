@@ -1,0 +1,285 @@
+<?php
+
+/**
+ * 
+ * FielServiceImpl - Classe de Serviços para Fiel
+ *
+ * @author Julio Vitorino
+ * @since 27/07/2018
+ */
+
+// Verifica se precisa iniciar uma sessão
+if(!isset($_SESSION)){
+    session_start();
+}
+
+// importar dependências
+require_once 'FielBusiness.php';
+require_once 'FielService.php';
+require_once 'FielBusinessImpl.php';
+
+require_once '../mensagem/MensagemCache.php';
+require_once '../mensagem/ConstantesMensagem.php';
+
+require_once '../daofactory/DAOFactory.php';
+
+class FielServiceImpl implements FielService
+{
+	
+	function __construct()	{	}
+
+	public function apagar($dto) {}
+	public function listarPagina($pag, $qtde)	{	}
+	public function atualizar($dto)	{	}
+	public function listarTudo(){	}
+
+	public function habilitarContaPorEmail($token)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+ 			$bo = new FielBusinessImpl();
+ 			$retorno = $bo->habilitarContaPorEmail($daofactory, $token);
+
+			$daofactory->commit();
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function cadastrarNovaContaFacebook($dto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new FielBusinessImpl();
+ 			$retorno = $bo->inserirNovaContaFacebook($daofactory
+ 						, $dto
+ 						, VariavelCache::getInstance()->getVariavel(ConstantesVariavel::PLANO_GRATUITO_CODIGO));
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function cadastrarNovaConta($dto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new FielBusinessImpl();
+ 			$retorno = $bo->inserirNovaConta($daofactory, $dto);
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function cadastrar($dto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new FielBusinessImpl();
+ 			$retorno = $bo->inserir($daofactory, $dto);
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function pesquisarPorIdFacebook($id)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new FielBusinessImpl();
+ 			$retorno = $bo->carregarPorIDFacebook($daofactory, $id);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.INSCRICAO_REALIZADA_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.INSCRICAO_REALIZADA_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function pesquisarPorId($id)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new FielBusinessImpl();
+ 			$retorno = $bo->carregarPorID($daofactory, $id);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.INSCRICAO_REALIZADA_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.INSCRICAO_REALIZADA_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function pesquisar($dto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new FielBusinessImpl();
+ 			$retorno = $bo->carregar($daofactory, $dto);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.INSCRICAO_REALIZADA_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.INSCRICAO_REALIZADA_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	private function apagarSessao() {
+		$_SESSION = array();
+	}
+
+	private function validarSenha($pwd, $pwdArmazenada){
+		// retorno padrão é negado
+		$retorno = false;
+
+		// Aplica algoritimo sha1
+		$pwdsha1 = sha1($pwd);
+
+		if ($pwdsha1 == $pwdArmazenada) {
+			$retorno = true;
+		}
+
+		// retorno
+		return $retorno;
+	}
+}
+
+?>

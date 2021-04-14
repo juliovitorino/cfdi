@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * 
+ * BacklinkBusiness
+ */
+
+// importar dependências
+require_once '../interfaces/BusinessObject.php';
+
+interface BacklinkBusiness extends BusinessObject
+{
+	public function listarPaginaMaiores($daofactory, $backid, $pag, $qtde);
+
+}
+
+?>

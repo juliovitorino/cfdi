@@ -1,0 +1,17 @@
+<?php
+
+require_once '../interfaces/AppService.php';
+
+interface FielService extends AppService{
+
+	// métodos
+
+	public function habilitarContaPorEmail($token);
+	public function cadastrarNovaConta($dto);
+	public function cadastrarNovaContaFacebook($dto);
+	public function pesquisarPorIdFacebook($id);
+
+}
+
+
+?>

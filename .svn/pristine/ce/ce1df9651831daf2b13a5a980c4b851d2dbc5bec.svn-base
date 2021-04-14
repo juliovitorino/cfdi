@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * KeywordService
+ */
+
+// importar dependências
+
+require_once '../interfaces/AppService.php';
+
+interface KeywordService extends AppService{
+	
+	public function carregarRecenteKeywordPorProjeto($projetoid);
+	public function listarKeywordPorUsuario($usuarioid);
+
+}
+
+
+?>

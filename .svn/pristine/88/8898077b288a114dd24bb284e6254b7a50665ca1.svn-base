@@ -1,0 +1,117 @@
+<?php
+
+/**
+ * 
+ * PlanoUsuarioBusinessImpl
+ */
+
+require_once 'NotificacaoBusiness.php';
+require_once 'UsuarioNotificacaoDTO.php';
+
+require_once '../dto/DTOPadrao.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
+require_once '../variavel/ConstantesVariavel.php';
+
+class NotificacaoBusinessImpl implements NotificacaoBusiness
+{
+	
+	function __construct()
+	{
+		# code...
+	}
+
+	public function deletar($daofactory, $dto)	{}
+	public function atualizar($daofactory, $dto) {}
+	public function listarPagina($daofactory, $pag, $qtde)	{	}
+
+	public function atualizarStatusNotificacao($daofactory, $notificacaoid, $status)
+	{
+		// retorno padrão
+		$retorno = new DTOPadrao();
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+		$dao = $daofactory->getNotificacaoDAO($daofactory);
+		$ok = $dao->updateStatusNotificacao($notificacaoid, $status);
+
+		if (!$ok){
+			$retorno->msgcode = ConstantesMensagem::ERRO_INESPERADO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		return $retorno;
+	}
+	
+
+
+	public function listarTodasNotificacoesAtivas($daofactory, $usuarioid)
+	{
+		$dao = $daofactory->getNotificacaoDAO($daofactory);
+		$retorno = $dao->listTodasNotificacoesAtivas($usuarioid, ConstantesVariavel::STATUS_ATIVO);
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		return $retorno;
+	}
+	
+	public function listarTudo($daofactory)	
+	{
+		$dao = $daofactory->getNotificacaoDAO($daofactory);
+		$retorno = $dao->listNotificacaoPorStatus(ConstantesVariavel::STATUS_ATIVO);
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		return $retorno;
+
+	}
+
+	public function inserir($daofactory, $dto)
+	{	
+		$dao = $daofactory->getNotificacaoDAO($daofactory);
+		$ok = $dao->insert($dto);
+		$retorno = new DTOPadrao();
+		if ($ok){
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		} else {
+			$retorno->msgcode = ConstantesMensagem::INFORMACAO_NAO_LOCALIZADA;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+		return $retorno;
+
+	}
+
+	// Carrega um objeto
+	public function carregarPorID($daofactory, $id)
+	{	
+		$dao = $daofactory->getNotificacaoDAO($daofactory);
+		$retorno = $dao->loadPK($id);
+		
+		if (! is_null($retorno->id))
+		{
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		} else {
+			$retorno->msgcode = ConstantesMensagem::INFORMACAO_NAO_LOCALIZADA;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+		return $retorno;
+
+	}
+
+	public function carregar($daofactory, $dto)
+	{
+		$dao = $daofactory->getNotificacaoDAO($daofactory);
+		$retorno = $dao->load($dto);
+		if (! is_null($retorno->id)){
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		} else {
+			$retorno->msgcode = ConstantesMensagem::INFORMACAO_NAO_LOCALIZADA;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+		return $retorno;
+
+	}
+}
+
+?>

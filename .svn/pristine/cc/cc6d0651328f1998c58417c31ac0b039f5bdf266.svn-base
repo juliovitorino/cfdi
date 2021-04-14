@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * SessaoDTO - Data Transfer Object
+ */
+
+// importar dependências
+require_once '../dto/DTOPadrao.php';
+
+class SessaoDTO extends DTOPadrao
+{
+	public $id;
+	public $usuario;
+	public $pwd;
+	public $tokenid;
+	public $status;
+	public $dataCadastro;
+	public $dataAtualizacao;
+
+	function __construct()	{	}
+
+}
+
+?>

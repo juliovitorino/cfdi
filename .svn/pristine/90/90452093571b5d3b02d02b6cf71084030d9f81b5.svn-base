@@ -1,0 +1,292 @@
+<?php
+
+/**
+ * 
+ * FielsBusiness
+ */
+
+require_once 'FielDAO.php';
+require_once 'FielBusiness.php';
+
+require_once '../dto/DTOPadrao.php';
+
+require_once '../email/EmailDTO.php';
+require_once '../email/Email.php';
+require_once '../email/EmailTemplateHub.php';
+require_once '../email/EmailSolucionador.php';
+
+require_once '../variavel/ConstantesVariavel.php';
+require_once '../variavel/VariavelCache.php';
+
+require_once '../tags/TagHub.php';
+
+require_once '../util/util.php';
+require_once '../util/ambiente.php';
+
+require_once '../daofactory/DAOFactory.php';
+
+require_once '../estatisticafuncao/EstatisticaFuncaoDTO.php';
+require_once '../estatisticafuncao/ConstantesEstatisticaFuncao.php';
+require_once '../estatisticafuncao/EstatisticaFuncaoHelper.php';
+
+class FielBusinessImpl implements FielBusiness
+{
+	
+	function __construct()
+	{
+		# code...
+	}
+
+	public function deletar($daofactory, $dto) {}
+	public function atualizar($daofactory, $dto) {}
+	public function listarTudo($daofactory) {}
+	public function listarPagina($daofactory, $pag, $qtde)	{	}
+
+
+	/**
+	 * habilitarContaPorEmail() - Habilitar uma conta nova por hash de 128
+	 * @param $daofactory
+	 * @param $token
+	 * @return $status
+	 */
+	public function habilitarContaPorEmail($daofactory, $token)
+	{
+		$status = new DTOPadrao();
+		// obtem interface e insere o registro
+		$dao = $daofactory->getFielDAO($daofactory);
+		$dto = $dao->loadFielPorCodigoAtivacao($token);
+
+		// Verifica se o status já está ativo
+		if ($dto->status == ConstantesVariavel::STATUS_ATIVO) {
+
+			$status->msgcode = ConstantesMensagem::CONTA_JA_ATIVADA;
+			$status->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($status->msgcode, 
+																	[ConstantesMensagem::MSGTAG_DATA_ATIVACAO => $dto->dataAtivacao]);
+
+		} else if ($dto->status == ConstantesVariavel::STATUS_PENDENTE) 	{
+			$ok = $dao->updateLiberarContaFiel($token);
+			if($ok){
+				$status->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+				$status->msgcodeString = MensagemCache::getInstance()->getMensagem($status->msgcode);
+			} else {
+				$status->msgcode = ConstantesMensagem::ERRO_HABILITAR_CONTA_POR_EMAIL;
+				$status->msgcodeString = MensagemCache::getInstance()->getMensagem($status->msgcode);
+
+			}
+		}
+
+		return $status;
+	}
+
+	/**
+	* inserirNovaConta() - Inserir a nova conta, enviar email
+	* @param daofactory
+	* @param dto
+	* @return dtopadrao
+	*/
+	public function inserirNovaConta($daofactory, $dto)
+	{
+		$retorno = new DTOPadrao();
+		$seguefluxo = true;
+
+		// Verifica se o email já está em uso
+		$dtotemp = $this->carregarFielPorLogin($daofactory, $dto->email);
+		if (! is_null($dtotemp->id)){
+			$retorno->msgcode = ConstantesMensagem::EMAIL_EM_USO_POR_OUTRO_USUARIO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			$seguefluxo = false;
+		}
+
+		if ($seguefluxo) {
+			// Fase 1 - Inserir o registro da nova conta
+			$ok = $this->inserir($daofactory, $dto);
+
+			if ($ok->msgcode !== ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$retorno->msgcode = ConstantesMensagem::ERRO_AO_INSERIR_NOVA_CONTA;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [ '*=nome=*' => $dto->nome ]);
+
+				$seguefluxo = false;
+			} else {
+				// Repopula do DTO do usuário buscando pelo e-mail
+				$dto = $this->carregarFielPorLogin($daofactory, $dto->email);
+			}		
+		}
+
+		// Fase 5 - Envia email?
+/*		
+		if ($seguefluxo) {
+
+			$ok = $this->enviarEmailNovaConta($daofactory, $dto);
+			if (
+				($ok->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) ||
+				($ok->msgcode == ConstantesMensagem::EMAIL_CHAVE_ATIVACAO_DESLIGADA)
+			 ) {
+				$seguefluxo = true;
+			} else {
+				$retorno->msgcode = $ok->msgcode;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode );
+				$seguefluxo = false;
+
+			}
+		}
+*/
+		// Prepara objeto de retorno
+		if ($seguefluxo){
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		// Retorna resultado da operação
+		return $retorno;
+
+	}
+
+
+	/**
+	* inserirNovaContaFacebook() - Inserir a nova conta com autenticação via facebook
+	* @param daofactory
+	* @param dto
+	* @param integer
+	* @return dtopadrao
+	*/
+	public function inserirNovaContaFacebook($daofactory, $dto)
+	{
+		$retorno = new DTOPadrao();
+		$seguefluxo = true;
+
+		// Verifica se o email já está em uso
+		$dtotemp = $this->carregarFielPorLogin($daofactory, $dto->email);
+		if (! is_null($dtotemp->id)){
+			$retorno->msgcode = ConstantesMensagem::EMAIL_EM_USO_POR_OUTRO_USUARIO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			$seguefluxo = false;
+		}
+
+		if ($seguefluxo) {
+			// Fase 1 - Inserir o registro da nova conta
+			$ok = $this->inserirFielFacebook($daofactory, $dto);
+
+			if ($ok->msgcode !== ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$retorno->msgcode = ConstantesMensagem::ERRO_AO_INSERIR_NOVA_CONTA;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [ '*=nome=*' => $dto->nome ]);
+
+				$seguefluxo = false;
+			} else {
+				// Repopula do DTO do usuário buscando pelo e-mail
+				$dto = $this->carregarFielPorLogin($daofactory, $dto->email);
+			}		
+		}
+
+		// Prepara objeto de retorno
+		if ($seguefluxo){
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		// Retorna resultado da operação
+		return $retorno;
+
+	}
+
+	/**
+	 * inserir() - Inserir uma nova conta de Fiel
+	 * @param $daofactory
+	 * @param $dto
+	 * @return boolean
+	 */
+	private function inserirFielFacebook($daofactory, $dto) 
+	{
+		// retorno de resultado do processo
+		$retorno = new DTOPadrao();
+
+		// prepara DTO do usuário para inserção
+		$dto->pwd = $dto->pwd;
+		$dto->codigoAtivacao = Util::getCodigo(128);
+		$dto->tipoConta = "C";
+		$dto->status = ConstantesVariavel::STATUS_ATIVO;
+
+		// obtem interface e insere o registro
+		$dao = $daofactory->getFielDAO($daofactory);
+		$ok = $dao->insertFielFacebook($dto);
+
+		// devolve resultado ao serviço
+		if ($ok){
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		return $retorno;
+	}
+
+
+	/**
+	 * inserir() - Inserir uma nova conta de Fiel
+	 * @param $daofactory
+	 * @param $dto
+	 * @return boolean
+	 */
+	public function inserir($daofactory, $dto) 
+	{
+		// retorno de resultado do processo
+		$retorno = new DTOPadrao();
+
+		// prepara DTO do usuário para inserção
+		$dto->pwd = sha1($dto->pwd);
+		$dto->codigoAtivacao = Util::getCodigo(128);
+		$dto->tipoConta = "C";
+
+		// obtem interface e insere o registro
+		$dao = $daofactory->getFielDAO($daofactory);
+		$ok = $dao->insert($dto);
+
+		// devolve resultado ao serviço
+		if ($ok){
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		return $retorno;
+	}
+
+	public function carregarPorIDFacebook($daofactory, $id)
+	{
+		$dao = $daofactory->getFielDAO($daofactory);
+		return $dao->loadIDFacebook($id);
+	}
+
+	public function carregarPorID($daofactory, $id)
+	{
+		$dao = $daofactory->getFielDAO($daofactory);
+		return $dao->loadPK($id);
+	}
+
+	public function carregarFielPeloProjeto($daofactory, $idProjeto)
+	{
+		$dao = $daofactory->getProjetoDAO($daofactory);
+		return $dao->loadPK($idProjeto);
+	}
+
+	// Carrega um objeto
+	public function carregar($daofactory, $dto)
+	{
+		$dao = $daofactory->getFielDAO($daofactory);
+		return $dao->load($dto);
+	}
+
+	public function carregarFielPorLogin($daofactory, $email)
+	{
+		$dao = $daofactory->getFielDAO($daofactory);
+		return $dao->loadFielLogin($email);
+	}
+
+	/* deprecated - usar carregarPorID() */
+	public function carregarFielPorID($daofactory, $idFiel)
+	{
+		$dao = $daofactory->getFielDAO($daofactory);
+		return $dao->loadPK($idFiel);
+
+	}
+
+}
+
+?>

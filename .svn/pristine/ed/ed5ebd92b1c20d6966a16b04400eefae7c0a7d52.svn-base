@@ -1,0 +1,180 @@
+<?php
+
+//importar dependencias
+require_once 'KeywordService.php';
+require_once 'KeywordBusinessImpl.php';
+
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
+
+require_once '../daofactory/DAOFactory.php';
+
+
+/**
+ * KeywordServiceImpl - Implementação dos servicos
+ */
+class KeywordServiceImpl implements KeywordService
+{
+	
+	function __construct() {	}
+
+	public function apagar($dto) {	}
+	public function pesquisar($dto) {	}
+	public function atualizar($dto) {	}
+	public function listarTudo() {	}
+
+	public function listarKeywordPorUsuario($usuarioid)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new KeywordBusinessImpl();
+ 			$retorno = $bo->listarKeywordPorUsuario($daofactory, $usuarioid);
+
+			$daofactory->commit();
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function carregarRecenteKeywordPorProjeto($projetoid)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new KeywordBusinessImpl();
+ 			$retorno = $bo->carregarRecenteKeywordPorProjeto($daofactory, $projetoid);
+
+			$daofactory->commit();
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function cadastrar($dto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new KeywordBusinessImpl();
+ 			$retorno = $bo->inserir($daofactory, $dto);
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+ 			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function listarPagina($pag, $qtde)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new KeywordBusinessImpl();
+ 			$retorno = $bo->listarPagina($daofactory, $pag, $qtde);
+			$daofactory->commit();
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function pesquisarPorID($id)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new KeywordBusinessImpl();
+ 			$retorno = $bo->carregarPorID($daofactory, $id);
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
+				$daofactory->commit();
+ 			} else {
+				$daofactory->rollback();
+ 			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+}
+
+?>

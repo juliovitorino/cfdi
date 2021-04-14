@@ -1,0 +1,13 @@
+<?php
+
+require_once '../interfaces/DAO.php';
+
+/**
+ * BacklinkDAO - Extensão da interface padrão de DAO
+ */
+interface BacklinkDAO extends DAO
+{
+	public function listPaginaMaiores($backid, $pag, $qtde);
+
+}
+?>

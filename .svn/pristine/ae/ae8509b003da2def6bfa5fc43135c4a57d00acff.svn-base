@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * ReciprocidadeConcrete - Busca os modelos de gatilhos
+ */
+ class ArtigoPBNConcrete extends ArtigosFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'artigo-pbn';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.ArtigosFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ArtigoPBNConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.ArtigosFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ArtigoPBNConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'pbn','11072018133001');
+ 	}
+
+ } 
+
+?>

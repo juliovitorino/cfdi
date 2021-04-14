@@ -1,0 +1,167 @@
+
+<?php
+//* 
+//* HeadlineMaker - Gerador de Headlines Quentes para blogs, emails, youtube e campanhas Impossíveis de serem desprezadas 
+//* 
+//* @since 31/05/2018
+//* @author Julio Cesar Vitorino
+//* @version 1.0.0
+//*
+
+include 'modelos-headline.php';
+include 'spinner.php';
+
+// varivaveis de escopo global
+$balanceamento = true;
+
+
+// Obtem o pacote enviado via post do JQuery
+$palavraChave = $_POST['pw'];
+$tempochk =  $_POST['periodo'];
+$coisaboa_coisaruim =  $_POST['alvo'];
+
+//$palavraChave = 'como sair com uma garota';
+//$tempochk =  '1';
+//$coisaboa_coisaruim =  'sem fazer sexo';
+
+//==== desabilitar em produção
+//var_dump($adjetivos);
+//print_r($adjetivos);
+
+// registra pesquisa
+registrador($palavraChave, $coisaboa_coisaruim);
+
+// Cria Array com as 5 Headlines
+$headlines = array('headlineA' => getHeadline(), 
+				'headlineB' => getHeadline(), 
+				'headlineC' => getHeadline(), 
+				'headlineD' => getHeadline(), 
+				'headlineE' => getHeadline()
+				);
+
+// Contabiliza o acesso
+//$acesso = new ContadorAcesso();
+
+// Converte para JSON e envia para invocador
+echo json_encode($headlines, JSON_FORCE_OBJECT);
+
+
+
+
+/* ===============================================================
+// ============ funções de uso geral pelo backend  ============ //
+   ===============================================================*/
+
+
+/**
+* registrador() - Registrador do que foi informado pelo usuario
+*/
+function registrador($seo, $obj)
+{
+	$ts = time();
+	$saidaA = date("d/m/Y G:i:s")." :: SEO=";
+	$saidaB = date("d/m/Y G:i:s")." :: OBJ=";
+	$myfile = file_put_contents(getcwd().'/logs/log'.date("d-m-Y").'.txt', $saidaA.$seo.PHP_EOL , FILE_APPEND | LOCK_EX);
+	$myfile = file_put_contents(getcwd().'/logs/log'.date("d-m-Y").'.txt', $saidaB.$obj.PHP_EOL , FILE_APPEND | LOCK_EX);
+}
+
+
+// retorno um randomico entre 0 e o N-ésimo maior elemento da array
+function getRndAdjetivo(){
+
+	global $adjetivos; // deixa a function enxergar a variavel fora do escopo local
+	return rand(0, max(array_keys($adjetivos))-1);
+}
+
+function getRndPromessa(){
+	global $promessa; // deixa a function enxergar a variavel fora do escopo local
+
+	// array_keys() = retornar a lista de idx da array 
+	// max() = retona o maior elemento entre 0 .. N
+	return rand(0, max(array_keys($promessa))-1);
+}
+
+function getRndUrgencia(){
+	global $urgênciaTempo; // deixa a function enxergar a variavel fora do escopo local
+
+	// array_keys() = retornar a lista de idx da array 
+	// max() = retona o maior elemento entre 0 .. N
+	return rand(0, max(array_keys($urgênciaTempo))-1);
+}
+
+// Montagem da headline :: irei colocar o retorno em Json ... comming soon :-)
+function getHeadline(){
+
+	global 	$adjetivos, $promessa, $palavraChave, $tempochk, 
+			$coisaboa_coisaruim, $balanceamento, $corretivo, $urgênciaTempo;
+
+
+	if($tempochk == '1'){
+		// Monta prévia da headline com urgencia de tempo
+
+		$headline = $adjetivos[getRndAdjetivo()]
+					.' '
+					.$palavraChave
+					.' '
+					.$urgênciaTempo[getRndUrgencia()]
+					.' e '
+					.$coisaboa_coisaruim
+					.'. ';
+
+
+	} else {
+		// Monta prévia da headline sem urgência de tempo
+		$headline = $adjetivos[getRndAdjetivo()]
+					.' '
+					.$palavraChave
+					.' e '
+					.$coisaboa_coisaruim
+					.'. ';
+
+
+	}
+//	echo $headline.'<br/>';
+
+	// Verifica se a headline contem a contante ${numero}
+	$pos=strpos($headline, NUM);
+	if( $pos > -1 ){
+		$headline = str_replace(NUM, rand(2,7), $headline);
+		//echo '<p>encontrei</p>';
+		//echo '<p>troquei<br>'.$headline.'</p> ';
+
+	}
+
+	// obtém um balanceamento para decidir se o sufixo ou prefixo
+	
+	if ($balanceamento){
+		$headline = $promessa[getRndPromessa()].' '.$headline;
+	} else {
+		$headline = $headline.$promessa[getRndPromessa()];
+	}
+	$balanceamento = !$balanceamento;
+
+	// Aplicar o corretivo na sentença
+	foreach ($corretivo as $key => $item) {
+//		echo $key.'=>'.$item.'<br>';
+
+		$pos=strpos($headline, $key);
+		if( $pos > -1 ){
+			$headline = str_replace($key, $item, $headline);
+/*
+			echo '<p>encontrei</p>';
+			echo '<p>troquei<br>'.$headline.'</p> ';
+*/
+		}		
+	}
+
+	/* Entrada do Gerador de Conteudo Spinner */
+	$gerador = new Spinner($headline);	
+	$headline = $gerador->getConteudo();
+    
+	return $headline;
+}
+
+
+
+?>
+

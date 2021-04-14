@@ -1,0 +1,58 @@
+<?php  
+
+// importar dependencias
+require_once 'KeywordSERPBusiness.php';
+
+require_once '../dto/DTOPadrao.php';
+require_once '../estatisticafuncao/EstatisticaFuncaoBusinessImpl.php';
+/**
+ * KeywordSERPBusinessImpl - Implementação da classe de negocio
+ */
+class KeywordSERPBusinessImpl implements KeywordSERPBusiness
+{
+	
+	function __construct()	{	}
+
+	public function carregar($daofactory, $dto)	{	}
+	public function deletar($daofactory, $dto)	{	}
+	public function atualizar($daofactory, $dto)	{	}
+	public function listarTudo($daofactory)	{	}
+
+ 	public function listarKeywordSERP($daofactory, $keywordParentId)
+	{	
+		$dao = $daofactory->getKeywordSERPDAO($daofactory);
+		return $dao->listKeywordSERP($keywordParentId);
+	}
+
+	public function listarPagina($daofactory, $pag, $qtde)	
+	{	
+		$dao = $daofactory->getKeywordSERPDAO($daofactory);
+		return $dao->listPagina($pag, $qtde);
+	}
+
+	public function carregarPorID($daofactory, $id)
+	{ 
+		$dao = $daofactory->getKeywordSERPDAO($daofactory);
+		return $dao->loadPK($id);
+	}
+
+	public function inserir($daofactory, $dto)
+	{ 
+		$dao = $daofactory->getKeywordSERPDAO($daofactory);
+		$ok = $dao->insert($dto);
+
+		$retorno = new DTOPadrao();
+		if ($ok)
+		{
+ 			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+ 			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		} else {
+ 			$retorno->msgcode = ConstantesMensagem::ERRO_INESPERADO;
+ 			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		return $retorno;
+	}
+
+}
+?>

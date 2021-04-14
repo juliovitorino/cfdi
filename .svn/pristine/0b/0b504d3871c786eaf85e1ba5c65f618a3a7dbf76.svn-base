@@ -1,0 +1,57 @@
+<?php
+
+// Classe de controle de acesso
+class ContadorAcesso {
+
+	// Proriedade estática de controle do filepath do arquivo de acesso
+	public static $arquivoControlador = $_SERVER['DOCUMENT_ROOT'] . "/acesso-hot.txt";
+
+
+	// Atributos para controle geral 
+	public $contador = -1;
+
+	// Cria o construtor para iniciar o contador de acesso
+	public function ContadorAcesso(){
+
+		if(! file_exists($arquivoControlador)){
+
+			$fp = fopen( $arquivoControlador, "wb");
+			fwrite($fp, '1');
+			fclose($fp);
+
+			$this->contador = 1;
+		}
+
+	}
+
+	/* 
+	* carregarContador - Carregar o atributo com valor atual do número de acessos.
+	* Se o arquivo padrão não existir inicia em 1.
+	*
+	* @return void
+	*
+	*/
+	public function carregarContador(){
+
+		$fp = fopen($arquivoControlador, 'r');
+		//this->$contador = fread($fp, filesize($arquivoControlador));
+		$this->contador = fgets($fp);
+		fclose($fp);
+	}
+
+	/* 
+	* incContadorAcesso - Incrementa arquivo controlador de acesso.
+	*
+	* @return void
+	*
+	*/
+	public function incContadorAcesso(){
+		$this->carregarContador();
+		$fp = fopen( $arquivoControlador, "wb");
+		fwrite($fp, $contador + 1);
+		fclose($fp);
+	}
+
+}
+
+?>

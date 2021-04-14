@@ -1,0 +1,41 @@
+<?php
+
+// importar dependencias
+require_once '../dto/DTOPadrao.php';
+
+/**
+ * UsuarioBacklinkDTO - Data Transfer Object
+ */
+class UsuarioBacklinkDTO extends DTOPadrao implements JsonSerializable
+{
+	public $id;
+	public $backlinkid;
+	public $usuarioid;
+	public $url;
+	public $tipo;
+	public $status;
+	public $dataCadastro;
+	public $dataAtualizacao;
+	public $fakedto;
+
+    public function jsonSerialize()
+    {
+        return 
+        [
+            'id'   => $this->id,
+            'backlinkid'   => $this->backlinkid,
+            'usuarioid'   => $this->usuarioid,
+			'url' => $this->url,
+			'tipo' => $this->tipo,
+			'status' => $this->status,
+			'dataCadastro' => $this->dataCadastro,
+			'dataAtualizacao' => $this->dataAtualizacao,
+			'fakedto' => $this->fakedto,
+            'msgcode' => $this->msgcode,
+            'msgcodeString' => $this->msgcodeString
+        ];
+    }	
+
+
+}
+?>

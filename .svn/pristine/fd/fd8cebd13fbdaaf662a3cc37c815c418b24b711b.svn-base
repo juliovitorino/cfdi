@@ -1,0 +1,121 @@
+<?php  
+
+// importar dependencias
+require_once 'HeadlineBuilderHelper.php';
+require_once 'HeadlineSpinner.php';
+
+/**
+ * HeadlineBuilder - Gerador de Headlines 
+ * 
+ * @author Julio Vitorino
+ * @since 06/08/2018
+ */
+class HeadlineBuilder
+{
+
+	private $palavraChave;
+	private $objetivo;
+	private $gatilhoUrgencia;
+	private $balanceamento = true;
+	
+	function __construct($palavraChave, $objetivo, $gatilhoUrgencia)
+	{
+		$this->palavraChave = $palavraChave;
+		$this->objetivo = $objetivo;
+		$this->gatilhoUrgencia = $gatilhoUrgencia;
+	}
+
+	public function getHeadline()
+	{
+		$hbdm = HeadlineBuilderHelper::getInstance();
+
+		$adjetivos = $hbdm->getAdjetivos();
+		$promessa = $hbdm->getPromessa();
+		$coisaboa_coisaruim = $this->objetivo;
+		$palavraChave = $this->palavraChave;
+		$corretivo = $hbdm->getCorretivo();
+		$urgenciaTempo = $hbdm->getUrgenciaTempo();
+		$headline = "";
+
+
+		if($this->gatilhoUrgencia){
+			// Monta prévia da headline com urgencia de tempo
+
+			$headline = $adjetivos[$this->getRndAdjetivo()]
+						.' '
+						.$palavraChave
+						.' '
+						.$urgenciaTempo[$this->getRndUrgencia()]
+						.' e '
+						.$coisaboa_coisaruim
+						.'. ';
+
+
+		} else {
+			// Monta prévia da headline sem urgência de tempo
+			$headline = $adjetivos[$this->getRndAdjetivo()]
+						.' '
+						.$palavraChave
+						.' e '
+						.$coisaboa_coisaruim
+						.'. ';
+
+
+		}
+
+		// Verifica se a headline contem a contante ${numero}
+		$pos=strpos($headline, HeadlineBuilderHelper::NUM);
+		if( $pos > -1 ){
+			$headline = str_replace(HeadlineBuilderHelper::NUM, rand(2,7), $headline);
+		}
+
+		// obtém um balanceamento para decidir se o sufixo ou prefixo
+		
+		if ($this->balanceamento){
+			$headline = $promessa[$this->getRndPromessa()].' '.$headline;
+		} else {
+			$headline = $headline.$promessa[$this->getRndPromessa()];
+		}
+		$this->balanceamento = !$this->balanceamento;
+
+		// Aplicar o corretivo na sentença
+		foreach ($corretivo as $key => $item) {
+			$pos=strpos($headline, $key);
+			if( $pos > -1 ){
+				$headline = str_replace($key, $item, $headline);
+			}		
+		}
+
+		/* Entrada do Gerador de Conteudo Spinner */
+		$gerador = new HeadlineSpinner($headline);	
+		$headline = $gerador->getConteudo();
+	    
+		return $headline;
+
+	}
+
+	// retorno um randomico entre 0 e o N-ésimo maior elemento da array
+	private function getRndAdjetivo(){
+		$hbdm = HeadlineBuilderHelper::getInstance();
+		return rand(0, max(array_keys($hbdm->getAdjetivos()))-1);
+	}
+
+	private function getRndPromessa(){
+		$hbdm = HeadlineBuilderHelper::getInstance();
+		return rand(0, max(array_keys($hbdm->getPromessa()))-1);
+	}
+
+	private function getRndUrgencia(){
+		$hbdm = HeadlineBuilderHelper::getInstance();
+
+		// array_keys() = retornar a lista de idx da array 
+		// max() = retona o maior elemento entre 0 .. N
+		//return rand(0, max(array_keys($urgenciaTempo))-1);
+
+		return rand(0, max(array_keys($hbdm->getUrgenciaTempo()))-1);
+	}
+
+
+
+}
+?>

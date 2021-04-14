@@ -1,0 +1,25 @@
+<?php  
+
+require_once 'keywordDTO.php';
+require_once 'keywordServiceImpl.php';
+
+require_once '../util/util.php';
+
+$dto = new KeywordDTO();
+$dto->projetoid = 100; //141;
+$dto->keyword = Util::getCodigo(100);
+$dto->volumepesquisa = rand(100,1000);
+$dto->valorcpc = rand(0,20);
+$dto->niveldificuldade = rand(10,100);
+
+$ksi = new KeywordServiceImpl();
+$retorno = $ksi->cadastrar($dto);
+var_dump($dto);
+var_dump($retorno);
+
+$prkeid = $ksi->carregarRecenteKeywordPorProjeto($dto->projetoid);
+var_dump($prkeid);	
+
+
+
+?>

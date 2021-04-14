@@ -1,0 +1,13 @@
+Configurar o arquivo app-ads.txt para seus apps
+A iniciativa app-ads.txt ajuda a combater fraudes e proteger seus ganhos com anúncios de aplicativo. Use estas instruções se quiser configurar o arquivo app-ads.txt para seus apps da AdMob.
+
+Crie um arquivo app-ads.txt usando as especificações disponibilizadas pela IAB Tech Lab, se você ainda não tiver feito isso.
+Copie e cole o seguinte snippet de código no arquivo app-ads.txt:
+
+google.com, pub-1205119990657394, DIRECT, f08c47fec0942fa0
+
+content_copy
+Publique o arquivo app-ads.txt na raiz do seu site para desenvolvedores (por exemplo, sampledomain.com/app-ads.txt). Verifique se você digitou o domínio exatamente como ele aparece no Google Play ou na App Store.
+Aguarde pelo menos 24 horas para que a AdMob rastreie e verifique seu arquivo app-ads.txt.
+
+Abra a AdMob, vá até seus apps e confira o status do app-ads.txt na guia correspondente.

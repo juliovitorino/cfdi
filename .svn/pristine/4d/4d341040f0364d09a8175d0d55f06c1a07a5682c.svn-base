@@ -1,0 +1,14 @@
+<?php
+
+require_once '../interfaces/DAO.php';
+
+/**
+ * keywordDAO - Extensão da interface padrão de DAO
+ */
+interface keywordDAO extends DAO
+{
+	public function loadRecenteKeywordPorProjeto($projetoid);
+	public function listKeywordPorUsuario($usuarioid);
+
+}
+?>

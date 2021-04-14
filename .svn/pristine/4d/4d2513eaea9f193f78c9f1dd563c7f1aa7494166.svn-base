@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * 
+ * KeywordRelatedBusiness
+ */
+
+// importar dependências
+require_once '../interfaces/BusinessObject.php';
+
+interface KeywordRelatedBusiness extends BusinessObject
+{
+	public function listarKeywordRelated($daofactory, $keywordParentId);
+
+}
+
+?>

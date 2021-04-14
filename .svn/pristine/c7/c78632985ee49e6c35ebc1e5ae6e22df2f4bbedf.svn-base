@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * 
+ * KeywordBusiness
+ */
+
+// importar dependências
+require_once '../interfaces/BusinessObject.php';
+
+interface KeywordBusiness extends BusinessObject
+{
+	public function carregarRecenteKeywordPorProjeto($daofactory, $projetoid);
+ 	public function listarKeywordPorUsuario($daofactory, $usuarioid);
+
+}
+
+?>

@@ -1,0 +1,51 @@
+<?php
+
+// importar dependências
+require_once '../daofactory/DmlSql.php';
+
+/**
+ * DmlSqlProjetoSERP - DML para tabela
+ */
+class DmlSqlProjetoSERP extends DmlSql
+{
+
+	// Tabela
+	const TABELA = 'PROJETO_SERP';
+
+	// colunas da tabela
+	const PRSE_ID = 'PRSE_ID';
+	const PROJ_ID = 'PROJ_ID';
+	const PRSE_TX_LINK = 'PRSE_TX_LINK';
+	const PRSE_NU_DA = 'PRSE_NU_DA';
+	const PRSE_NU_PA = 'PRSE_NU_PA';
+	const PRSE_NU_RANK = 'PRSE_NU_RANK';
+	const PRSE_IN_STATUS = 'PRSE_IN_STATUS';
+	const PRSE_DT_CADASTRO = 'PRSE_DT_CADASTRO';
+	const PRSE_DT_UPDATE = 'PRSE_DT_UPDATE';
+
+	// Comandos DML
+	const INS = 'INSERT INTO `' . self::TABELA . '` ('
+		. ' `PROJ_ID`, ' 
+		. ' `PRSE_TX_LINK`, ' 
+		. ' `PRSE_NU_DA`, ' 
+		. ' `PRSE_NU_PA`, ' 
+		. ' `PRSE_NU_RANK` ' 
+		. ') VALUES (?,?,?,?,?)';
+
+ 	const DEL_PK = 'DELETE ';
+
+	const UPD = 'UPDATE `' . self::TABELA . '` set ';
+
+	const SELECT = 'SELECT `PRSE_ID`,'
+					. ' `PROJ_ID`, '
+					. ' `PRSE_TX_LINK`, ' 
+					. ' `PRSE_NU_DA`, ' 
+					. ' `PRSE_NU_PA`, ' 
+					. ' `PRSE_NU_RANK`, ' 
+					. ' `PRSE_IN_STATUS`,'
+					. ' `PRSE_DT_CADASTRO`,'
+					. ' `PRSE_DT_UPDATE` '
+					. ' FROM `'.self::TABELA.'` ';
+}
+
+?>

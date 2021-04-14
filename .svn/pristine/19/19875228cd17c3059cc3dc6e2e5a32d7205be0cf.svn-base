@@ -1,0 +1,9 @@
+<?php 
+
+require_once 'HeadlineHistoricoServiceImpl.php';
+
+$hhsi = new HeadlineHistoricoServiceImpl();
+var_dump($hhsi->listarTudoPorSessao(1));
+
+
+?>

@@ -1,0 +1,314 @@
+<?php
+
+/**
+ * MySqlDAOFactory - Fabrica de Objetos DAO para MySql
+ *
+ * @author Julio Vitorino
+ * @since 25/07/2018
+ */
+
+require_once '../usuarios/MySqlKinghostUsuarioDAO.php';
+require_once '../usuarios/MySqlKinghostProjetoDAO.php';
+require_once '../usuarios/MySqlKinghostProjetoItensDAO.php';
+require_once '../usuarios/MySqlKinghostProjetoDorDAO.php';
+require_once '../usuarios/MySqlKinghostProjetoBonusDAO.php';
+require_once '../usuarios/MySqlKinghostProjetoTecnicaDAO.php';
+require_once '../usuarios/MySqlKinghostProjetoBeneficioDAO.php';
+
+require_once '../variavel/MySqlKinghostVariavelDAO.php';
+require_once '../mensagem/MySqlKinghostMensagemDAO.php';
+require_once '../estatisticafuncao/MySqlKinghostEstatisticaFuncaoDAO.php';
+require_once '../headline/MySqlKinghostHeadlineHistoricoDAO.php';
+require_once '../sessao/MySqlKinghostSessaoDAO.php';
+require_once '../plano/MySqlKinghostPlanoDAO.php';
+require_once '../usuariosplanos/MySqlKinghostPlanoUsuarioDAO.php';
+require_once '../usuariosplanosfatura/MySqlKinghostPlanoUsuarioFaturaDAO.php';
+require_once '../notificacao/MySqlKinghostNotificacaoDAO.php';
+require_once '../usuariostrocasenha/MySqlKinghostUsuarioTrocaSenhaHistoricoDAO.php';
+require_once '../backlink/MySqlKinghostBacklinkDAO.php';
+require_once '../usuariobacklink/MySqlKinghostUsuarioBacklinkDAO.php';
+require_once '../keyword/MySqlKinghostKeywordDAO.php';
+require_once '../keywordrelated/MySqlKinghostKeywordRelatedDAO.php';
+require_once '../keywordserp/MySqlKinghostKeywordSERPDAO.php';
+require_once '../projetoserp/MySqlKinghostProjetoSERPDAO.php';
+require_once '../projetoserp/MySqlKinghostGraficoProjetoSERPDAO.php';
+require_once '../campanha/MySqlKinghostCampanhaDAO.php';
+require_once '../campanhaqrcode/MySqlKinghostCampanhaQrCodeDAO.php';
+require_once '../fiel/MySqlKinghostFielDAO.php';
+require_once '../cfdi/MySqlKinghostCfdiDAO.php';
+
+class MySqlDAOFactory extends DAOFactory
+{
+
+	/* anula construtor */
+	public function __construct()
+	{
+		# code...
+	}
+	
+	/**
+	 * Retorna um sequencia
+	 * @return long
+	 */
+	public function getNextSequence($daofactory, $sequence) 
+	{
+		return 1;
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlUsuarioDAO
+	 */
+	public function getUsuarioDAO($daofactory) 
+	{
+		return new MySqlKinghostUsuarioDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlSessaoDAO
+	 */
+	public function getSessaoDAO($daofactory) 
+	{
+		return new MySqlKinghostSessaoDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlProjetoDAO
+	 */
+	public function getProjetoDAO($daofactory) 
+	{
+		return new MySqlKinghostProjetoDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlProjetoBonusDAO
+	 */
+	public function getProjetoBonusDAO($daofactory) 
+	{
+		return new MySqlKinghostProjetoBonusDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlProjetoItensDAO
+	 */
+	public function getProjetoItensDAO($daofactory) 
+	{
+		return new MySqlKinghostProjetoItensDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlProjetoDorDAO
+	 */
+	public function getProjetoDoresDAO($daofactory) 
+	{
+		return new MySqlKinghostProjetoDorDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlProjetoBeneficioDAO
+	 */
+	public function getProjetoBeneficiosDAO($daofactory) 
+	{
+		return new MySqlKinghostProjetoBeneficioDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlProjetoTecnicaDAO
+	 */
+	public function getProjetoTecnicasDAO($daofactory) 
+	{
+		return new MySqlKinghostProjetoTecnicaDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlHeadlineHistoricoDAO
+	 */
+	public function getHeadlineHistoricoDAO($daofactory) 
+	{
+		return new MySqlKinghostHeadlineHistoricoDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlEstatisticaFuncaoDAO
+	 */
+	public function getEstatisticaFuncaoDAO($daofactory) 
+	{
+		return new MySqlKinghostEstatisticaFuncaoDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlMensagemDAO
+	 */
+	public function getMensagemDAO($daofactory)
+	{
+		return new MySqlKinghostMensagemDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlVariavelDAO
+	 */
+	public function getVariavelDAO($daofactory)
+	{
+		return new MySqlKinghostVariavelDAO($daofactory);
+
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostPlanoDAO
+	 */
+	public function getPlanoDAO($daofactory)
+	{
+		return new MySqlKinghostPlanoDAO($daofactory);
+
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostPlanoUsuarioDAO
+	 */
+	public function getPlanoUsuarioDAO($daofactory)
+	{
+		return new MySqlKinghostPlanoUsuarioDAO($daofactory);
+
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostPlanoUsuarioFaturaDAO
+	 */
+	public function getPlanoUsuarioFaturaDAO($daofactory)
+	{
+		return new MySqlKinghostPlanoUsuarioFaturaDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostNotificacaoDAO
+	 */
+	public function getNotificacaoDAO($daofactory)
+	{
+		return new MySqlKinghostNotificacaoDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostUsuarioTrocaSenhaHistoricoDAO
+	 */
+	public function getUsuarioTrocaSenhaHistoricoDAO($daofactory)
+	{
+		return new MySqlKinghostUsuarioTrocaSenhaHistoricoDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostBacklinkDAO
+	 */
+	public function getBacklinkDAO($daofactory)
+	{
+		return new MySqlKinghostBacklinkDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostUsuarioBacklinkDAO
+	 */
+	public function getUsuarioBacklinkDAO($daofactory)
+	{
+		return new MySqlKinghostUsuarioBacklinkDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostKeywordDAO
+	 */
+	public function getKeywordDAO($daofactory)
+	{
+		return new MySqlKinghostKeywordDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostKeywordRelatedDAO
+	 */
+	public function getKeywordRelatedDAO($daofactory)
+	{
+		return new MySqlKinghostKeywordRelatedDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostKeywordSERPDAO
+	 */
+	public function getKeywordSERPDAO($daofactory)
+	{
+		return new MySqlKinghostKeywordSERPDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostProjetoSERPDAO
+	 */
+	public function getProjetoSERPDAO($daofactory)
+	{
+		return new MySqlKinghostProjetoSERPDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostGraficosProjetoSERPDAO
+	 */
+	public function getGraficoProjetoSERPDAO($daofactory)
+	{
+		return new MySqlKinghostGraficoProjetoSERPDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostCampanhaDAO
+	 */
+	public function getCampanhaDAO($daofactory)
+	{
+		return new MySqlKinghostCampanhaDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostCampanhaQrCodeDAO
+	 */
+	public function getCampanhaQrCodeDAO($daofactory)
+	{
+		return new MySqlKinghostCampanhaQrCodeDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostFielDAO
+	 */
+	public function getFielDAO($daofactory)
+	{
+		return new MySqlKinghostFielDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostCfdiDAO
+	 */
+	public function getCfdiDAO($daofactory)
+	{
+		return new MySqlKinghostCfdiDAO($daofactory);
+	}
+
+}
+?>

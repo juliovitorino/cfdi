@@ -1,0 +1,13 @@
+<?php
+
+require_once '../interfaces/DAO.php';
+
+/**
+ * graficoProjetoSERPDAO - Extensão da interface padrão de DAO
+ */
+interface graficoProjetoSERPDAO extends DAO
+{
+	public function listSERP($projetoid);
+
+}
+?>

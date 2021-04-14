@@ -1,0 +1,152 @@
+<?php  
+
+// importar dependencias
+require_once 'CampanhaQrCodeBusiness.php';
+require_once '../variavel/ConstantesVariavel.php';
+require_once '../util/util.php';
+
+/**
+ * CampanhaQrCodeBusinessImpl - Implementação da classe de negocio
+ */
+class CampanhaQrCodeBusinessImpl implements CampanhaQrCodeBusiness
+{
+	
+	function __construct()	{	}
+
+	public function carregar($daofactory, $dto)	{	}
+	public function deletar($daofactory, $dto)	{	}
+	public function atualizar($daofactory, $dto)	{	}
+	public function listarTudo($daofactory)	{	}
+
+	public function carregarQRCodeLivre($daofactory, $qrc)
+	{ 
+		$ok = false;
+
+		$dao = $daofactory->getCampanhaQrCodeDAO($daofactory);
+		$retorno = $dao->loadQRCodePorStatus($qrc, ConstantesVariavel::STATUS_ATIVO);
+
+		if ($retorno != null && $retorno->id != null) {
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		} else {
+			$retorno = new DTOPadrao();
+			$retorno->msgcode = ConstantesMensagem::TICKET_INVALIDO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		return $retorno;
+	}
+
+
+	public function carregarTicketLivre($daofactory, $ticket)
+	{ 
+		$ok = false;
+
+		$dao = $daofactory->getCampanhaQrCodeDAO($daofactory);
+		$retorno = $dao->loadTicketPorStatus($ticket, ConstantesVariavel::STATUS_ATIVO);
+
+		if ($retorno != null && $retorno->id != null) {
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		} else {
+			$retorno = new DTOPadrao();
+			$retorno->msgcode = ConstantesMensagem::TICKET_INVALIDO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		return $retorno;
+	}
+
+	public function criarCarimbosCampanha($daofactory, $idcampanha)
+	{
+		// Obtem DTO da campanha
+		$daocampanha = $daofactory->getCampanhaDAO($daofactory);
+		$dto = $daocampanha->loadPK($idcampanha);
+
+		//----------------------------------------------------------------------
+		// Inserir o maximo de qrcodes validos (carimbos) na Campanha Qr Codes
+		// Padrão está demarcado na variavel MAXIMO_QRCODE_CARIMBO_POR_CARTAO 
+		//----------------------------------------------------------------------
+		$max = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_QRCODE_CARIMBO_POR_CARTAO);
+		$cqr = new campanhaQrCodeBusinessImpl();
+		for ($i=0; $i < ($dto->maximoCartoes * $max); $i++) { 
+			$cqrdto = new CampanhaQrCodeDTO();
+			$cqrdto->id_campanha = $dto->id;
+			$cqr->inserir($daofactory, $cqrdto);
+		}
+
+		$cbo = new CampanhaBusinessImpl();
+		$cbo->atualizarStatus($daofactory, $idcampanha, ConstantesVariavel::STATUS_ATIVO);
+		return true;
+	}
+
+	public function listarPagina($daofactory, $pag, $qtde)	
+	{	
+		$dao = $daofactory->getCampanhaQrCodeDAO($daofactory);
+		return $dao->listPagina($pag, $qtde);
+	}
+
+	public function atualizarStatusPorTicket($daofactory, $ticket, $status){
+		$dao = $daofactory->getCampanhaQrCodeDAO($daofactory);
+		return $dao->updateStatusPorTicket($ticket, $status);
+	}
+
+	public function atualizarStatusPorCarimbo($daofactory, $carimboqr, $status)
+	{
+		$dao = $daofactory->getCampanhaQrCodeDAO($daofactory);
+		$ok = $dao->updateStatusPorCarimbo($carimboqr, $status);
+		if ($ok) {
+			$retorno = new DTOPadrao();
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		} else {
+			$retorno = new DTOPadrao();
+			$retorno->msgcode = ConstantesMensagem::ATUALIZAR_STATUS_CAMPANHA_QRCODES_FALHA;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		return $retorno;
+
+	}
+
+
+	public function carregarPorID($daofactory, $id)
+	{ 
+		$dao = $daofactory->getCampanhaQrCodeDAO($daofactory);
+		return $dao->loadPK($id);
+	}
+
+	public function inserir($daofactory, $dto)
+	{ 
+		$ok = false;
+
+		// Monta a regra do QRCode de cada carimbo da respectiva campanha
+		$date = new DateTime();
+		$ts = $date->getTimestamp();
+
+		$dto->id = sha1($dto->id_campanha . $ts . Util::getCodigo(256));
+		$dto->qrcodecarimbo = sha1($dto->id_campanha . $ts . Util::getCodigo(20));
+		$dto->ticket = Util::getCodigo(8);
+		$dto->status = ConstantesVariavel::STATUS_ATIVO;
+
+		$dao = $daofactory->getCampanhaQrCodeDAO($daofactory);
+
+		$retorno = new DTOPadrao();
+		if ($dao->insert($dto)) {
+			$ok = true;
+		}
+
+		if ($ok) {
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		} else {
+			$retorno->msgcode = ConstantesMensagem::ERRO_INESPERADO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		return $retorno;
+	}
+
+
+}
+?>

@@ -1,0 +1,78 @@
+<!-- Mais exemplos em advanced_table.html -->
+
+			<!-- start page content -->
+            <div class="page-content-wrapper">
+                <div class="page-content">
+                    <div class="page-bar">
+                        <div class="page-title-breadcrumb">
+                            <div class=" pull-left">
+                                <div class="page-title">Impulsionar seu minisite</div>
+                            </div>
+                            <ol class="breadcrumb page-breadcrumb pull-right">
+                                <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="index.html">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                                </li>
+                                <li><a class="parent-item" href="">Backlinks</a>&nbsp;<i class="fa fa-angle-right"></i>
+                                </li>
+                                <li class="active">No Follow</li>
+                            </ol>
+                        </div>
+                    </div>
+
+					<!-- Tabela dos backlinks -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-topline-red">
+                                <div class="card-head">
+                                    <header>Backlinks no follow</header>
+                                    <div class="tools">
+                                        <a class="fa fa-repeat btn-color box-refresh" href="javascript:;"></a>
+	                                    <a class="t-collapse btn-color fa fa-chevron-down" href="javascript:;"></a>
+	                                    <a class="t-close btn-color fa fa-times" href="javascript:;"></a>
+                                    </div>
+                                </div>
+                                <div class="card-body ">
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <div class="btn-group">
+                                                <button id="btn-pqp" class="btn btn-info">
+                                                    Atualizar Meus Backlinks <i class="fa fa-recycle"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <div class="btn-group pull-right">
+                                                <button class="btn deepPink-bgcolor  btn-outline dropdown-toggle" data-toggle="dropdown">Ferramentas
+                                                    <i class="fa fa-angle-down"></i>
+                                                </button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li>
+                                                        <a href="#" id="btn-criar-bkl">
+                                                            <i class="fa fa-plus"></i> Criar Backlinks </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <table id="dintable" class="display table-bordered table-hover" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th> URL </th>
+                                                <th> Nome </th>
+                                                <th> Sobrenome </th>
+                                                <th> Email </th>
+                                                <th> Status </th>
+                                                <th> Ações </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- end page content -->
+

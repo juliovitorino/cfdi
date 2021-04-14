@@ -1,0 +1,111 @@
+
+			<!-- start page content -->
+            <div class="page-content-wrapper">
+                <div class="page-content">
+                    <div class="page-bar">
+                        <div class="page-title-breadcrumb">
+                            <div class=" pull-left">
+                                <div class="page-title">Nova Campanha</div>
+                            </div>
+                            <ol class="breadcrumb page-breadcrumb pull-right">
+                                <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="index.html">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                                </li>
+                                <li><a class="parent-item" href="">Campanha</a>&nbsp;<i class="fa fa-angle-right"></i>
+                                </li>
+                                <li class="active">Nova Campanha</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="card card-box">
+                                <div class="card-head">
+                                    <header>Campanha</header>
+                                     <button id = "panel-button" 
+				                           class = "mdl-button mdl-js-button mdl-button--icon pull-right" 
+				                           data-upgraded = ",MaterialButton">
+				                           <i class = "material-icons">more_vert</i>
+				                        </button>
+				                        <ul class = "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+				                           data-mdl-for = "panel-button">
+				                           <li class = "mdl-menu__item"><i class="material-icons">assistant_photo</i>Action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">print</i>Another action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">favorite</i>Something else here</li>
+				                        </ul>
+                                </div>
+                                <div class="card-body" id="bar-parent">
+                                    <form id="form_sample_1" class="form-horizontal">
+                                        <div class="form-body">
+                                        <div class="form-group row">
+                                                <label class="control-label col-md-3">Campanha
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input id="CAMP_TX_NOME" type="text" name="CAMP_TX_NOME" data-required="1" 
+													placeholder="Entre nome da campanha" class="form-control input-height" /> </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-3">No. Máx. Cartelas
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input id="CAMP_NU_MAX_CARTAO" name="CAMP_NU_MAX_CARTAO" type="number" placeholder="Entre o número máx. cartelas permitidas" class="form-control input-height" /> </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-3">Tempo de Espera (Horas)
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" id="time" name="CAMP_NU_MIN_DELAY" class="floating-label mdl-textfield__input" placeholder="Reabilitar de novo"> 
+												</div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-3">Data de Ínicio
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">														
+													<input type="text" id="date-start" name="CAMP_DT_INICIO" 
+													class="floating-label mdl-textfield__input"  
+													placeholder="Ínicio da Campanha">
+													
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-3">Data de Término
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">														
+													<input type="text" id="date-end" name="CAMP_DT_TERMINO"
+													class="floating-label mdl-textfield__input"  
+													placeholder="Fim da Campanha">
+													
+                                                </div>
+                                            </div>
+											
+                                        	 <div class="form-group row">
+                                                <label class="control-label col-md-3">Campanha Detalhada
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <textarea id="CAMP_TX_EXPLICATIVO" name="CAMP_TX_EXPLICATIVO" 
+													placeholder="Descreva as regras da campanha" 
+													class="form-control-textarea" rows="5" ></textarea>
+                                                </div>
+                                            </div>
+											<div class="form-actions">
+                                            <div class="row">
+                                                <div class="offset-md-3 col-md-9">
+                                                    <button type="button" class="btn btn-info" id="addbtn" data-target="/cfd/php/classes/gateway/campanhaAddController">Enviar</button>
+                                                    <button type="button" class="btn btn-default">Cancelar</button>
+                                                </div>
+                                            	</div>
+                                       		 </div>
+										</div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end page content -->

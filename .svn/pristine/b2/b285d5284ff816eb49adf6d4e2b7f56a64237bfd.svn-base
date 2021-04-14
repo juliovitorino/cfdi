@@ -1,0 +1,28 @@
+<?php  
+
+// importar dependencias
+require_once 'EstatisticaFuncaoDTO.php';
+
+/**
+ * 
+ */
+class EstatisticaFuncaoHelper
+{
+	
+	function __construct()	{	}
+
+	public static function getDTO($usuarioid, $projetoid, $tipo)
+	{
+		$dto = new EstatisticaFuncaoDTO();
+		$dto->usuarioid = $usuarioid;		
+		$dto->projetoid = $projetoid;		
+		$dto->tipo = $tipo;		
+		$dto->ano = date('Y');		
+		$dto->mes = date('m');		
+		$dto->dia = date('d');	
+		$dto->qtde = 0;	
+		return $dto;
+	}
+}
+
+?>

@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * 
+ * NotificacaoBusiness - Interface de metodos
+ * @author Julio Vitorino
+ * @copyright Julio Vitroino
+ * @since 19/08/2018
+ */
+
+require_once '../interfaces/BusinessObject.php';
+
+interface NotificacaoBusiness extends BusinessObject
+{
+	public function listarTodasNotificacoesAtivas($daofactory, $usuarioid);
+	public function atualizarStatusNotificacao($daofactory, $notificacaoid, $status);
+
+
+}
+
+?>

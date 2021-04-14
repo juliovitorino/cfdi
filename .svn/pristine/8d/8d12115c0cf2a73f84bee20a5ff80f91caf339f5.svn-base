@@ -1,0 +1,625 @@
+
+			<!-- start page content -->
+            <div class="page-content-wrapper">
+                <div class="page-content">
+                    <div class="page-bar">
+                        <div class="page-title-breadcrumb">
+                            <div class=" pull-left">
+                                <div class="page-title">Editar Projeto</div>
+                            </div>
+                            <ol class="breadcrumb page-breadcrumb pull-right">
+                                <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="index.html">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                                </li>
+                                <li><a class="parent-item" href="">Configuração</a>&nbsp;<i class="fa fa-angle-right"></i>
+                                </li>
+                                <li><a class="parent-item" href="">Projetos</a>&nbsp;<i class="fa fa-angle-right"></i>
+                                </li>
+                                <li class="active">Editar</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="card card-box">
+                                <div class="card-head">
+                                    <header>Informação do Projeto de Minisite</header>
+                                     <button id = "panel-button" 
+				                           class = "mdl-button mdl-js-button mdl-button--icon pull-right" 
+				                           data-upgraded = ",MaterialButton">
+				                           <i class = "material-icons">more_vert</i>
+				                        </button>
+				                        <ul class = "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+				                           data-mdl-for = "panel-button">
+				                           <li class = "mdl-menu__item"><i class="material-icons">assistant_photo</i>Action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">print</i>Another action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">favorite</i>Something else here</li>
+				                        </ul>
+                                </div>
+                                <div class="card-body" id="bar-parent">
+                                    <form action="#" id="form_sample_1" class="form-horizontal">
+                                        <div class="form-body">
+
+                                        	<div class="form-group row">
+                                                <label class="control-label col-md-3">Projeto
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" id="projeto" name="projeto" data-required="1" placeholder="Entre o nome do projeto" class="form-control input-height" /> </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-3">Nicho
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <select id="nicho" class="form-control input-height" name="nicho">
+                                                        <option value="">Selecione o Nicho</option>
+                                                        <option value="marketing-digital">Marketing Digital</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-3">Email
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                                <i class="fa fa-envelope"></i>
+                                                            </span>
+                                                        <input type="text" class="form-control input-height" id="email_contato" name="email_contato" placeholder="Email de Contato do Projeto"> </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-3">Palavra Chave (SEO)
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" id="palavra_chave_exata" name="palavra_chave_exata" data-required="1" placeholder="Entre a palavra chave exata do projeto" class="form-control input-height" /> </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-3">URL do Minisite
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" id="url_minisite" name="url_minisite" data-required="1" placeholder="Entre a URL do minisite" class="form-control input-height" /> </div>
+                                            </div>
+
+                                        	<div class="form-group row">
+                                                <label class="control-label col-md-3">Headline
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" id="headline" name="headline" data-required="1" placeholder="Headline do Projeto" class="form-control input-height" /> </div>
+                                            </div>
+
+                                        	<div class="form-group row">
+                                                <label class="control-label col-md-3">Produto
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" id="nome_produto" name="nome_produto" data-required="1" placeholder="Produto do Projeto" class="form-control input-height" /> </div>
+                                            </div>
+
+                                        	<div class="form-group row">
+                                                <label class="control-label col-md-3">Tipo Produto
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" id="tipo_produto" name="tipo_produto" data-required="1" placeholder="Entre Tipo do Produto: ex:Curso, Treinamento, Ebook, etc." class="form-control input-height" /> </div>
+                                            </div>
+
+                                        	<div class="form-group row">
+                                                <label class="control-label col-md-3">Descritivo
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <textarea id="desc_produto" name="desc_produto" placeholder="Entre com Descritivo do Produto" class="form-control-textarea" rows="5" ></textarea>
+                                                </div>
+                                            </div>
+
+                                        	<div class="form-group row">
+                                                <label class="control-label col-md-3">Preço de Venda
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" id="preco_produto" name="preco_produto" data-required="1" placeholder=""  data-mask="$ 99,999.99" class="form-control input-height" /> </div>
+                                            </div>
+
+
+                                            <div class="form-group row">
+                                                <label class="control-label col-md-3">Plataforma
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <select id="plataforma" class="form-control input-height" name="plataforma">
+                                                        <option value="">Selecione a Plataforma</option>
+                                                        <option value="HOTMART">Hotmart</option>
+                                                        <option value="MONETIZZE">Monetizze</option>
+                                                        <option value="EDUZZ">Eduzz</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                        	<div class="form-group row">
+                                                <label class="control-label col-md-3">Hotlink PV
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" id="hotlink_pv" name="hotlink_pv" data-required="1" placeholder="Entre com SEU hotlink página vendas" class="form-control input-height" /> </div>
+                                            </div>
+
+                                        	<div class="form-group row">
+                                                <label class="control-label col-md-3">Hotlink Checkout
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" id="hotlink_chkout" name="hotlink_chkout" data-required="1" placeholder="Entre com SEU hotlink página checkout" class="form-control input-height" /> </div>
+                                            </div>
+
+                                        	<div class="form-group row">
+                                                <label class="control-label col-md-3">Autoridade
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <input type="text" id="autoridade" name="autoridade" data-required="1" placeholder="Nome da Autoridade" class="form-control input-height" /> </div>
+                                            </div>
+
+                                        	<div class="form-group row">
+                                                <label class="control-label col-md-3">Autoridade Resumo
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <textarea id="breve_desc_autoridade" name="breve_desc_autoridade" placeholder="Entre com Descritivo Resumido da Autoridade" class="form-control-textarea" rows="5" ></textarea>
+                                                </div>
+                                            </div>
+
+											<div class="form-actions">
+                                            <div class="row">
+                                                <div class="offset-md-3 col-md-9">
+                                                    <button type="button" class="btn btn-info"id="id-enviar">Enviar</button>
+                                                    <button type="button" class="btn btn-default">Cancelar</button>
+                                                </div>
+                                            	</div>
+                                       		 </div>
+										</div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+					<!-- ======================= -->
+					<!-- Cardbox de Itens Projeto-->
+					<!-- ======================= -->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="card card-box">
+                                <div class="card-head">
+                                    <header>Itens do Produto</header>
+                                     <button id = "panel-item-button" 
+				                           class = "mdl-button mdl-js-button mdl-button--icon pull-right" 
+				                           data-upgraded = ",MaterialButton">
+				                           <i class = "material-icons">more_vert</i>
+				                        </button>
+				                        <ul class = "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+				                           data-mdl-for = "panel-item-button">
+				                           <li class = "mdl-menu__item"><i class="material-icons">assistant_photo</i>Action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">print</i>Another action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">favorite</i>Something else here</li>
+				                        </ul>
+                                </div>
+                                <div class="card-body " id="bar-parent">
+                                	<!-- Tabela com dados-->
+                                	<span id="tabela-item">
+	                                    <div class="row">
+	                                        <div class="col-md-6 col-sm-6 col-xs-6">
+	                                            <div class="btn-group">
+	                                                <button id="addNovoItem" class="btn btn-info">
+	                                                    Novo <i class="fa fa-plus"></i>
+	                                                </button>
+	                                            </div>
+	                                        </div>
+	                                        <div class="col-md-6 col-sm-6 col-xs-6">
+	                                            <div class="btn-group pull-right">
+	                                                <button class="btn deepPink-bgcolor  btn-outline dropdown-toggle" data-toggle="dropdown">Ferramentas
+	                                                    <i class="fa fa-angle-down"></i>
+	                                                </button>
+	                                                <ul class="dropdown-menu pull-right">
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-print"></i> Print </a>
+	                                                    </li>
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
+	                                                    </li>
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-file-excel-o"></i> Export to Excel </a>
+	                                                    </li>
+	                                                </ul>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+
+	                                    <table id="dintable-produto-item" class="display table-bordered table-hover" style="width: 100%">
+	                                        <thead>
+	                                            <tr>
+	                                                <th width="90%"> Item </th>
+	                                                <th> Ações </th>
+	                                            </tr>
+	                                        </thead>
+	                                    </table>
+                                		
+                                	</span>
+
+
+                                	<!-- Formulário de Entrada de dados-->
+                                	<span id="form-produto-item">
+	                                    <form>
+	                                        <div class="form-group">
+                                                <span class="tag-projetoid"></span>
+	                                            <label for="descritivo_item">Item do pacote</label>
+												<textarea id="descritivo_item" name="descritivo_item" placeholder="Entre com item fornecido pelo produto" class="form-control-textarea" rows="5" ></textarea>
+	                                        </div>
+											
+											<div class="form-group">
+		                                        <button type="button" class="btn btn-primary btn-enviar-produto-detalhe" data-target = "inserir-projeto-item" id="btn-enviar-item">Enviar</button>
+		                                        <button type="button" class="btn btn-default" id="btn-cancel-item">Cancelar</button>
+											</div>
+	                                    </form>
+                                	</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+					<!-- ======================= -->
+					<!-- Cardbox de Projeto Dor  -->
+					<!-- ======================= -->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="card card-box">
+                                <div class="card-head">
+                                    <header>Dores / Problemas que o produto resolve</header>
+                                     <button id = "panel-dor-button" 
+				                           class = "mdl-button mdl-js-button mdl-button--icon pull-right" 
+				                           data-upgraded = ",MaterialButton">
+				                           <i class = "material-icons">more_vert</i>
+				                        </button>
+				                        <ul class = "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+				                           data-mdl-for = "panel-dor-button">
+				                           <li class = "mdl-menu__item"><i class="material-icons">assistant_photo</i>Action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">print</i>Another action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">favorite</i>Something else here</li>
+				                        </ul>
+                                </div>
+                                <div class="card-body " id="bar-parent">
+                                	<!-- Tabela com dados-->
+                                	<span id="tabela-dor">
+	                                    <div class="row">
+	                                        <div class="col-md-6 col-sm-6 col-xs-6">
+	                                            <div class="btn-group">
+	                                                <button id="addNovoDor" class="btn btn-info">
+	                                                    Novo <i class="fa fa-plus"></i>
+	                                                </button>
+	                                            </div>
+	                                        </div>
+	                                        <div class="col-md-6 col-sm-6 col-xs-6">
+	                                            <div class="btn-group pull-right">
+	                                                <button class="btn deepPink-bgcolor  btn-outline dropdown-toggle" data-toggle="dropdown">Ferramentas
+	                                                    <i class="fa fa-angle-down"></i>
+	                                                </button>
+	                                                <ul class="dropdown-menu pull-right">
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-print"></i> Print </a>
+	                                                    </li>
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
+	                                                    </li>
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-file-excel-o"></i> Export to Excel </a>
+	                                                    </li>
+	                                                </ul>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+
+	                                    <table id="dintable-produto-dor" class="display table-bordered table-hover" style="width: 100%">
+	                                        <thead>
+	                                            <tr>
+	                                                <th width="90%"> Item </th>
+	                                                <th> Ações </th>
+	                                            </tr>
+	                                        </thead>
+	                                    </table>
+                                		
+                                	</span>
+
+
+                                	<!-- Formulário de Entrada de dados-->
+                                	<span id="form-produto-dor">
+	                                    <form>
+	                                        <div class="form-group">
+	                                            <label for="descritivo_dor">Dor / Problema</label>
+												<textarea id="descritivo_dor" name="descritivo_dor" placeholder="Entre com as dores/problemas quue o produto resolve" class="form-control-textarea" rows="5" ></textarea>
+	                                        </div>
+											
+											<div class="form-group">
+		                                        <button type="button" class="btn btn-primary btn-enviar-produto-detalhe" data-target="inserir-projeto-dores" id="btn-enviar-dor">Enviar</button>
+		                                        <button type="button" class="btn btn-default" id="btn-cancel-dor">Cancelar</button>
+											</div>
+	                                    </form>
+                                	</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+					<!-- ======================== -->
+					<!-- Cardbox de Projeto Bonus  -->
+					<!-- ======================== -->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="card card-box">
+                                <div class="card-head">
+                                    <header>Seus Bônus Extras</header>
+                                     <button id = "panel-bonus-button" 
+				                           class = "mdl-button mdl-js-button mdl-button--icon pull-right" 
+				                           data-upgraded = ",MaterialButton">
+				                           <i class = "material-icons">more_vert</i>
+				                        </button>
+				                        <ul class = "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+				                           data-mdl-for = "panel-bonus-button">
+				                           <li class = "mdl-menu__item"><i class="material-icons">assistant_photo</i>Action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">print</i>Another action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">favorite</i>Something else here</li>
+				                        </ul>
+                                </div>
+                                <div class="card-body " id="bar-parent">
+                                	<!-- Tabela com dados-->
+                                	<span id="tabela-bonus">
+	                                    <div class="row">
+	                                        <div class="col-md-6 col-sm-6 col-xs-6">
+	                                            <div class="btn-group">
+	                                                <button id="addNovoBonus" class="btn btn-info">
+	                                                    Novo <i class="fa fa-plus"></i>
+	                                                </button>
+	                                            </div>
+	                                        </div>
+	                                        <div class="col-md-6 col-sm-6 col-xs-6">
+	                                            <div class="btn-group pull-right">
+	                                                <button class="btn deepPink-bgcolor  btn-outline dropdown-toggle" data-toggle="dropdown">Ferramentas
+	                                                    <i class="fa fa-angle-down"></i>
+	                                                </button>
+	                                                <ul class="dropdown-menu pull-right">
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-print"></i> Print </a>
+	                                                    </li>
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
+	                                                    </li>
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-file-excel-o"></i> Export to Excel </a>
+	                                                    </li>
+	                                                </ul>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+
+	                                    <table id="dintable-produto-bonus" class="display table-bordered table-hover" style="width: 100%">
+	                                        <thead>
+	                                            <tr>
+	                                                <th width="90%"> Item </th>
+	                                                <th> Ações </th>
+	                                            </tr>
+	                                        </thead>
+	                                    </table>
+                                		
+                                	</span>
+
+
+                                	<!-- Formulário de Entrada de dados-->
+                                	<span id="form-produto-bonus">
+	                                    <form>
+	                                        <div class="form-group">
+	                                            <label for="descritivo_bonus">Bônus extra</label>
+												<textarea id="descritivo_bonus" name="descritivo_bonus" placeholder="Entre com seus bônus para agregar valor ao produto" class="form-control-textarea" rows="5" ></textarea>
+	                                        </div>
+											
+											<div class="form-group">
+		                                        <button type="button" class="btn btn-primary btn-enviar-produto-detalhe" data-target="inserir-projeto-bonus" id="btn-enviar-bonus">Enviar</button>
+		                                        <button type="button" class="btn btn-default" id="btn-cancel-bonus">Cancelar</button>
+											</div>
+	                                    </form>
+                                	</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+					<!-- ======================== -->
+					<!-- Cardbox de Projeto Bonus  -->
+					<!-- ======================== -->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="card card-box">
+                                <div class="card-head">
+                                    <header>Benefícios e Transformações</header>
+                                     <button id = "panel-beneficios-button" 
+				                           class = "mdl-button mdl-js-button mdl-button--icon pull-right" 
+				                           data-upgraded = ",MaterialButton">
+				                           <i class = "material-icons">more_vert</i>
+				                        </button>
+				                        <ul class = "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+				                           data-mdl-for = "panel-beneficios-button">
+				                           <li class = "mdl-menu__item"><i class="material-icons">assistant_photo</i>Action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">print</i>Another action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">favorite</i>Something else here</li>
+				                        </ul>
+                                </div>
+                                <div class="card-body " id="bar-parent">
+                                	<!-- Tabela com dados-->
+                                	<span id="tabela-beneficios">
+	                                    <div class="row">
+	                                        <div class="col-md-6 col-sm-6 col-xs-6">
+	                                            <div class="btn-group">
+	                                                <button id="addNovoBeneficios" class="btn btn-info">
+	                                                    Novo <i class="fa fa-plus"></i>
+	                                                </button>
+	                                            </div>
+	                                        </div>
+	                                        <div class="col-md-6 col-sm-6 col-xs-6">
+	                                            <div class="btn-group pull-right">
+	                                                <button class="btn deepPink-bgcolor  btn-outline dropdown-toggle" data-toggle="dropdown">Ferramentas
+	                                                    <i class="fa fa-angle-down"></i>
+	                                                </button>
+	                                                <ul class="dropdown-menu pull-right">
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-print"></i> Print </a>
+	                                                    </li>
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
+	                                                    </li>
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-file-excel-o"></i> Export to Excel </a>
+	                                                    </li>
+	                                                </ul>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+
+	                                    <table id="dintable-produto-beneficios" class="display table-bordered table-hover" style="width: 100%">
+	                                        <thead>
+	                                            <tr>
+	                                                <th width="90%"> Item </th>
+	                                                <th> Ações </th>
+	                                            </tr>
+	                                        </thead>
+	                                    </table>
+                                		
+                                	</span>
+
+
+                                	<!-- Formulário de Entrada de dados-->
+                                	<span id="form-produto-beneficios">
+	                                    <form>
+	                                        <div class="form-group">
+	                                            <label for="descritivo_beneficios">Benefícios</label>
+												<textarea id="descritivo_beneficios" name="descritivo_beneficios" placeholder="Entre com os benefícios que podem ser alcançados pelo produto" class="form-control-textarea" rows="5" ></textarea>
+	                                        </div>
+											
+											<div class="form-group">
+		                                        <button type="button" class="btn btn-primary btn-enviar-produto-detalhe" data-target="inserir-projeto-beneficios" id="btn-enviar-beneficios">Enviar</button>
+		                                        <button type="button" class="btn btn-default" id="btn-cancel-beneficios">Cancelar</button>
+											</div>
+	                                    </form>
+                                	</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+					<!-- ============================ -->
+					<!-- Cardbox de Projeto Técnicas  -->
+					<!-- ============================ -->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="card card-box">
+                                <div class="card-head">
+                                    <header>Técnicas Ensinadas</header>
+                                     <button id = "panel-tecnicas-button" 
+				                           class = "mdl-button mdl-js-button mdl-button--icon pull-right" 
+				                           data-upgraded = ",MaterialButton">
+				                           <i class = "material-icons">more_vert</i>
+				                        </button>
+				                        <ul class = "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+				                           data-mdl-for = "panel-tecnicas-button">
+				                           <li class = "mdl-menu__item"><i class="material-icons">assistant_photo</i>Action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">print</i>Another action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">favorite</i>Something else here</li>
+				                        </ul>
+                                </div>
+                                <div class="card-body " id="bar-parent">
+                                	<!-- Tabela com dados-->
+                                	<span id="tabela-tecnicas">
+	                                    <div class="row">
+	                                        <div class="col-md-6 col-sm-6 col-xs-6">
+	                                            <div class="btn-group">
+	                                                <button id="addNovoTecnicas" class="btn btn-info">
+	                                                    Novo <i class="fa fa-plus"></i>
+	                                                </button>
+	                                            </div>
+	                                        </div>
+	                                        <div class="col-md-6 col-sm-6 col-xs-6">
+	                                            <div class="btn-group pull-right">
+	                                                <button class="btn deepPink-bgcolor  btn-outline dropdown-toggle" data-toggle="dropdown">Ferramentas
+	                                                    <i class="fa fa-angle-down"></i>
+	                                                </button>
+	                                                <ul class="dropdown-menu pull-right">
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-print"></i> Print </a>
+	                                                    </li>
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
+	                                                    </li>
+	                                                    <li>
+	                                                        <a href="javascript:;">
+	                                                            <i class="fa fa-file-excel-o"></i> Export to Excel </a>
+	                                                    </li>
+	                                                </ul>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+
+	                                    <table id="dintable-produto-tecnicas" class="display table-bordered table-hover" style="width: 100%">
+	                                        <thead>
+	                                            <tr>
+	                                                <th width="90%"> Item </th>
+	                                                <th> Ações </th>
+	                                            </tr>
+	                                        </thead>
+	                                    </table>
+                                		
+                                	</span>
+
+
+                                	<!-- Formulário de Entrada de dados-->
+                                	<span id="form-produto-tecnicas">
+	                                    <form>
+	                                        <div class="form-group">
+	                                            <label for="descritivo_tecnicas">Técnica</label>
+												<textarea id="descritivo_tecnicas" name="descritivo_tecnicas" placeholder="Entre com as técnicas que serão ensinadas pelo produto" class="form-control-textarea" rows="5" ></textarea>
+	                                        </div>
+											
+											<div class="form-group">
+		                                        <button type="button" class="btn btn-primary btn-enviar-produto-detalhe" data-target="inserir-projeto-tecnicas" id="btn-enviar-tecnicas">Enviar</button>
+		                                        <button type="button" class="btn btn-default" id="btn-cancel-tecnicas">Cancelar</button>
+											</div>
+	                                    </form>
+                                	</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <!-- end page content -->

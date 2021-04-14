@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * 
+ * CartaoService
+ */
+
+// importar dependências
+
+require_once '../interfaces/AppService.php';
+
+interface CartaoService extends AppService{
+    public function pesquisarPorCampanhaUsuarioStatus($idusuario, $idcampanha, $status);
+    public function incrementarContador($id,$qrcodecarimbo);
+
+}
+
+
+?>

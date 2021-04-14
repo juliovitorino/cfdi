@@ -1,0 +1,45 @@
+<?php
+
+// importar dependencias
+require_once '../dto/DTOPadrao.php';
+
+/**
+ * KeywordDTO - Data Transfer Object
+ */
+class KeywordDTO extends DTOPadrao implements JsonSerializable
+{
+	public $id;
+	public $projetoid;
+	public $keyword;
+	public $volumepesquisa;
+	public $valorcpc;
+	public $niveldificuldade;
+	public $numeroResultados;
+	public $tendencia;
+	public $status;
+	public $dataCadastro;
+	public $dataAtualizacao;
+
+    public function jsonSerialize()
+    {
+        return 
+        [
+            'id'   => $this->id,
+			'projetoid' => $this->projetoid,
+			'keyword' => $this->keyword,
+			'volumepesquisa' => $this->volumepesquisa,
+			'valorcpc' => $this->valorcpc,
+			'niveldificuldade' => $this->niveldificuldade,
+			'numeroResultados' => $this->numeroResultados,
+			'tendencia' => $this->tendencia,
+			'status' => $this->status,
+			'dataCadastro' => $this->dataCadastro,
+			'dataAtualizacao' => $this->dataAtualizacao,
+            'msgcode' => $this->msgcode,
+            'msgcodeString' => $this->msgcodeString
+        ];
+    }	
+
+
+}
+?>

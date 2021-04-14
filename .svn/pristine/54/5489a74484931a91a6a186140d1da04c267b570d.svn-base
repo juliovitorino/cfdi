@@ -1,0 +1,218 @@
+<?php
+
+/**
+ * 
+ * SessaoBusinessImpl
+ */
+
+require_once '../interfaces/BusinessObject.php';
+require_once '../daofactory/DAOFactory.php';
+require_once '../usuarios/UsuarioDAO.php';
+require_once '../variavel/ConstantesVariavel.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../dto/DTOPadrao.php';
+
+class SessaoBusinessImpl implements SessaoBusiness
+{
+	
+	function __construct()
+	{
+		# code...
+	}
+
+	public function deletar($daofactory, $dto)	{}
+	public function atualizar($daofactory, $dto) {}
+	public function listarTudo($daofactory)	{}
+	public function listarPagina($daofactory, $pag, $qtde)	{	}
+
+	public function carregarPorToken($daofactory, $token)
+	{
+		$dao = $daofactory->getSessaoDAO($daofactory);
+		return $dao->loadToken($token);
+	}
+
+
+	// Carrega um objeto
+	public function carregarPorID($daofactory, $id)
+	{
+		$dao = $daofactory->getSessaoDAO($daofactory);
+		return $dao->loadPK($id);
+
+	}
+
+	public function carregar($daofactory, $dto)
+	{
+		$dao = $daofactory->getSessaoDAO($daofactory);
+		return $dao->load($dto);
+
+	}
+
+	public function inserir($daofactory, $dto)
+	{
+		$dao = $daofactory->getSessaoDAO($daofactory);
+
+		// prepara uma sessão
+		$sdto = new SessaoDTO();
+		$sdto->usuario = $dto->id;
+		$sdto->tokenid = $this->getToken($dto->email);
+		$dao->insert($sdto);
+		return $sdto;
+	}
+
+	public function validarRegrasAutenticacaoFacebook($daofactory, $idfcbk, $nome, $email)
+	{
+		$sessaodto = "";
+
+		// fluxo e retorno padrao
+		$seguefluxo = true;
+		$retorno = new DTOPadrao();
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+		// Busca DTO do usuario
+		$ubi = new UsuarioBusinessImpl();
+		$usuariodto = $ubi->carregarPorIDFacebook($daofactory, $idfcbk);
+//		var_dump($usuariodto);
+
+		// Usuário não existe e será incluído automaticamente no canivete
+		if(is_null($usuariodto->id)) {
+			$retorno->msgcode = ConstantesMensagem::NOVO_USUARIO_FACEBOOK_AUTENTICADO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			$seguefluxo = false;
+		}
+
+		// Verifica consistência do usuário da base canivete e o usuario enviado pelo facebook
+		if ($seguefluxo) {
+			if($usuariodto->apelido !== $nome){
+				$retorno->msgcode = ConstantesMensagem::USUARIO_FACEBOOK_DIFERENTE_CANIVETE;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+				$seguefluxo = false;
+			}
+		}
+
+		if ($seguefluxo) {
+			if($usuariodto->email !== $email){
+				$retorno->msgcode = ConstantesMensagem::EMAIL_FACEBOOK_DIFERENTE_CANIVETE;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+				$seguefluxo = false;
+			}
+		}
+
+		// ... registra sessao no bd
+		if ($seguefluxo){
+			$sbi = new SessaoBusinessImpl();
+			$sessaodto = $sbi->inserir($daofactory, $usuariodto);
+			$sessaodto->msgcode = $retorno->msgcode;
+			$sessaodto->msgcodeString = $retorno->msgcodeString;
+		} else {
+			$sessaodto = new SessaoDTO();
+			$sessaodto->msgcode = $retorno->msgcode;
+			$sessaodto->msgcodeString = $retorno->msgcodeString;
+		}
+
+//		var_dump($sessaodto);
+		return $sessaodto;
+	}
+
+	public function validarRegrasAutenticacao($daofactory, $usuario, $senha)
+	{
+		$sessaodto = "";
+
+		// fluxo e retorno padrao
+		$seguefluxo = true;
+		$retorno = new DTOPadrao();
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+		// Busca DTO do usuario
+		$ubi = new UsuarioBusinessImpl();
+		$usuariodto = $ubi->carregarUsuarioPorLogin($daofactory, $usuario);
+//		var_dump($usuariodto);
+
+		if(is_null($usuariodto->id)) {
+			$retorno->msgcode = ConstantesMensagem::USUARIO_SENHA_INVALIDO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			$seguefluxo = false;
+		}
+
+		// Verificar senha
+		if ($seguefluxo) {
+			if(!$this->validarSenha($usuariodto, $senha)){
+				$retorno->msgcode = ConstantesMensagem::USUARIO_SENHA_INVALIDO;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+				$seguefluxo = false;
+			}
+		}
+
+		// Usuario ainda em estagio de confirmação do email
+		if ($seguefluxo) {
+			if($usuariodto->status == ConstantesVariavel::STATUS_PENDENTE){
+				$retorno->msgcode = ConstantesMensagem::CONFIRMACAO_EMAIL_NOVA_CONTA_PENDENTE;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+				$seguefluxo = false;
+			}
+		}
+
+		// ... registra sessao no bd
+		if ($seguefluxo){
+			$sbi = new SessaoBusinessImpl();
+			$sessaodto = $sbi->inserir($daofactory, $usuariodto);
+			$sessaodto->msgcode = $retorno->msgcode;
+			$sessaodto->msgcodeString = $retorno->msgcodeString;
+		} else {
+			$sessaodto = new SessaoDTO();
+			$sessaodto->msgcode = $retorno->msgcode;
+			$sessaodto->msgcodeString = $retorno->msgcodeString;
+		}
+
+//		var_dump($sessaodto);
+		return $sessaodto;
+	}
+
+	public function validarSenha($usuario, $senha)
+	{
+		// retorno padrão é negado
+		$retorno = false;
+
+		// Aplica algoritimo sha1
+		$pwdsha1 = sha1($senha);
+
+		if ($pwdsha1 == $usuario->pwd) {
+			$retorno = true;
+		}
+
+		// retorno
+		return $retorno;
+	}
+
+	public function validarToken($daofactory, $token)
+	{
+		$retorno = false;
+
+		$dao = $daofactory->getSessaoDAO($daofactory);
+		$sessaodto = $dao->loadToken($token);
+		if ($token == $sessaodto->tokenid)
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+
+	/**
+	 * getToken() - cria um token sha1 com base em uma string + timestamp
+	 */
+	private function getToken($mix) {
+		// cria um token
+		$dt = new DateTime();
+		$str = $mix.$dt->getTimestamp();
+		return sha1($str);
+	}
+
+
+
+
+}
+
+?>

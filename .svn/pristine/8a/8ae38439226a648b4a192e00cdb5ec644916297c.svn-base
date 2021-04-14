@@ -1,0 +1,18 @@
+<?php 
+
+/**
+* 
+*/
+class ConstantesGatilhosMentaisFactory
+{
+	/* Constantes para uso das factories */
+	const CONCRETE_RECIPROCIDADE = '0';
+	const CONCRETE_AFEICAO = '1';
+	const CONCRETE_AUTORIDADE = '2';
+	const CONCRETE_COMPROMISSO_COERENCIA = '3';
+	const CONCRETE_ESCASSEZ = '4';
+	const CONCRETE_INFLUENCIA_INSTANTANEA = '5';
+	const CONCRETE_PROVA_SOCIAL = '6';
+}
+
+?>

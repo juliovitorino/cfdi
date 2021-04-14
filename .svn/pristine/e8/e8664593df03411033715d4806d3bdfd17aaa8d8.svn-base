@@ -1,0 +1,15 @@
+<?php
+
+require_once '../interfaces/DAO.php';
+
+/**
+ * UsuarioBacklinkDAO - Extensão da interface padrão de DAO
+ */
+interface UsuarioBacklinkDAO extends DAO
+{
+	public function loadMaximoIdPorUsuario($usuarioid);
+	public function listTudoPorUsuarioID($usuarioid);
+	public function updateStatusPorPK($usbaid, $novostatus);
+
+}
+?>

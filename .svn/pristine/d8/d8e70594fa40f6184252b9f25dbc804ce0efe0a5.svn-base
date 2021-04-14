@@ -1,0 +1,14 @@
+<?php  
+
+require_once 'ProjetoSERPDTO.php';
+require_once 'ProjetoSERPServiceImpl.php';
+
+require_once '../util/util.php';
+
+
+$projetoid = 142;
+$ksi = new ProjetoSERPServiceImpl();
+$retorno = $ksi->listarSERPAnalitico($projetoid);
+var_dump($retorno);
+
+?>

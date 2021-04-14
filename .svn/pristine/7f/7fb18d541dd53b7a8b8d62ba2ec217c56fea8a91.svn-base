@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * EsperancaConcrete - Busca os modelos para cada parte do mini site
+ */
+ class EsperancaConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-esperanca';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.EsperancaConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.EsperancaConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-esperanca','23072018164810');
+ 	}
+
+ } 
+
+?>

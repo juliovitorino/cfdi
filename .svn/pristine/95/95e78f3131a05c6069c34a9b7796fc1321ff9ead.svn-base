@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * AutoridadeConcrete - Busca os modelos para cada parte do mini site
+ */
+ class AutoridadeConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-autoridade';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.AutoridadeConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.AutoridadeConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-autoridade','11072018153601');
+ 	}
+
+ } 
+
+?>

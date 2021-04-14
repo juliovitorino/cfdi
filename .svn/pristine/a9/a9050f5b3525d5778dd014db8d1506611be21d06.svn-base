@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * 
+ * CartaoBusiness
+ */
+
+// importar dependências
+require_once '../interfaces/BusinessObject.php';
+
+interface CartaoBusiness extends BusinessObject
+{
+	public function atualizarStatus($daofactory, $id, $status);
+	public function pesquisarPorCampanhaUsuarioStatus($daofactory, $idusuario, $idcampanha, $status);
+	public function incrementarContador($daofactory, $id,$qrcodecarimbo);
+	public function listarCartoesFullInfo($daofactory, $idusuario, $status);
+	public function listarCartoesFullInfoFavoritos($daofactory, $idusuario, $status);
+}
+
+?>

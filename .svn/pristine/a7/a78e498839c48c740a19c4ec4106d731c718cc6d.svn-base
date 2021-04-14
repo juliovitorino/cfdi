@@ -1,0 +1,13 @@
+<?php  
+
+require_once 'campanhaQrCodeServiceImpl.php';
+
+// pegue os códigos dentro do banco de dados para realizar os testes unitários
+$qrc = '5697d1cdf1a69fa3c0287bef399d1cf6eeedf5c6'; // campanha para teste de campanha inexistente
+$idfiel = 1;
+
+$csi = new CampanhaQrCodeServiceImpl();
+$retorno = $csi->validarQRCode($idfiel, $qrc);
+var_dump($retorno);
+
+?>

@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * VariavelCache - Cache Acelerador de Mensagens
+ *
+ * @author Julio Vitorino
+ * @since 09/08/2018
+ */
+
+require_once 'VariavelServiceImpl.php';
+
+class VariavelCache
+{
+	private static $instance;
+
+	public $lstmsg = [];
+
+
+	/**
+	* Construtor privado para o singleton
+	*/
+	public function __construct()
+	{
+		$msi = new VariavelServiceImpl();
+		$lstmsgbd = $msi->listarTodasVariaveis("A");
+		if (sizeof($lstmsgbd) > 0) {
+
+			foreach ($lstmsgbd as $key => $value) {
+				$itemarray = [ $value->variavel => $value->conteudo ];
+				array_push($this->lstmsg, $value->variavel, $value->conteudo);
+			}
+		}
+	}
+
+	/**
+	 * getVariavel() - retorna mensagem baseada em um codigo
+	 * @param string
+	 * @return string
+	 */
+	public function getVariavel($codigovar)
+	{
+		$retorno = "";
+		for ($i=0; $i < sizeof($this->lstmsg) ; $i = $i + 2) { 
+			if($this->lstmsg[$i] == $codigovar)
+			{
+				$retorno = $this->lstmsg[$i+1];
+				break;
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	/**
+	* getInstance() - Instância estática do configurador
+	*/
+    public static function getInstance() {
+        if (!isset(self::$instance)) {
+            self::$instance = new VariavelCache();
+        }
+ 
+        return self::$instance;
+    }
+
+
+
+ 
+
+}
+
+?>

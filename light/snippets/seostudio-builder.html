@@ -1,0 +1,288 @@
+            <!-- start page content -->
+            <div class="page-content-wrapper">
+                <div class="page-content">
+                    <div class="page-bar">
+                        <div class="page-title-breadcrumb">
+                            <div class=" pull-left">
+                                <div class="page-title">Builder</div>
+                            </div>
+                            <ol class="breadcrumb page-breadcrumb pull-right">
+                                <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="index.html">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                                </li>
+                                <li><a class="parent-item" href="">SEO Studio</a>&nbsp;<i class="fa fa-angle-right"></i>
+                                </li>
+                                <li class="active">Builder</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Tabela dos projetos -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card  card-box">
+                                <div class="card-head">
+                                    <header>Seus projetos</header>
+                                    <div class="tools">
+                                        <a class="fa fa-repeat btn-color box-refresh" href="javascript:;"></a>
+                                        <a class="t-collapse btn-color fa fa-chevron-down" href="javascript:;"></a>
+                                        <a class="t-close btn-color fa fa-times" href="javascript:;"></a>
+                                    </div>
+                                </div>
+                                <div class="card-body ">
+                                  <div class="table-wrap">
+                                        <div class="table-responsive">
+                                            <table  style="width: 100%" class="table display table-striped table-bordered table-hover order-column" id="support_table_serp_projetos">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Projeto</th>
+                                                        <th>Palavra Chave</th>
+                                                        <th>Nicho</th>
+                                                        <th>Status</th>
+                                                        <th>Ações</th>
+                                                    </tr>
+                                                </thead>
+                                                <!-- conteudo dinamico -->
+                                            </table>
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- grafico de barras -->
+                        <div class="col-md-6 col-sm-6">
+                            <div class="card card-topline-lightblue">
+                                <div class="card-head">
+                                    <header>TENDÊNCIA MENSAL SERP DO SEU PROJETO</header>
+                                    <div class="tools">
+                                        <a class="fa fa-repeat btn-color box-refresh" href="javascript:;"></a>
+                                        <a class="t-collapse btn-color fa fa-chevron-down" href="javascript:;"></a>
+                                        <a class="t-close btn-color fa fa-times" href="javascript:;"></a>
+                                    </div>
+                                </div>
+                                <div class="card-body " id="chartjs_bar_parent">
+                                    <div id="graph-container" class="row">
+                                        <canvas id="chartjs_bar" ></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <!-- Gráfico da SERP para determinado projeto  -->
+
+                    <!-- SERP Analitica de TODOS seus projetos -->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="card  card-box">
+                                <div class="card-head">
+                                    <header>SERP de Todos seus projetos</header>
+                                    <div class="tools">
+                                        <a class="fa fa-repeat btn-color box-refresh" href="javascript:;"></a>
+                                        <a class="t-collapse btn-color fa fa-chevron-down" href="javascript:;"></a>
+                                        <a class="t-close btn-color fa fa-times" href="javascript:;"></a>
+                                    </div>
+                                </div>
+                                <div class="card-body ">
+                                  <div class="table-wrap">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover order-column" id="table_serp_projetos_analitico">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Google SERP</th>
+                                                        <th>DA</th>
+                                                        <th>PA</th>
+                                                        <th>Rank</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <!-- conteudo dinamico -->
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- SERP Analitica de TODOS seus projetos -->
+
+                    <!-- Busca da palavra chave -->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="card card-box">
+                                <div class="card-head">
+                                    <header>SEO Studio Builder</header>
+                                    <button id = "panel-button7" 
+                                           class = "mdl-button mdl-js-button mdl-button--icon pull-right" 
+                                           data-upgraded = ",MaterialButton">
+                                           <i class = "material-icons">more_vert</i>
+                                        </button>
+                                        <ul class = "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                                           data-mdl-for = "panel-button7">
+                                           <li class = "mdl-menu__item"><i class="material-icons">assistant_photo</i>Action</li>
+                                           <li class = "mdl-menu__item"><i class="material-icons">print</i>Another action</li>
+                                           <li class = "mdl-menu__item"><i class="material-icons">favorite</i>Something else here</li>
+                                        </ul>
+                                </div>
+                                <div class="card-body " id="bar-parent6">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <h4>Qual projeto?</h4>
+                                            <select id="id-lst-projetos" class="form-control input-height" name="projeto" data-target="#secao01">
+                                                <option value="0">Escolha um projeto ...</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-7 col-sm-7">
+                                            <h4>Procurando por mais ideias de palavras-chave?</h4>
+                                            <div class="input-group input-group-md">
+                                                <input id="txt-keyword" type="text" class="form-control" placeholder="Digite uma frase ou sua palavra chave para busca">
+                                                <span class="input-group-btn">
+                                              <button id="btn-enviar-keyword" type="button" class="btn btn-info btn-flat">Enviar</button>
+                                            </span>
+                                            </div>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Busca da palavra chave -->
+
+
+                    <!-- Lista de palavras chaves na fila e processadas -->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="card  card-box">
+                                <div class="card-head">
+                                    <header>Palavras chaves solicitadas</header>
+                                    <div class="tools">
+                                        <a class="fa fa-repeat btn-color box-refresh" href="#" id="btn-refresh"></a>
+                                        <a class="t-collapse btn-color fa fa-chevron-down" href="javascript:;"></a>
+                                        <a class="t-close btn-color fa fa-times" href="javascript:;"></a>
+                                    </div>
+                                </div>
+                                <div class="card-body ">
+                                  <div class="table-wrap">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover order-column" id="support_table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Palavras Chaves</th>
+                                                        <th>Pesquisas</th>
+                                                        <th>CPC ($ BRL)</th>
+                                                        <th>Dificuldade</th>
+                                                        <th>SEO</th>
+                                                        <th>Status</th>
+                                                        <th>Data</th>
+                                                        <th>Ação</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <!-- conteudo dinamico -->
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Lista de palavras chaves na fila e processadas -->
+
+                    <!-- Lista de palavras chaves relacionadas na fila de cima -->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="card  card-box">
+                                <div class="card-head">
+                                    <header>Palavras chaves Relacionadas a lista acima</header>
+                                    <div class="tools">
+                                        <a class="fa fa-repeat btn-color box-refresh" href="#" id="btn-refresh"></a>
+                                        <a class="t-collapse btn-color fa fa-chevron-down" href="javascript:;"></a>
+                                        <a class="t-close btn-color fa fa-times" href="javascript:;"></a>
+                                    </div>
+                                </div>
+                                <div class="card-body ">
+                                  <div class="table-wrap">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover order-column" id="support_table_related">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Palavras Chaves Relacionadas</th>
+                                                        <th>Pesquisas</th>
+                                                        <th>CPC ($ BRL)</th>
+                                                        <th>Dificuldade</th>
+                                                        <th>SEO</th>
+                                                        <th>Status</th>
+                                                        <th>Data</th>
+                                                        <th>Ação</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <!-- conteudo dinamico -->
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Lista de palavras chaves relacionadas na fila de cima -->
+
+                    <!-- SERP dos seus concorrentes -->
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="card  card-box">
+                                <div class="card-head">
+                                    <header>SERP dos seus concorrentes</header>
+                                    <div class="tools">
+                                        <a class="fa fa-repeat btn-color box-refresh" href="javascript:;"></a>
+                                        <a class="t-collapse btn-color fa fa-chevron-down" href="javascript:;"></a>
+                                        <a class="t-close btn-color fa fa-times" href="javascript:;"></a>
+                                    </div>
+                                </div>
+                                <div class="card-body ">
+                                  <div class="table-wrap">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover order-column" id="support_table_serp_concorrentes">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Google SERP</th>
+                                                        <th>DA</th>
+                                                        <th>PA</th>
+                                                        <th>Links</th>
+                                                        <th>Facebook</th>
+                                                        <th>Rank</th>
+                                                        <th>Visitas</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <!-- conteudo dinamico -->
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- SERP dos seus concorrentes -->
+
+
+                </div>
+            </div>
+            <!-- end page content -->

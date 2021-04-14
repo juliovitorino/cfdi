@@ -1,0 +1,122 @@
+<?php
+
+/**
+ * MySqlKinghostKeywordRelatedDAO - Implementação DAO
+ */
+
+require_once 'keywordRelatedDTO.php';
+require_once 'DmlSqlKeywordRelated.php';
+require_once 'keywordRelatedDAO.php';
+
+require_once '../daofactory/DmlSql.php';
+
+class MySqlKinghostKeywordRelatedDAO implements KeywordRelatedDAO
+{
+	private $daofactory;
+	
+	function __construct($daofactory)
+	{
+		$this->daofactory = $daofactory;
+	}
+
+	public function update($dto){ }
+	public function delete($dto) {	}
+	public function load($dto) 	{	}
+	public function listAll() 	{	}
+
+	public function listKeywordRelated($keywordParentId)
+	{
+		$retorno = array();
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlKeywordRelated::SELECT
+					. ' WHERE `' . DmlSqlKeywordRelated::PRKE_ID . '` = ' . $keywordParentId );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+	public function listPagina($pag, $qtde)
+	{
+		$retorno = array();
+
+		$final = $pag * $qtde - $qtde;
+		var_dump('pag = '. $pag);
+		var_dump('qtde = '. $qtde);
+		var_dump('final = '. $final);
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlKeywordRelated::SELECT 
+					. ' LIMIT ' . $final . ',' . $qtde );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+	public function loadPK($id)
+	{	
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlKeywordRelated::SELECT . ' WHERE ' . DmlSqlKeywordRelated::PRKR_ID . '=' . $id );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+
+	}
+
+	public function insert($dto) 
+	{	
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlKeywordRelated::INS);
+		$stmt->bind_param(DmlSql::INTEGER_TYPE
+							. DmlSql::STRING_TYPE
+							. DmlSql::INTEGER_TYPE 
+							. DmlSql::DOUBLE_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							,$dto->keywordParentid
+							,$dto->keyword
+							,$dto->volumepesquisa
+							,$dto->valorcpc
+							,$dto->niveldificuldade );
+
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+	/**
+	* getDTO() - Transforma o resultset em DTO
+	*/
+	public function getDTO($resultset)
+	{
+		//echo var_dump($resultset); // ótimo pra debugar
+		$retorno = new KeywordRelatedDTO();
+		$retorno->id = $resultset[DmlSqlKeywordRelated::PRKR_ID];
+		$retorno->keywordParentid = $resultset[DmlSqlKeywordRelated::PRKE_ID];
+		$retorno->keyword = $resultset[DmlSqlKeywordRelated::PRKR_TX_KEYWORD];
+		$retorno->volumepesquisa = $resultset[DmlSqlKeywordRelated::PRKR_NU_VOLUME];
+		$retorno->valorcpc = $resultset[DmlSqlKeywordRelated::PRKR_VL_CPC];
+		$retorno->niveldificuldade = $resultset[DmlSqlKeywordRelated::PRKR_NU_DIFICULDADE];
+		$retorno->dataCadastro = $resultset[DmlSqlKeywordRelated::PRKR_DT_CADASTRO];
+		$retorno->dataAtualizacao = $resultset[DmlSqlKeywordRelated::PRKR_DT_UPDATE];
+
+		return $retorno;
+	}
+
+}
+?>

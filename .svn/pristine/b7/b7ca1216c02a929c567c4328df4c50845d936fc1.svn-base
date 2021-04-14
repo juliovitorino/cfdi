@@ -1,0 +1,21 @@
+<?php  
+
+require_once 'GatilhosMentaisFactory.php';
+require_once 'ConstantesGatilhosMentaisFactory.php';
+
+echo 'rsclient.php em ação...';
+
+$fcbk = GatilhosMentaisFactory::getInstance(ConstantesGatilhosMentaisFactory::CONCRETE_RECIPROCIDADE, 'emagrecimento');
+//$fcbk = GatilhosMentaisFactory::getInstance(ConstantesGatilhosMentaisFactory::CONCRETE_AFEICAO, 'emagrecimento');
+//$fcbk = GatilhosMentaisFactory::getInstance(ConstantesGatilhosMentaisFactory::CONCRETE_AUTORIDADE, 'emagrecimento');
+//$fcbk = GatilhosMentaisFactory::getInstance(ConstantesGatilhosMentaisFactory::CONCRETE_COMPROMISSO_COERENCIA, 'emagrecimento');
+//$fcbk = GatilhosMentaisFactory::getInstance(ConstantesGatilhosMentaisFactory::CONCRETE_ESCASSEZ, 'emagrecimento');
+//$fcbk = GatilhosMentaisFactory::getInstance(ConstantesGatilhosMentaisFactory::CONCRETE_INFLUENCIA_INSTANTANEA, 'emagrecimento');
+//$fcbk = GatilhosMentaisFactory::getInstance(ConstantesGatilhosMentaisFactory::CONCRETE_PROVA_SOCIAL, 'emagrecimento');
+
+$fcbk->carregarTemplate();
+echo $fcbk->getPost();
+
+
+
+?>

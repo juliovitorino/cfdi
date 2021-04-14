@@ -1,0 +1,22 @@
+{
+	"id":1,
+	"projeto":"desafio40dias",
+	"palavra_chave_exata":"emagrecer sem sofrimento",
+	"headline":"Como emagrecer sem sofrimento e perdendo até 7Kgs em 30 dias",
+	"nicho":"emagrecimento",
+	"plataforma_digital":"HOTMART",
+	"nome_produto":"Desafio 40 Dias",
+	"tipo_produto":"Curso",
+	"preco_produto":197,
+	"hotlink_pagina_venda":"http://go.hotmart.com?id=83658435",
+	"item_pacote_01":"Vídeo aulas com exercícios físicos",
+	"dor_problema_resolve_produto":"falta de alto estima",
+	"beneficio_transformacao_produto":"emagrecer sem sofrimento",
+	"beneficio_secundario_produto":"",
+	"tecnicas_ensinadas_produto":"disciplina, reeducação alimentar",
+	"nome_autoridade":"Nivia Junqueira",
+	"breve_descricao_autoridade":"Personal trainer há 14 anos com formação pela USP",
+	"item_bonus_01":["b1","b2","b3","b4","b5"],
+	"valor_total_bonus":1300,
+	"status":true
+}

@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * CallToActionConcrete - Busca os modelos para cada parte do mini site
+ */
+ class CallToActionConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-calltoaction';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.CallToActionConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.CallToActionConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-calltoaction','11072018154701');
+ 	}
+
+ } 
+
+?>

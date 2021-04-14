@@ -1,0 +1,173 @@
+<?php
+
+/**
+ * MySqlDAOFactory - Fabrica de Objetos DAO para MySql
+ *
+ * @author Julio Vitorino
+ * @since 25/07/2018
+ */
+
+require_once '../usuarios/MySqlKinghostUsuarioDAO.php';
+require_once '../variavel/MySqlKinghostVariavelDAO.php';
+require_once '../mensagem/MySqlKinghostMensagemDAO.php';
+require_once '../estatisticafuncao/MySqlKinghostEstatisticaFuncaoDAO.php';
+require_once '../sessao/MySqlKinghostSessaoDAO.php';
+require_once '../plano/MySqlKinghostPlanoDAO.php';
+require_once '../usuariosplanos/MySqlKinghostPlanoUsuarioDAO.php';
+require_once '../usuariosplanosfatura/MySqlKinghostPlanoUsuarioFaturaDAO.php';
+require_once '../notificacao/MySqlKinghostNotificacaoDAO.php';
+require_once '../usuariostrocasenha/MySqlKinghostUsuarioTrocaSenhaHistoricoDAO.php';
+require_once '../campanha/MySqlKinghostCampanhaDAO.php';
+require_once '../campanhaqrcode/MySqlKinghostCampanhaQrCodeDAO.php';
+require_once '../fiel/MySqlKinghostFielDAO.php';
+require_once '../cfdi/MySqlKinghostCfdiDAO.php';
+
+class MySqlDAOFactory extends DAOFactory
+{
+
+	/* anula construtor */
+	public function __construct()
+	{
+		# code...
+	}
+	
+	/**
+	 * Retorna um sequencia
+	 * @return long
+	 */
+	public function getNextSequence($daofactory, $sequence) 
+	{
+		return 1;
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlUsuarioDAO
+	 */
+	public function getUsuarioDAO($daofactory) 
+	{
+		return new MySqlKinghostUsuarioDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlSessaoDAO
+	 */
+	public function getSessaoDAO($daofactory) 
+	{
+		return new MySqlKinghostSessaoDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlEstatisticaFuncaoDAO
+	 */
+	public function getEstatisticaFuncaoDAO($daofactory) 
+	{
+		return new MySqlKinghostEstatisticaFuncaoDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlMensagemDAO
+	 */
+	public function getMensagemDAO($daofactory)
+	{
+		return new MySqlKinghostMensagemDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlVariavelDAO
+	 */
+	public function getVariavelDAO($daofactory)
+	{
+		return new MySqlKinghostVariavelDAO($daofactory);
+
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostPlanoDAO
+	 */
+	public function getPlanoDAO($daofactory)
+	{
+		return new MySqlKinghostPlanoDAO($daofactory);
+
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostPlanoUsuarioDAO
+	 */
+	public function getPlanoUsuarioDAO($daofactory)
+	{
+		return new MySqlKinghostPlanoUsuarioDAO($daofactory);
+
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostPlanoUsuarioFaturaDAO
+	 */
+	public function getPlanoUsuarioFaturaDAO($daofactory)
+	{
+		return new MySqlKinghostPlanoUsuarioFaturaDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostNotificacaoDAO
+	 */
+	public function getNotificacaoDAO($daofactory)
+	{
+		return new MySqlKinghostNotificacaoDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostUsuarioTrocaSenhaHistoricoDAO
+	 */
+	public function getUsuarioTrocaSenhaHistoricoDAO($daofactory)
+	{
+		return new MySqlKinghostUsuarioTrocaSenhaHistoricoDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostCampanhaDAO
+	 */
+	public function getCampanhaDAO($daofactory)
+	{
+		return new MySqlKinghostCampanhaDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostCampanhaQrCodeDAO
+	 */
+	public function getCampanhaQrCodeDAO($daofactory)
+	{
+		return new MySqlKinghostCampanhaQrCodeDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostFielDAO
+	 */
+	public function getFielDAO($daofactory)
+	{
+		return new MySqlKinghostFielDAO($daofactory);
+	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostCfdiDAO
+	 */
+	public function getCfdiDAO($daofactory)
+	{
+		return new MySqlKinghostCfdiDAO($daofactory);
+	}
+
+}
+?>

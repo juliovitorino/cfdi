@@ -1,0 +1,15 @@
+<?php  
+// URL http://localhost/cfd/php/classes/campanha/clientAtualizarStatus.php
+
+require_once 'campanhaServiceImpl.php';
+
+$id_campanha = 1;
+$status = "A";
+
+$csi = new CampanhaServiceImpl();
+$retorno = $csi->autalizarStatusCampanha($id_campanha, $status);
+var_dump($retorno);
+
+
+
+?>

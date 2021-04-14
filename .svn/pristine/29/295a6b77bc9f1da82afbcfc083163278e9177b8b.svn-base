@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * 
+ * FielBusiness
+ */
+
+// importar dependências
+require_once '../interfaces/BusinessObject.php';
+
+interface FielBusiness extends BusinessObject
+{
+	public function inserirNovaConta($daofactory, $dto);
+	public function inserirNovaContaFacebook($daofactory, $dto);
+	public function habilitarContaPorEmail($daofactory, $token);
+	public function carregarFielPorID($daofactory, $idFiel);
+	public function carregarPorIDFacebook($daofactory, $id);
+	public function carregarFielPorLogin($daofactory, $email);	
+
+}
+
+?>

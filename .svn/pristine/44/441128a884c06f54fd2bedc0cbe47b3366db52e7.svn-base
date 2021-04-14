@@ -1,0 +1,17 @@
+<?php  
+
+require_once 'PlanoUsuarioServiceImpl.php';
+require_once '../variavel/ConstantesVariavel.php';
+
+$usuarioid = 185;
+
+$pusi = new PlanoUsuarioServiceImpl();
+$plus_id_ativo = $pusi->pesquisarPlanoUsuarioPorStatus($usuarioid, ConstantesVariavel::STATUS_ATIVO);
+var_dump($plus_id_ativo);
+
+$plusdto = $pusi->pesquisarPorID($plus_id_ativo);
+var_dump($plusdto);
+
+
+
+?>

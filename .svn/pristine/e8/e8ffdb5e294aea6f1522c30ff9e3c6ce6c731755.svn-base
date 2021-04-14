@@ -1,0 +1,163 @@
+<?php
+
+/**
+ * MySqlKinghostCampanhaDAO - Implementação DAO
+ */
+
+require_once 'CampanhaDTO.php';
+require_once 'CampanhaDAO.php';
+require_once 'DmlSqlCampanha.php';
+
+require_once '../daofactory/DmlSql.php';
+
+class MySqlKinghostCampanhaDAO implements CampanhaDAO
+{
+	private $daofactory;
+
+	function __construct($daofactory)
+	{
+		$this->daofactory = $daofactory;
+	}
+
+	public function update($dto){ }
+	public function delete($dto) {	}
+	public function load($dto) 	{	}
+	public function listAll() 	{	}
+
+	public function listCampanhasUsuario($id_usuario)	
+	{
+		$retorno = array();
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlCampanha::SELECT . 'WHERE ' . ' `' . DmlSqlCampanha::USUA_ID . '` = ' . $id_usuario  );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+
+	public function listPagina($pag, $qtde)
+	{
+		$retorno = array();
+
+		$final = $pag * $qtde - $qtde;
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlCampanha::SELECT 
+					. ' LIMIT ' . $final . ',' . $qtde );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+	public function loadPK($id)
+	{	
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlCampanha::SELECT . ' WHERE ' . DmlSqlCampanha::CAMP_ID . '=' . $id );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+
+	}
+
+	public function loadMaxCampanhaID($id_usuario)
+	{	
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlCampanha::SELECT_ULT_CAMP_ID . ' WHERE ' . DmlSqlCampanha::USUA_ID . '=' . $id_usuario );
+		if ($res){
+			$resultset = $res->fetch_assoc();
+			$retorno = $resultset['MAX_CAMP_ID'];
+		}
+		return $retorno;
+
+	}
+
+	public function updateStatus($id, $status)
+	{	
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlCampanha::UPD_STATUS);
+		$stmt->bind_param(DmlSql::STRING_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							,$status
+							,$id);
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+
+	public function insert($dto) 
+	{	
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlCampanha::INS);
+		$stmt->bind_param(DmlSql::INTEGER_TYPE 
+							. DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							. DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							,$dto->id_usuario
+							,$dto->nome
+							,$dto->textoExplicativo
+							,$dto->dataInicio
+							,$dto->dataTermino
+							,$dto->maximoCartoes
+							,$dto->minimoDelay
+							,$dto->QrCodeAtivo
+							,$dto->status );
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+	/**
+	* getDTO() - Transforma o resultset em DTO
+	*/
+	public function getDTO($resultset)
+	{
+		//echo var_dump($resultset); // ótimo pra debugar
+		$retorno = new CampanhaDTO();
+		$retorno->id = $resultset[DmlSqlCampanha::CAMP_ID];
+		$retorno->id_usuario = $resultset[DmlSqlCampanha::USUA_ID];
+		$retorno->nome = $resultset[DmlSqlCampanha::CAMP_TX_NOME];
+		$retorno->textoExplicativo = $resultset[DmlSqlCampanha::CAMP_TX_EXPLICATIVO];
+		$retorno->dataInicio = $resultset[DmlSqlCampanha::CAMP_DT_INICIO];
+		$retorno->dataTermino = $resultset[DmlSqlCampanha::CAMP_DT_TERMINO];
+		$retorno->maximoCartoes = $resultset[DmlSqlCampanha::CAMP_NU_MAX_CARTAO];
+		$retorno->minimoDelay = $resultset[DmlSqlCampanha::CAMP_NU_MIN_DELAY];
+		$retorno->QrCodeAtivo = $resultset[DmlSqlCampanha::CAMP_TX_QRCODE_ATIVO];
+		$retorno->status = $resultset[DmlSqlCampanha::CAMP_IN_STATUS];
+		$retorno->dataCadastro = $resultset[DmlSqlCampanha::CAMP_DT_CADASTRO];
+		$retorno->dataAtualizacao = $resultset[DmlSqlCampanha::CAMP_DT_UPDATE];
+
+		return $retorno;
+	}
+
+}
+?>

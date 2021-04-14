@@ -1,0 +1,60 @@
+<?php
+
+// importar dependências
+require_once '../daofactory/DmlSql.php';
+
+/**
+ * DmlSqlNotificacao - DML para tabela
+ * @author Julio Vitorino
+ * @copyright Julio Vitorino
+ * @since 24/08/2018
+ */
+class DmlSqlNotificacao extends DmlSql
+{
+
+	// Tabela
+	const TABELA = 'USUARIO_NOTIFICACAO';
+
+	// colunas da tabela
+	const USNO_ID = 'USNO_ID';
+	const USUA_ID = 'USUA_ID';
+	const USNO_TX_NOTIFICACAO = 'USNO_TX_NOTIFICACAO';
+	const USNO_IN_ICON = 'USNO_IN_ICON';
+	const USNO_TX_BGCOLOR = 'USNO_TX_BGCOLOR';
+	const USNO_DT_PREV_APAGAR = 'USNO_DT_PREV_APAGAR';
+	const USNO_IN_STATUS = 'USNO_IN_STATUS';
+	const USNO_DT_CADASTRO = 'USNO_DT_CADASTRO';
+	const USNO_DT_UPDATE = 'USNO_DT_UPDATE';
+ 
+	// Comandos DML
+	const INS = 'INSERT INTO ' . self::TABELA
+					. '( `USUA_ID`, '
+					. ' `USNO_TX_NOTIFICACAO`, '
+					. ' `USNO_IN_STATUS`, '
+					. ' `USNO_IN_ICON` '
+					. ' ) VALUES (?,?,?,?)';
+
+	const DEL_PK = 'DELETE ';
+	const UPD = 'UPDATE  ';
+
+	const UPDATE_NOTIFICACAO_STATUS = 'UPDATE `' . self::TABELA . '` SET '
+					. ' `USNO_IN_STATUS` = ? '
+					. ' WHERE `USNO_ID` = ?';
+
+	const SELECT = 'SELECT `USNO_ID`,'
+					. ' `USUA_ID`, '
+					. ' `USNO_TX_NOTIFICACAO`, '
+					. ' `USNO_IN_ICON`, '
+					. ' `USNO_TX_BGCOLOR`, '
+					. ' `USNO_DT_PREV_APAGAR`, '
+					. ' `USNO_IN_STATUS`, '
+					. ' `USNO_DT_CADASTRO`,'
+					. ' `USNO_DT_UPDATE` '
+					. ' FROM `'.self::TABELA.'` ';
+
+	const WHERE_PK = self::SELECT . ' WHERE `' . self::USNO_ID . '` = ?';
+	const WHERE_STATUS = self::SELECT . ' WHERE `USNO_IN_STATUS` = ?';
+
+
+}
+?>

@@ -1,0 +1,45 @@
+<?php  
+
+// importar dependencias
+require_once 'backlinkBusiness.php';
+
+/**
+ * BacklinkBusinessImpl - Implementação da classe de negocio
+ */
+class BacklinkBusinessImpl implements BacklinkBusiness
+{
+	
+	function __construct()	{	}
+
+	public function carregar($daofactory, $dto)	{	}
+	public function deletar($daofactory, $dto)	{	}
+	public function atualizar($daofactory, $dto)	{	}
+	public function listarTudo($daofactory)	{	}
+
+	public function listarPaginaMaiores($daofactory, $backid, $pag, $qtde)
+	{	
+		$dao = $daofactory->getBacklinkDAO($daofactory);
+		return $dao->listPaginaMaiores($backid, $pag, $qtde);
+	}
+
+	public function listarPagina($daofactory, $pag, $qtde)	
+	{	
+		$dao = $daofactory->getBacklinkDAO($daofactory);
+		return $dao->listPagina($pag, $qtde);
+	}
+
+	public function carregarPorID($daofactory, $id)
+	{ 
+		$dao = $daofactory->getBacklinkDAO($daofactory);
+		return $dao->loadPK($id);
+	}
+
+	public function inserir($daofactory, $dto)
+	{ 
+		$dao = $daofactory->getBacklinkDAO($daofactory);
+		return $dao->insert($dto);
+	}
+
+
+}
+?>

@@ -1,0 +1,84 @@
+			<!-- start page content -->
+            <div class="page-content-wrapper">
+                <div class="page-content">
+                    <div class="page-bar">
+                        <div class="page-title-breadcrumb">
+                            <div class=" pull-left">
+                                <div class="page-title">Headline Builder</div>
+                            </div>
+                            <ol class="breadcrumb page-breadcrumb pull-right">
+                                <li><i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="index.html">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                                </li>
+                                <li><a class="parent-item" href="">Headlines</a>&nbsp;<i class="fa fa-angle-right"></i>
+                                </li>
+                                <li class="active">Headline Builder</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <div class="card card-box">
+                                <div class="card-head">
+                                    <header>Não sabe o que escrever?</header>
+                                     <button id = "panel-button" 
+				                           class = "mdl-button mdl-js-button mdl-button--icon pull-right" 
+				                           data-upgraded = ",MaterialButton">
+				                           <i class = "material-icons">more_vert</i>
+				                        </button>
+				                        <ul class = "mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+				                           data-mdl-for = "panel-button">
+				                           <li class = "mdl-menu__item"><i class="material-icons">assistant_photo</i>Action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">print</i>Another action</li>
+				                           <li class = "mdl-menu__item"><i class="material-icons">favorite</i>Something else here</li>
+				                        </ul>
+                                </div>
+                                <div class="card-body " id="bar-parent">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="paramPalavraChave">Palavra Chave (SEO)</label>
+                                            <input type="text" class="form-control" id="paramPalavraChave" placeholder="Ex: como vender mais / seduzir uma mulher">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="paramObjetivo">Objetivo a conquistar ou Problema a Resolver</label>
+                                            <input type="text" class="form-control" id="paramObjetivo" placeholder="ex: viver tranquilamente / sem ter aborrecimentos">
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="checkbox checkbox-icon-black">
+                                                <input id="gatilhourgencia" type="checkbox" checked="checked">
+                                                <label for="gatilhourgencia">
+                                                    Adiciona um GATILHO DE URGÊNCIA
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <button type="button" id="btn-enviar-headline" class="btn btn-primary">ME DÊ ALGUMAS IDEIAS DE HEADLINE</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+						<!-- Caixa de respostas -->
+                        <div class="col-md-6 col-sm-6">
+                        	<div class="card  card-topline-yellow">
+                                <div class="card-head">
+                                    <header>painel de headlines sugeridas</header>
+                                    <div class="tools">
+                                        <a class="fa fa-repeat btn-color box-refresh" href="javascript:;"></a>
+	                                    <a class="t-collapse btn-color fa fa-chevron-down" href="javascript:;"></a>
+                                    </div>
+                                </div>
+                                <div class="card-body no-padding height-9">
+                                    <div id="lst-headline" class="row">
+
+                                    	<!-- Aqui será inserido o resultset de headlines -->
+
+                                    	<!-- Fim - Aqui será inserido o resultset de headlines -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- end page content -->

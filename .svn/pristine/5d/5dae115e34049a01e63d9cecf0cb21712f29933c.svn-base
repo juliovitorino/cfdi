@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * FacebookConcrete - Busca os posts para rede social do facebook
+ */
+ class PinterestConcrete extends RedesSociaisFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'post-pinterest';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.RedesSociaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.PinterestConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.RedesSociaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.PinterestConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'posttwttr','10072018174500');
+ 	}
+
+ } 
+
+?>

@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * ProdutoBonusConcrete - Busca os modelos para cada parte do mini site
+ */
+ class ProdutoBonusConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-produto-bonus';
+
+ 	public function __construct($nicho)
+ 	{
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ProdutoBonusConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ProdutoBonusConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-bonus','11072018175201');
+ 	}
+
+ } 
+
+?>

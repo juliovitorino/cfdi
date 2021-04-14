@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * Web20ArtigoSimplesConcrete - Busca os modelos para cada parte do artigo
+ */
+ class Web20ArtigoSimplesConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'web20-simples';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.Web20ArtigoSimplesConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.Web20ArtigoSimplesConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'web20-simples','10082018191101');
+ 	}
+
+ } 
+
+?>

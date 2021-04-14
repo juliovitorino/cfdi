@@ -1,0 +1,93 @@
+<?php
+
+//importar dependencias
+require_once 'HeadlineHistoricoBusinessImpl.php';
+require_once 'HeadlineHistoricoService.php';
+
+require_once '../daofactory/DAOFactory.php';
+
+
+/**
+ * HeadlineHistoricoServiceImpl - Implementação dos servicos
+ */
+class HeadlineHistoricoServiceImpl implements HeadlineHistoricoService
+{
+	
+	function __construct() {	}
+
+	public function apagar($dto) {	}
+	public function pesquisar($dto) {	}
+	public function pesquisarPorID($id) {	}
+	public function atualizar($dto) {	}
+	public function listarTudo() {	}
+	public function listarPagina($pag, $qtde)	{	}
+
+
+	public function cadastrar($dto) 
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new HeadlineHistoricoBusinessImpl();
+ 			$retorno = $bo->inserir($daofactory, $dto);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.COMANDO_REALIZADO_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.COMANDO_REALIZADO_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function listarTudoPorSessao($sessaoid) 
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new HeadlineHistoricoBusinessImpl();
+ 			$retorno = $bo->listarTudoPorSessao($daofactory, $sessaoid);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.COMANDO_REALIZADO_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.COMANDO_REALIZADO_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+
+}
+
+?>

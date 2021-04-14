@@ -1,0 +1,14 @@
+<?php  
+
+require_once 'keywordRelatedServiceImpl.php';
+
+require_once '../util/util.php';
+
+$keywordparentid = 111;
+$ksi = new keywordRelatedServiceImpl();
+$lst = $ksi->listarKeywordRelated($keywordparentid);	
+
+var_dump($lst);
+
+
+?>

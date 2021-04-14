@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * ArtigoWeb20Concrete - Busca os modelos de gatilhos
+ */
+ class ArtigoWeb20Concrete extends ArtigosFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'artigo-web20';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.ArtigosFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ArtigoWeb20Concrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.ArtigosFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ArtigoWeb20Concrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'web20','11072018141001');
+ 	}
+
+ } 
+
+?>

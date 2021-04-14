@@ -1,0 +1,21 @@
+<?php
+
+require_once '../interfaces/DAO.php';
+
+/**
+ * 
+ * NotificacaoDAO - Extensão da interface padrão de DAO
+ * @author Julio Vitorino
+ * @copyright Julio Vitroino
+ * @since 24/08/2018
+ */
+
+interface NotificacaoDAO extends DAO
+{
+	public function listNotificacaoPorStatus($status);
+	public function listTodasNotificacoesAtivas($usuarioid, $status);
+	public function updateStatusNotificacao($notificacaoid, $status);
+
+}
+
+?>

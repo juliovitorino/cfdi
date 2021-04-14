@@ -1,0 +1,19 @@
+<?php
+
+require_once '../interfaces/DAO.php';
+
+/**
+ * FielDAO - Extensão da interface padrão de DAO
+ */
+interface FielDAO extends DAO
+{
+	public function loadFielLogin($idFiel);
+	public function loadFielPorCodigoAtivacao($token);
+	public function loadIDFacebook($id);
+	public function updateLiberarContaFiel($token);
+	public function updateNovaSenha($idFiel, $pwd);
+	public function insertFielFacebook($dto);
+
+
+}
+?>

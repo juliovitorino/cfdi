@@ -1,0 +1,163 @@
+<?php
+
+/**
+ * MySqlKinghostUsuarioBacklinkDAO - Implementação DAO
+ */
+
+require_once 'UsuarioBacklinkDTO.php';
+require_once 'UsuarioBacklinkDAO.php';
+require_once 'DmlSqlUsuarioBacklink.php';
+
+require_once '../daofactory/DmlSql.php';
+
+class MySqlKinghostUsuarioBacklinkDAO implements UsuarioBacklinkDAO
+{
+	private $daofactory;
+	
+	function __construct($daofactory)
+	{
+		$this->daofactory = $daofactory;
+	}
+
+	public function update($dto){ }
+	public function delete($dto) {	}
+	public function load($dto) 	{	}
+	public function listAll() 	{	}
+
+	public function updateStatusPorPK($usbaid, $novostatus)
+	{	
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlUsuarioBacklink::UPDATE_STATUS_POR_PK);
+		$stmt->bind_param(DmlSql::STRING_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							,$novostatus
+							,$usbaid);
+
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+	public function listTudoPorUsuarioID($usuarioid)
+	{
+		$retorno = array();
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlUsuarioBacklink::SELECT 
+					. ' WHERE `' . DmlSqlUsuarioBacklink::USUA_ID . '` = ' . $usuarioid );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+
+	public function loadMaximoIdPorUsuario($usuarioid)
+	{
+		$retorno = 0;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query('SELECT MAX(`' . DmlSqlUsuarioBacklink::BACK_ID . '`) FROM `' 
+								. DmlSqlUsuarioBacklink::TABELA . '` '
+								. ' WHERE ' . DmlSqlUsuarioBacklink::USUA_ID . '=' . $usuarioid);
+		if ($res){
+			$row = $res->fetch_assoc();
+			foreach ($row as $key => $value) {
+				if (is_null($value)){
+					$retorno = 0;
+				} else {
+					$retorno = $value;
+				}
+			}			
+		} else {
+			$retorno = -1;
+		}
+		return $retorno;
+	}
+
+
+	public function listPagina($pag, $qtde)
+	{
+		$retorno = array();
+
+		$final = $pag * $qtde - $qtde;
+		var_dump('pag = '. $pag);
+		var_dump('qtde = '. $qtde);
+		var_dump('final = '. $final);
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlUsuarioBacklink::SELECT 
+					. ' LIMIT ' . $final . ',' . $qtde );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+	public function loadPK($id)
+	{	
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlUsuarioBacklink::SELECT . ' WHERE ' . DmlSqlUsuarioBacklink::USBA_ID . '=' . $id );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+
+	}
+
+	public function insert($dto) 
+	{	
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlUsuarioBacklink::INS);
+		$stmt->bind_param(DmlSql::INTEGER_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							. DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							,$dto->usuarioid
+							,$dto->backlinkid
+							,$dto->url
+							,$dto->tipo );
+
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+	/**
+	* getDTO() - Transforma o resultset em DTO
+	*/
+	public function getDTO($resultset)
+	{
+		//echo var_dump($resultset); // ótimo pra debugar
+		$retorno = new UsuarioBacklinkDTO();
+		$retorno->id = $resultset[DmlSqlUsuarioBacklink::USBA_ID];
+		$retorno->usuarioid = $resultset[DmlSqlUsuarioBacklink::USUA_ID];
+		$retorno->url = $resultset[DmlSqlUsuarioBacklink::USBA_TX_URL];
+		$retorno->tipo = $resultset[DmlSqlUsuarioBacklink::USBA_IN_TIPO_BCKLNK];
+		$retorno->status = $resultset[DmlSqlUsuarioBacklink::USBA_IN_STATUS];
+		$retorno->dataCadastro = $resultset[DmlSqlUsuarioBacklink::USBA_DT_CADASTRO];
+		$retorno->dataAtualizacao = $resultset[DmlSqlUsuarioBacklink::USBA_DT_UPDATE];
+
+		return $retorno;
+	}
+
+}
+?>

@@ -1,0 +1,16 @@
+<?php  
+
+// importar dependencias
+require_once 'UsuarioDTO.php';
+require_once 'UsuarioServiceImpl.php';
+require_once '../mensagem/ConstantesMensagem.php';
+
+$token = "oVXhMg91e(XahMuUL682l5k5jdhAPw#](!GEIqHendPNz__h70@H]c#8N3C]!EDh]Q0r5byr@vOG[MRZSvoBMXOuUwC3Cr]X3h(Ar#JV3DG[8O!C6o[6k";
+$usi = new UsuarioServiceImpl();
+$ok = $usi->habilitarContaPorEmail($token);
+
+echo $ok->msgcode . "<br>";
+echo $ok->msgcodeString . "<br>";
+
+
+?>

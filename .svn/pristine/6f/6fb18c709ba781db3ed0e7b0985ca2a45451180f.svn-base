@@ -1,0 +1,60 @@
+<?php
+
+// importar dependências
+require_once '../daofactory/DmlSql.php';
+
+/**
+ * DmlSqlCartao - DML para tabela
+ */
+class DmlSqlCartao extends DmlSql
+{
+
+	// Tabela
+	const TABELA = 'CARTAO';
+
+	// colunas da tabela
+	const COLS = ['CART_ID',
+				'CAMP_ID',
+				'USUA_ID',
+				'CART_NU_CONTADOR',
+				'CART_IN_STATUS',
+				'CART_DT_CADASTRO',
+				'CART_DT_UPDATE',
+				'CART_TX_CFDI_CARIMBOS',
+				'CART_IN_FAVORITO'
+				];
+
+	// Comandos DML
+	const SQL_INS = 'INSERT INTO `' . self::TABELA . '` ('
+		. ' `' . self::COLS[1] . '`, ' 
+		. ' `' . self::COLS[2] . '` ' 
+		. ') VALUES (?,?)';
+
+	const SQL_DEL_PK = 'DELETE * from `' . self::TABELA . '` ' .
+	'WHERE ' . ' `' . self::COLS[0] . '` = ? ' ;
+
+	const SQL_UPD = 'UPDATE `' . self::TABELA . '` set ';
+	const SQL_UPD_STATUS = 'UPDATE `' . self::TABELA . '` set '
+	. ' `' . self::COLS[5] . '` = ? '
+	. 'WHERE ' . ' `' . self::COLS[0] . '` = ? ' ;
+
+	const SQL_UPD_INCREMENTA_CONTADOR = 'UPDATE `' . self::TABELA . '` set '
+	. ' `' . self::COLS[3] . '` = ' . ' `' . self::COLS[3] . '` + 1, '
+	. ' `' . self::COLS[7] . '` = ? '
+	. 'WHERE ' . ' `' . self::COLS[0] . '` = ? ' ;
+
+	const SQL_SELECT = 'SELECT ' 
+		. ' `' . self::COLS[0] . '`, ' 
+		. ' `' . self::COLS[1] . '`, ' 
+		. ' `' . self::COLS[2] . '`, ' 
+		. ' `' . self::COLS[3] . '`, ' 
+		. ' `' . self::COLS[4] . '`, ' 
+		. ' `' . self::COLS[5] . '`, ' 
+		. ' `' . self::COLS[6] . '`, ' 
+		. ' `' . self::COLS[7] . '`, ' 
+		. ' `' . self::COLS[8] . '` ' 
+		. ' FROM `'.self::TABELA.'` ';
+
+
+}
+?>

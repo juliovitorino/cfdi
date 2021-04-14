@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * InfluenciaInstantaneaConcrete - Busca os modelos de gatilhos
+ */
+ class InfluenciaInstantaneaConcrete extends GatilhosMentaisFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'gatilho-influencia';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.GatilhosMentaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.InfluenciaInstantaneaConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.GatilhosMentaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.InfluenciaInstantaneaConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'influencia','11072018115343');
+ 	}
+
+ } 
+
+?>

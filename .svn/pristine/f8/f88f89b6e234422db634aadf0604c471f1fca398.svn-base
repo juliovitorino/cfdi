@@ -1,0 +1,31 @@
+<?php
+
+// importar dependencias
+require_once '../dto/DTOPadrao.php';
+
+/**
+ * GraficoProjetoSERPDTO - Data Transfer Object
+ */
+class GraficoProjetoSERPDTO extends DTOPadrao implements JsonSerializable
+{
+	public $mesano;
+	public $projetoid;
+	public $sumDA;
+	public $sumPA;
+	public $sumranking;
+
+    public function jsonSerialize()
+    {
+        return 
+        [
+            'mesano'   => $this->mesano,
+			'projetoid' => $this->projetoid,
+			'sumDA' => $this->sumDA,
+			'sumPA' => $this->sumPA,
+			'sumranking' => $this->sumranking
+        ];
+    }	
+
+
+}
+?>

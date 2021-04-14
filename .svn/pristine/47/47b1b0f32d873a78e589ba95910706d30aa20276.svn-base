@@ -1,0 +1,29 @@
+<?php
+
+// importar dependências
+require_once '../dto/DTOPadrao.php';
+
+/**
+ * UsuarioNotificacaoDTO - Data Transfer Object
+ */
+
+class UsuarioNotificacaoDTO extends DTOPadrao implements JsonSerializable
+{
+	public $novos;
+	public $lstnotificacao = [];
+
+    public function jsonSerialize()
+    {
+        return 
+        [
+            'novos'   => $this->novos,
+            'lstnotificacao'   => $this->lstnotificacao,
+            'msgcode' => $this->msgcode,
+            'msgcodeString' => $this->msgcodeString
+        ];
+    }	
+
+
+}
+
+?>

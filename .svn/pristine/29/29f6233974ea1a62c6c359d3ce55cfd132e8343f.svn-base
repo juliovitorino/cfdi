@@ -1,0 +1,280 @@
+<?php  
+
+// importar dependencias
+require_once 'campanhaBusiness.php';
+require_once 'carimboDTO.php';
+require_once '../campanhaqrcode/campanhaQrCodeBusinessImpl.php';
+
+require_once '../variavel/ConstantesVariavel.php';
+require_once '../variavel/VariavelCache.php';
+
+/**
+ * CampanhaBusinessImpl - Implementação da classe de negocio
+ */
+class CampanhaBusinessImpl implements CampanhaBusiness
+{
+	
+	function __construct()	{	}
+
+	public function carregar($daofactory, $dto)	{	}
+	public function deletar($daofactory, $dto)	{	}
+	public function atualizar($daofactory, $dto)	{	}
+	public function listarTudo($daofactory)	{	}
+
+	public function listarCampanhasPorStatus($daofactory, $status)
+	{	
+		$dao = $daofactory->getCampanhaDAO($daofactory);
+		return $dao->listCampanhasStatus($status);
+	}
+
+	public function listarCampanhasUsuario($daofactory, $id_usuario)
+	{	
+		$dao = $daofactory->getCampanhaDAO($daofactory);
+		return $dao->listCampanhasUsuario($id_usuario);
+	}
+
+
+	public function listarPagina($daofactory, $pag, $qtde)	
+	{	
+		$dao = $daofactory->getCampanhaDAO($daofactory);
+		return $dao->listPagina($pag, $qtde);
+	}
+
+	public function carregarPorID($daofactory, $id)
+	{ 
+		$dao = $daofactory->getCampanhaDAO($daofactory);
+		return $dao->loadPK($id);
+	}
+
+	private function isTemCarimboLivre($daofactory, $idcampanha)
+	{
+		$dao = $daofactory->getCampanhaDAO($daofactory);
+		$retorno = $dao->loadPK($idcampanha);
+		$ok = false;
+
+		if($retorno->id != null){
+			$ok = ($retorno->totalCarimbos - $retorno->totalCarimbados) > 0;
+		}
+
+		return $ok;
+	}
+
+	private function getCarimboLivreValido($daofactory, $caqrid, $parent=false)
+	{
+		$carimbodto = new CarimboDTO();
+		$retorno = new CampanhaQrCodeDTO();
+		$dao = $daofactory->getCampanhaQrCodeDAO($daofactory);
+		if (!$parent){
+			$retorno = $dao->loadPK($caqrid);
+		} else {
+			$retorno = $dao->loadParent($caqrid);
+		}
+
+		if($retorno != null && $retorno->id != null){
+			if($retorno->status == ConstantesVariavel::STATUS_ATIVO){
+				$carimbodto->id = $retorno->id;
+				$carimbodto->carimbo = $retorno->qrcodecarimbo;
+				$carimbodto->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+				$carimbodto->msgcodeString = MensagemCache::getInstance()->getMensagem($carimbodto->msgcode);
+			} else {
+				return $this->getCarimboLivreValido($daofactory, $retorno->id, true);
+			}
+
+		} else {
+			$carimbodto->msgcode = ConstantesMensagem::ERRO_SEQUENCIAL_DE_CARIMBO_INVALIDO;
+			$carimbodto->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($carimbodto->msgcode, 
+			[
+				ConstantesVariavel::P1 => $caqrid
+			]);
+
+		}
+		return $carimbodto;
+	}
+
+
+	public function getCarimboLivre($daofactory, $idcampanha, $idusuario)
+	{
+
+		$ok = false;
+		$carimbodto = new CarimboDTO();
+		$dao = $daofactory->getCampanhaDAO($daofactory);
+		$retorno = $dao->loadPK($idcampanha);
+		
+		if ($this->isTemCarimboLivre($daofactory, $idcampanha)){
+			
+			if($retorno->id != null){
+				if($retorno->id_usuario != $idusuario){
+					$carimbodto->msgcode = ConstantesMensagem::ERRO_USUARIO_DIFERENTE_PATROCINADOR;
+					$carimbodto->msgcodeString = MensagemCache::getInstance()->getMensagem($carimbodto->msgcode);
+				} else {
+					$caqrid = $retorno->proximoQrCode;
+					$carimbodto = $this->getCarimboLivreValido($daofactory, $caqrid);
+	
+					$daoqr = $daofactory->getCampanhaQrCodeDAO($daofactory);
+					$carimboparent = $daoqr->loadParent($carimbodto->id);
+					$retorno = $dao->updateProximoCarimboLivre($idcampanha, $carimboparent->id);
+				}
+
+			}
+		} else {
+			$carimbodto->msgcode = ConstantesMensagem::ERRO_ACABOU_CARIMBO_CAMPANHA;
+			$carimbodto->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($carimbodto->msgcode, 
+			[
+				ConstantesVariavel::P1 => $retorno->nome
+			]);
+		}
+
+		return $carimbodto;
+	}
+
+
+
+	
+	public function atualizarTotalCarimbados($daofactory, $idcampanha)
+	{
+		$dao = $daofactory->getCampanhaDAO($daofactory);
+		$retorno = $dao->loadPK($idcampanha);
+
+		if($retorno->id != null){
+			if($dao->updateTotalCarimbados($idcampanha)){	
+				$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			} else {
+				$retorno->msgcode = ConstantesMensagem::ERRO_ATUALIZACAO_PROXIMO_QRCODE;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+					ConstantesVariavel::P1, 
+				]);
+			}		
+		} else {
+			$retorno->msgcode = ConstantesMensagem::CODIGO_DE_CAMPANHA_INVALIDO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		return $retorno;
+	}
+
+	public function atualizarTotalCarimbosFabricados($daofactory, $idcampanha, $totalFabricar)
+	{
+		$dao = $daofactory->getCampanhaDAO($daofactory);
+		$retorno = $dao->loadPK($idcampanha);
+
+		if($retorno->id != null){
+			if($dao->updateTotalCarimbosFabricados($idcampanha, $totalFabricar)){	
+				$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			} else {
+				$retorno->msgcode = ConstantesMensagem::ERRO_ATUALIZACAO_PROXIMO_QRCODE;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+					ConstantesVariavel::P1, 
+				]);
+			}		
+		} else {
+			$retorno->msgcode = ConstantesMensagem::CODIGO_DE_CAMPANHA_INVALIDO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		return $retorno;
+	}
+
+
+	public function atualizarProximoQrCode($daofactory, $idcampanha, $caqrid)
+	{
+		$dao = $daofactory->getCampanhaDAO($daofactory);
+		$retorno = $dao->loadPK($idcampanha);
+
+		if($retorno->id != null){
+			if($dao->updateProximoQrCode($idcampanha, $caqrid)){	
+				$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			} else {
+				$retorno->msgcode = ConstantesMensagem::ERRO_ATUALIZACAO_PROXIMO_QRCODE;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+					ConstantesVariavel::P1, 
+				]);
+			}		
+		} else {
+			$retorno->msgcode = ConstantesMensagem::CODIGO_DE_CAMPANHA_INVALIDO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		return $retorno;
+	}
+
+	public function atualizarStatus($daofactory, $idcampanha, $status)
+	{
+		$dao = $daofactory->getCampanhaDAO($daofactory);
+		$updateok = true;
+
+		// resposta padrão
+		$retorno = new DTOPadrao();
+
+		// obtem o status atual da campanha
+		$dto = $this->carregarPorID($daofactory, $idcampanha);
+
+		// Sequencia válido da máquina de estado P -> Q -> W -> A -> I
+		// Verifica a maquina de estado para troca de status
+		if($dto->status == ConstantesVariavel::STATUS_INATIVO){
+			$retorno->msgcode = ConstantesMensagem::TROCA_STATUS_INVALIDO_NEGADA;
+			$updateok = false;
+		} else if($dto->status == ConstantesVariavel::STATUS_PENDENTE && $status != ConstantesVariavel::STATUS_FILA){
+			$retorno->msgcode = ConstantesMensagem::TROCA_STATUS_INVALIDO_PENDENTE;
+			$updateok = false;
+		} else if($dto->status == ConstantesVariavel::STATUS_FILA && $status != ConstantesVariavel::STATUS_TRABALHANDO) {
+			$retorno->msgcode = ConstantesMensagem::TROCA_STATUS_INVALIDO_FILA;
+			$updateok = false;
+		} else if($dto->status == ConstantesVariavel::STATUS_TRABALHANDO && $status != ConstantesVariavel::STATUS_ATIVO){
+			$retorno->msgcode = ConstantesMensagem::TROCA_STATUS_INVALIDO_TRABALHANDO;
+			$updateok = false;
+		} else if($dto->status == ConstantesVariavel::STATUS_ATIVO && $status != ConstantesVariavel::STATUS_INATIVO){
+			$retorno->msgcode = ConstantesMensagem::TROCA_STATUS_INVALIDO_ATIVO;
+			$updateok = false;
+		} 
+
+		if($updateok){
+			if($dao->updateStatus($idcampanha, $status)){	
+				$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			}		
+		}
+		// Obtem o texto da mensagem em razão do código de retorno
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+		return $retorno;
+	}
+
+	public function isCampanhaAtiva($daofactory, $idcampanha){
+		$dao = $daofactory->getCampanhaDAO($daofactory);
+		$dto = $dao->loadPK($idcampanha);
+		return ($dto->status == ConstantesVariavel::STATUS_ATIVO);
+	}
+
+
+	public function inserir($daofactory, $dto)
+	{ 
+		$ok = false;
+
+		// Monta a regra do QRCode da Campanha
+		$dto->QrCodeAtivo = sha1($dto->id_usuario . $dto->dataInicio . $dto->dataTermino . Util::getCodigo(20));
+		$dto->status = ConstantesVariavel::STATUS_PENDENTE;
+		$dao = $daofactory->getCampanhaDAO($daofactory);
+
+		$retorno = new DTOPadrao();
+		if ($dao->insert($dto)) {
+			$ok = true;
+		}
+
+		if ($ok) {
+			$retorno = new DTOPadrao();
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		} else {
+			$retorno = new DTOPadrao();
+			$retorno->msgcode = ConstantesMensagem::ERRO_INESPERADO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		return $retorno;
+	}
+
+
+}
+?>

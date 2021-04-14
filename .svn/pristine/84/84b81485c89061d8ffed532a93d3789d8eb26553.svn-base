@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * DorProblemaConcrete - Busca os modelos para cada parte do mini site
+ */
+ class DorProblemaConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-dor-problema';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.DorProblemaConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.DorProblemaConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-dor-problema','11072018161501');
+ 	}
+
+ } 
+
+?>

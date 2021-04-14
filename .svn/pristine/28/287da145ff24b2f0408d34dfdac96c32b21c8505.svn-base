@@ -1,0 +1,216 @@
+<?php
+
+/**
+ * MySqlKinghostFielDAO - Implementação DAO para usuário
+ */
+
+require_once 'FielDAO.php';
+require_once 'FielDTO.php';
+require_once 'DmlSqlFiel.php';
+
+require_once '../daofactory/DmlSql.php';
+
+class MySqlKinghostFielDAO implements FielDAO
+{
+	private $daofactory;
+	
+	public function update($dto)	{	}
+	public function delete($dto)	{	}
+	public function listAll() 	{	}
+	public function listPagina($pag, $qtde)	{	}
+
+	function __construct($daofactory)
+	{
+		$this->daofactory = $daofactory;
+	}
+
+	public function updateNovaSenha($usuarioid, $pwd)
+	{
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlFiel::UPD_SENHA_POR_PK);
+		$stmt->bind_param(DmlSql::STRING_TYPE
+							. DmlSql::INTEGER_TYPE, 
+							$pwd, 
+							$usuarioid );
+		$retorno = $stmt->execute();
+
+		return $retorno;
+	}
+
+	public function updateLiberarContaFiel($token)
+	{
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$status = "A";
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlFiel::UPD_STATUS_CHAVE_ATIVACAO);
+		$stmt->bind_param(DmlSql::STRING_TYPE
+							. DmlSql::STRING_TYPE, 
+							$status, 
+							$token );
+		$retorno = $stmt->execute();
+
+		return $retorno;
+
+	}
+
+	public function insertFielFacebook($dto) 
+	{
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlFiel::INS_FCBK);
+		$stmt->bind_param( DmlSql::STRING_TYPE
+							. DmlSql::STRING_TYPE
+							. DmlSql::STRING_TYPE
+							. DmlSql::STRING_TYPE
+							. DmlSql::STRING_TYPE
+							. DmlSql::STRING_TYPE
+							. DmlSql::STRING_TYPE
+							. DmlSql::STRING_TYPE, 
+							$dto->iduserfacebook, 
+							$dto->urlfoto,
+							$dto->email, 
+							$dto->apelido, 
+							$dto->pwd, 
+							$dto->status,
+							$dto->tipoConta, 
+							$dto->codigoAtivacao );
+		$retorno = $stmt->execute();
+
+		return $retorno;
+
+	}
+
+
+	public function insert($dto) 
+	{
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlFiel::INS);
+		$stmt->bind_param(DmlSql::STRING_TYPE
+							. DmlSql::STRING_TYPE
+							. DmlSql::STRING_TYPE
+							. DmlSql::STRING_TYPE
+							. DmlSql::STRING_TYPE, 
+							$dto->email, 
+							$dto->apelido, 
+							$dto->pwd, 
+							$dto->tipoConta, 
+							$dto->codigoAtivacao );
+		$retorno = $stmt->execute();
+
+		return $retorno;
+
+	}
+
+	/**
+	* loadIDFacebook() - Leitura da base de usuários por ID do facebook
+	* @param $dto - FielDTO
+	*/
+	public function loadIDFacebook($id)
+	{
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlFiel::SELECT . ' WHERE ' . DmlSqlFiel::FIEL_ID_USERFCBK . '=' . $id );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+
+	}
+
+
+	/**
+	* loadPK() - Leitura da base de usuários por PK
+	* @param $dto - FielDTO
+	*/
+	public function loadPK($id)
+	{
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlFiel::SELECT . ' WHERE ' . DmlSqlFiel::FIEL_ID . '=' . $id );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+
+	}
+
+	/**
+	* loadFielPorCodigoAtivacao() - Leitura da base de usuários pelo token de ativação
+	* @param $token - string
+	*/
+	public function loadFielPorCodigoAtivacao($token)
+	{
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlFiel::SELECT . ' WHERE ' . DmlSqlFiel::FIEL_TX_CODIGO_ATIVACAO . '=' . "'" . $token . "'" );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+	}
+
+
+	/**
+	* loadFielLogin() - Leitura da base de usuários por login do usuário (email)
+	* @param $dto - FielDTO
+	*/
+	public function loadFielLogin($idFiel)
+	{
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlFiel::SELECT . ' WHERE ' . DmlSqlFiel::FIEL_TX_EMAIL . '=' . "'" . $idFiel . "'" );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+
+	}
+
+
+	/**
+	* load() - Leitura da base de usuários
+	* @param $dto - FielDTO
+	*/
+	public function load($dto) 
+	{
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlFiel::SELECT . ' WHERE ' . DmlSqlFiel::FIEL_ID . '=' . $dto->id );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+	}
+
+	/**
+	* getDTO() - Transforma o resultset em DTO
+	*/
+	public function getDTO($resultset)
+	{
+		//echo var_dump($resultset); // ótimo pra debugar
+		$retorno = new FielDTO();
+		$retorno->id = $resultset[DmlSqlFiel::FIEL_ID];
+		$retorno->iduserfacebook = $resultset[DmlSqlFiel::FIEL_ID_USERFCBK];
+		$retorno->urlfoto = $resultset[DmlSqlFiel::FIEL_TX_URLPICFCBK];
+		$retorno->email = $resultset[DmlSqlFiel::FIEL_TX_EMAIL];
+		$retorno->apelido = $resultset[DmlSqlFiel::FIEL_TX_NOME];
+		$retorno->tipoConta = $resultset[DmlSqlFiel::FIEL_IN_TIPO_CONTA];
+		$retorno->codigoAtivacao = $resultset[DmlSqlFiel::FIEL_TX_CODIGO_ATIVACAO];
+		$retorno->dataAtivacao = $resultset[DmlSqlFiel::FIEL_DT_CODIGO_ATIVACAO];
+		$retorno->pwd = $resultset[DmlSqlFiel::FIEL_TX_SENHA];
+		$retorno->status = $resultset[DmlSqlFiel::FIEL_IN_STATUS];
+		$retorno->dataCadastro = $resultset[DmlSqlFiel::FIEL_DT_CADASTRO];
+		$retorno->dataAtualizacao = $resultset[DmlSqlFiel::FIEL_DT_UPDATE];
+
+		return $retorno;
+	}
+
+}
+?>

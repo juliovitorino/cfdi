@@ -1,0 +1,78 @@
+<?php
+
+// importar dependências
+require_once '../daofactory/DmlSql.php';
+
+/**
+ * DmlSqlFiel - DML para tabela
+ */
+class DmlSqlFiel extends DmlSql
+{
+	// Tabela
+	const TABELA = 'FIEL';
+
+	// colunas da tabela
+	const FIEL_ID = 'FIEL_ID';
+	const FIEL_TX_EMAIL = 'FIEL_TX_EMAIL';
+	const FIEL_TX_NOME = 'FIEL_TX_NOME';
+	const FIEL_TX_SENHA = 'FIEL_TX_SENHA';
+	const FIEL_IN_STATUS = 'FIEL_IN_STATUS';
+	const FIEL_DT_CADASTRO = 'FIEL_DT_CADASTRO';
+	const FIEL_DT_UPDATE = 'FIEL_DT_UPDATE';
+	const FIEL_IN_TIPO_CONTA = 'FIEL_IN_TIPO_CONTA';
+	const FIEL_TX_CODIGO_ATIVACAO = 'FIEL_TX_CODIGO_ATIVACAO';
+	const FIEL_DT_CODIGO_ATIVACAO = 'FIEL_DT_CODIGO_ATIVACAO';
+	const FIEL_ID_USERFCBK = 'FIEL_ID_USERFCBK';
+	const FIEL_TX_URLPICFCBK = 'FIEL_TX_URLPICFCBK';
+
+	// Comandos DML
+	const INS = 'INSERT INTO `'.self::TABELA.'` ('
+					. '`FIEL_TX_EMAIL`,'
+ 					. '`FIEL_TX_NOME`,'
+ 					. '`FIEL_TX_SENHA`,'
+ 					. '`FIEL_IN_TIPO_CONTA`,'
+ 					. '`FIEL_TX_CODIGO_ATIVACAO`'
+ 					. ') VALUES (?,?,?,?,?)';
+
+	const INS_FCBK = 'INSERT INTO `'.self::TABELA.'` ('
+					. '`FIEL_ID_USERFCBK`,'
+					. '`FIEL_TX_URLPICFCBK`,'
+					. '`FIEL_TX_EMAIL`,'
+ 					. '`FIEL_TX_NOME`,'
+ 					. '`FIEL_TX_SENHA`,'
+ 					. '`FIEL_IN_STATUS`,'
+ 					. '`FIEL_IN_TIPO_CONTA`,'
+ 					. '`FIEL_TX_CODIGO_ATIVACAO`'
+ 					. ') VALUES (?,?,?,?,?,?,?,?)';
+
+	const DEL_PK = 'DELETE ';
+	const UPD_PK = 'UPDATE ' ;
+	const UPD_STATUS_CHAVE_ATIVACAO = 'UPDATE `'.self::TABELA.'` SET `FIEL_IN_STATUS` = ?,'
+										. ' `FIEL_DT_CODIGO_ATIVACAO` = CURRENT_TIMESTAMP'
+										. ' WHERE `FIEL_TX_CODIGO_ATIVACAO` = ?';
+
+	const UPD_SENHA_POR_PK	 = 'UPDATE `'.self::TABELA.'` SET `FIEL_TX_SENHA` = ? '
+										. ' WHERE `FIEL_ID` = ?';
+
+	const SELECT = 'SELECT `FIEL_ID`,' 
+					. ' `FIEL_ID_USERFCBK`,'
+					. ' `FIEL_TX_EMAIL`,'
+					. ' `FIEL_TX_NOME`,'
+					. ' `FIEL_TX_SENHA`,'
+					. ' `FIEL_IN_TIPO_CONTA`,'
+					. ' `FIEL_TX_URLPICFCBK`,'
+					. ' `FIEL_TX_CODIGO_ATIVACAO`,'
+					. ' `FIEL_DT_CODIGO_ATIVACAO`,'
+					. ' `FIEL_IN_STATUS`,'
+					. ' `FIEL_DT_CADASTRO`,'
+					. ' `FIEL_DT_UPDATE` '
+					. ' FROM `'.self::TABELA.'` ';
+
+	const WHERE_PK = self::SELECT . ' WHERE `FIEL_ID` = ?';
+	const WHERE_EMAIL = self::SELECT . ' WHERE `FIEL_TX_EMAIL` = ?';
+	const WHERE_TOKEN_ATIVACAO = self::SELECT . ' WHERE `FIEL_TX_CODIGO_ATIVACAO` = ?';
+	
+
+
+}
+?>

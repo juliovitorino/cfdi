@@ -1,0 +1,106 @@
+<?php  
+
+// importar dependencias
+require_once 'KeywordBusiness.php';
+
+require_once '../dto/DTOPadrao.php';
+require_once '../usuarios/UsuarioBusinessImpl.php';
+require_once '../estatisticafuncao/EstatisticaFuncaoBusinessImpl.php';
+require_once '../estatisticafuncao/EstatisticaFuncaoHelper.php';
+require_once '../estatisticafuncao/ConstantesEstatisticaFuncao.php';
+require_once '../usuariosplanos/PlanoUsuarioServiceImpl.php';
+require_once '../plano/ConstantesPlano.php';
+
+/**
+ * KeywordBusinessImpl - Implementação da classe de negocio
+ */
+class KeywordBusinessImpl implements KeywordBusiness
+{
+	
+	function __construct()	{	}
+
+	public function carregar($daofactory, $dto)	{	}
+	public function deletar($daofactory, $dto)	{	}
+	public function atualizar($daofactory, $dto)	{	}
+	public function listarTudo($daofactory)	{	}
+
+ 	public function listarKeywordPorUsuario($daofactory, $usuarioid)
+	{	
+		$dao = $daofactory->getKeywordDAO($daofactory);
+		return $dao->listKeywordPorUsuario($usuarioid);
+	}
+
+
+	public function carregarRecenteKeywordPorProjeto($daofactory, $projetoid)
+	{	
+		$dao = $daofactory->getKeywordDAO($daofactory);
+		return $dao->loadRecenteKeywordPorProjeto($projetoid);
+	}
+
+	public function listarPagina($daofactory, $pag, $qtde)	
+	{	
+		$dao = $daofactory->getKeywordDAO($daofactory);
+		return $dao->listPagina($pag, $qtde);
+	}
+
+	public function carregarPorID($daofactory, $id)
+	{ 
+		$dao = $daofactory->getKeywordDAO($daofactory);
+		return $dao->loadPK($id);
+	}
+
+	public function inserir($daofactory, $dto)
+	{ 
+		// retorno padrão
+		$seguefluxo = true;
+		$retorno = new DTOPadrao();
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+		// Obtem usuário e projeto para executar permissionamento
+		$ubi = new UsuarioBusinessImpl();
+		$projetodto = $ubi->carregarUsuarioPeloProjeto($daofactory, $dto->projetoid);
+
+		$funcionalidade = ConstantesPlano::PERM_KEYWORD;
+		$pusi = new PlanoUsuarioServiceImpl();
+		$res = $pusi->verificarPermissaoPlano($projetodto->usuarioid, $funcionalidade);
+
+//var_dump($res->msgcode);
+
+		if(
+			($res->msgcode !== ConstantesMensagem::PERMISSAO_CONCEDIDA_FACTORY) &&
+			($res->msgcode !== ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO)
+		){
+			$seguefluxo = false;
+			$retorno->msgcode = $res->msgcode;
+			$retorno->msgcodeString = $res->msgcodeString;
+		}
+
+//var_dump($seguefluxo);
+		if ($seguefluxo){
+			$dao = $daofactory->getKeywordDAO($daofactory);
+			$ok = $dao->insert($dto);
+
+			// incluir controle estatístico
+			$efdto = EstatisticaFuncaoHelper::getDTO($projetodto->usuarioid
+					, $dto->projetoid
+					, ConstantesEstatisticaFuncao::FUNCAO_KEYWORD);
+
+			$ufbi = new EstatisticaFuncaoBusinessImpl();
+			$ret = $ufbi->inserir($daofactory, $efdto);
+			if(!$ret) {
+				$ufbi->incrementarQtde($daofactory
+					,$efdto->tipo
+					,$efdto->dia
+					,$efdto->mes
+					,$efdto->ano
+					,$projetodto->usuarioid
+					,$dto->projetoid);
+			}			
+		}
+
+		return $retorno;
+	}
+
+}
+?>

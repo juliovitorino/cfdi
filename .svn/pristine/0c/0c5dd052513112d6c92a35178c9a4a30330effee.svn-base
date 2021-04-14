@@ -1,0 +1,110 @@
+<?php 
+
+/**
+* ArtigosFactory - Abstração para criação de classes concretas 
+* para resolver artigos 
+* @author Julio Vitorino
+* @since 11/07/2018
+*/
+
+/* importa dependências */
+require_once 'ConstantesArtigosFactory.php';
+require_once 'ArtigoPBNConcrete.php';
+require_once 'ArtigoWeb20Concrete.php';
+require_once 'ArtigoGoogleLovelyConcrete.php';
+
+require_once '../../spinner.php';
+require_once '../composite/TemplateLoader.php';
+
+abstract class ArtigosFactory
+{
+
+	/* constantes */
+	const PATH_HOME_REPOSITORIO = '../../../repositorio/';
+
+	/* atributos da classe */
+	protected $nicho;
+	protected $post;
+	protected $fullpath;
+	protected $fullhome;
+
+	/**
+	* getInstance() - Retorna uma instância concreta de um objeto específico
+	* de tratamento de redes sociais
+	*/
+	public static function getInstance($tipo, $nicho)
+    {
+    	switch ($tipo) {
+    		case ConstantesArtigosFactory::CONCRETE_PBN:
+    			return new ArtigoPBNConcrete($nicho);
+    		case ConstantesArtigosFactory::CONCRETE_WEB20:
+    			return new ArtigoWeb20Concrete($nicho);
+    		case ConstantesArtigosFactory::CONCRETE_GOOGLE_LOVELY:
+    			return new ArtigoGoogleLovelyConcrete($nicho);
+
+    		default:
+    			break;
+    	}
+        
+    }
+
+ 	public function carregarTemplate() {
+ 		$tl = new TemplateLoader($this->fullpath);
+ 		$spinner = new Spinner($tl->getConteudo());
+ 		$this->post = $spinner->getConteudo();
+ 	}
+
+
+	/**
+	* getPost() - Retorna o texto do post da factory invocada
+	*/
+	public function getPost() 
+	{
+		return $this->post;
+	}
+
+ 	protected function getModelo($nicho, $tipo, $timestamp)
+ 	{
+ 		return 'modelo-'.$this->controlador($nicho, $tipo, $timestamp).'.txt';
+ 	}
+
+	private function controlador($nicho, $tipo, $timestamp)
+	{
+		$tag = $nicho.'-'.$tipo.'-'.$timestamp;
+		$controlador = 0;
+
+		if(file_exists(getcwd().'/controlador/'.$tag)){
+			$myfile = fopen(getcwd().'/controlador/'.$tag, "rw");
+			$controlador = (int) fread($myfile, filesize(getcwd().'/controlador/'.$tag));
+			fclose($myfile);
+
+			//$controlador++;
+
+			$fi = new FilesystemIterator($this->fullhome, FilesystemIterator::SKIP_DOTS);
+			$controlador = rand(1, iterator_count($fi)-1);
+
+			if($controlador > iterator_count($fi)){
+				$controlador = 1;
+			}
+
+			if(file_exists(getcwd().'/controlador/'.$tag)){
+				$myfile = fopen(getcwd().'/controlador/'.$tag, "w");
+				fwrite($myfile, $controlador);
+				fclose($myfile);
+			}
+		} else {
+			$myfile = fopen(getcwd().'/controlador/'.$tag, "w");
+			fwrite($myfile, '1');
+			fclose($myfile);
+			$controlador = 1;
+		}
+
+		return $controlador;
+	}
+
+
+}
+
+
+
+?>

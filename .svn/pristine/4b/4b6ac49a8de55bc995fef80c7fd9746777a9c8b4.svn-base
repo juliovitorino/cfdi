@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * DTOPadrao - Retorno de mensagens padrão ao invocador
+ */
+class DTOPadraoEntidade extends DTOPadrao implements JsonSerializable
+{
+	public $id;
+	public $status;
+	public $dataCadastro;
+	public $dataAtualizacao;
+
+    public function jsonSerialize()
+    {
+        return 
+        [
+            'id'   => $this->id,
+			'status' => $this->status,
+			'dataCadastro' => $this->dataCadastro,
+			'dataAtualizacao' => $this->dataAtualizacao,
+            'msgcode'   => $this->msgcode,
+            'msgcodeString' => $this->msgcodeString
+        ];
+    }	
+}
+
+?>

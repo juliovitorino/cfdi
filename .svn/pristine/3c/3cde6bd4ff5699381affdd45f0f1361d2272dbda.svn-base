@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * ReciprocidadeConcrete - Busca os modelos de gatilhos
+ */
+ class ReciprocidadeConcrete extends GatilhosMentaisFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'gatilho-reciprocidade';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.GatilhosMentaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ReciprocidadeConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.GatilhosMentaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ReciprocidadeConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'reciprocidade','11072018103600');
+ 	}
+
+ } 
+
+?>

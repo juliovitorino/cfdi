@@ -1,0 +1,182 @@
+<?php
+
+/**
+ * MySqlKinghostCampanhaDAO - Implementação DAO
+ */
+
+require_once 'campanhaQrCodeDTO.php';
+require_once 'campanhaQrCodeDAO.php';
+require_once 'DmlSqlCampanhaQrCode.php';
+
+require_once '../daofactory/DmlSql.php';
+
+class MySqlKinghostCampanhaQrCodeDAO implements CampanhaQrCodeDAO
+{
+	private $daofactory;
+
+	function __construct($daofactory)
+	{
+		$this->daofactory = $daofactory;
+	}
+
+	public function update($dto){ }
+	public function delete($dto) {	}
+	public function load($dto) 	{	}
+	public function listAll()
+	{
+		$retorno = array();
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlCampanhaQrCode::SELECT);
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+
+	public function listPagina($pag, $qtde)
+	{
+		$retorno = array();
+
+		$final = $pag * $qtde - $qtde;
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlCampanhaQrCode::SELECT 
+					. ' LIMIT ' . $final . ',' . $qtde );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+	public function loadQRCodePorStatus($qrc, $status)
+	{	
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlCampanhaQrCode::SELECT . ' WHERE ' . DmlSqlCampanhaQrCode::CAQR_TX_QRCODE . "= '" . $qrc
+		. "' AND " . DmlSqlCampanhaQrCode::CAQR_IN_STATUS . "= '" . $status . "'"  );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+
+	}
+
+	public function loadTicketPorStatus($ticket, $status)
+	{	
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlCampanhaQrCode::SELECT . ' WHERE ' . DmlSqlCampanhaQrCode::CAQR_TX_TICKET . "= '" . $ticket
+		. "' AND " . DmlSqlCampanhaQrCode::CAQR_IN_STATUS . "= '" . $status . "'"  );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+
+	}
+
+
+	public function loadPK($id)
+	{	
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlCampanhaQrCode::SELECT . ' WHERE ' . DmlSqlCampanhaQrCode::CAMP_ID . '=' . $id );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+
+	}
+
+    public function updateStatusPorCarimbo($carimboqr, $status)
+	{
+		$retorno = false;
+		
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlCampanhaQrCode::UPD_STATUS_POR_CARIMBOQR);
+		$stmt->bind_param(DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							,$status
+							,$carimboqr);
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+
+	public function updateStatusPorTicket($ticket, $status)
+	{
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlCampanhaQrCode::UPD_STATUS_POR_TICKET);
+		$stmt->bind_param(DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							,$ticket
+							,$status);
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+	public function insert($dto) 
+	{	
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlCampanhaQrCode::INS);
+		$stmt->bind_param(	DmlSql::STRING_TYPE
+							.DmlSql::INTEGER_TYPE 
+							. DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							,$dto->id
+							,$dto->id_campanha
+							,$dto->qrcodecarimbo
+							,$dto->ticket
+							,$dto->status );
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+	/**
+	* getDTO() - Transforma o resultset em DTO
+	*/
+	public function getDTO($resultset)
+	{
+		//echo var_dump($resultset); // ótimo pra debugar
+		$retorno = new CampanhaQrCodeDTO();
+		$retorno->id = $resultset[DmlSqlCampanhaQrCode::CAQR_ID];
+		$retorno->id_campanha = $resultset[DmlSqlCampanhaQrCode::CAMP_ID];
+		$retorno->qrcodecarimbo = $resultset[DmlSqlCampanhaQrCode::CAQR_TX_QRCODE];
+		$retorno->ticket = $resultset[DmlSqlCampanhaQrCode::CAQR_TX_TICKET];
+		$retorno->status = $resultset[DmlSqlCampanhaQrCode::CAQR_IN_STATUS];
+		$retorno->dataCadastro = $resultset[DmlSqlCampanhaQrCode::CAQR_DT_CADASTRO];
+		$retorno->dataAtualizacao = $resultset[DmlSqlCampanhaQrCode::CAQR_DT_UPDATE];
+
+		return $retorno;
+	}
+
+}
+?>

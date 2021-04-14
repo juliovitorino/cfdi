@@ -1,0 +1,21 @@
+<?php
+session_start();
+
+// Importa dependências
+require_once '../sessao/SessaoServiceImpl.php';
+
+// Cria e envia uma sessao de usuário usando um serviço de autenticação
+
+$pwd = "Hello";
+$usuario = "julio.vitorino@gmail.com";
+
+$ss = new SessaoServiceImpl();
+$ok = $ss->autenticarUsuario($usuario, $pwd);
+echo "<br>";
+echo 'tokenid = ' . $ok->tokenid;
+echo "<br>";
+echo $ok->msgcode;
+echo "<br>";
+echo $ok->msgcodeString;
+
+?>

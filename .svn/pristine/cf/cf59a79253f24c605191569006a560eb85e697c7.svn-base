@@ -1,0 +1,56 @@
+<?php
+
+// importar dependências
+require_once '../daofactory/DmlSql.php';
+
+/**
+ * DmlSqlCfdi - DML para tabela
+ */
+class DmlSqlCfdi extends DmlSql
+{
+
+	// Tabela
+	const TABELA = 'CFDI';
+
+	// colunas da tabela
+	const COLS = ['CFDI_ID',
+				'CAMP_ID',
+				'USUA_ID',
+				'CFDI_TX_QRCODE_REGIST',
+				'CFDI_IN_MODO',
+				'CFDI_IN_STATUS',
+				'CFDI_DT_CADASTRO',
+				'CFDI_DT_UPDATE'
+				];
+
+	// Comandos DML
+	const SQL_INS = 'INSERT INTO `' . self::TABELA . '` ('
+		. ' `' . self::COLS[1] . '`, ' 
+		. ' `' . self::COLS[2] . '`, ' 
+		. ' `' . self::COLS[3] . '`, ' 
+		. ' `' . self::COLS[4] . '`, ' 
+		. ' `' . self::COLS[5] . '` ' 
+		. ') VALUES (?,?,?,?,?)';
+
+	const SQL_DEL_PK = 'DELETE * from `' . self::TABELA . '` ' .
+	'WHERE ' . ' `' . self::COLS[0] . '` = ? ' ;
+
+	const SQL_UPD = 'UPDATE `' . self::TABELA . '` set ';
+	const SQL_UPD_STATUS = 'UPDATE `' . self::TABELA . '` set '
+	. ' `' . self::COLS[5] . '` = ? '
+	. 'WHERE ' . ' `' . self::COLS[0] . '` = ? ' ;
+
+	const SQL_SELECT = 'SELECT ' 
+		. ' `' . self::COLS[0] . '`, ' 
+		. ' `' . self::COLS[1] . '`, ' 
+		. ' `' . self::COLS[2] . '`, ' 
+		. ' `' . self::COLS[3] . '`, ' 
+		. ' `' . self::COLS[4] . '`, ' 
+		. ' `' . self::COLS[5] . '`, ' 
+		. ' `' . self::COLS[6] . '`, ' 
+		. ' `' . self::COLS[7] . '` ' 
+		. ' FROM `'.self::TABELA.'` ';
+
+
+}
+?>

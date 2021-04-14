@@ -1,0 +1,47 @@
+<?php  
+ob_start();
+
+// Importar dependências
+require_once '../keyword/keywordDTO.php';
+require_once '../keyword/keywordServiceImpl.php';
+require_once '../util/util.php';
+require_once '../sessao/ConstantesSessao.php';
+require_once '../usuarios/UsuarioServiceImpl.php';
+require_once '../sessao/SessaoServiceImpl.php';
+require_once '../mensagem/ConstantesMensagem.php';
+
+include_once '../../inc/validarToken.php';
+
+// Dados enviados via AJAX
+$keyword = $_POST['keyword'];
+$projetoid = (integer) $_POST['projetoid'];
+
+// TESTE HARDCODE
+//$keyword = 'keyword ' . Util::getCodigo(50);
+//$projetoid = 141;
+// FIM DO HARDCODE
+
+
+//-- Obtem dados da sessão e do usuário
+$ssi = new SessaoServiceImpl();
+$sessaodto = $ssi->obterRegistroDonoTokenSessao($token);
+$usi = new UsuarioServiceImpl();
+$usuariodto = $usi->pesquisarPorID($sessaodto->usuario);
+
+$dto = new KeywordDTO();
+$dto->projetoid = $projetoid;
+$dto->keyword = $keyword;
+$dto->volumepesquisa = 0;
+$dto->valorcpc = 0;
+$dto->niveldificuldade = 0;
+//var_dump($dto);
+
+$ksi = new KeywordServiceImpl();
+$retorno = $ksi->cadastrar($dto);
+
+// devolve resultado ao front-end
+echo json_encode($retorno, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+
+ob_flush();
+
+?>

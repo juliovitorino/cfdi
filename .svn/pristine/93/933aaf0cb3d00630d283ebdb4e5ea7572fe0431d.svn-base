@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * 
+ * BacklinkService
+ */
+
+// importar dependências
+
+require_once '../interfaces/AppService.php';
+
+interface CampanhaService extends AppService{
+
+	public function listarCampanhasUsuario($id_usuario);
+	public function autalizarStatusCampanha($id_campanha, $status);
+	public function listarCampanhasPorStatus($status);
+	public function criarCampanhasEmFila();
+	
+}
+
+
+?>

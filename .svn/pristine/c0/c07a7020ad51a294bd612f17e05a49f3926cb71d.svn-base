@@ -1,0 +1,17 @@
+<?php
+
+require_once '../interfaces/AppService.php';
+
+/**
+ * SessaoService - Interface de serviços
+ */
+interface SessaoService extends AppService{
+
+	public function autenticarUsuario($usuario, $senha);
+	public function autenticarUsuarioFacebook($idfcbk, $nome, $email, $urlfoto);
+	public function autenticarTokenSessao($token);
+	public function obterRegistroDonoTokenSessao($token);
+}
+
+
+?>

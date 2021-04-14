@@ -1,0 +1,171 @@
+<?php
+
+/**
+ * MySqlKinghostNotificacaoDAO - Implementação DAO
+ */
+
+require_once 'NotificacaoDAO.php';
+require_once 'DmlSqlNotificacao.php';
+require_once 'NotificacaoDTO.php';
+require_once 'UsuarioNotificacaoDTO.php';
+
+require_once '../daofactory/DmlSql.php';
+
+class MySqlKinghostNotificacaoDAO implements NotificacaoDAO
+{
+	private $daofactory;
+	
+	function __construct($daofactory)
+	{
+		$this->daofactory = $daofactory;
+	}
+
+	public function delete($dto) {	}
+	public function update($dto) {	}
+	public function listAll() 	{	}
+	public function listPagina($pag, $qtde)	{	}
+
+	public function updateStatusNotificacao($notificacaoid, $status)
+	{	
+		var_dump(DmlSqlNotificacao::UPDATE_NOTIFICACAO_STATUS);
+
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlNotificacao::UPDATE_NOTIFICACAO_STATUS);
+		$stmt->bind_param(DmlSql::STRING_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							, $status
+							, $notificacaoid);
+
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+
+
+	public function listTodasNotificacoesAtivas($usuarioid, $status)
+	{
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+
+		$res = $conexao->query(DmlSqlNotificacao::SELECT 
+					. ' WHERE (' . DmlSqlNotificacao::USUA_ID . '=' . $usuarioid 
+					. ' OR ' . DmlSqlNotificacao::USUA_ID . '= 0 '
+					. ') AND ' . DmlSqlNotificacao::USNO_IN_STATUS . '=' . "'" . $status . "'");
+
+		if ($res){
+			$i = 0;
+			$retorno = new UsuarioNotificacaoDTO();
+			while ($row = $res->fetch_assoc()) {
+				$retorno->lstnotificacao[] = $this->getDTO($row);
+				$i++;
+			}
+			$retorno->novos = $i;
+		}
+
+		return $retorno;
+	}
+
+
+	public function listNotificacaoPorStatus($status)
+	{
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlNotificacao::SELECT . ' WHERE ' 
+								. DmlSqlNotificacao::USNO_IN_STATUS . '=' . "'" . $status . "'");
+		if ($res){
+			$i = 0;
+			$retorno = new UsuarioNotificacaoDTO();
+			while ($row = $res->fetch_assoc()) {
+				$retorno->lstnotificacao[] = $this->getDTO($row);
+				$i++;
+			}
+			$retorno->novos = $i;
+		}
+
+		return $retorno;
+	}
+
+	public function insert($dto)
+	{	
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlNotificacao::INS);
+		$stmt->bind_param(DmlSql::INTEGER_TYPE 
+							. DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							, $dto->usuarioid
+							, $dto->textonotificacao 
+							, $dto->status
+							, $dto->icone);
+
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+	/**
+	* loadPK() - Leitura da base de usuários por PK
+	* @param $dto
+	*/
+	public function loadPK($id)
+	{
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlNotificacao::SELECT . ' WHERE ' . DmlSqlNotificacao::USNO_ID . '=' . $id );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+	}
+
+	/**
+	* load() - Leitura da base
+	* @param $dto
+	*/
+	public function load($dto) 
+	{
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlNotificacao::SELECT . ' WHERE ' . DmlSqlNotificacao::USNO_ID . '=' . $dto->id );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+	}
+
+	/**
+	* getDTO() - Transforma o resultset em DTO
+	*/
+	public function getDTO($resultset)
+	{
+		//echo var_dump($resultset); // ótimo pra debugar
+		$retorno = new NotificacaoDTO();
+		$retorno->id = $resultset[DmlSqlNotificacao::USNO_ID];
+		$retorno->usuarioid = $resultset[DmlSqlNotificacao::USUA_ID];
+		$retorno->textonotificacao = $resultset[DmlSqlNotificacao::USNO_TX_NOTIFICACAO];
+		$retorno->icone = $resultset[DmlSqlNotificacao::USNO_IN_ICON];
+		$retorno->bgcolor = $resultset[DmlSqlNotificacao::USNO_TX_BGCOLOR];
+		$retorno->dataPrevisaoApagar = $resultset[DmlSqlNotificacao::USNO_DT_PREV_APAGAR];
+		$retorno->status = $resultset[DmlSqlNotificacao::USNO_IN_STATUS];
+		$retorno->dataCadastro = $resultset[DmlSqlNotificacao::USNO_DT_CADASTRO];
+		$retorno->dataAtualizacao = $resultset[DmlSqlNotificacao::USNO_DT_UPDATE];
+		return $retorno;
+	}
+
+
+}

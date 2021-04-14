@@ -1,0 +1,64 @@
+<?php
+
+// importar dependências
+require_once '../daofactory/DmlSql.php';
+
+/**
+ * DmlSqlKeywordSERP - DML para tabela
+ */
+class DmlSqlKeywordSERP extends DmlSql
+{
+
+	// Tabela
+	const TABELA = 'PROJETO_KEYWORD_SERP';
+
+	// colunas da tabela
+	const PRKS_ID = 'PRKS_ID';
+	const PRKE_ID = 'PRKE_ID';
+	const PRKR_ID = 'PRKR_ID';
+	const PRKS_TX_LINK = 'PRKS_TX_LINK';
+	const PRKS_QT_LINK = 'PRKS_QT_LINK';
+	const PRKS_NU_DA = 'PRKS_NU_DA';
+	const PRKS_NU_PA = 'PRKS_NU_PA';
+	const PRKS_NU_FBLIKES = 'PRKS_NU_FBLIKES';
+	const PRKS_NU_RANK = 'PRKS_NU_RANK';
+	const PRKS_NU_VISITAS = 'PRKS_NU_VISITAS';
+	const PRKR_NU_DIFICULDADE = 'PRKR_NU_DIFICULDADE';
+	const PRKS_DT_CADASTRO = 'PRKS_DT_CADASTRO';
+	const PRKS_DT_UPDATE = 'PRKS_DT_UPDATE';
+
+	// Comandos DML
+	const INS = 'INSERT INTO `' . self::TABELA . '` ('
+		. ' `PRKE_ID`, ' 
+		. ' `PRKR_ID`, ' 
+		. ' `PRKS_TX_LINK`, ' 
+		. ' `PRKS_QT_LINK`, ' 
+		. ' `PRKS_NU_DA`, ' 
+		. ' `PRKS_NU_PA`, ' 
+		. ' `PRKS_NU_FBLIKES`, ' 
+		. ' `PRKS_NU_RANK`, ' 
+		. ' `PRKR_NU_DIFICULDADE`, ' 
+		. ' `PRKS_NU_VISITAS`'
+		. ') VALUES (?,?,?,?,?,?,?,?,?,?)';
+
+ 	const DEL_PK = 'DELETE ';
+
+	const UPD = 'UPDATE `' . self::TABELA . '` set ';
+
+	const SELECT = 'SELECT `PRKS_ID`,'
+					. ' `PRKE_ID`, '
+					. ' `PRKR_ID`, ' 
+					. ' `PRKS_TX_LINK`, '
+					. ' `PRKS_QT_LINK`, '
+					. ' `PRKS_NU_DA`, '
+					. ' `PRKS_NU_PA`, '
+					. ' `PRKS_NU_FBLIKES`, '
+					. ' `PRKS_NU_RANK`, '
+					. ' `PRKR_NU_DIFICULDADE`, '
+					. ' `PRKS_NU_VISITAS`, '
+					. ' `PRKS_DT_CADASTRO`,'
+					. ' `PRKS_DT_UPDATE` '
+					. ' FROM `'.self::TABELA.'` ';
+}
+
+?>

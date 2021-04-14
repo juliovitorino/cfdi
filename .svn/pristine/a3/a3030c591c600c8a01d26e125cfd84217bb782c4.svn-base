@@ -1,0 +1,52 @@
+<?php
+
+// importar dependências
+require_once '../daofactory/DmlSql.php';
+
+/**
+ * DmlSqlUsuarioBacklink - DML para tabela
+ */
+class DmlSqlUsuarioBacklink extends DmlSql
+{
+
+	// Tabela
+	const TABELA = 'USUARIO_BACKLINK';
+
+	// colunas da tabela
+	const USBA_ID = 'USBA_ID';
+	const BACK_ID = 'BACK_ID';
+	const USUA_ID = 'USUA_ID';
+	const USBA_TX_URL = 'USBA_TX_URL';
+	const USBA_IN_TIPO_BCKLNK = 'USBA_IN_TIPO_BCKLNK';
+	const USBA_IN_STATUS = 'USBA_IN_STATUS';
+	const USBA_DT_CADASTRO = 'USBA_DT_CADASTRO';
+	const USBA_DT_UPDATE = 'USBA_DT_UPDATE';
+
+	// Comandos DML
+	const INS = 'INSERT INTO `' . self::TABELA . '` ('
+		. ' `USUA_ID`, ' 
+		. ' `BACK_ID`, ' 
+		. ' `USBA_TX_URL`, ' 
+		. ' `USBA_IN_TIPO_BCKLNK`'
+		. ') VALUES (?,?,?,?)';
+
+	const DEL_PK = 'DELETE ';
+
+	const UPD = 'UPDATE `' . self::TABELA . '` set ';
+
+	const UPDATE_STATUS_POR_PK  = self::UPD . self::USBA_IN_STATUS . ' = ? '
+					. ' WHERE ' . self::USBA_ID . ' = ?';
+
+	const SELECT = 'SELECT `USBA_ID`,'
+					. ' `USUA_ID`, '
+					. ' `BACK_ID`, '
+					. ' `USBA_TX_URL`, '
+					. ' `USBA_IN_TIPO_BCKLNK`, '
+					. ' `USBA_IN_STATUS`, '
+					. ' `USBA_DT_CADASTRO`,'
+					. ' `USBA_DT_UPDATE` '
+					. ' FROM `'.self::TABELA.'` ';
+
+
+}
+?>

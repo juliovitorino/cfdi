@@ -1,0 +1,15 @@
+<?php  
+
+require_once 'keywordDTO.php';
+require_once 'keywordServiceImpl.php';
+
+require_once '../util/util.php';
+
+$usuarioid = 185;
+$ksi = new KeywordServiceImpl();
+$lst = $ksi->listarKeywordPorUsuario($usuarioid);	
+
+var_dump($lst);
+
+
+?>

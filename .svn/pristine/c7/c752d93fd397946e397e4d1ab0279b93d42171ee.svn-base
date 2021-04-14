@@ -1,0 +1,43 @@
+<?php
+
+// importar dependências
+require_once '../daofactory/DmlSql.php';
+
+/**
+ * DmlSqlBacklink - DML para tabela
+ */
+class DmlSqlBacklink extends DmlSql
+{
+
+	// Tabela
+	const TABELA = 'BACKLINKS';
+
+	// colunas da tabela
+	const BACK_ID = 'BACK_ID';
+	const BACK_TX_URL = 'BACK_TX_URL';
+	const BACK_IN_TIPO_BCKLNK = 'BACK_IN_TIPO_BCKLNK';
+	const BACK_IN_STATUS = 'BACK_IN_STATUS';
+	const BACK_DT_CADASTRO = 'BACK_DT_CADASTRO';
+	const BACK_DT_UPDATE = 'BACK_DT_UPDATE';
+
+	// Comandos DML
+	const INS = 'INSERT INTO `' . self::TABELA . '` ('
+		. ' `BACK_TX_URL`, ' 
+		. ' `BACK_IN_TIPO_BCKLNK`'
+		. ') VALUES (?,?)';
+
+	const DEL_PK = 'DELETE ';
+
+	const UPD = 'UPDATE `' . self::TABELA . '` set ';
+
+	const SELECT = 'SELECT `BACK_ID`,'
+					. ' `BACK_TX_URL`, '
+					. ' `BACK_IN_TIPO_BCKLNK`, '
+					. ' `BACK_IN_STATUS`, '
+					. ' `BACK_DT_CADASTRO`,'
+					. ' `BACK_DT_UPDATE` '
+					. ' FROM `'.self::TABELA.'` ';
+
+
+}
+?>

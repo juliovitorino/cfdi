@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * CompromissoCoerenciaConcrete - Busca os modelos de gatilhos
+ */
+ class CompromissoCoerenciaConcrete extends GatilhosMentaisFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'gatilho-compromisso';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.GatilhosMentaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.CompromissoCoerenciaConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.GatilhosMentaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.CompromissoCoerenciaConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'compromisso-coerencia','11072018110901');
+ 	}
+
+ } 
+
+?>

@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * ProvaSocialConcrete - Busca os modelos de gatilhos
+ */
+ class ProvaSocialConcrete extends GatilhosMentaisFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'gatilho-prova-social';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.GatilhosMentaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ProvaSocialConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.GatilhosMentaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ProvaSocialConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'prova-social','11072018115701');
+ 	}
+
+ } 
+
+?>

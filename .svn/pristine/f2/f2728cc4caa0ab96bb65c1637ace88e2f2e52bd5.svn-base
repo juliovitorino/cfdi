@@ -1,0 +1,586 @@
+/******************************************************************/
+/* DDL para criação das tabelas do Linker                          /
+/*                                                                 /
+/* Autor: Julio Cesar Vitorino                                     /
+/* Data.: 27/07/2018 20:14                                         /
+/* Data.: 27/06/2019 14:03                                         /
+/*                                                                 /
+/******************************************************************/
+/* MySQL 5.7.19                                                    /
+/* ----------------------------------------------------------------/
+/* Database : cfd                                                  /
+/* Acronimo : (C)artão de (F)idelidade (D)igital                   /
+/******************************************************************/
+
+/******************************************************************/
+/* OBJETOS DE BANCO DE DADOS                                       /
+/******************************************************************/
+
+--
+-- TABELAS DE USO COMUM EM QUALQUER SISTEMA
+--
+
+/******************************************************************/
+/* USUARIO                                                        */
+/******************************************************************/
+/* Valores para USUA_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* B = Bloqueado                                                   /
+/* P = Pendente - Email enviado para assinante e aguardando sua    /
+/*                confirmação do link. Registro permanece na base  /
+/*                por 72 horas.                                    /
+/* I = Inativado                                                   /
+/******************************************************************/
+/* Valores para USUA_IN_TIPO_CONTA                                 /
+/* C = Comum                                                       /
+/* A = Administrador                                               /
+/* P = Parceiro (Estabelecimento/Empreendedor/...)                 /
+/* F = Usuario Fiel                                                /
+/******************************************************************/
+CREATE TABLE `USUARIO` (
+ `USUA_ID` int(11) NOT NULL AUTO_INCREMENT,
+ `USUA_TX_EMAIL` varchar(100)  NOT NULL,
+ `USUA_TX_NOME` varchar(100)  NOT NULL,
+ `USUA_TX_SENHA` varchar(100)  NOT NULL,
+ `USUA_ID_USERFCBK` varchar(100),
+ `USUA_TX_URLPICFCBK` varchar(2000) DEFAULT '../img/no-user-image.png',
+ `USUA_IN_TIPO_CONTA` varchar(1) NOT NULL DEFAULT 'P',
+ `USUA_TX_CODIGO_ATIVACAO` varchar(128) NOT NULL,
+ `USUA_DT_CODIGO_ATIVACAO` timestamp,
+ `USUA_IN_STATUS` varchar(1) NOT NULL DEFAULT 'P',
+ `USUA_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `USUA_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ CONSTRAINT PK_USUA_USUA_ID PRIMARY KEY (USUA_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 100;
+
+CREATE  UNIQUE INDEX UN_TX_EMAIL
+        ON USUARIO(USUA_TX_EMAIL);
+
+CREATE  UNIQUE INDEX UN_TX_CODIGO_ATIVACAO
+        ON USUARIO(USUA_TX_CODIGO_ATIVACAO);
+
+CREATE INDEX IX_USUA_ID_USERFCBK
+        ON USUARIO(USUA_ID_USERFCBK);
+
+/******************************************************************/
+/* USUARIO COMPLEMENTO                                            */
+/******************************************************************/
+/* Valores para USUA_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* I = Inativado                                                   /
+/******************************************************************/
+CREATE TABLE `USUARIO_COMPLEMENTO` (
+ `USCO_ID` int(11) NOT NULL AUTO_INCREMENT,
+ `USUA_ID` int(11) NOT NULL,
+ `USCO_TX_URL_WEBSITE` varchar(1000),
+ `USCO_TX_URL_FACEBOOK` varchar(1000),
+ `USCO_TX_URL_INSTAGRAM` varchar(1000),
+ `USCO_TX_URL_PINTEREST` varchar(1000),
+ `USCO_TX_URL_SKYPE` varchar(1000),
+ `USCO_TX_URL_FACETIME` varchar(1000),
+ `USCO_TX_URL_IMG1` varchar(1000),
+ `USCO_TX_URL_IMG2` varchar(1000),
+ `USCO_TX_URL_IMG3` varchar(1000),
+ `USCO_TX_DESC_LIVRE` varchar(2000),
+ `USCO_TX_GEO` varchar(200),
+ `USCO_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A',
+ `USCO_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `USCO_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ CONSTRAINT PK_USCO_ID PRIMARY KEY (USCO_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 100;
+
+/******************************************************************/
+/* PLANOS                                                          /
+/******************************************************************/
+/* Valores para PLAN_TX_PERMISSAO                                  /
+/*                                                                 /
+/* FORMATO: X XX 999 TAMANHO (6) POR PERMISSAO                     /
+/*          | |  ---                                               /
+/*          | |   |                                                /
+/*          | |   |                                                /
+/*          | |   +---> > 0 ... 999 = QUANTIDADE LIMITADA          /
+/*          | |                                                    /
+/*          | +-------> PERIODICIDADE                              /
+/*          |           LI = LIVRE                                 /
+/*          |           MX = MAXIMO                                /
+/*          |           DD = DIARIA                                /
+/*          |           SM = SEMANAL                               /
+/*          |           QZ = QUINZENAL                             /
+/*          |           MM = MENSAL                                /
+/*          |           AA = ANUAL                                 /
+/*          |                                                      /
+/*          +-+---> (S) = SIM/PERMITIDO                            /
+/*            +---> (N) = NÃO PERMITIVO                            /
+/*            +---> (I) = INATIVO / SEM USO                        /
+/*                                                                 /
+/* ORDEM DE ARMAZENAMENTO DAS PERMISSÕES                           /
+/* ----------------------                                          /
+/* 0 - CAMPANHA                                                    /
+/* 1 - HEADLINES                                                   /
+/* 2 - MINISITES                                                   /
+/* 3 - PERM_WEB20_PALAVRA_CHAVE_EXATA                              /
+/* 4 - PERM_WEB20_IMAGEM_MAIS_LINK                                 /
+/* 5 - PERM_WEB20_ARTIGO_SIMPLES                                   /
+/* 6 - PERM_PBN_PALAVRA_CHAVE_EXATA                                /
+/* 7 - PERM_PBN_IMAGEM_MAIS_LINK                                   /
+/* 8 - PERM_PBN_ARTIGO_SIMPLES                                     /
+/*                                                                 /
+/******************************************************************/
+/* Valores para PLAN_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* P = Pendente - Email enviado para assinante e aguardando sua    /
+/*                confirmação do link. Registro permanece na base  /
+/*                por 72 horas.                                    /
+/* I = Inativado                                                   /
+/******************************************************************/
+CREATE TABLE `PLANOS` (
+    `PLAN_ID` int(11) NOT NULL AUTO_INCREMENT,
+    `PLAN_NM_PLANO`  VARCHAR(100)  NOT NULL ,
+    `PLAN_TX_PERMISSAO`  VARCHAR(1200)  NOT NULL DEFAULT 'ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000ILI000' ,
+    `PLAN_VL_PLANO` decimal(9,2)  NOT NULL,
+    `PLAN_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'P',
+    `PLAN_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `PLAN_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT PK_PLAN_PLAN_ID PRIMARY KEY (PLAN_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 100;
+
+/******************************************************************/
+/* PLANO X USUARIO                                                 /
+/******************************************************************/
+CREATE TABLE `PLANO_USUARIO` (
+    `PLUS_ID` int(11) NOT NULL AUTO_INCREMENT,
+    `PLUS_ID_PARENT` int(11) NOT NULL DEFAULT 0,
+    `USUA_ID` int(11) NOT NULL,
+    `PLAN_ID` int(11) NOT NULL,
+    `PLUS_NM_PLANO`  VARCHAR(100)  NOT NULL ,
+    `PLUS_TX_PERMISSAO`  VARCHAR(1200)  NOT NULL ,
+    `PLUS_VL_PLANO`  DECIMAL(10,2) NOT NULL DEFAULT 0,
+    `PLUS_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'P',
+    `PLUS_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `PLUS_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT PK_PLUS_PLUS_ID PRIMARY KEY (PLUS_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+CREATE INDEX IX_PLUS_USUA_ID
+       ON PLANO_USUARIO(USUA_ID);
+
+
+/******************************************************************/
+/* PLANO USUARIO FATURA                                           */
+/*                                                                */
+/* PLUF_IN_STATUS                                                 */
+/* P = Aguardando liberacao pelo sistema de pagamento pagseguro   */
+/* L = Pagamento efetuado e liberado pelo pagseguro               */
+/* R = Pagamento reprovador pelo pagseguro                        */
+/* C = fatura cancelada                                           */
+/* V = fatura vencida                                             */
+/*                                                                */
+/******************************************************************/
+CREATE TABLE PLANO_USUARIO_FATURA
+(
+    `PLUF_ID`  int(11)  NOT NULL AUTO_INCREMENT,
+    `PLUF_ID_PARENT` int(11) NOT NULL DEFAULT 0,
+    `PLUS_ID` int(11) NOT NULL,
+    `PLUF_VL_FATURA`  DECIMAL(10,2) NOT NULL,
+    `PLUF_VL_DESCONTO`  DECIMAL(10,2) DEFAULT 0 NOT NULL,
+    `PLUF_DT_VENCIMENTO` DATE NOT NULL,
+    `PLUF_DT_PGTO` timestamp,
+    `PLUF_IN_STATUS` VARCHAR(1) DEFAULT 'P' NOT NULL,
+    `PLUF_DT_CADASTRO` timestamp DEFAULT CURRENT_TIMESTAMP  NOT NULL,
+    `PLUF_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT PK_PLUF_PLUF_ID PRIMARY KEY (PLUF_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+/******************************************************************/
+/* SESSAO                                                          /
+/******************************************************************/
+CREATE TABLE `SESSAO` (
+    `SESS_ID` int(11) NOT NULL AUTO_INCREMENT,
+    `SESS_TX_HASH`  VARCHAR(100)  NOT NULL ,
+    `USUA_ID` int(11) NOT NULL,
+    `SESS_IN_MANTER_CONECTADO` varchar(1)  NOT NULL DEFAULT 'N',
+    `SESS_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'A',
+    `SESS_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `SESS_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT PK_SESS_SESS_ID PRIMARY KEY (SESS_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1;
+
+CREATE UNIQUE INDEX UN_SESS_TX_HASH
+       ON SESSAO(SESS_TX_HASH);
+
+/******************************************************************/
+/* TRACE                                                           /
+/******************************************************************/
+CREATE TABLE `TRACE` (
+    `TRAC_ID` int(11) NOT NULL AUTO_INCREMENT,
+    `TRAC_IN_TIPO`  VARCHAR(100)  NOT NULL ,
+    `TRAC_TX_DESC` varchar(1000) NOT NULL,
+    `TRAC_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'A',
+    `TRAC_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `TRAC_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT PK_TRAC_ID PRIMARY KEY (TRAC_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1;
+
+CREATE INDEX IX_TRAC_IN_TIPO
+       ON TRACE(TRAC_IN_TIPO);
+
+
+/******************************************************************/
+/* ESTATISTICA_FUNCAO                                              /
+/******************************************************************/
+CREATE TABLE `ESTATISTICA_FUNCAO` (
+    `ESFU_ID` int(11) NOT NULL AUTO_INCREMENT,
+    `ESFU_NU_ANO`  int(4)  NOT NULL ,
+    `ESFU_NU_MES`  int(2)  NOT NULL ,
+    `ESFU_NU_DIA`  int(2)  NOT NULL ,
+    `ESFU_IN_TIPO`  VARCHAR(100)  NOT NULL ,
+    `USUA_ID` int(11) NOT NULL,
+    `PROJ_ID` int(11),
+    `ESFU_QT_FUNCAO` int(11) NOT NULL DEFAULT 1,
+    `ESFU_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `ESFU_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT PK_ESFU_ESFU_ID PRIMARY KEY (ESFU_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1;
+
+CREATE UNIQUE INDEX UN_ESFU_ANO_MES_PROJ_USUA
+       ON ESTATISTICA_FUNCAO(ESFU_NU_ANO, ESFU_NU_MES, ESFU_NU_DIA, ESFU_IN_TIPO, USUA_ID, PROJ_ID);
+
+
+/******************************************************************/
+/* USUARIO_NOTIFICACAO                                             /
+/******************************************************************/
+/* Valores para PLAN_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* I = Inativado                                                   /
+/******************************************************************/
+CREATE TABLE USUARIO_NOTIFICACAO
+(
+    `USNO_ID` int(11) NOT NULL AUTO_INCREMENT,
+    `USUA_ID` int(11),
+    `USNO_TX_NOTIFICACAO`  VARCHAR(500)  NOT NULL ,
+    `USNO_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'A',
+    `USNO_IN_ICON` varchar(20)  NOT NULL DEFAULT 'fa fa-user o',
+    `USNO_TX_BGCOLOR` varchar(50)  NOT NULL DEFAULT 'blue-bgcolor',
+    `USNO_DT_PREV_APAGAR` date,
+    `USNO_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `USNO_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT PK_USNO_USNO_ID PRIMARY KEY(USNO_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE INDEX IX_USNO_USUA_ID
+       ON USUARIO_NOTIFICACAO(USUA_ID);
+
+/******************************************************************/
+/* USUARIO_TROCA_SENHA_HISTORICO                                   /
+/******************************************************************/
+/* Valores para UTSH_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* I = Inativado                                                   /
+/******************************************************************/
+CREATE TABLE USUARIO_TROCA_SENHA_HISTORICO
+(
+    `UTSH_ID` int(11) NOT NULL AUTO_INCREMENT,
+    `USUA_ID` int(11) NOT NULL,
+    `UTSH_TX_TOKEN`  VARCHAR(256)  NOT NULL ,
+    `UTSH_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'A',
+    `UTSH_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `UTSH_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT PK_UTSH_UTSH_ID PRIMARY KEY(UTSH_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE INDEX IX_UTSH_TX_TOKEN
+       ON USUARIO_TROCA_SENHA_HISTORICO(UTSH_TX_TOKEN);
+
+CREATE INDEX IX_USUA_ID
+       ON USUARIO_TROCA_SENHA_HISTORICO(USUA_ID);
+
+/******************************************************************/
+/* VARIAVEL                                                        /
+/******************************************************************/
+CREATE TABLE VARIAVEL
+(
+    `VARI_ID` int(11) NOT NULL AUTO_INCREMENT,
+	`VARI_NM_VARIAVEL`  VARCHAR(100)  NOT NULL ,
+	`VARI_TX_DESCRICAO`  VARCHAR(500)  NOT NULL ,
+	`VARI_TX_VALOR_CONTEUDO`  VARCHAR(500)  NOT NULL ,
+    `VARI_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'A',
+    `VARI_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `VARI_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT PK_VARI_VARI_ID PRIMARY KEY(VARI_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE UNIQUE INDEX UN_VARI_NM_VARIAVEL
+       ON VARIAVEL(VARI_NM_VARIAVEL);
+
+
+/******************************************************************/
+/* MENSAGEM                                                      /
+/******************************************************************/
+
+CREATE TABLE MENSAGEM
+(
+    `MENS_ID` int(11) NOT NULL AUTO_INCREMENT,
+    `MENS_TX_MSGCODE`  VARCHAR(8)  NOT NULL ,
+	`MENS_TX_MENSAGEM`  VARCHAR(1000)  NOT NULL  ,
+    `MENS_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'A',
+    `MENS_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `MENS_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT PK_MENS_MENS_ID PRIMARY KEY(MENS_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE UNIQUE INDEX UN_MENS_TX_MSGCODE
+       ON MENSAGEM(MENS_TX_MSGCODE);
+
+/******************************************************************/
+/* TABELAS DO CARTAO FIDELIDADE DIGITAL                            /
+/******************************************************************/
+/******************************************************************/
+/* CAMPANHA                                                        /
+/******************************************************************/
+
+CREATE TABLE CAMPANHA
+(
+    `CAMP_ID` int(11) NOT NULL AUTO_INCREMENT,
+    `USUA_ID` int(11) NOT NULL,
+    `CAMP_TX_NOME`  VARCHAR(100)  NOT NULL ,
+    `CAMP_TX_EXPLICATIVO`  VARCHAR(2000)  NOT NULL  ,
+    `CAMP_DT_INICIO`  timestamp NOT NULL  ,
+    `CAMP_DT_TERMINO`  timestamp NOT NULL  ,
+    `CAMP_NU_MAX_CARTAO` int(11) NOT NULL DEFAULT 100,
+    `CAMP_NU_MIN_DELAY` varchar(5) NOT NULL DEFAULT '00:15',
+    `CAMP_TX_QRCODE_ATIVO`  VARCHAR(100)  NOT NULL  ,
+    `CAMP_ID_PROXIMO_CAQR_ID` VARCHAR(100),
+    `CAMP_TX_FRASE_EFEITO`  VARCHAR(100),
+    `CAMP_TX_RECOMPENSA`  VARCHAR(100)  NOT NULL,
+    `CAMP_TT_CARIMBOS` int(11) NOT NULL DEFAULT 0,
+    `CAMP_TT_CARIMBADOS` int(11) NOT NULL DEFAULT 0,
+    `CAMP_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'P',
+    `CAMP_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `CAMP_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT PK_CAMP_ID PRIMARY KEY(CAMP_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/******************************************************************/
+/* CAMPANHA HISTORICO => ainda para montar                         /
+/******************************************************************/
+CREATE TABLE CAMPANHA_HISTORICO
+(
+    `CAHI_ID` int(11) NOT NULL AUTO_INCREMENT,
+    `CAMP_ID` int(11) NOT NULL,
+    `CAMP_TX_QRCODE`  VARCHAR(100)  NOT NULL  ,
+    `CAMP_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'A',
+    `CAMP_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `CAMP_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT PK_CAHI_ID PRIMARY KEY(CAHI_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+/******************************************************************/
+/* QRCODES DA CAMPANHA (CARIMBOS VALIDOS)                          /
+/******************************************************************/
+/* Valores para USUA_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* U = Utilizado                                                   /
+/* I = Inativado                                                   /
+/******************************************************************/
+
+CREATE TABLE CAMPANHA_QRCODES
+(
+    `CAQR_ID` VARCHAR(100) NOT NULL,
+    `CAQR_ID_PARENT` VARCHAR(100),
+    `CAMP_ID` int(11) NOT NULL,
+    `CAQR_TX_QRCODE`  VARCHAR(100)  NOT NULL  ,
+    `CAQR_TX_TICKET`  VARCHAR(8)  NOT NULL  ,
+    `CAQR_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'A',
+    `CAQR_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `CAQR_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT PK_CAQR_ID PRIMARY KEY(CAQR_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE UNIQUE INDEX UN_CAMP_ID_CAQR_TX_QRCODE
+       ON CAMPANHA_QRCODES(CAMP_ID, CAQR_TX_QRCODE);
+
+CREATE UNIQUE INDEX UN_CAQR_ID_PARENT
+        ON CAMPANHA_QRCODES(CAQR_ID_PARENT);
+
+/******************************************************************/
+/* USUARIO FIEL                                                   */
+/******************************************************************/
+/* Valores para FIEL_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* B = Bloqueado                                                   /
+/* P = Pendente - Email enviado para assinante e aguardando sua    /
+/*                confirmação do link. Registro permanece na base  /
+/*                por 72 horas.                                    /
+/* I = Inativado                                                   /
+/******************************************************************/
+CREATE TABLE `FIEL` (
+ `FIEL_ID` int(11) NOT NULL AUTO_INCREMENT,
+ `FIEL_TX_EMAIL` varchar(100)  NOT NULL,
+ `FIEL_TX_NOME` varchar(100)  NOT NULL,
+ `FIEL_TX_SENHA` varchar(100)  NOT NULL,
+ `FIEL_ID_USERFCBK` varchar(100),
+ `FIEL_TX_URLPICFCBK` varchar(2000) DEFAULT '../img/no-user-image.png',
+ `FIEL_IN_TIPO_CONTA` varchar(1) NOT NULL DEFAULT 'C',
+ `FIEL_TX_CODIGO_ATIVACAO` varchar(128) NOT NULL,
+ `FIEL_DT_CODIGO_ATIVACAO` timestamp,
+ `FIEL_IN_STATUS` varchar(1) NOT NULL DEFAULT 'P',
+ `FIEL_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `FIEL_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ CONSTRAINT PK_FIEL_ID PRIMARY KEY (FIEL_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 100;
+
+CREATE  UNIQUE INDEX UN_FIEL_TX_CODIGO_ATIVACAO
+        ON FIEL(FIEL_TX_CODIGO_ATIVACAO);
+
+CREATE INDEX IX_FIEL_ID_USERFCBK
+        ON FIEL(FIEL_ID_USERFCBK);
+
+/******************************************************************/
+/* CFDI - CARTÃO FIDELIDADE DIGITAL - controle dos carimbos       */
+/******************************************************************/
+/* Valores para CFDI_IN_MODO                                       /
+/* APLICATIVO = Registro do carimbo foi feito pelo App por QRCode  /
+/* TICKET = Registro do carimbo feito pelo App via Código (Ticket) /
+/******************************************************************/
+CREATE TABLE `CFDI` (
+ `CFDI_ID` int(11) NOT NULL AUTO_INCREMENT,
+ `CAMP_ID`  int(11) NOT NULL,
+ `USUA_ID`  int(11) NOT NULL,
+ `CFDI_TX_QRCODE_REGIST`  VARCHAR(100)  NOT NULL  ,
+ `CFDI_IN_MODO` varchar(20)  NOT NULL,
+ `CFDI_IN_STATUS` varchar(1) NOT NULL DEFAULT 'P',
+ `CFDI_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `CFDI_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ CONSTRAINT PK_CFDI_ID PRIMARY KEY (CFDI_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 100;
+
+/******************************************************************/
+/* CARTAO - TABELA DE AGREGACAO DO CARTAO                         */
+/******************************************************************/
+CREATE TABLE `CARTAO` (
+ `CART_ID` int(11) NOT NULL AUTO_INCREMENT,
+ `CAMP_ID`  int(11) NOT NULL,
+ `USUA_ID`  int(11) NOT NULL,
+ `CART_NU_CONTADOR`  int(11)  NOT NULL DEFAULT 0 ,
+ `CART_IN_FAVORITO` varchar(1) NOT NULL DEFAULT 'N',
+ `CART_TX_CFDI_CARIMBOS` varchar(2000),
+ `CART_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A',
+ `CART_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `CART_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ CONSTRAINT PK_CART_ID PRIMARY KEY (CART_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 100;
+
+CREATE INDEX IX_CARTAO
+        ON CARTAO(CAMP_ID,USUA_ID);
+
+/********************************************************************/
+/* CARTAO HISTORICO - HISTORICO DOS CARTÕES ENCERRADOS E RESGATADOS */
+/********************************************************************/
+CREATE TABLE `CARTAO_HISTORICO` (
+ `CART_ID` int(11) NOT NULL,
+ `CAMP_ID`  int(11) NOT NULL,
+ `USUA_ID`  int(11) NOT NULL,
+ `CART_NU_CONTADOR`  int(11)  NOT NULL DEFAULT 0 ,
+ `CART_IN_FAVORITO` varchar(1) NOT NULL DEFAULT 'N',
+ `CART_TX_CFDI_CARIMBOS` varchar(2000),
+ `CART_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A',
+ `CART_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `CART_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ CONSTRAINT PK_CART_ID PRIMARY KEY (CART_ID)
+) ENGINE=MyISAM 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 100;
+
+CREATE INDEX IX_CARTAO
+        ON CARTAO_HISTORICO(CAMP_ID,USUA_ID);
+
+
+-- CONSTRAINTS FOREIGN KEY
+
+-- PLANOS X USUARIO X PLANO_USUARIO
+ALTER TABLE PLANO_USUARIO
+    ADD CONSTRAINT FK_PLUS_USUA
+    FOREIGN KEY (USUA_ID)
+    REFERENCES USUARIO(USUA_ID);
+
+ALTER TABLE PLANO_USUARIO
+    ADD CONSTRAINT FK_PLUS_PLAN
+    FOREIGN KEY (PLAN_ID)
+    REFERENCES PLANOS(PLAN_ID);    
+
+-- PLANO_USUARIO_FATURA X PLANO_USUARIO
+ALTER TABLE PLANO_USUARIO_FATURA
+    ADD CONSTRAINT FK_PLUF_PLUS
+    FOREIGN KEY (PLUF_ID)
+    REFERENCES PLANO_USUARIO(PLUF_ID);
+
+-- USUARIO_TROCA_SENHA_HISTORICO x USUARIO
+ALTER TABLE USUARIO_TROCA_SENHA_HISTORICO
+    ADD CONSTRAINT FK_UTSH_USUA
+    FOREIGN KEY (USUA_ID)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
+
+-- CAMPANHA X USUARIO
+ALTER TABLE CAMPANHA
+    ADD CONSTRAINT FK_CAMP_USUA
+    FOREIGN KEY (USUA_ID)
+    REFERENCES USUARIO(USUA_ID);
+
+-- CAMPANHA_QRCODES (CARIMBOS VALIDOS) X CAMPANHA 
+ALTER TABLE CAMPANHA_QRCODES
+    ADD CONSTRAINT FK_CAQR_CAMP
+    FOREIGN KEY (CAMP_ID)
+    REFERENCES CAMPANHA(CAMP_ID);
+
+-- CAMPANHA HISTORICO X CAMPANHA
+ALTER TABLE CAMPANHA_HISTORICO
+    ADD CONSTRAINT FK_CAHI_CAMP
+    FOREIGN KEY (CAMP_ID)    
+    REFERENCES CAMPANHA(CAMP_ID);
+
+-- CFDI X USUARIO X CAMPANHA
+ALTER TABLE CFDI
+    ADD CONSTRAINT FK_CFDI_FIEL
+    FOREIGN KEY (USUA_ID)
+    REFERENCES USUARIO(USUA_ID);
+
+ALTER TABLE CFDI
+    ADD CONSTRAINT FK_CFDI_CAMP
+    FOREIGN KEY (CAMP_ID)
+    REFERENCES CAMPANHA(CAMP_ID);
+
+-- USUARIO X USUARIO_COMPLEMENTO
+ALTER TABLE USUARIO_COMPLEMENTO
+    ADD CONSTRAINT FK_USCO_USUA
+    FOREIGN KEY (USUA_ID)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;

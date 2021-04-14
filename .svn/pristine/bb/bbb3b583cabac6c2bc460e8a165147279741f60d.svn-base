@@ -1,0 +1,32 @@
+<?php  
+
+/**
+ * ConstantesNotificacao
+ *
+ * @author Julio Vitorino
+ * @copyright Julio Vitorino
+ * @since 24/08/2018
+ */
+class ConstantesNotificacao
+{
+
+	// Constantes para uso geral na barra de notificação 
+	// dos projetos de minisites
+	const FA_NOTIF_CHECK = 'fa fa-check';
+	const FA_NOTIF_USUARIO = 'fa fa-user o';
+	const FA_NOTIF_COMENTARIO = 'fa fa-comments-o';
+	const FA_NOTIF_LIKE = 'fa fa-heart';
+	const FA_NOTIF_AVISO = 'fa fa-warning';
+	const FA_NOTIF_TIMES = 'fa fa-times';
+
+	// Constantes para background color da notificação
+	const BGC_DEEP_PINK = 'deepPink-bgcolor';
+	const BGC_PURPLE = 'purple-bgcolor';
+	const BGC_BLUE = 'blue-bgcolor';
+	const BGC_PINK = 'pink';
+	const BGC_YELLOW = 'yellow';
+	const BGC_RED = 'red';
+
+}
+
+?>

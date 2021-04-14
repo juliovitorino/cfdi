@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * ProcessoDetalhadoHotmartConcrete - Busca os modelos para cada parte do mini site
+ */
+ class ProcessoDetalhadoHotmartConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-procedimento-hotmart';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ProcessoDetalhadoHotmartConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ProcessoDetalhadoHotmartConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-prdc-hotmart','11072018171300');
+ 	}
+
+ } 
+
+?>

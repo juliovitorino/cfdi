@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * MySqlKinghostBacklinkDAO - Implementação DAO
+ */
+
+require_once 'BacklinkDTO.php';
+require_once 'BacklinkDAO.php';
+require_once 'DmlSqlBacklink.php';
+
+require_once '../daofactory/DmlSql.php';
+
+class MySqlKinghostBacklinkDAO implements BacklinkDAO
+{
+	private $daofactory;
+	
+	function __construct($daofactory)
+	{
+		$this->daofactory = $daofactory;
+	}
+
+	public function update($dto){ }
+	public function delete($dto) {	}
+	public function load($dto) 	{	}
+	public function listAll() 	{	}
+
+	public function listPaginaMaiores($backid, $pag, $qtde)
+	{
+		$retorno = array();
+
+		$final = $pag * $qtde - $qtde;
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlBacklink::SELECT 
+							. ' WHERE `' . DmlSqlBacklink::BACK_ID . '` > ' . $backid
+							. ' LIMIT ' . $final . ',' . $qtde );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+
+	public function listPagina($pag, $qtde)
+	{
+		$retorno = array();
+
+		$final = $pag * $qtde - $qtde;
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlBacklink::SELECT 
+					. ' LIMIT ' . $final . ',' . $qtde );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+	public function loadPK($id)
+	{	
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlBacklink::SELECT . ' WHERE ' . DmlSqlBacklink::BACK_ID . '=' . $id );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+
+	}
+
+	public function insert($dto) 
+	{	
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlBacklink::INS);
+		$stmt->bind_param(DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							,$dto->url
+							,$dto->tipo );
+
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+	/**
+	* getDTO() - Transforma o resultset em DTO
+	*/
+	public function getDTO($resultset)
+	{
+		//echo var_dump($resultset); // ótimo pra debugar
+		$retorno = new BacklinkDTO();
+		$retorno->id = $resultset[DmlSqlBacklink::BACK_ID];
+		$retorno->url = $resultset[DmlSqlBacklink::BACK_TX_URL];
+		$retorno->tipo = $resultset[DmlSqlBacklink::BACK_IN_TIPO_BCKLNK];
+		$retorno->status = $resultset[DmlSqlBacklink::BACK_IN_STATUS];
+		$retorno->dataCadastro = $resultset[DmlSqlBacklink::BACK_DT_CADASTRO];
+		$retorno->dataAtualizacao = $resultset[DmlSqlBacklink::BACK_DT_UPDATE];
+
+		return $retorno;
+	}
+
+}
+?>

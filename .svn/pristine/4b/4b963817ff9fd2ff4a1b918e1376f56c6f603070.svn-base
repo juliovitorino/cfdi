@@ -1,0 +1,43 @@
+<?php
+
+// URL http://localhost/cfdi/php/classes/gateway/appBuscarCartoesFavoritosCampanhaAtivo.php?tokenid=234234
+// URL http://elitefinanceira.com/cfdi/php/classes/gateway/appBuscarCartoesFavoritosCampanhaAtivo.php?tokenid=234234
+
+// Importar dependencias
+require_once '../cartao/cartaoServiceImpl.php';
+
+// ====== padrão para identificação da sessão do usuário ===========
+require_once '../usuarios/UsuarioServiceImpl.php';
+require_once '../sessao/SessaoServiceImpl.php';
+
+// Obtem o token de sessao (pode ser dispositivo ou outro hardware qualquer)
+$token = $_GET['tokenid'];
+
+// Obtem o usuário do token validado
+$ssi = new SessaoServiceImpl();
+$sessaodto = $ssi->obterRegistroDonoTokenSessao($token);
+//var_dump($sessaodto);
+
+// Carrega dados do usuário 
+if($sessaodto->msgcode != "MSG-0046"){
+    $usi = new UsuarioServiceImpl();
+    $usuariodto = $usi->pesquisarPorId($sessaodto->usuario);
+    //var_dump($usuariodto);
+}
+
+// ====== padrão para identificação da sessão do usuário ===========
+
+if($sessaodto->msgcode == "MSG-0046") {  // sessão válida
+    echo json_encode($sessaodto);
+} else {
+    // >>>Backend
+    $csi = new CartaoServiceImpl();
+    $retorno = $csi->listarCartoesFullInfoFavoritosAtivos($usuariodto->id);
+    //var_dump($retorno);
+    
+    // retorna resultado
+    echo json_encode($retorno);
+}
+
+
+?>

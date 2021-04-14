@@ -1,0 +1,18 @@
+<?php 
+
+/**
+* 
+*/
+class ConstantesFactory
+{
+	/* Constantes para uso das factories */
+	const CONCRETE_FACEBOOK = '0';
+	const CONCRETE_GOOGLE_PLUS = '1';
+	const CONCRETE_TWITTER = '2';
+	const CONCRETE_INSTAGRAM = '3';
+	const CONCRETE_PINTEREST = '4';
+	const CONCRETE_WHATSAPP = '5';
+	
+}
+
+?>

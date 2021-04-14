@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * MySqlKinghostProjetoSERPDAO - Implementação DAO
+ */
+
+require_once 'GraficoProjetoSERPDTO.php';
+require_once 'DmlSqlGraficoProjetoSERP.php';
+require_once 'graficoProjetoSERPDAO.php';
+
+require_once '../daofactory/DmlSql.php';
+
+class MySqlKinghostGraficoProjetoSERPDAO implements ProjetoSERPDAO
+{
+	private $daofactory;
+	
+	function __construct($daofactory)
+	{
+		$this->daofactory = $daofactory;
+	}
+
+	public function update($dto){ }
+	public function delete($dto) {	}
+	public function load($dto) 	{	}
+	public function listAll() 	{	}
+	public function listPagina($pag, $qtde)	{	}
+	public function loadPK($id)	{	}
+	public function insert($dto) {	}
+
+
+	public function listSERP($projetoid)
+	{
+		$retorno = array();
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlGraficoProjetoSERP::SELECT
+					. ' WHERE ' . DmlSqlGraficoProjetoSERP::PROJ_ID . '=' . $projetoid
+					. ' ORDER BY ' . DmlSqlGraficoProjetoSERP::MESANO . ' ASC'  );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+	/**
+	* getDTO() - Transforma o resultset em DTO
+	*/
+	public function getDTO($resultset)
+	{
+		//echo var_dump($resultset); // ótimo pra debugar
+		$retorno = new GraficoProjetoSERPDTO();
+		$retorno->mesano = $resultset[DmlSqlGraficoProjetoSERP::MESANO];
+		$retorno->projetoid = $resultset[DmlSqlGraficoProjetoSERP::PROJ_ID];
+		$retorno->sumDA = $resultset[DmlSqlGraficoProjetoSERP::SUM_PRSE_NU_DA];
+		$retorno->sumPA = $resultset[DmlSqlGraficoProjetoSERP::SUM_PRSE_NU_PA];
+		$retorno->sumranking = $resultset[DmlSqlGraficoProjetoSERP::SUM_PRSE_NU_RANK];
+
+		return $retorno;
+	}
+
+}
+?>

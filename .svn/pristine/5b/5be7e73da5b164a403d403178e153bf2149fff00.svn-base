@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * FacebookConcrete - Busca os posts para rede social do facebook
+ */
+ class FacebookConcrete extends RedesSociaisFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'post-facebook';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.RedesSociaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.FacebookConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.RedesSociaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.FacebookConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'postfcbk','10072018161600');
+ 	}
+
+ } 
+
+?>

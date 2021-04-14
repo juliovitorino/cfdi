@@ -1,0 +1,12 @@
+<?php
+
+require_once '../interfaces/DAO.php';
+
+/**
+ * keywordRelatedDAO - Extensão da interface padrão de DAO
+ */
+interface keywordRelatedDAO extends DAO
+{
+	public function listKeywordRelated($keywordParentId);
+}
+?>

@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * ObjecaoNaoTenhoDinheiroConcrete - Busca os modelos para cada parte do mini site
+ */
+ class ObjecaoNaoTenhoDinheiroConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-objecao-nao-tenho-dinheiro';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ObjecaoNaoTenhoDinheiroConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ObjecaoNaoTenhoDinheiroConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-obj-sem-dinheiro','11072018164601');
+ 	}
+
+ } 
+
+?>

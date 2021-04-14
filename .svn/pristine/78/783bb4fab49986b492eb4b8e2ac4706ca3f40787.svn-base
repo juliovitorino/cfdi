@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * GatilhoEscassezUrgenciaConcrete - Busca os modelos para cada parte do mini site
+ */
+ class GatilhoEscassezUrgenciaConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-gatilho-escassez';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.GatilhoEscassezUrgenciaConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.GatilhoEscassezUrgenciaConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-urgencia','23072018170801');
+ 	}
+
+ } 
+
+?>

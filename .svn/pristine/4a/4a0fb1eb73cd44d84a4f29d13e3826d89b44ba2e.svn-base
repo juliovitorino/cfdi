@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * ObjecaoValeConcrete - Busca os modelos para cada parte do mini site
+ */
+ class ObjecaoValeConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-objecao-vale-a-pena';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ObjecaoValeConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ObjecaoValeConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-obj-vale','11072018170000');
+ 	}
+
+ } 
+
+?>

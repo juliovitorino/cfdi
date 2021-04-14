@@ -1,0 +1,142 @@
+<?php
+
+/**
+ * MySqlKinghostKeywordDAO - Implementação DAO
+ */
+
+require_once 'keywordDTO.php';
+require_once 'keywordDAO.php';
+require_once 'DmlSqlKeyword.php';
+
+require_once '../daofactory/DmlSql.php';
+
+class MySqlKinghostKeywordDAO implements KeywordDAO
+{
+	private $daofactory;
+	
+	function __construct($daofactory)
+	{
+		$this->daofactory = $daofactory;
+	}
+
+	public function update($dto){ }
+	public function delete($dto) {	}
+	public function load($dto) 	{	}
+	public function listAll() 	{	}
+
+	public function listKeywordPorUsuario($usuarioid)
+	{
+		$retorno = array();
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlKeyword::SELECT_VIEW_KEYWORD 
+					. ' WHERE `' . DmlSqlKeyword::USUA_ID . '` = ' . $usuarioid 
+					. ' ORDER BY ' . DmlSqlKeyword::PRKE_ID);
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+	public function loadRecenteKeywordPorProjeto($projetoid)
+	{
+		$retorno = 0;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlKeyword::SELECT_MAX_ID_PROJ_ID 
+								. ' WHERE `' . DmlSqlKeyword::PROJ_ID . '` = ' . $projetoid );
+		if ($res){
+			foreach ($res->fetch_assoc() as $key => $value) {
+				$retorno = $value;
+			}
+		}
+		return $retorno;
+
+	}
+
+
+
+	public function listPagina($pag, $qtde)
+	{
+		$retorno = array();
+
+		$final = $pag * $qtde - $qtde;
+		var_dump('pag = '. $pag);
+		var_dump('qtde = '. $qtde);
+		var_dump('final = '. $final);
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlKeyword::SELECT 
+					. ' LIMIT ' . $final . ',' . $qtde );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+	public function loadPK($id)
+	{	
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlKeyword::SELECT . ' WHERE ' . DmlSqlKeyword::PRKE_ID . '=' . $id );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+
+	}
+
+	public function insert($dto) 
+	{	
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlKeyword::INS);
+		$stmt->bind_param(DmlSql::INTEGER_TYPE
+							. DmlSql::STRING_TYPE
+							. DmlSql::INTEGER_TYPE 
+							. DmlSql::DOUBLE_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							,$dto->projetoid
+							,$dto->keyword
+							,$dto->volumepesquisa
+							,$dto->valorcpc
+							,$dto->niveldificuldade );
+
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+	/**
+	* getDTO() - Transforma o resultset em DTO
+	*/
+	public function getDTO($resultset)
+	{
+		//echo var_dump($resultset); // ótimo pra debugar
+		$retorno = new KeywordDTO();
+		$retorno->id = $resultset[DmlSqlKeyword::PRKE_ID];
+		$retorno->projetoid = $resultset[DmlSqlKeyword::PROJ_ID];
+		$retorno->keyword = $resultset[DmlSqlKeyword::PRKE_TX_KEYWORD];
+		$retorno->status = $resultset[DmlSqlKeyword::PRKE_IN_STATUS];
+		$retorno->volumepesquisa = $resultset[DmlSqlKeyword::PRKE_NU_VOLUME];
+		$retorno->valorcpc = $resultset[DmlSqlKeyword::PRKE_VL_CPC];
+		$retorno->niveldificuldade = $resultset[DmlSqlKeyword::PRKE_NU_DIFICULDADE];
+		$retorno->dataCadastro = $resultset[DmlSqlKeyword::PRKE_DT_CADASTRO];
+		$retorno->dataAtualizacao = $resultset[DmlSqlKeyword::PRKE_DT_UPDATE];
+
+		return $retorno;
+	}
+
+}
+?>

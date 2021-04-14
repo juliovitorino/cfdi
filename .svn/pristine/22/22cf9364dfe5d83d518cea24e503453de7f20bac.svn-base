@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * 
+ * ProjetoSERPBusiness
+ */
+
+// importar dependências
+require_once '../interfaces/BusinessObject.php';
+
+interface ProjetoSERPBusiness extends BusinessObject
+{
+	public function listarSERP($daofactory, $projetoid);
+	public function listarSERPAnalitico($daofactory, $projetoid);
+
+}
+
+?>

@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * GatilhoEscassezMedoConcrete - Busca os modelos para cada parte do mini site
+ */
+ class GatilhoEscassezMedoConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-gatilho-escassez-medo';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.GatilhoEscassezMedoConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.GatilhoEscassezMedoConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-medo','23072018171223');
+ 	}
+
+ } 
+
+?>

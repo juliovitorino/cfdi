@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * Web20ArtigoPalavraChaveExataConcrete - Busca os modelos para cada parte do artigo
+ */
+ class Web20ArtigoPalavraChaveExataConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'web20-palavra-chave-exata';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.Web20ArtigoPalavraChaveExataConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.Web20ArtigoPalavraChaveExataConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'web20-pce','10082018161301');
+ 	}
+
+ } 
+
+?>

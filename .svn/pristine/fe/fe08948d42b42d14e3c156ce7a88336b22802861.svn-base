@@ -1,0 +1,713 @@
+<?php
+
+/**
+ * 
+ * UsuarioServiceImpl - Classe de Serviços para Usuário
+ *
+ * @author Julio Vitorino
+ * @since 27/07/2018
+ */
+
+// Verifica se precisa iniciar uma sessão
+if(!isset($_SESSION)){
+    session_start();
+}
+
+// importar dependências
+require_once 'UsuarioBusiness.php';
+require_once 'ProjetoDTO.php';
+require_once 'UsuarioService.php';
+require_once 'UsuarioBusinessImpl.php';
+
+require_once '../mensagem/MensagemCache.php';
+require_once '../mensagem/ConstantesMensagem.php';
+
+require_once '../daofactory/DAOFactory.php';
+
+class UsuarioServiceImpl implements UsuarioService
+{
+	
+	function __construct()	{	}
+
+	public function apagar($dto) {}
+	public function listarPagina($pag, $qtde)	{	}
+
+	public function habilitarContaPorEmail($token)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->habilitarContaPorEmail($daofactory, $token);
+
+			$daofactory->commit();
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function cadastrarNovaContaFacebook($dto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->inserirNovaContaFacebook($daofactory
+ 						, $dto
+ 						, VariavelCache::getInstance()->getVariavel(ConstantesVariavel::PLANO_GRATUITO_CODIGO));
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function cadastrarNovaConta($dto, $planoid)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->inserirNovaConta($daofactory, $dto, $planoid);
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function cadastrar($dto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->inserir($daofactory, $dto);
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+
+	public function cadastrarProjetoItem($idProjeto, $descricao, $tipoItem)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$resultado = $bo->inserirProjetoItem($daofactory, $idProjeto, $descricao, $tipoItem);
+
+			$daofactory->commit();
+			
+			if ($resultado) {
+				$retorno = new DTOPadrao();
+				$retorno->msgcode = "MSG-0001";
+				$retorno->msgcodeString = "Comando realizado com sucesso";
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function apagarProjetoItem($idpk, $tipoItem)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$resultado = $bo->deletarProjetoItem($daofactory, $idpk, $tipoItem);
+
+			$daofactory->commit();
+			
+			if ($resultado) {
+				$retorno = new DTOPadrao();
+				$retorno->msgcode = "MSG-0001";
+				$retorno->msgcodeString = "Comando realizado com sucesso";
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function cadastrarProjeto($projetodto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$resultado = $bo->inserirProjeto($daofactory, $projetodto);
+
+			$daofactory->commit();
+			
+			if ($resultado) {
+				$retorno = new DTOPadrao();
+				$retorno->msgcode = "MSG-0001";
+				$retorno->msgcodeString = "Comando realizado com sucesso";
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function atualizarProjeto($projetodto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$resultado = $bo->atualizarProjeto($daofactory, $projetodto);
+
+			$daofactory->commit();
+			
+			if ($resultado) {
+				$retorno = new DTOPadrao();
+				$retorno->msgcode = "MSG-0001";
+				$retorno->msgcodeString = "Comando realizado com sucesso";
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function pesquisarPorIdFacebook($id)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->carregarPorIDFacebook($daofactory, $id);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.INSCRICAO_REALIZADA_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.INSCRICAO_REALIZADA_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function pesquisarPorId($id)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->carregarPorID($daofactory, $id);
+			$daofactory->commit();
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function pesquisar($dto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->carregar($daofactory, $dto);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.INSCRICAO_REALIZADA_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.INSCRICAO_REALIZADA_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function atualizar($dto)
+	{
+
+	}
+
+	public function listarTudo()
+	{
+
+	}
+
+	public function buscarTodosProjetos($idUsuario)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->buscarTodosProjetos($daofactory, $idUsuario);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.COMANDO_REALIZADO_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.COMANDO_REALIZADO_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function buscarTodosBonus($idProjeto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->buscarTodosBonus($daofactory, $idProjeto);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.COMANDO_REALIZADO_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.COMANDO_REALIZADO_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function buscarTodosItens($idProjeto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->buscarTodosItens($daofactory, $idProjeto);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.COMANDO_REALIZADO_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.COMANDO_REALIZADO_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function buscarTodasDores($idProjeto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->buscarTodasDores($daofactory, $idProjeto);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.COMANDO_REALIZADO_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.COMANDO_REALIZADO_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function buscarTodosBeneficios($idProjeto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->buscarTodosBeneficios($daofactory, $idProjeto);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.COMANDO_REALIZADO_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.COMANDO_REALIZADO_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function buscarTodasTecnicas($idProjeto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->buscarTodasTecnicas($daofactory, $idProjeto);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.COMANDO_REALIZADO_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.COMANDO_REALIZADO_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function buscarProjetoEspecifico($idUsuario, $idProjeto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->carregarUsuarioProjeto($daofactory, $idUsuario, $idProjeto);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.INSCRICAO_REALIZADA_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.INSCRICAO_REALIZADA_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+/* DELETAR
+	public function buscarTodosProjetosArray($idUsuario)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->buscarTodosProjetosArray($daofactory, $idUsuario);
+			$daofactory->commit();
+			
+			//$retorno->msgcode = MSGCODE.INSCRICAO_REALIZADA_SUCESSO;
+			//$retorno->msgcodeString = MensagemCache.getInstance().getMensagem(MSGCODE.INSCRICAO_REALIZADA_SUCESSO);
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+*/
+
+
+	// Carrega um objeto
+	public function buscarProjetoOficial($dto)
+	{
+		// retorno
+		$retorno = NULL;
+
+		// monta uma estrutura de dados completa do usuário
+		$bo = new UsuarioBusiness();
+		$usuario = $bo->carregar($dto);
+		$retorno = $bo->carregarProjetoOficial($usuario);
+
+		return $retorno;
+	}
+
+	public function getToken($dto) {
+		// cria um token
+		$dt = new DateTime();
+		$str = $dto->usuario->email.$dt->getTimestamp();
+		return sha1($str);
+	}
+
+	private function apagarSessao() {
+		$_SESSION = array();
+	}
+
+	private function validarSenha($pwd, $pwdArmazenada){
+		// retorno padrão é negado
+		$retorno = false;
+
+		// Aplica algoritimo sha1
+		$pwdsha1 = sha1($pwd);
+
+		if ($pwdsha1 == $pwdArmazenada) {
+			$retorno = true;
+		}
+
+		// retorno
+		return $retorno;
+	}
+}
+
+?>

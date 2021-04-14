@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * 
+ * BacklinkBusiness
+ */
+
+// importar dependências
+require_once '../interfaces/BusinessObject.php';
+
+interface CampanhaBusiness extends BusinessObject
+{
+	public function listarCampanhasUsuario($daofactory, $id_usuario);
+	public function isCampanhaAtiva($daofactory, $idcampanha);
+	public function atualizarStatus($daofactory, $idcampanha, $status);
+	public function listarCampanhasPorStatus($daofactory, $status);
+
+}
+
+?>

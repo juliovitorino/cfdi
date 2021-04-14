@@ -1,0 +1,189 @@
+<?php 
+
+/**
+* MaquinaMiniSiteFactory - Abstração para criação de classes concretas 
+* para criar minisites de forma inteligente
+* @author Julio Vitorino
+* @since 11/07/2018
+*/
+
+/* importa referencias necessárias ao projeto */
+require_once 'ConstantesMaquinaMinisiteFactory.php';
+require_once 'IntroducaoConcrete.php';
+require_once 'AutoridadeConcrete.php';
+require_once 'CallToActionConcrete.php';
+require_once 'CallToActionCheckOutConcrete.php';
+require_once 'ComunidadeConcrete.php';
+require_once 'DepoimentoConcrete.php';
+require_once 'DorProblemaConcrete.php';
+require_once 'GarantiaConcrete.php';
+require_once 'StorytellingConcrete.php';
+require_once 'ObjecaoFuncionaConcrete.php';
+require_once 'ObjecaoNaoTenhoDinheiroConcrete.php';
+require_once 'ObjecaoValeConcrete.php';
+require_once 'ProcessoDetalhadoEduzzConcrete.php';
+require_once 'ProcessoDetalhadoHotmartConcrete.php';
+require_once 'ProcessoDetalhadoMonetizzeConcrete.php';
+require_once 'ProdutoConcrete.php';
+require_once 'ProdutoBonusConcrete.php';
+require_once 'ProdutoComoFuncionaConcrete.php';
+require_once 'EsperancaConcrete.php';
+require_once 'PromessaConcrete.php';
+require_once 'GerarValorConcrete.php';
+require_once 'GatilhoEscassezUrgenciaConcrete.php';
+require_once 'GatilhoEscassezMedoConcrete.php';
+require_once 'Web20ArtigoPalavraChaveExataConcrete.php';
+require_once 'PBNArtigoPalavraChaveExataConcrete.php';
+require_once 'Web20ArtigoSimplesConcrete.php';
+require_once 'PBNArtigoSimplesConcrete.php';
+require_once 'Web20ArtigoImagemLinkConcrete.php';
+require_once 'PBNArtigoImagemLinkConcrete.php';
+
+require_once '../../spinner.php';
+require_once '../composite/TemplateLoader.php';
+
+
+abstract class MaquinaMiniSiteFactory
+{
+
+	/* constantes */
+	const PATH_HOME_REPOSITORIO = '../../../repositorio/';
+
+	/* atributos da classe */
+	protected $nicho;
+	protected $post;
+	protected $fullpath;
+	protected $fullhome;
+
+	/**
+	* getInstance() - Retorna uma instância concreta de um objeto específico
+	* de tratamento de redes sociais
+	*/
+	public static function getInstance($tipo, $nicho)
+    {
+    	switch ($tipo) {
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_INTRODUCAO:
+    			return new IntroducaoConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_AUTORIDADE:
+    			return new AutoridadeConcrete($nicho);
+            case ConstantesMaquinaMiniSiteFactory::CONCRETE_CALLTOACTION:
+                return new CallToActionConcrete($nicho);
+            case ConstantesMaquinaMiniSiteFactory::CONCRETE_CALLTOACTION_CHECKOUT:
+                return new CallToActionCheckOutConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_COMUNIDADE:
+    			return new ComunidadeConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_DEPOIMENTO:
+    			return new DepoimentoConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_DOR:
+    			return new DorProblemaConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_GARANTIA:
+    			return new GarantiaConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_STORYTELLING:
+    			return new StorytellingConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_OBJECAO_FUNCIONA:
+    			return new ObjecaoFuncionaConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_OBJECAO_SEM_DINHEIRO:
+    			return new ObjecaoNaoTenhoDinheiroConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_OBJECAO_VALE:
+    			return new ObjecaoValeConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_EDUZZ:
+    			return new ProcessoDetalhadoEduzzConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_HOTMART:
+    			return new ProcessoDetalhadoHotmartConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_MONETIZZE:
+    			return new ProcessoDetalhadoMonetizzeConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_PRODUTO:
+    			return new ProdutoConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_BONUS:
+    			return new ProdutoBonusConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_PRODUTO_COMO_FUNCIONA:
+    			return new ProdutoComoFuncionaConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_ESPERANCA:
+    			return new EsperancaConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_PROMESSA:
+    			return new PromessaConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_GERAR_VALOR:
+    			return new GerarValorConcrete($nicho);
+    		case ConstantesMaquinaMiniSiteFactory::CONCRETE_GATILHO_ESCASSEZ_URGENCIA:
+    			return new GatilhoEscassezUrgenciaConcrete($nicho);
+            case ConstantesMaquinaMiniSiteFactory::CONCRETE_GATILHO_ESCASSEZ_MEDO:
+                return new GatilhoEscassezMedoConcrete($nicho);
+            case ConstantesMaquinaMiniSiteFactory::CONCRETE_WEB20_PALAVRA_CHAVE_EXATA:
+                return new Web20ArtigoPalavraChaveExataConcrete($nicho);
+            case ConstantesMaquinaMiniSiteFactory::CONCRETE_PBN_PALAVRA_CHAVE_EXATA:
+                return new PBNArtigoPalavraChaveExataConcrete($nicho);
+            case ConstantesMaquinaMiniSiteFactory::CONCRETE_WEB20_ARTIGO_SIMPLES:
+                return new Web20ArtigoSimplesConcrete($nicho);
+            case ConstantesMaquinaMiniSiteFactory::CONCRETE_PBN_ARTIGO_SIMPLES:
+                return new PBNArtigoSimplesConcrete($nicho);
+
+            case ConstantesMaquinaMiniSiteFactory::CONCRETE_WEB20_IMAGEM_MAIS_LINK:
+                return new Web20ArtigoImagemLinkConcrete($nicho);
+            case ConstantesMaquinaMiniSiteFactory::CONCRETE_PBN_IMAGEM_MAIS_LINK:
+                return new PBNArtigoImagemLinkConcrete($nicho);
+
+    		default:
+    			break;
+    	}
+    }
+
+ 	public function carregarTemplate() {
+ 		$tl = new TemplateLoader($this->fullpath);
+ 		$spinner = new Spinner($tl->getConteudo());
+ 		$this->post = $spinner->getConteudo();
+ 	}
+
+
+	/**
+	* getPost() - Retorna o texto do post da factory invocada
+	*/
+	public function getPost() 
+	{
+		return $this->post;
+	}
+
+ 	protected function getModelo($nicho, $tipo, $timestamp)
+ 	{
+ 		return 'modelo-'.$this->controlador($nicho, $tipo, $timestamp).'.txt';
+ 	}
+
+	private function controlador($nicho, $tipo, $timestamp)
+	{
+		$tag = $nicho.'-'.$tipo.'-'.$timestamp;
+		$controlador = 0;
+
+		if(file_exists(getcwd().'/controlador/'.$tag)){
+			$myfile = fopen(getcwd().'/controlador/'.$tag, "rw");
+			$controlador = (int) fread($myfile, filesize(getcwd().'/controlador/'.$tag));
+			fclose($myfile);
+
+			//$controlador++;
+
+			$fi = new FilesystemIterator($this->fullhome, FilesystemIterator::SKIP_DOTS);
+			$controlador = rand(1, iterator_count($fi));
+
+			if($controlador > iterator_count($fi)){
+				$controlador = 1;
+			}
+
+			if(file_exists(getcwd().'/controlador/'.$tag)){
+				$myfile = fopen(getcwd().'/controlador/'.$tag, "w");
+				fwrite($myfile, $controlador);
+				fclose($myfile);
+			}
+		} else {
+			$myfile = fopen(getcwd().'/controlador/'.$tag, "w");
+			fwrite($myfile, '1');
+			fclose($myfile);
+			$controlador = 1;
+		}
+
+		return $controlador;
+	}
+
+
+}
+
+
+
+?>

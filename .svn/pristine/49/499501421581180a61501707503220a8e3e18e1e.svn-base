@@ -1,0 +1,126 @@
+<?php
+
+/**
+ * MySqlHeadlineHistoricoDAO - Implementação DAO para headline historico
+ */
+
+require_once 'HeadlineHistoricoDTO.php';
+require_once 'HeadlineHistoricoDAO.php';
+require_once 'DmlSqlHeadlineHistorico.php';
+
+require_once '../daofactory/DmlSql.php';
+
+class MySqlHeadlineHistoricoDAO implements HeadlineHistoricoDAO
+{
+	private $daofactory;
+	
+	function __construct($daofactory)
+	{
+		$this->daofactory = $daofactory;
+	}
+
+	public function insert($dto) 
+	{	
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlHeadlineHistorico::INS);
+		$stmt->bind_param(DmlSql::INTEGER_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							. DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
+							, $dto->usuarioid
+							, $dto->sessaoid 
+							, $dto->palavra_chave_seo
+							, $dto->objetivo
+							, $dto->headline );
+
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+
+	public function delete($dto) {	}
+
+	/**
+	* loadPK() - Leitura da base de usuários por PK
+	* @param $dto
+	*/
+	public function loadPK($id)
+	{
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlHeadlineHistorico::WHERE_PK);
+		$stmt->bind_param(DmlSql::INTEGER_TYPE, $id );
+		$stmt->execute();
+
+		/* transforma o resultado para objeto serializável */
+		$res = $stmt->get_result();
+		return $this->getDTO($res->fetch_array(MYSQLI_ASSOC));
+
+	}
+
+	/**
+	* load() - Leitura da base de usuários
+	* @param $dto - UsuarioDTO
+	*/
+	public function load($dto) 
+	{
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlHeadlineHistorico::WHERE_PK);
+		$stmt->bind_param(DmlSql::INTEGER_TYPE, $dto->id );
+		$stmt->execute();
+
+		/* transforma o resultado para objeto serializável */
+		$res = $stmt->get_result();
+		return $this->getDTO($res->fetch_array(MYSQLI_ASSOC));
+	}
+
+	public function listHeadlinesPorSessao($sessaoid)
+	{
+		$retorno = array();
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlHeadlineHistorico::WHERE_SESSAO . ' ORDER BY `HEHI_ID` DESC');
+		$stmt->bind_param(DmlSql::INTEGER_TYPE, $sessaoid );
+		$stmt->execute();
+
+		/* transforma o resultado para objeto serializável */
+		$res = $stmt->get_result();
+		while($row = $res->fetch_array(MYSQLI_ASSOC)) {
+			array_push($retorno, $this->getDTO($row));
+		}
+		return $retorno;
+	}
+
+
+	public function update($dto){ }
+
+	/**
+	* getDTO() - Transforma o resultset em DTO
+	*/
+	public function getDTO($resultset)
+	{
+		//echo var_dump($resultset); // ótimo pra debugar
+		$retorno = new HeadlineHistoricoDTO();
+		$retorno->id = $resultset[DmlSqlHeadlineHistorico::HEHI_ID];
+		$retorno->usuarioid = $resultset[DmlSqlHeadlineHistorico::USUA_ID];
+		$retorno->sessaoid = $resultset[DmlSqlHeadlineHistorico::SESS_ID];
+		$retorno->palavra_chave_seo = $resultset[DmlSqlHeadlineHistorico::HEHI_TX_PAL_CHAVE];
+		$retorno->objetivo = $resultset[DmlSqlHeadlineHistorico::HEHI_TX_OBJETIVO];
+		$retorno->headline = $resultset[DmlSqlHeadlineHistorico::HEHI_TX_HEADLINE];
+		$retorno->dataCadastro = $resultset[DmlSqlHeadlineHistorico::HEHI_DT_CADASTRO];
+		$retorno->dataAtualizacao = $resultset[DmlSqlHeadlineHistorico::HEHI_DT_UPDATE];
+
+		return $retorno;
+	}
+
+}
+?>

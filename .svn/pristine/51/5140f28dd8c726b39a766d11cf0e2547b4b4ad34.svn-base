@@ -1,0 +1,10 @@
+CREATE OR REPLACE VIEW VW_QRCODE_ID_GENERATOR
+AS
+SELECT  MIN(a.CAQR_ID) as ID,
+        a.CAMP_ID, 
+        c.USUA_ID
+FROM `campanha_qrcodes` a
+INNER JOIN `campanha` b ON a.CAMP_ID = b.CAMP_ID
+INNER JOIN `usuario` c ON b.USUA_ID = c.USUA_ID
+WHERE a.caqr_in_status = 'A'
+GROUP BY a.CAMP_ID, c.USUA_ID

@@ -1,0 +1,16 @@
+<?php
+
+require_once '../interfaces/DAO.php';
+
+/**
+ * CampanhaDAO - Extensão da interface padrão de DAO
+ */
+interface CampanhaDAO extends DAO
+{
+	public function loadMaxCampanhaID($id_usuario);
+	public function listCampanhasUsuario($id_usuario);
+	public function updateStatus($id, $status);
+	public function listCampanhasStatus($status);
+
+}
+?>

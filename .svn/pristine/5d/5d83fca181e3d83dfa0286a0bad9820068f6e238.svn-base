@@ -1,0 +1,53 @@
+<?php  
+
+require_once 'KeywordSERPDTO.php';
+require_once 'KeywordSERPServiceImpl.php';
+
+require_once '../keyword/keywordDTO.php';
+require_once '../keyword/keywordServiceImpl.php';
+
+require_once '../util/util.php';
+
+
+$dto = new KeywordDTO();
+$dto->projetoid = 1;
+$dto->keyword = Util::getCodigo(100);
+$dto->volumepesquisa = rand(100,1000);
+$dto->valorcpc = rand(0,20);
+$dto->niveldificuldade = rand(10,100);
+
+$ksi = new KeywordServiceImpl();
+$retorno = $ksi->cadastrar($dto);
+var_dump($retorno);
+
+$prkeid = $ksi->carregarRecenteKeywordPorProjeto($dto->projetoid);
+$dto = $ksi->pesquisarPorID($prkeid);
+var_dump($dto);
+
+// insere a palavra chave relacionada
+$krdto = new KeywordSERPDTO();
+$rel = rand(1,20);
+for ($i=0; $i < $rel; $i++) { 
+
+	$krdto->keywordid = $prkeid;
+	$krdto->keywordrelatedid = 0;
+	$krdto->link = 'http://concorrencia-' . $prkeid . '-' . Util::getCodigo(100);
+	$krdto->posicaoDA = rand(10,100);
+	$krdto->posicaoPA = rand(10,100);
+	$krdto->facebooklike = rand(10,100);
+	$krdto->linkRelQtd = rand(10,100);
+	$krdto->ranking = $i+1;
+	$krdto->niveldificuldade = rand(10,100);
+	$krdto->visitas = rand(10,100);
+	var_dump($krdto);
+
+	$krsi = new KeywordSERPServiceImpl();
+	$retorno = $krsi->cadastrar($krdto);
+	
+	var_dump($retorno);
+}
+
+
+
+
+?>

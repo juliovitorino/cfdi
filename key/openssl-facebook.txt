@@ -1,0 +1,12 @@
+
+keytool -J-Duser.language=en -list -v -alias androiddebugkey -keystore debug.keystore | openssl sha1 -binary | openssl base64
+      
+keytool -exportcert -alias android -keystore deployment_google_cert.cer | openssl sha1 -binary | openssl base64
+
+
+openssl sha1 9622528884B4CF80D46C5C63792F0187912E0FCF -binary | openssl base64
+
+IiJSilS0z4DUbFxjeS8Bh5EuD88=
+liJSilS0z4DUbFxjeS8Bh5EuD88=
+liJSiIS0z4DUbFxjeS8Bh5EuD88=
+IiJSiIS0z4DUbFxjeS8Bh5EuD88=

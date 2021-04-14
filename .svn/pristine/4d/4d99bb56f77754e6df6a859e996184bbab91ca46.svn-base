@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * KeywordSERPService
+ */
+
+// importar dependências
+
+require_once '../interfaces/AppService.php';
+
+interface KeywordSERPService extends AppService{
+	public function listarKeywordSERP($keywordParentId);
+
+}
+
+
+?>

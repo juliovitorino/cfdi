@@ -1,0 +1,50 @@
+<?php
+
+// importar dependências
+require_once '../daofactory/DmlSql.php';
+
+/**
+ * DmlSqlKeywordRelated - DML para tabela
+ */
+class DmlSqlKeywordRelated extends DmlSql
+{
+
+	// Tabela
+	const TABELA = 'PROJETO_KEYWORD_RELATED';
+
+	// colunas da tabela
+	const PRKR_ID = 'PRKR_ID';
+	const PRKE_ID = 'PRKE_ID';
+	const PRKR_TX_KEYWORD = 'PRKR_TX_KEYWORD';
+	const PRKR_NU_VOLUME = 'PRKR_NU_VOLUME';
+	const PRKR_VL_CPC = 'PRKR_VL_CPC';
+	const PRKR_NU_DIFICULDADE = 'PRKR_NU_DIFICULDADE';
+	const PRKR_DT_CADASTRO = 'PRKR_DT_CADASTRO';
+	const PRKR_DT_UPDATE = 'PRKR_DT_UPDATE';
+
+	// Comandos DML
+	const INS = 'INSERT INTO `' . self::TABELA . '` ('
+		. ' `PRKE_ID`, ' 
+		. ' `PRKR_TX_KEYWORD`, ' 
+		. ' `PRKR_NU_VOLUME`, ' 
+		. ' `PRKR_VL_CPC`, ' 
+		. ' `PRKR_NU_DIFICULDADE`'
+		. ') VALUES (?,?,?,?,?)';
+
+	const DEL_PK = 'DELETE ';
+
+	const UPD = 'UPDATE `' . self::TABELA . '` set ';
+
+	const SELECT = 'SELECT `PRKR_ID`,'
+					. ' `PRKE_ID`, '
+					. ' `PRKR_TX_KEYWORD`, ' 
+					. ' `PRKR_NU_VOLUME`, '
+					. ' `PRKR_VL_CPC`, '
+					. ' `PRKR_NU_DIFICULDADE`, '
+					. ' `PRKR_DT_CADASTRO`,'
+					. ' `PRKR_DT_UPDATE` '
+					. ' FROM `'.self::TABELA.'` ';
+
+}
+
+?>

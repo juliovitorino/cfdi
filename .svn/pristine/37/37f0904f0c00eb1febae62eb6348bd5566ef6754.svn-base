@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * 
+ * HeadlineHistoricoService
+ */
+
+// importar dependências
+
+require_once '../interfaces/AppService.php';
+
+interface HeadlineHistoricoService extends AppService{
+
+	public function listarTudoPorSessao($sessaoid);
+	
+}
+
+
+?>

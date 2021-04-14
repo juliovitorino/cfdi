@@ -1,0 +1,12 @@
+<?php  
+
+require_once 'UsuarioBacklinkServiceImpl.php';
+
+$usuarioid = 1;
+$usuarioid = 184;
+
+$ubsi = new UsuarioBacklinkServiceImpl();
+var_dump($ubsi->listarTudoPorUsuarioID($usuarioid));
+
+
+?>

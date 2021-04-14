@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * 
+ * HeadlineHistoricoBusiness
+ */
+
+// importar dependências
+require_once '../interfaces/BusinessObject.php';
+
+interface HeadlineHistoricoBusiness extends BusinessObject
+{
+	
+	public function listarTudoPorSessao($daofactory, $sessaoid);
+
+}
+
+?>

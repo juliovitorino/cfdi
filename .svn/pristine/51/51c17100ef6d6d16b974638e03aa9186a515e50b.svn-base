@@ -1,0 +1,29 @@
+<?php
+
+require_once '../interfaces/AppService.php';
+
+interface UsuarioService extends AppService{
+
+	// métodos
+
+	public function habilitarContaPorEmail($token);
+	public function cadastrarNovaConta($dto, $planoid);
+	public function cadastrarNovaContaFacebook($dto);
+	public function cadastrarProjeto($projetodto);
+	public function cadastrarProjetoItem($idProjeto, $descricao, $tipoItem);
+	public function apagarProjetoItem($idpk, $tipoItem);
+	public function atualizarProjeto($projetodto);
+	public function pesquisarPorIdFacebook($id);
+	public function buscarProjetoEspecifico($idUsuario, $idProjeto);
+	public function buscarTodosProjetos($idUsuario);
+	public function buscarTodosBonus($idProjeto);
+	public function buscarTodosItens($idProjeto);
+	public function buscarTodasDores($idProjeto);
+	public function buscarTodosBeneficios($idProjeto);
+	public function buscarTodasTecnicas($idProjeto);
+	public function getToken($dto);
+
+}
+
+
+?>

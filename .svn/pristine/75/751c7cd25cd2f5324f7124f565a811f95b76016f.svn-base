@@ -1,0 +1,11 @@
+{
+	"bd":"MYSQL",
+	"pathjson" : "/../../../dados/",
+	"ambiente" : "desenv", 
+	"configs": 
+	[	
+		{"tipo": "desenv" ,"host":"127.0.0.1:3306","userbd":"cfd",	"pwdbd":"Fork3t56nta205cwv","nomebd":"cfd" },
+		{"tipo": "producao","host":"localhost", "userbd":"elite759_canvt50","pwdbd":"Fork3t56nta205cwv","nomebd":"elite759_plimbo"},
+		{"tipo": "homologacao","host":"localhost", "userbd":"elite759_canvt50","pwdbd":"Fork3t56nta205cwv","nomebd":"elite759_hmg_canivete"}
+	]
+}

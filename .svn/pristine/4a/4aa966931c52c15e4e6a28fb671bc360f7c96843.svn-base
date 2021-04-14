@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * ProjetoSERPService
+ */
+
+// importar dependências
+
+require_once '../interfaces/AppService.php';
+
+interface ProjetoSERPService extends AppService{
+	public function listarSERP($projetoid);
+	public function listarSERPAnalitico($projetoid);
+
+}
+
+
+?>

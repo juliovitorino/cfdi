@@ -1,0 +1,14 @@
+<?php
+
+include 'spinner.php';
+
+$gerador = new GeradorConteudo('${@A FORMA=14062018171055;O JEITO;O CAMINHO;A FORMA@}$ MAIS ${@FÁCIL=140620181328;SIMPLES;MUITO SIMPLES;OUTRA COISA;DÉBIL MENTAL;opção a;opção B;opção C;opção D;opção E@}$ DE ${@CRIAR=14062018171701;CRIAR;FAZER;CONTRUIR@}$ HEADLINES ${@IMBATÍVEIS=14062018170001;INCRÍVEIS;FANTÁSTICAS;MÁGICAS;FORMIDÁVEIS@}$');
+
+echo $gerador->getOriginal();
+echo "<br>";
+echo var_dump($gerador->getSinonimos());
+echo "<br>";
+echo $gerador->getConteudo();
+
+?>
+

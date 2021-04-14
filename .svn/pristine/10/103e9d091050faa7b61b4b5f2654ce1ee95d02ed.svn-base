@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * DepoimentoConcrete - Busca os modelos para cada parte do mini site
+ */
+ class DepoimentoConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-depoimento';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.DepoimentoConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.DepoimentoConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-depoimento','11072018160601');
+ 	}
+
+ } 
+
+?>

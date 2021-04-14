@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * GarantiaConcrete - Busca os modelos para cada parte do mini site
+ */
+ class GarantiaConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-garantia';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.GarantiaConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.GarantiaConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-garantia','11072018162102');
+ 	}
+
+ } 
+
+?>

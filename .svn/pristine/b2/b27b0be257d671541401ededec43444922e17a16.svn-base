@@ -1,0 +1,127 @@
+<?php
+
+/**
+ * MySqlKinghostProjetoSERPDAO - Implementação DAO
+ */
+
+require_once 'ProjetoSERPDTO.php';
+require_once 'DmlSqlProjetoSERP.php';
+require_once 'ProjetoSERPDAO.php';
+
+require_once '../daofactory/DmlSql.php';
+
+class MySqlKinghostProjetoSERPDAO implements ProjetoSERPDAO
+{
+	private $daofactory;
+	
+	function __construct($daofactory)
+	{
+		$this->daofactory = $daofactory;
+	}
+
+	public function update($dto){ }
+	public function delete($dto) {	}
+	public function load($dto) 	{	}
+	public function listAll() 	{	}
+
+	public function listSERP($projetoid)
+	{
+		$retorno = array();
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlProjetoSERP::SELECT
+					. ' WHERE ' . DmlSqlProjetoSERP::PROJ_ID . '=' . $projetoid
+					. ' ORDER BY ' . DmlSqlProjetoSERP::PRSE_ID . ' DESC'  );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+
+	public function listPagina($pag, $qtde)
+	{
+		$retorno = array();
+
+		$final = $pag * $qtde - $qtde;
+		var_dump('pag = '. $pag);
+		var_dump('qtde = '. $qtde);
+		var_dump('final = '. $final);
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlProjetoSERP::SELECT 
+					. ' LIMIT ' . $final . ',' . $qtde );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+	public function loadPK($id)
+	{	
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlProjetoSERP::SELECT . ' WHERE ' . DmlSqlProjetoSERP::PRSE_ID . '=' . $id );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+
+	}
+
+	public function insert($dto) 
+	{	
+		var_dump($dto);
+		var_dump(DmlSqlProjetoSERP::INS);
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlProjetoSERP::INS);
+		$stmt->bind_param(DmlSql::INTEGER_TYPE
+							. DmlSql::STRING_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							,$dto->projetoid
+							,$dto->link
+							,$dto->posicaoDA
+							,$dto->posicaoPA
+							,$dto->ranking);
+
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+	/**
+	* getDTO() - Transforma o resultset em DTO
+	*/
+	public function getDTO($resultset)
+	{
+		//echo var_dump($resultset); // ótimo pra debugar
+		$retorno = new ProjetoSERPDTO();
+		$retorno->id = $resultset[DmlSqlProjetoSERP::PRSE_ID];
+		$retorno->projetoid = $resultset[DmlSqlProjetoSERP::PROJ_ID];
+		$retorno->link = $resultset[DmlSqlProjetoSERP::PRSE_TX_LINK];
+		$retorno->posicaoDA = $resultset[DmlSqlProjetoSERP::PRSE_NU_DA];
+		$retorno->posicaoPA = $resultset[DmlSqlProjetoSERP::PRSE_NU_PA];
+		$retorno->ranking = $resultset[DmlSqlProjetoSERP::PRSE_NU_RANK];
+		$retorno->status = $resultset[DmlSqlProjetoSERP::PRSE_IN_STATUS];
+		$retorno->dataCadastro = $resultset[DmlSqlProjetoSERP::PRSE_DT_CADASTRO];
+		$retorno->dataAtualizacao = $resultset[DmlSqlProjetoSERP::PRSE_DT_UPDATE];
+
+		return $retorno;
+	}
+
+}
+?>

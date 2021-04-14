@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * PromessaConcrete - Busca os modelos para cada parte do mini site
+ */
+ class PromessaConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-promessa';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.PromessaConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.PromessaConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-promessa','23072018170001');
+ 	}
+
+ } 
+
+?>

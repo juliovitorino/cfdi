@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * IntroducaoConcrete - Busca os modelos para cada parte do mini site
+ */
+ class IntroducaoConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-introducao';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.IntroducaoConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.IntroducaoConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-introducao','11072018151701');
+ 	}
+
+ } 
+
+?>

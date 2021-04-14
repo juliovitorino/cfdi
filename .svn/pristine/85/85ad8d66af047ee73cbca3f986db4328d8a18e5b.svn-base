@@ -1,0 +1,440 @@
+<?php
+
+//importar dependencias
+require_once 'campanhaQrCodeService.php';
+require_once 'campanhaQrCodeBusinessImpl.php';
+
+require_once '../campanha/campanhaBusinessImpl.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
+require_once '../cfdi/cfdiBusinessImpl.php';
+require_once '../variavel/ConstantesVariavel.php';
+require_once '../sessao/SessaoServiceImpl.php';
+require_once '../usuarios/UsuarioServiceImpl.php';
+
+require_once '../daofactory/DAOFactory.php';
+
+
+/**
+ * CampanhaQrCodeService - Implementação dos servicos
+ */
+class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
+{
+	
+	function __construct() {	}
+
+	public function apagar($dto) {	}
+	public function pesquisar($dto) {	}
+	public function atualizar($dto) {	}
+	public function listarTudo() {	}
+
+	public function validarQRCode($idfiel, $qrc)
+	{
+		// validar o usuario
+		$ssi = new SessaoServiceImpl();
+		$sessaodto = $ssi->obterRegistroDonoTokenSessao($idfiel);
+		if ($sessaodto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+			return $sessaodto;
+		}
+
+		// Carrega dados do usuário 
+
+		$usi = new UsuarioServiceImpl();
+		$usuariodto = $usi->pesquisarPorId($sessaodto->usuario);
+		if ($usuariodto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+			return $usuariodto;
+		}
+		
+		$vt = $this->carregarQRCodeLivre($qrc);
+		if ($vt->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+			return $vt;
+		}
+
+		// Realiza o carimbo no cartao digital
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// Finalizar o ticket fornecido pelo parceiro
+ 			$bo = new CfdiBusinessImpl();
+			$retorno = $bo->carimbarQrCodeCfdi($daofactory, $vt->id_campanha, $usuariodto->id, $vt->qrcodecarimbo);
+
+			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$qrbo = new CampanhaQrCodeBusinessImpl();
+				$retorno = $qrbo->atualizarStatusPorCarimbo($daofactory, $vt->qrcodecarimbo, ConstantesVariavel::STATUS_INATIVO);
+			} else {
+				$daofactory->rollback();
+			}
+
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+
+
+		return $vt;
+
+	}
+
+
+	public function validarTicket($idfiel, $ticket)
+	{
+
+		// validar o usuario
+		$ssi = new SessaoServiceImpl();
+		$sessaodto = $ssi->obterRegistroDonoTokenSessao($idfiel);
+		if ($sessaodto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+			return $sessaodto;
+		}
+
+		// Carrega dados do usuário 
+
+		$usi = new UsuarioServiceImpl();
+		$usuariodto = $usi->pesquisarPorId($sessaodto->usuario);
+		if ($usuariodto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+			return $usuariodto;
+		}
+
+
+		$vt = $this->carregarTicketLivre($ticket);
+		if ($vt->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+			return $vt;
+		}
+
+		// Realiza o carimbo no cartao digital
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// Finalizar o ticket fornecido pelo parceiro
+ 			$bo = new CfdiBusinessImpl();
+			$retorno = $bo->carimbarQrCodeCfdi($daofactory, $vt->id_campanha, $usuariodto->id, $vt->qrcodecarimbo);
+
+			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$qrbo = new CampanhaQrCodeBusinessImpl();
+				$retorno = $qrbo->atualizarStatusPorCarimbo($daofactory, $vt->qrcodecarimbo, ConstantesVariavel::STATUS_INATIVO);
+			} else {
+				$daofactory->rollback();
+			}
+
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+
+
+		return $vt;
+
+	}
+
+
+	public function carregarQRCodeLivre($qrc)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// Finalizar o ticket fornecido pelo parceiro
+ 			$bo = new CampanhaQrCodeBusinessImpl();
+			$retorno = $bo->carregarQRCodeLivre($daofactory, $qrc);
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function carregarTicketLivre($ticket)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// Finalizar o ticket fornecido pelo parceiro
+ 			$bo = new CampanhaQrCodeBusinessImpl();
+			$retorno = $bo->carregarTicketLivre($daofactory, $ticket);
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function criarCarimbosCampanha($idcampanha)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		$ok = false;
+		$seguefluxo = true;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+
+			// Campanha existe?
+			$cbo = new CampanhaBusinessImpl();
+			$dto = $cbo->carregarPorID($daofactory, $idcampanha);
+
+			if ($dto->id == null){
+				$retorno = new DTOPadrao();
+				$retorno->msgcode = ConstantesMensagem::CAMPANHA_INEXISTENTE;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+				$seguefluxo = false;
+			} else if ($cbo->isCampanhaAtiva($daofactory, $idcampanha)){
+				// Verifica se a campanha já está ativa
+				$retorno = new DTOPadrao();
+				$retorno->msgcode = ConstantesMensagem::CAMPANHA_JA_ESTA_ATIVA;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+				$seguefluxo = false;
+			} else if($dto->status != ConstantesVariavel::STATUS_TRABALHANDO){
+				$retorno = new DTOPadrao();
+				$retorno->msgcode = ConstantesMensagem::REQUISICAO_NAO_PODE_SER_PROCESSADA;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+				$seguefluxo = false;
+			}
+
+			if($seguefluxo){
+
+				// Finalizar o ticket fornecido pelo parceiro
+				$bo = new CampanhaQrCodeBusinessImpl();
+				$retorno = $bo->criarCarimbosCampanha($daofactory, $idcampanha);
+				if($retorno){
+					$ok = true;
+					$retorno = new DTOPadrao();
+					$retorno->msgcode = ConstantesMensagem::CARIMBOS_CRIADOS_COM_SUCESSO;
+					$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+				}
+			}
+
+ 			if ($ok) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function finalizarTicket($ticket)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// Finalizar o ticket fornecido pelo parceiro
+ 			$bo = new CampanhaQrCodeBusinessImpl();
+			$retorno = $bo->atualizarStatusPorTicket($daofactory, 
+						$ticket,
+						ConstantesVariavel::STATUS_FINALIZADO);
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function cadastrar($dto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new CampanhaBusinessImpl();
+ 			$retorno = $bo->inserir($daofactory, $dto);
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function listarPagina($pag, $qtde)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new CampanhaBusinessImpl();
+ 			$retorno = $bo->listarPagina($daofactory, $pag, $qtde);
+			$daofactory->commit();
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function pesquisarPorID($id)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new CampanhaBusinessImpl();
+ 			$retorno = $bo->carregarPorID($daofactory, $id);
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
+				$daofactory->commit();
+ 			} else {
+				$daofactory->rollback();
+ 			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+}
+
+?>

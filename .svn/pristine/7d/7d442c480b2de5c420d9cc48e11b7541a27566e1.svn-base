@@ -1,0 +1,13 @@
+<?php  
+
+require_once 'campanhaQrCodeServiceImpl.php';
+
+// pegue os códigos dentro do banco de dados para realizar os testes unitários
+$ticket = 'N5KrJ3Ei'; // campanha para teste de campanha inexistente
+$idfiel = 1;
+
+$csi = new CampanhaQrCodeServiceImpl();
+$retorno = $csi->validarTicket($idfiel, $ticket);
+var_dump($retorno);
+
+?>

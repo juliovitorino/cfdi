@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * SessaoDTO - Data Transfer Object
+ */
+
+// importar dependências
+require_once '../dto/DTOPadrao.php';
+
+class SessaoDTO extends DTOPadrao implements JsonSerializable
+{
+	public $id;
+	public $usuario;
+	public $pwd;
+    public $tokenid;
+    public $keep;
+    public $tipousuario;
+	public $status;
+	public $dataCadastro;
+	public $dataAtualizacao;
+
+	public function jsonSerialize()
+    {
+        return 
+        [
+            'tokenid' => $this->tokenid,
+            'tipousuario' => $this->tipousuario,
+            'msgcode' => $this->msgcode,
+            'msgcodeString' => $this->msgcodeString
+        ];
+    }	
+
+
+}
+
+?>

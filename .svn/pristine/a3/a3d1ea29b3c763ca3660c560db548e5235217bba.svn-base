@@ -1,0 +1,53 @@
+<?php  
+
+// importar dependencias
+require_once '../estatisticafuncao/ConstantesEstatisticaFuncao.php';
+
+/**
+ * ConstantesPlano
+ */
+class ConstantesPlano
+{
+
+	const MULTIPLO = 6;
+
+	const STATUS_PERMITIDO = 'S';
+	const STATUS_NAO_PERMITIDO = 'N';
+	const STATUS_SEM_USO = 'I';
+
+	const PERIODICIDADE_LIVRE = 'LI';
+	const PERIODICIDADE_MAXIMA = 'MX';
+	const PERIODICIDADE_DIARIA = 'DD';
+	const PERIODICIDADE_SEMANAL = 'SM';
+	const PERIODICIDADE_QUINZENAL = 'QZ';
+	const PERIODICIDADE_MENSAL = 'MM';
+	const PERIODICIDADE_ANUAL = 'AA';
+
+	// Posicao dentro do array lstpermissao
+	const PERM_PROJETO = 0;
+	const PERM_HEADLINES = 1;
+	const PERM_MINISITES = 2;
+	const PERM_WEB20_PALAVRA_CHAVE_EXATA = 3;
+	const PERM_WEB20_IMAGEM_MAIS_LINK = 4;
+	const PERM_WEB20_ARTIGO_SIMPLES = 5;
+	const PERM_PBN_PALAVRA_CHAVE_EXATA = 6;
+	const PERM_PBN_IMAGEM_MAIS_LINK = 7;
+	const PERM_PBN_ARTIGO_SIMPLES = 8;
+	const PERM_BACKLINK_NO_FOLLOW = 9;
+	const PERM_KEYWORD = 10;
+
+	const lstfuncionalidade = 	[
+									self::PERM_PROJETO => ConstantesEstatisticaFuncao::FUNCAO_PROJETO,
+									self::PERM_HEADLINES => ConstantesEstatisticaFuncao::FUNCAO_HEADLINE,
+									self::PERM_MINISITES => ConstantesEstatisticaFuncao::FUNCAO_MINISITE,
+									self::PERM_WEB20_PALAVRA_CHAVE_EXATA => ConstantesEstatisticaFuncao::FUNCAO_WEB20_PLVR_CHV_EXATA,
+									self::PERM_WEB20_IMAGEM_MAIS_LINK => ConstantesEstatisticaFuncao::FUNCAO_WEB20_IMAGEM_MAIS_LINK,
+									self::PERM_WEB20_ARTIGO_SIMPLES => ConstantesEstatisticaFuncao::FUNCAO_WEB20_ARTIGO_SIMPLES,
+									self::PERM_PBN_PALAVRA_CHAVE_EXATA => ConstantesEstatisticaFuncao::FUNCAO_PBN_PLVR_CHV_EXATA,
+									self::PERM_PBN_IMAGEM_MAIS_LINK => ConstantesEstatisticaFuncao::FUNCAO_PBN_IMAGEM_MAIS_LINK,
+									self::PERM_PBN_ARTIGO_SIMPLES => ConstantesEstatisticaFuncao::FUNCAO_PBN_ARTIGO_SIMPLES,
+									self::PERM_BACKLINK_NO_FOLLOW => ConstantesEstatisticaFuncao::FUNCAO_BACKLINK_NO_FOLLOW,
+									self::PERM_KEYWORD => ConstantesEstatisticaFuncao::FUNCAO_KEYWORD
+								];
+
+}

@@ -1,0 +1,138 @@
+<?php  
+
+require_once '../QuestionarioDTO.php';
+require_once 'MaquinaMiniSiteFactory.php';
+require_once 'ConstantesMaquinaMiniSiteFactory.php';
+
+echo 'rsclient.php em ação...';
+
+// Monta o questionario de acordo com as seleções e desejos do usuário
+// para montar seu mini site
+
+$formulario = new QuestionarioDTO();
+$formulario->nicho = 'emagrecimento';
+
+// pede uma introducao
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_INTRODUCAO, $formulario->nicho);
+$f->carregarTemplate();
+$introducao = $f->getPost();
+
+// pede uma autoridade
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_AUTORIDADE, $formulario->nicho);
+$f->carregarTemplate();
+$autoridade = $f->getPost();
+
+// pede uma cta
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_CALLTOACTION, $formulario->nicho);
+$f->carregarTemplate();
+$cta = $f->getPost();
+
+// pede uma comunidade
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_COMUNIDADE, $formulario->nicho);
+$f->carregarTemplate();
+$comunidade = $f->getPost();
+
+// pede um depoimento
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_DEPOIMENTO, $formulario->nicho);
+$f->carregarTemplate();
+$depoimento = $f->getPost();
+
+// pede uma dor/problema
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_DOR, $formulario->nicho);
+$f->carregarTemplate();
+$dor = $f->getPost();
+
+// pede uma garantia
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_GARANTIA, $formulario->nicho);
+$f->carregarTemplate();
+$garantia = $f->getPost();
+
+// pede uma storytelling
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_STORYTELLING, $formulario->nicho);
+$f->carregarTemplate();
+$storytelling = $f->getPost();
+
+// pede uma objecao funciona
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_OBJECAO_FUNCIONA, $formulario->nicho);
+$f->carregarTemplate();
+$objecaofunciona = $f->getPost();
+
+// pede uma objecao sem dinheiro
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_OBJECAO_SEM_DINHEIRO, $formulario->nicho);
+$f->carregarTemplate();
+$objecaonomoney = $f->getPost();
+
+// pede uma objecao vale a pena
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_OBJECAO_VALE, $formulario->nicho);
+$f->carregarTemplate();
+$objecaovale = $f->getPost();
+
+// pede um procedimento detalhado de compra da eduzz
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_EDUZZ, $formulario->nicho);
+$f->carregarTemplate();
+$eduzz = $f->getPost();
+
+// pede um procedimento detalhado de compra da hotmart
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_HOTMART, $formulario->nicho);
+$f->carregarTemplate();
+$hotmart = $f->getPost();
+
+// pede um procedimento detalhado de compra da monetizze
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_MONETIZZE, $formulario->nicho);
+$f->carregarTemplate();
+$monetizze = $f->getPost();
+
+// pede um modelo do produto
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_PRODUTO, $formulario->nicho);
+$f->carregarTemplate();
+$produto = $f->getPost();
+
+// pede um modelo do produto bonus
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_BONUS, $formulario->nicho);
+$f->carregarTemplate();
+$produtobonus = $f->getPost();
+
+// pede um modelo do produto como funciona
+$f = MaquinaMiniSiteFactory::getInstance(ConstantesMaquinaMiniSiteFactory::CONCRETE_PRODUTO_COMO_FUNCIONA, $formulario->nicho);
+$f->carregarTemplate();
+$produtocomofunciona = $f->getPost();
+
+/* apresenta resultados das factories */
+echo $introducao;
+echo '<br><br>';
+echo $autoridade;
+echo '<br><br>';
+echo $cta;
+echo '<br><br>';
+echo $comunidade;
+echo '<br><br>';
+echo $depoimento;
+echo '<br><br>';
+echo $dor;
+echo '<br><br>';
+echo $garantia;
+echo '<br><br>';
+echo $storytelling;
+echo '<br><br>';
+echo $objecaofunciona;
+echo '<br><br>';
+echo $objecaonomoney;
+echo '<br><br>';
+echo $objecaovale;
+echo '<br><br>';
+echo $eduzz;
+echo '<br><br>';
+echo $hotmart;
+echo '<br><br>';
+echo $monetizze;
+echo '<br><br>';
+echo $produto;
+echo '<br><br>';
+echo $produtobonus;
+echo '<br><br>';
+echo $produtocomofunciona;
+echo '<br><br>';
+
+
+
+?>

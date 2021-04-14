@@ -1,0 +1,44 @@
+<?php
+
+// URL http://elitefinanceira.com/cfdi/php/classes/gateway/appGetCarimboLivre.php?tokenid=cb1ed118944b2c4738e8f86765906675d9562de3&campanha=1
+// URL http://localhost/cfdi/php/classes/gateway/appGetCarimboLivre.php?tokenid=cb1ed118944b2c4738e8f86765906675d9562de3&campanha=1
+
+// Importar dependencias
+require_once '../campanha/campanhaServiceImpl.php';
+
+// ====== padrão para identificação da sessão do usuário ===========
+require_once '../usuarios/UsuarioServiceImpl.php';
+require_once '../sessao/SessaoServiceImpl.php';
+
+// Obtem o token de sessao (pode ser dispositivo ou outro hardware qualquer)
+$token = $_GET['tokenid'];
+$idcampanha = $_GET['campanha'];
+
+// Obtem o usuário do token validado
+$ssi = new SessaoServiceImpl();
+$sessaodto = $ssi->obterRegistroDonoTokenSessao($token);
+//var_dump($sessaodto);
+
+// Carrega dados do usuário 
+if($sessaodto->msgcode != "MSG-0046"){
+    $usi = new UsuarioServiceImpl();
+    $usuariodto = $usi->pesquisarPorId($sessaodto->usuario);
+    //var_dump($usuariodto);
+}
+
+// ====== padrão para identificação da sessão do usuário ===========
+
+if($sessaodto->msgcode == "MSG-0046") {  // sessão válida
+    echo json_encode($sessaodto);
+} else {
+    // >>>Backend
+    $csi = new CampanhaServiceImpl();
+    $retorno = $csi->getCarimboLivre($idcampanha, $usuariodto->id );
+    //var_dump($retorno);
+    
+    // retorna resultado
+    echo json_encode($retorno);
+}
+
+
+?>

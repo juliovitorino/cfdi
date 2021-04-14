@@ -1,0 +1,167 @@
+<?php
+
+/**
+* Spinner - Recebe um conteúdo com determinadas tags e faz um spinner nelas
+* @author Julio Vitorino
+* @since 14/06/2018
+*/
+class HeadlineSpinner 
+{
+
+	/* definição de constantes */
+	const tag_prefixo = '${@';
+	const tag_sufixo = '@}$';
+
+	/* atributos da classe */
+	private $conteudo;
+	private $tag_completa;
+	private $original;
+	private $id;
+	private $sinonimos;
+	private $controlador;
+	private $posinicial, $posfinal;
+	
+	/* construtor para atribuir a frase ao membro da classe para trabalho */
+	function __construct($conteudo)
+	{
+		$this->conteudo = $conteudo;
+		$this->init();
+	}
+
+	/* métodos da classe */
+
+	/**
+	* getConteudo - retornar o conteudo do atributo da classe de trabalho
+	*
+	* @return string
+	*/
+	public function getConteudo(){
+		return $this->conteudo;
+	}
+
+	public function getOriginal(){
+		return $this->original;
+	}
+
+	public function getSinonimos(){
+		return $this->sinonimos;
+	}
+
+	/**
+	* init() - Inicializa todo o procedimento de extração das tags e suas respectivas
+	* trocas pelo spinner
+	* 
+	* @return void
+	*/
+	private function init(){
+
+		while ( strpos($this->conteudo, self::tag_prefixo) > -1 ) {
+			$this->processarTag($this->conteudo);
+			$this->inicializarControlador();
+			$this->snipperTag();
+			$this->incrementarControlador();
+		}
+	}
+
+	private function incrementarControlador()
+	{
+		$this->controlador++;
+
+		/* remover ou comentar os echos em ambiente de produção*/
+		/*echo "incrementarControlador()::controlador = ".$this->controlador."<br>";*/
+
+		if(file_exists(getcwd().'/controlador/'.$this->id)){
+			$myfile = fopen(getcwd().'/controlador/'.$this->id, "w");
+			fwrite($myfile, $this->controlador);
+			fclose($myfile);
+		}
+	}
+
+	/**
+	* snipperTag() - Realiza a ação do snipper
+	*
+	* @return void
+	*/
+	private function snipperTag()
+	{
+
+		$maxSinonimos = max(array_keys($this->sinonimos));
+		/*$this->controlador = rand(1, max(array_keys($this->sinonimos)));*/
+
+		if($this->controlador > $maxSinonimos){
+			$this->controlador = 1;
+		}
+
+		$str1 = substr($this->conteudo, 0, $this->posinicial);
+		$str2 = substr($this->conteudo, $this->posfinal + 3);
+		$spinner = $this->sinonimos[$this->controlador];
+		$this->conteudo = $str1.' '.$spinner.' '.$str2;
+	}
+
+	/**
+	* inicializarControlador() - Startup controlador do spinner do id especifico
+	*
+	* @return void
+	*/
+	private function inicializarControlador()
+	{
+
+		if(file_exists(getcwd().'/controlador/'.$this->id)){
+			$myfile = fopen(getcwd().'/controlador/'.$this->id, "rw");
+			$this->controlador = (int) fread($myfile, filesize(getcwd().'/controlador/'.$this->id));
+			fclose($myfile);
+		} else {
+			$myfile = fopen(getcwd().'/controlador/'.$this->id, "w");
+			fwrite($myfile, '1');
+			fclose($myfile);
+			$this->controlador = 1;
+		}
+	}
+
+	/**
+	*
+	* extrairTagCompleta - Extrair a tag de forma completa da string
+	*
+	* @param string
+	*
+	*/
+	private function processarTag($string){
+
+		/* Verifica a existência do prefixo na string */
+		$posinicial = strpos($this->conteudo, self::tag_prefixo);
+		$posfinal = -1;
+
+		/* se encontrar, procura pela tag de sufixo*/
+		if( $posinicial > -1 ){
+
+			$posfinal = strpos($this->conteudo, self::tag_sufixo, $posinicial);
+			if($posfinal > -1){
+				$this->tag_completa = substr($this->conteudo, $posinicial + 3, $posfinal - $posinicial - 3);
+
+				/* localiza o sinal de '=' na expressão */
+				$posigual = strpos($this->tag_completa, '=');
+
+				if($posigual > -1){
+					$this->original = substr($this->tag_completa, 0, $posigual);
+
+					$sinonimos = substr($this->tag_completa, $posigual + 1);
+	
+					/* transforma as opções da string em array*/
+					$this->sinonimos = preg_split("/[;]+/", $sinonimos);
+
+					/* preserva o ID para ser usado como identificador 
+						do arquivo spinner
+					*/
+					$this->id = $this->sinonimos[0];
+
+					/* atualiza controladores de posição */
+					$this->posinicial = $posinicial;
+					$this->posfinal = $posfinal;
+				}
+			}
+		}
+	}
+}
+
+
+?>

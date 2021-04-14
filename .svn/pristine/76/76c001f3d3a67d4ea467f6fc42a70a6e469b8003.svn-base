@@ -1,0 +1,119 @@
+<?php 
+
+/**
+* RedesSociaisFactory - Abstração para criação de classes concretas para resolver posts
+* em redes sociais diversas
+* @author Julio Vitorino
+* @since 10/07/2018
+*/
+
+/* importa referencias necessárias ao projeto */
+require_once 'ConstantesFactory.php';
+require_once 'FacebookConcrete.php';
+require_once 'GooglePlusConcrete.php';
+require_once 'TwitterConcrete.php';
+require_once 'InstagramConcrete.php';
+require_once 'PinterestConcrete.php';
+require_once 'WhatsappConcrete.php';
+
+require_once '../../spinner.php';
+require_once '../../spinner.php';
+
+abstract class RedesSociaisFactory
+{
+
+	/* constantes */
+	const PATH_HOME_REPOSITORIO = '../../../repositorio/';
+
+	/* atributos da classe */
+	protected $nicho;
+	protected $post;
+	protected $fullpath;
+	protected $fullhome;
+
+	/**
+	* getInstance() - Retorna uma instância concreta de um objeto específico
+	* de tratamento de redes sociais
+	*/
+	public static function getInstance($tipo, $nicho)
+    {
+    	switch ($tipo) {
+    		case ConstantesFactory::CONCRETE_FACEBOOK:
+    			return new FacebookConcrete($nicho);
+    		case ConstantesFactory::CONCRETE_GOOGLE_PLUS:
+    			return new GooglePlusConcrete($nicho);
+    		case ConstantesFactory::CONCRETE_TWITTER:
+    			return new TwitterConcrete($nicho);
+    		case ConstantesFactory::CONCRETE_INSTAGRAM:
+    			return new InstagramConcrete($nicho);
+    		case ConstantesFactory::CONCRETE_PINTEREST:
+    			return new PinterestConcrete($nicho);
+    		case ConstantesFactory::CONCRETE_WHATSAPP:
+    			return new WhatsappConcrete($nicho);
+    		
+    		default:
+    			break;
+    	}
+        
+    }
+
+ 	public function carregarTemplate() {
+ 		$tl = new TemplateLoader($this->fullpath);
+ 		$spinner = new Spinner($tl->getConteudo());
+ 		$this->post = $spinner->getConteudo();
+ 	}
+
+
+	/**
+	* getPost() - Retorna o texto do post da factory invocada
+	*/
+	public function getPost() 
+	{
+		return $this->post;
+	}
+
+ 	protected function getModelo($nicho, $tipo, $timestamp)
+ 	{
+ 		return 'modelo-'.$this->controlador($nicho, $tipo, $timestamp).'.txt';
+ 	}
+
+	private function controlador($nicho, $tipo, $timestamp)
+	{
+		$tag = $nicho.'-'.$tipo.'-'.$timestamp;
+		$controlador = 0;
+
+		if(file_exists(getcwd().'/controlador/'.$tag)){
+			$myfile = fopen(getcwd().'/controlador/'.$tag, "rw");
+			$controlador = (int) fread($myfile, filesize(getcwd().'/controlador/'.$tag));
+			fclose($myfile);
+
+			//$controlador++;
+
+			$fi = new FilesystemIterator($this->fullhome, FilesystemIterator::SKIP_DOTS);
+			$controlador = rand(1, iterator_count($fi)-1);
+
+			if($controlador > iterator_count($fi)){
+				$controlador = 1;
+			}
+
+			if(file_exists(getcwd().'/controlador/'.$tag)){
+				$myfile = fopen(getcwd().'/controlador/'.$tag, "w");
+				fwrite($myfile, $controlador);
+				fclose($myfile);
+			}
+		} else {
+			$myfile = fopen(getcwd().'/controlador/'.$tag, "w");
+			fwrite($myfile, '1');
+			fclose($myfile);
+			$controlador = 1;
+		}
+
+		return $controlador;
+	}
+
+
+}
+
+
+
+?>

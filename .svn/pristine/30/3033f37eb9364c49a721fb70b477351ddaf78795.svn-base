@@ -1,0 +1,40 @@
+<?php  
+
+// importar dependencias
+require_once 'FielDTO.php';
+require_once 'FielServiceImpl.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../util/util.php';
+
+
+$dto = getFielFake();
+var_dump($dto);
+
+$usi = new FielServiceImpl();
+$ok = $usi->cadastrarNovaConta($dto);
+
+if ($ok->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO)
+{
+	echo "Inserido com sucesso";
+} else {
+	echo "Algum erro acontenceu";
+}
+exit(0);
+
+
+function getFielFake()
+{
+	$date = new DateTime();
+	$ts = $date->getTimestamp();
+
+	$dto = new FielDTO();
+	$dto->email = $ts . '@' . Util::getCodigo(10) . '.com.br';
+	$dto->pwd = Util::getCodigo(40);
+	$dto->apelido = 'Julio ' . $ts . ' Vitorino';
+	$dto->tipoConta = 'C';
+
+	return $dto;
+}
+
+
+?>

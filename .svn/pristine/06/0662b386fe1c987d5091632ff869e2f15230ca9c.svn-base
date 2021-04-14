@@ -1,0 +1,5 @@
+11/08/2018
+problemas encontrados na instalação da kinghost
+
+1) PHP sem o driver mysqlnd (chamado #1289915)
+problema *** impossibilita o uso do método get_result() da classe mysqli

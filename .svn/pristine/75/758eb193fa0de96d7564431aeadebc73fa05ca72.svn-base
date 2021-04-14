@@ -1,0 +1,138 @@
+<?php
+
+/**
+ * MySqlKinghostKeywordSERPDAO - Implementação DAO
+ */
+
+require_once 'KeywordSERPDTO.php';
+require_once 'DmlSqlKeywordSERP.php';
+require_once 'KeywordSERPDAO.php';
+
+require_once '../daofactory/DmlSql.php';
+
+class MySqlKinghostKeywordSERPDAO implements KeywordSERPDAO
+{
+	private $daofactory;
+	
+	function __construct($daofactory)
+	{
+		$this->daofactory = $daofactory;
+	}
+
+	public function update($dto){ }
+	public function delete($dto) {	}
+	public function load($dto) 	{	}
+	public function listAll() 	{	}
+
+	public function listKeywordSERP($keywordParentId)
+	{
+		$retorno = array();
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlKeywordSERP::SELECT
+					. ' WHERE `' . DmlSqlKeywordSERP::PRKE_ID . '` = ' . $keywordParentId );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+
+	public function listPagina($pag, $qtde)
+	{
+		$retorno = array();
+
+		$final = $pag * $qtde - $qtde;
+		var_dump('pag = '. $pag);
+		var_dump('qtde = '. $qtde);
+		var_dump('final = '. $final);
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlKeywordSERP::SELECT 
+					. ' LIMIT ' . $final . ',' . $qtde );
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
+	public function loadPK($id)
+	{	
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlKeywordSERP::SELECT . ' WHERE ' . DmlSqlKeywordSERP::PRKS_ID . '=' . $id );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+
+	}
+
+	public function insert($dto) 
+	{	
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlKeywordSERP::INS);
+		$stmt->bind_param(DmlSql::INTEGER_TYPE
+							. DmlSql::INTEGER_TYPE 
+							. DmlSql::STRING_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							. DmlSql::INTEGER_TYPE 
+							,$dto->keywordid
+							,$dto->keywordrelatedid
+							,$dto->link
+							,$dto->linkRelQtd
+							,$dto->posicaoDA
+							,$dto->posicaoPA
+							,$dto->facebooklike
+							,$dto->ranking
+							,$dto->niveldificuldade
+							,$dto->visitas );
+
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+	/**
+	* getDTO() - Transforma o resultset em DTO
+	*/
+	public function getDTO($resultset)
+	{
+		//echo var_dump($resultset); // ótimo pra debugar
+		$retorno = new KeywordSERPDTO();
+		$retorno->id = $resultset[DmlSqlKeywordSERP::PRKS_ID];
+		$retorno->keywordid = $resultset[DmlSqlKeywordSERP::PRKE_ID];
+		$retorno->keywordrelatedid = $resultset[DmlSqlKeywordSERP::PRKR_ID];
+		$retorno->link = $resultset[DmlSqlKeywordSERP::PRKS_TX_LINK];
+		$retorno->linkRelQtd = $resultset[DmlSqlKeywordSERP::PRKS_QT_LINK];
+		$retorno->posicaoDA = $resultset[DmlSqlKeywordSERP::PRKS_NU_DA];
+		$retorno->posicaoPA = $resultset[DmlSqlKeywordSERP::PRKS_NU_PA];
+		$retorno->facebooklike = $resultset[DmlSqlKeywordSERP::PRKS_NU_FBLIKES];
+		$retorno->ranking = $resultset[DmlSqlKeywordSERP::PRKS_NU_RANK];
+		$retorno->niveldificuldade = $resultset[DmlSqlKeywordSERP::PRKR_NU_DIFICULDADE];
+		$retorno->visitas = $resultset[DmlSqlKeywordSERP::PRKS_NU_VISITAS];
+		$retorno->dataCadastro = $resultset[DmlSqlKeywordSERP::PRKS_DT_CADASTRO];
+		$retorno->dataAtualizacao = $resultset[DmlSqlKeywordSERP::PRKS_DT_UPDATE];
+
+		return $retorno;
+	}
+
+}
+?>

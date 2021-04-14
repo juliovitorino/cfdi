@@ -1,0 +1,35 @@
+<?php
+
+// importar dependencias
+require_once '../dto/DTOPadrao.php';
+
+/**
+ * ProjetoBeneficioDTO - Data Transfer Object
+ */
+class BacklinkDTO extends DTOPadrao implements JsonSerializable
+{
+	public $id;
+	public $url;
+	public $tipo;
+	public $status;
+	public $dataCadastro;
+	public $dataAtualizacao;
+
+    public function jsonSerialize()
+    {
+        return 
+        [
+            'id'   => $this->id,
+			'url' => $this->url,
+			'tipo' => $this->tipo,
+			'status' => $this->status,
+			'dataCadastro' => $this->dataCadastro,
+			'dataAtualizacao' => $this->dataAtualizacao,
+            'msgcode' => $this->msgcode,
+            'msgcodeString' => $this->msgcodeString
+        ];
+    }	
+
+
+}
+?>

@@ -1,0 +1,223 @@
+<?php
+
+/**
+ * 
+ * NotificacaoServiceImpl - Classe de Serviços
+ * @author Julio Vitorino
+ * @copyright Julio Vitorino
+ * @since 18/08/2018
+ */
+
+// importar dependências
+require_once 'NotificacaoService.php';
+require_once 'NotificacaoBusinessImpl.php';
+
+require_once '../daofactory/DAOFactory.php';
+require_once '../mensagem/ConstantesMensagem.php';
+
+class NotificacaoServiceImpl implements NotificacaoService
+{
+	
+	function __construct()
+	{
+		# code...
+	}
+
+
+	public function apagar($dto)	{	}
+	public function pesquisar($dto)	{	}
+	public function atualizar($dto)	{	}
+	public function listarPagina($pag, $qtde)	{	}
+
+	/**
+	*
+	* atualizarStatusNotificacao() - Atualizar status de uma notificacao
+	* @param $notificacaoid
+	* @param $status
+	*/
+	public function atualizarStatusNotificacao($notificacaoid, $status)
+	{
+		$daofactory = NULL;
+		$retorno = false;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+
+			$sbi = new NotificacaoBusinessImpl();
+			$retorno = $sbi->atualizarStatusNotificacao($daofactory, $notificacaoid, $status);
+			
+			if($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO ){
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	/**
+	*
+	* listarTodasNotificacoesAtivas() - Listar notificacoes de determinado usuario
+	* @param $usuarioid
+	* @return array
+	*/
+	public function listarTodasNotificacoesAtivas($usuarioid)
+	{
+		$daofactory = NULL;
+		$retorno = false;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+
+			$sbi = new NotificacaoBusinessImpl();
+			$retorno = $sbi->listarTodasNotificacoesAtivas($daofactory, $usuarioid);
+			
+			if($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO ){
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	/**
+	*
+	* listarTudo() - Cadastrar um registro
+	* @param $dto
+	* @return $dto
+	*/
+	public function listarTudo()
+	{
+		$daofactory = NULL;
+		$retorno = false;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+
+			$sbi = new NotificacaoBusinessImpl();
+			$retorno = $sbi->listarTudo($daofactory);
+			
+			if($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO ){
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	/**
+	*
+	* cadastrar() - Cadastrar um registro
+	* @param $dto
+	* @return $dto
+	*/
+	public function cadastrar($dto)
+	{
+		$daofactory = NULL;
+		$retorno = false;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+
+			$sbi = new NotificacaoBusinessImpl();
+			$retorno = $sbi->inserir($daofactory, $dto);
+			
+			if($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO ){
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	/**
+	*
+	* pesquisarPorID() - Pesquisa o registro pela id
+	* @param $id
+	* @return $dto
+	*/
+	public function pesquisarPorID($id)
+	{
+		$daofactory = NULL;
+		$retorno = false;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+
+			// Recupera Sessão usando o token
+			$sbi = new NotificacaoBusinessImpl();
+			$retorno = $sbi->carregarPorID($daofactory, $id);
+			
+			$daofactory->commit();
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+}
+
+?>

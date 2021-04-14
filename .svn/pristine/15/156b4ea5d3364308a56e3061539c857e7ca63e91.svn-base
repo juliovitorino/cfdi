@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * ComunidadeConcrete - Busca os modelos para cada parte do mini site
+ */
+ class ComunidadeConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-comunidade';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ComunidadeConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ComunidadeConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-comunidade','11072018160000');
+ 	}
+
+ } 
+
+?>

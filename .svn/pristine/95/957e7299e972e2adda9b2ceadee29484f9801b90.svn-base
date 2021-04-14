@@ -1,0 +1,14 @@
+<?php  
+
+require_once 'backlinkServiceImpl.php';
+
+
+$qtde = 5;
+
+$bsi = new BacklinkServiceImpl();
+var_dump($bsi->listarPagina(1, $qtde));
+var_dump($bsi->listarPagina(2, $qtde));
+var_dump($bsi->listarPagina(3, $qtde));
+
+
+?>

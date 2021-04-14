@@ -1,0 +1,193 @@
+<?php
+
+//importar dependencias
+require_once 'UsuarioBacklinkService.php';
+require_once 'UsuarioBacklinkBusinessImpl.php';
+
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
+
+require_once '../daofactory/DAOFactory.php';
+
+
+/**
+ * UsuarioBacklinkServiceImpl - Implementação dos servicos
+ */
+class UsuarioBacklinkServiceImpl implements UsuarioBacklinkService
+{
+	
+	function __construct() {	}
+
+	public function apagar($dto) {	}
+	public function pesquisar($dto) {	}
+	public function atualizar($dto) {	}
+	public function cadastrar($dto) {	}
+	public function listarTudo() {	}
+
+	public function atualizarStatus($usuarioid, $usbaid, $novostatus)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBacklinkBusinessImpl();
+ 			$retorno = $bo->atualizarStatus($daofactory, $usuarioid, $usbaid, $novostatus);
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) 
+ 			{
+				$daofactory->commit();
+ 			} else {
+				$daofactory->rollback();
+ 			}
+
+ 			// Inserir uma notificacao para admin captar mais backlinks
+
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function listarTudoPorUsuarioID($usuarioid)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBacklinkBusinessImpl();
+ 			$retorno = $bo->listarTudoPorUsuarioID($daofactory, $usuarioid);
+			$daofactory->commit();
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function popularUsuarioBacklink($usuarioid, $funcionalidade)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBacklinkBusinessImpl();
+ 			$retorno = $bo->popularUsuarioBacklink($daofactory, $usuarioid, $funcionalidade);
+ 			if (
+ 				($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) || 
+ 				($retorno->msgcode == ConstantesMensagem::NAO_HA_MAIS_BACKLINKS_NO_FOLLOW_DISPONIVEIS)
+			)
+ 			{
+				$daofactory->commit();
+ 			} else {
+				$daofactory->rollback();
+ 			}
+
+ 			// Inserir uma notificacao para admin captar mais backlinks
+
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function listarPagina($pag, $qtde)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBacklinkBusinessImpl();
+ 			$retorno = $bo->listarPagina($daofactory, $pag, $qtde);
+			$daofactory->commit();
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function pesquisarPorID($id)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBacklinkBusinessImpl();
+ 			$retorno = $bo->carregarPorID($daofactory, $id);
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
+				$daofactory->commit();
+ 			} else {
+				$daofactory->rollback();
+ 			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+}
+
+?>

@@ -1,0 +1,35 @@
+<?php  
+
+require_once 'ConstantesNotificacao.php';
+require_once 'NotificacaoServiceImpl.php';
+require_once '../variavel/ConstantesVariavel.php';
+
+// cria uma notificacao
+$ndto = new NotificacaoDTO();
+$usr = 1;
+
+$date = new DateTime();
+$ts = $date->getTimestamp();
+
+$ndto->textonotificacao = 'Nofiticação ' . $ts;
+$ndto->usuarioid = $usr;
+$ndto->icone = 'fa fa-check';
+$ndto->status = 'A';
+
+$nsi = new NotificacaoServiceImpl();
+$ok = $nsi->cadastrar($ndto);
+var_dump($ok);
+
+// busca todas
+$ok = $nsi->listarTodasNotificacoesAtivas($ndto->usuarioid);
+var_dump($ok);
+
+////// -- atualiza
+if (sizeof($ok->lstnotificacao) > 0){
+	foreach ($ok->lstnotificacao as $key => $undto) {
+		$retorno = $nsi->atualizarStatusNotificacao((integer)$undto->id, ConstantesVariavel::STATUS_REALIZADO);
+		var_dump($retorno);
+	}
+}
+
+?>

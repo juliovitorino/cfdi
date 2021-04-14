@@ -1,0 +1,37 @@
+<?php
+
+// importar dependências
+require_once '../daofactory/DmlSql.php';
+
+/**
+ * DmlSqlProjetoSERP - DML para tabela
+ */
+class DmlSqlGraficoProjetoSERP extends DmlSql
+{
+
+	// Tabela
+	const TABELA = 'VW_GRAFICO_PROJETO_SERP';
+
+	// colunas da tabela
+	const MESANO = 'MESANO';
+	const PROJ_ID = 'PROJ_ID';
+	const SUM_PRSE_NU_DA = 'SUM_PRSE_NU_DA';
+	const SUM_PRSE_NU_PA = 'SUM_PRSE_NU_PA';
+	const SUM_PRSE_NU_RANK = 'SUM_PRSE_NU_RANK';
+
+	// Comandos DML
+	const INS = 'INSERT INTO ';
+
+ 	const DEL_PK = 'DELETE ';
+
+	const UPD = 'UPDATE ';
+
+	const SELECT = 'SELECT `MESANO`,'
+					. ' `PROJ_ID`, '
+					. ' `SUM_PRSE_NU_DA`, ' 
+					. ' `SUM_PRSE_NU_PA`, ' 
+					. ' `SUM_PRSE_NU_RANK` '
+					. ' FROM `'.self::TABELA.'` ';
+}
+
+?>

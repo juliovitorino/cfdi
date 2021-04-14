@@ -1,0 +1,200 @@
+<?php  
+
+// importar dependencias
+require_once 'UsuarioBacklinkBusiness.php';
+
+require_once '../util/fake.php';
+require_once '../util/fakeDTO.php';
+require_once '../dto/DTOPadrao.php';
+require_once '../usuariosplanos/PlanoUsuarioBusinessImpl.php';
+require_once '../backlink/backlinkBusinessImpl.php';
+require_once '../estatisticafuncao/EstatisticaFuncaoBusinessImpl.php';
+/**
+ * UsuarioBacklinkBusinessImpl - Implementação da classe de negocio
+ */
+class UsuarioBacklinkBusinessImpl implements UsuarioBacklinkBusiness
+{
+	
+	function __construct()	{	}
+
+	public function carregar($daofactory, $dto)	{	}
+	public function deletar($daofactory, $dto)	{	}
+	public function atualizar($daofactory, $dto)	{	}
+	public function listarTudo($daofactory)	{	}
+
+	public function atualizarStatus($daofactory, $usuarioid, $usbaid, $novostatus)
+ 	{
+ 		
+		$dao = $daofactory->getUsuarioBacklinkDAO($daofactory);
+
+		// Obtem o registro do link baseado no usuário para ver se a chamada veio do usuário do front-end
+		$usbadto = $dao->loadPK($usbaid);
+		
+		$retorno = new DTOPadrao();
+		if ($usbadto->usuarioid == $usuarioid) {
+			$res = $dao->updateStatusPorPK($usbaid, $novostatus);
+
+			// Envia resultado ao front-end
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			if(!$res) {
+				$retorno->msgcode = ConstantesMensagem::ERRO_AO_ATUALIZAR_STATUS_USUARIO_BACKLINK;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, 
+					[
+						'*=status=*' => $novostatus, 
+					 	'*=id-backlink=*' => $usbaid
+					]);
+			}
+
+		} else {
+				$retorno->msgcode = ConstantesMensagem::ERRO_AO_ATUALIZAR_STATUS_USUARIO_BACKLINK;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, 
+					[
+						'*=status=*' => $novostatus, 
+					 	'*=id-backlink=*' => $usbaid
+					]);
+		}
+
+
+		return $retorno;
+ 	}
+
+	public function listarTudoPorUsuarioID($daofactory, $usuarioid)
+	{
+		// Obtem toda a lista de backlinks disponíveis para este usuário
+		$dao = $daofactory->getUsuarioBacklinkDAO($daofactory);
+		$retorno = $dao->listTudoPorUsuarioID($usuarioid);
+
+		// Coloca um fake dentro de cada backlink para processo futuro
+		foreach ($retorno as $key => $ubldto) {
+			$ubldto->fakedto = Fake::getInstance()->getFakeDTO();
+		}
+
+		return $retorno;
+
+	}
+
+ 	public function popularUsuarioBacklink($daofactory, $usuarioid, $funcionalidade)
+ 	{
+ 		$pusi = new PlanoUsuarioBusinessImpl();
+		$retorno = $pusi->verificarPermissaoPlano($daofactory, $usuarioid, $funcionalidade);
+
+		$seguefluxo = true;
+		if (($retorno->msgcode !== ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) &&
+			($retorno->msgcode !== ConstantesMensagem::PERMISSAO_CONCEDIDA_FACTORY) 
+			)
+		{
+			$seguefluxo = false;
+		}
+
+		if ($seguefluxo) {
+
+			// Verifica a quantidade de backlink que pode ser criado de acordo com o plano do usuário
+			$qtde = (integer) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAX_BACKLINK_PERMITIDO_BUSCA);
+//			var_dump($qtde);
+
+			if($retorno->periodicidade !== ConstantesPlano::PERIODICIDADE_LIVRE){
+				$qtde = (integer) $retorno->qtdepermitida;
+			}
+
+			// obtem o USBA_ID mais recente
+			$ubsi = new UsuarioBacklinkBusinessImpl();
+			$backid = $ubsi->loadMaximoIdPorUsuario($daofactory, $usuarioid);
+//			var_dump($backid);
+
+			// busca os backlinks de origem a partir do USBA_ID mais recente
+			$bsi = new BacklinkBusinessImpl();
+			$lstbacklink = $bsi->listarPaginaMaiores($daofactory, $backid, ConstantesVariavel::PAGINA_INICIAL, $qtde);
+//			var_dump($lstbacklink);
+//			var_dump(sizeof($lstbacklink));
+
+			if (sizeof($lstbacklink) == 0) {
+				$seguefluxo = false;
+				$retorno = new DTOPadrao();
+				$retorno->msgcode = ConstantesMensagem::NAO_HA_MAIS_BACKLINKS_NO_FOLLOW_DISPONIVEIS;
+				$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			}
+		}
+
+		if ($seguefluxo) {
+
+			$qtde = sizeof($lstbacklink);
+
+			// registra os novos backlinks para o usuario na USBK
+			$ubsi->cadastrarBacklinks($daofactory, $usuarioid, $lstbacklink);
+
+			// registra histórico para estatística e controle
+			$esfuhelp = EstatisticaFuncaoHelper::getDTO($usuarioid, 0, ConstantesEstatisticaFuncao::FUNCAO_BACKLINK_NO_FOLLOW);
+			$efsi = new EstatisticaFuncaoBusinessImpl();
+			$dtohist = $efsi->pesquisarPorUIX($daofactory,
+											$esfuhelp->tipo, 
+											$esfuhelp->dia, 
+											$esfuhelp->mes, 
+											$esfuhelp->ano, 
+											$esfuhelp->usuarioid, 
+											$esfuhelp->projetoid);
+			if (is_null($dtohist->id)){
+				$efsi->inserir($daofactory, $esfuhelp);
+			}
+			$efsi->incrementarQtdeAlternativa($daofactory,
+										$esfuhelp->tipo, 
+										$esfuhelp->dia, 
+										$esfuhelp->mes, 
+										$esfuhelp->ano, 
+										$esfuhelp->usuarioid, 
+										$esfuhelp->projetoid,
+										$qtde);
+
+			// Envia resultado ao front-end
+			$retorno = new DTOPadrao();
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+		} 
+
+		return $retorno;
+ 	}
+
+ 	public function cadastrarBacklinks($daofactory, $usuarioid, $lstbacklink)
+	{	
+		if(sizeof($lstbacklink) > 0 ){
+			foreach ($lstbacklink as $key => $backlinkdto) {
+				$dto = new UsuarioBacklinkDTO();
+				$dto->backlinkid = $backlinkdto->id;
+				$dto->usuarioid = $usuarioid;
+				$dto->url = $backlinkdto->url;
+				$dto->tipo = $backlinkdto->tipo;
+				$this->inserir($daofactory, $dto);
+			}
+		}
+		$dao = $daofactory->getUsuarioBacklinkDAO($daofactory);
+		return $dao->loadMaximoIdPorUsuario($usuarioid);
+	}
+
+	public function loadMaximoIdPorUsuario($daofactory, $usuarioid)
+	{	
+		$dao = $daofactory->getUsuarioBacklinkDAO($daofactory);
+		return $dao->loadMaximoIdPorUsuario($usuarioid);
+	}
+
+	public function listarPagina($daofactory, $pag, $qtde)	
+	{	
+		$dao = $daofactory->getUsuarioBacklinkDAO($daofactory);
+		return $dao->listPagina($pag, $qtde);
+	}
+
+	public function carregarPorID($daofactory, $id)
+	{ 
+		$dao = $daofactory->getUsuarioBacklinkDAO($daofactory);
+		return $dao->loadPK($id);
+	}
+
+	public function inserir($daofactory, $dto)
+	{ 
+		$dao = $daofactory->getUsuarioBacklinkDAO($daofactory);
+		return $dao->insert($dto);
+	}
+
+
+}
+?>

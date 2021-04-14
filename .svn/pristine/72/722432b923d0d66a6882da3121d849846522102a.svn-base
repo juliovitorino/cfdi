@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * ArtigoGoogleLovelyConcrete - Busca os modelos de artigos
+ */
+ class ArtigoGoogleLovelyConcrete extends ArtigosFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'artigo-google-lovely';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.ArtigosFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ArtigoGoogleLovelyConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.ArtigosFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ArtigoGoogleLovelyConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'lovely','11072018142301');
+ 	}
+
+ } 
+
+?>

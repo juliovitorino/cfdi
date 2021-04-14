@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * ProcessoDetalhadoMonetizzeConcrete - Busca os modelos para cada parte do mini site
+ */
+ class ProcessoDetalhadoMonetizzeConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-procedimento-monetizze';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ProcessoDetalhadoMonetizzeConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.ProcessoDetalhadoMonetizzeConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-prdc-monetizze','11072018173601');
+ 	}
+
+ } 
+
+?>

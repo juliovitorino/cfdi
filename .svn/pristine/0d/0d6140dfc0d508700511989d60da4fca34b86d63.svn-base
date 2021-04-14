@@ -1,0 +1,36 @@
+<?php
+
+// importar dependências
+require_once '../dto/DTOPadrao.php';
+
+/**
+ * PlanoDTO - Data Transfer Object
+ */
+
+class PlanoUsuarioDTO extends DTOPadrao
+{
+	public $id;
+	public $idparent;
+	public $usuarioid;
+	public $planoid;
+	public $nome;
+	public $permissao;
+	public $lstpermissao = [];
+	public $valor;
+	public $status;
+	public $dataCadastro;
+	public $dataAtualizacao;
+/*
+	function __construct($usuarioid, $planodto)	
+	{	
+		$this->usuarioid = $usuarioid;
+		$this->planoid = $planodto->id;
+		$this->nome = $planodto->nome;
+		$this->permissao =  $planodto->permissao;
+		$this->lstpermissao =  $planodto->lstpermissao;
+		$this->valor = $planodto->valor;
+	}
+*/
+}
+
+?>

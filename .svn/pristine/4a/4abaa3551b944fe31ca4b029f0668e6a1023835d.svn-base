@@ -1,0 +1,21 @@
+<?php
+
+require_once '../interfaces/AppService.php';
+
+/**
+ * 
+ * NotificacaoService - Interface de metodos
+ * @author Julio Vitorino
+ * @copyright Julio Vitroino
+ * @since 19/08/2018
+ */
+
+interface NotificacaoService extends AppService
+{
+	public function listarTodasNotificacoesAtivas($usuarioid);
+	public function atualizarStatusNotificacao($notificacaoid, $status);
+
+}
+
+
+?>

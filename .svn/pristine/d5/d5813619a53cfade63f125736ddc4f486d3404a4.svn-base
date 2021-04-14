@@ -1,0 +1,246 @@
+<?php
+
+//importar dependencias
+require_once 'cartaoService.php';
+require_once 'cartaoBusinessImpl.php';
+
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
+
+require_once '../daofactory/DAOFactory.php';
+
+
+/**
+ * CartaoServiceImpl - Implementação dos servicos
+ */
+class CartaoServiceImpl implements CartaoService
+{
+	
+	function __construct() {	}
+
+	public function apagar($dto) {	}
+	public function pesquisar($dto) {	}
+	public function atualizar($dto) {	}
+	public function listarTudo() {	}
+
+	public function cadastrar($dto)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da cfdi
+ 			$bo = new CartaoBusinessImpl();
+ 			$retorno = $bo->inserir($daofactory, $dto);
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function incrementarContador($id, $qrcodecarimbo)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+ 			$bo = new CartaoBusinessImpl();
+ 			$retorno = $bo->incrementarContador($daofactory, $id, $qrcodecarimbo);
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function listarCartoesFullInfoFavoritosAtivos($idusuario)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da cfdi
+ 			$bo = new CartaoBusinessImpl();
+ 			$retorno = $bo->listarCartoesFullInfoFavoritos($daofactory, $idusuario, ConstantesVariavel::STATUS_ATIVO);
+			$daofactory->commit();
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function listarCartoesFullInfoAtivos($idusuario)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da cfdi
+ 			$bo = new CartaoBusinessImpl();
+ 			$retorno = $bo->listarCartoesFullInfo($daofactory, $idusuario, ConstantesVariavel::STATUS_ATIVO);
+			$daofactory->commit();
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function listarPagina($pag, $qtde)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da cfdi
+ 			$bo = new CartaoBusinessImpl();
+ 			$retorno = $bo->listarPagina($daofactory, $pag, $qtde);
+			$daofactory->commit();
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+	public function pesquisarPorCampanhaUsuarioStatus($idusuario, $idcampanha, $status)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da cfdi
+ 			$bo = new CartaoBusinessImpl();
+ 			$retorno = $bo->pesquisarPorCampanhaUsuarioStatus($daofactory, $idusuario, $idcampanha, $status);
+			 if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO ||
+			 	$retorno->msgcode == ConstantesMensagem::CARTAO_TOTALMENTE_COMPLETO){
+				$daofactory->commit();
+ 			} else {
+				$daofactory->rollback();
+ 			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function pesquisarPorID($id)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da cfdi
+ 			$bo = new CartaoBusinessImpl();
+ 			$retorno = $bo->carregarPorID($daofactory, $id);
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
+				$daofactory->commit();
+ 			} else {
+				$daofactory->rollback();
+ 			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+}
+
+?>

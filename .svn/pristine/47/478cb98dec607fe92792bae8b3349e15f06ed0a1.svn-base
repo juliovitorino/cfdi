@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * KeywordRelatedService
+ */
+
+// importar dependências
+
+require_once '../interfaces/AppService.php';
+
+interface KeywordRelatedService extends AppService{
+	public function listarKeywordRelated($keywordParentId);
+
+}
+
+
+?>

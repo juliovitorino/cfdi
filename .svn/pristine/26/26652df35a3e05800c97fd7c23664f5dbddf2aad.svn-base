@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta name="description" content="Linker - Clube de Vantangens de Negócios" />
+    <meta name="author" content="RedstarHospital" />
+    <title>Linker - Clube de Vantangens de Negócios</title>
+    <!-- google font -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+	<!-- icons -->
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" href="../assets/iconic/css/material-design-iconic-font.min.css">
+    <!-- bootstrap -->
+	<link href="../assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- style -->
+    <link rel="stylesheet" href="css/extra_pages.css">
+	<!-- favicon -->
+    <link rel="shortcut icon" href="img/favicon.ico" /> 
+
+</head>
+<body>
+
+<script>
+          var nomefcbk;
+          var emailfcbk;
+          var idfcbk;
+
+// carga assincrona do SDK do facebook	
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '516884588779005',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v3.1'
+    });
+      
+    FB.AppEvents.logPageView();   
+      
+  };
+/*
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+*/
+
+	(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.1&appId=516884588779005&autoLogAppEvents=1';
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+
+  // This function is called when someone finishes with the Login
+  // Button.  See the onlogin handler attached to it in the sample
+  // code below.
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+
+  function statusChangeCallback(response) {
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+//    alert(response.status);
+//    alert(response.authResponse.userID);
+//    alert(response.authResponse.accessToken);
+//    console.log(response.authResponse.accessToken);
+
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+
+///me?fields = movies,email,name,gender,locale,location,link'
+
+      // busca no facebook nome e mail do usuário autenticado
+
+      FB.api('/me?fields=name,email', function (response) {
+      	if(response && !response.error){
+      		//alert(response.id);
+      		//alert(response.email);
+
+          window.nomefcbk = response.name;
+          window.emailfcbk = response.email;
+          window.idfcbk = response.id;
+
+          // obter url da imagem do profile facebook (primeira versão)
+          FB.api(
+            '/me',
+            'GET',
+            {fields: 'picture.width(150).height(150)'},
+            function(response) {
+
+                $.post('../php/classes/gateway/facebookAutenticacaoController.php',
+                  { name: window.nomefcbk, 
+                    email: window.emailfcbk, 
+                    fcbkid: window.idfcbk,
+                    fotourl: response.picture.data.url}, 
+                    function(data)
+                          {
+                              var $form = $("<form id = 'form1' method = 'post' action = '../php/classes/gateway/facebookAutenticacaoController.php'></form>");
+                              $form.append('<input type = "hidden" name = "fcbkid" value = "'+window.idfcbk+'" />');
+                              $form.append('<input type = "hidden" name = "email" value = "'+window.emailfcbk+'" />');
+                              $form.append('<input type = "hidden" name = "nome" value = "'+window.nomefcbk+'" />');
+                              $form.append('<input type = "hidden" name = "fotourl" value = "'+response.picture.data.url+'" />');
+                              $('body').append($form);
+                              window.form1.submit();
+                          }); 
+            }
+          );
+
+           
+        	}
+      });
+      //testAPI();
+    } else {
+      // The person is not logged into your app or we are unable to tell.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this app.';
+    }
+  }
+
+</script>
+
+    <div class="limiter">
+		<div class="container-login100 page-background">
+			<div class="wrap-login100">
+				<form class="login100-form validate-form" method="post" action="../php/classes/gateway/loginController.php">
+					<span class="login100-form-logo">
+						<img alt="" src="img/hospital.png">
+					</span>
+					<span class="login100-form-title p-b-34 p-t-27">
+						Linker
+					</span>
+					<div class="wrap-input100 validate-input" data-validate = "Digite seu email">
+						<input class="input100" type="text" name="username" placeholder="Digite seu email">
+						<span class="focus-input100" data-placeholder="&#xf207;"></span>
+					</div>
+					<div class="wrap-input100 validate-input" data-validate="Digite sua senha">
+						<input class="input100" type="password" name="password" placeholder="Digite sua senha">
+						<span class="focus-input100" data-placeholder="&#xf191;"></span>
+					</div>
+<!--
+					<div class="contact100-form-checkbox">
+						<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+						<label class="label-checkbox100" for="ckb1">
+							Lembrar sempre
+						</label>
+					</div>
+-->
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn">
+							Entrar
+						</button>
+					</div>
+					<div class="text-center p-t-30">
+						<a class="txt1" href="forgot_password.html">
+							Esqueceu sua senha?
+						</a><br>
+						<a class="txt1" href="sign_up.html?cupom=free">
+							Crie uma <strong>conta grátis</strong>!
+						</a>
+					</div>
+				</form>
+				<br>
+				<div class="container-login100-form-btn">
+					<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" data-scope="public_profile,email" onlogin="checkLoginState();"></div>
+				</div>
+			</div>
+		</div>
+<div id="status">
+</div>
+
+	</div>
+    <!-- start js include path -->
+    <script src="../assets/jquery.min.js" ></script>
+    <!-- bootstrap -->
+    <script src="../assets/bootstrap/js/bootstrap.min.js" ></script>
+    <script src="../assets/login.js"></script>
+    <!-- end js include path -->
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * GerarValorConcrete - Busca os modelos para cada parte do mini site
+ */
+ class GerarValorConcrete extends MaquinaMiniSiteFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'ac-gerar-valor';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.GerarValorConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.MaquinaMiniSiteFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.GerarValorConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'ms-gerar-valor','23072018170301');
+ 	}
+
+ } 
+
+?>

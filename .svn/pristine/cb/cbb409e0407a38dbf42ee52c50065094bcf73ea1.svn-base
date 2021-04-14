@@ -1,0 +1,18 @@
+<?php
+
+require_once '../interfaces/DAO.php';
+
+/**
+ * CartaoDAO - Extensão da interface padrão de DAO
+ */
+interface CartaoDAO extends DAO
+{
+	public function updateStatus($id, $status);
+	public function loadCampanhaUsuarioStatus($idusuario, $idcampanha, $status);
+	public function incrementarContador($id,$qrcodecarimbo);
+	public function listAllCartaoPorUsuarioStatus($idusuario, $status);
+	public function listAllCartaoFavoritosPorUsuarioStatus($idusuario, $status);
+	
+
+}
+?>

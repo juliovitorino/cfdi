@@ -1,0 +1,13 @@
+<?php
+
+require_once '../interfaces/DAO.php';
+
+/**
+ * KeywordSERPDAO - Extensão da interface padrão de DAO
+ */
+interface KeywordSERPDAO extends DAO
+{
+	public function listKeywordSERP($keywordParentId);
+
+}
+?>

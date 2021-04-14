@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * 
+ * BacklinkService
+ */
+
+// importar dependências
+
+require_once '../interfaces/AppService.php';
+
+interface BacklinkService extends AppService{
+
+	public function listarPaginaMaiores($backid, $pag, $qtde);
+	
+}
+
+
+?>

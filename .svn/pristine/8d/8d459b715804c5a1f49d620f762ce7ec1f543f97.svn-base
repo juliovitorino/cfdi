@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * UsuarioBacklinkService
+ */
+
+// importar dependências
+
+require_once '../interfaces/AppService.php';
+
+interface UsuarioBacklinkService extends AppService{
+
+	public function popularUsuarioBacklink($usuarioid, $funcionalidade);
+	public function listarTudoPorUsuarioID($usuarioid);
+	public function atualizarStatus($usuarioid, $usbaid, $novostatus);
+
+}
+
+
+?>

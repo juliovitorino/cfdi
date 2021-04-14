@@ -1,0 +1,8 @@
+mysql -h localhost -u cfd -p cfd < C:/Users/Julio/Programas/wamp64-3.1.9/www/cfdi/scriptbd/criar_dicionario_dados_plimbo.sql
+** tá dando problema de charset
+
+ou
+
+mysql -h localhost -u cfd -p  
+connect cfd
+source C:/Users/Julio/Programas/wamp64-3.1.9/www/cfdi/scriptbd/criar_dicionario_dados_plimbo.sql

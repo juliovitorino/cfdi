@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * ReciprocidadeConcrete - Busca os modelos de gatilhos
+ */
+ class AfeicaoConcrete extends GatilhosMentaisFactory
+ {
+ 	/* constantes */
+ 	const HOME = 'gatilho-afeicao';
+
+ 	public function __construct($nicho){
+ 		$this->nicho = $nicho;
+ 		$this->fullhome = getcwd()
+ 							.'/'
+ 							.GatilhosMentaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.AfeicaoConcrete::HOME;
+
+ 		$this->fullpath = getcwd()
+ 							.'/'
+ 							.GatilhosMentaisFactory::PATH_HOME_REPOSITORIO
+ 							.$nicho
+ 							.'/'
+ 							.AfeicaoConcrete::HOME
+ 							.'/'
+ 							.$this->getModelo($nicho,'afeicao','11072018104901');
+ 	}
+
+ } 
+
+?>

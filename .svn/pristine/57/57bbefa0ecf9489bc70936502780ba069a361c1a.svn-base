@@ -1,0 +1,21 @@
+<?php 
+
+require_once 'HeadlineHistoricoServiceImpl.php';
+require_once 'HeadlineHistoricoDTO.php';
+
+$date = new DateTime();
+$ts = $date->getTimestamp();
+
+$hhdto = new HeadlineHistoricoDTO();
+$hhdto->usuarioid = 1;
+$hhdto->sessaoid = $ts;
+$hhdto->palavra_chave_seo = $ts . ' criar cachorro em apartamento';
+$hhdto->objetivo = $ts . ' sem aborrecer a vizinhanca';
+$hhdto->headline = $ts . ' enormes maneiras para criar cachorro em apartamento em 30 dias sem aborrecer a vizinhanca. Experimente e comece hoje mesmo!';
+
+$hhsi = new HeadlineHistoricoServiceImpl();
+$hhsi->cadastrar($hhdto);
+var_dump($hhsi->listarTudoPorSessao($ts));
+
+
+?>

@@ -1,0 +1,14 @@
+<?php  
+
+require_once 'keywordSERPServiceImpl.php';
+
+require_once '../util/util.php';
+
+$keywordparentid = 129;
+$ksi = new keywordSERPServiceImpl();
+$lst = $ksi->listarKeywordSERP($keywordparentid);	
+
+var_dump($lst);
+
+
+?>

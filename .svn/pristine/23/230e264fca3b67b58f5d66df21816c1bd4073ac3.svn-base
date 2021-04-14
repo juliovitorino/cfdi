@@ -1,0 +1,15 @@
+<?php  
+// URL exemplo http://localhost/cfdi/php/classes/campanhaqrcode/clientValidarQrcode.php?qrc=63a766357402219da204e8f2d03d16658dee36cd&token=59a58da0b854caee1d03d41c1d82f55655877b19
+
+require_once '../campanhaqrcode/campanhaQrCodeServiceImpl.php';
+
+// pegue os códigos dentro do banco de dados para realizar os testes unitários
+$qrc = $_GET['qrc']; // campanha para teste de campanha inexistente
+$idfiel = $_GET['token']; // Token da sessao do banco de dados
+
+$csi = new CampanhaQrCodeServiceImpl();
+$retorno = $csi->validarQRCode($idfiel, $qrc);
+
+echo json_encode($retorno);
+
+?>

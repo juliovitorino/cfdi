@@ -1,0 +1,52 @@
+<?php  
+
+/**
+ * Classe de metodos utilitarios
+ */
+class Util
+{
+	const str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890';
+
+	static function ConverterDMYHM_to_YMDHMS($str)
+	{
+		//           1
+		// 0123456789012345
+		// 31/05/2019 13:52
+		$dia=substr($str,0,2);
+		$mes=substr($str,3,2);
+		$ano=substr($str,6,4);
+		$hrmi=substr($str,11,5);
+		return $ano . '-' . $mes . '-' . $dia . ' ' . $hrmi . ':00';
+	}
+	static function getCodigo($tamanho) 
+	{
+		$retorno = "";
+		for ($i=0; $i < $tamanho; $i++) { 
+			$pos = rand(0, strlen(self::str));
+			$retorno = $retorno . substr(self::str, $pos, 1);
+		}
+
+
+		return $retorno;
+	}
+
+	/**
+	 * getTrocaConteudoParametrizada() - retorna string com substituição de tags
+	 * @param string
+	 * @param array
+	 * @return string
+	 */
+	static function getTrocaConteudoParametrizada($str, $lsttags)
+	{
+		$retorno = $str;
+		foreach ($lsttags as $key => $value) {
+			$retorno = str_replace($key, $value, $retorno);
+		}
+
+		return $retorno;
+	}
+
+	
+}
+
+?>

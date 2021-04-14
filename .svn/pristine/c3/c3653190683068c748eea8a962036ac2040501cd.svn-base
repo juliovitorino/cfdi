@@ -1,0 +1,70 @@
+<?php
+
+// importar dependências
+require_once '../daofactory/DmlSql.php';
+
+/**
+ * DmlSqlKeyword - DML para tabela
+ */
+class DmlSqlKeyword extends DmlSql
+{
+
+	// Tabela
+	const TABELA = 'PROJETO_KEYWORD';
+	const VIEW_KEYWORD = 'VW_KEYWORD';
+
+	// colunas da tabela
+	const PRKE_ID = 'PRKE_ID';
+	const PROJ_ID = 'PROJ_ID';
+	const USUA_ID = 'USUA_ID';
+	const PRKE_TX_KEYWORD = 'PRKE_TX_KEYWORD';
+	const PRKE_IN_STATUS = 'PRKE_IN_STATUS';
+	const PRKE_NU_VOLUME = 'PRKE_NU_VOLUME';
+	const PRKE_VL_CPC = 'PRKE_VL_CPC';
+	const PRKE_NU_DIFICULDADE = 'PRKE_NU_DIFICULDADE';
+	const PRKE_DT_CADASTRO = 'PRKE_DT_CADASTRO';
+	const PRKE_DT_UPDATE = 'PRKE_DT_UPDATE';
+
+	// Comandos DML
+	const INS = 'INSERT INTO `' . self::TABELA . '` ('
+		. ' `PROJ_ID`, ' 
+		. ' `PRKE_TX_KEYWORD`, ' 
+		. ' `PRKE_NU_VOLUME`, ' 
+		. ' `PRKE_VL_CPC`, ' 
+		. ' `PRKE_NU_DIFICULDADE`'
+		. ') VALUES (?,?,?,?,?)';
+
+	const DEL_PK = 'DELETE ';
+
+	const UPD = 'UPDATE `' . self::TABELA . '` set ';
+
+	const SELECT = 'SELECT `PRKE_ID`,'
+					. ' `PROJ_ID`, '
+					. ' `PRKE_TX_KEYWORD`, ' 
+					. ' `PRKE_IN_STATUS`, ' 
+					. ' `PRKE_NU_VOLUME`, '
+					. ' `PRKE_VL_CPC`, '
+					. ' `PRKE_NU_DIFICULDADE`, '
+					. ' `PRKE_DT_CADASTRO`,'
+					. ' `PRKE_DT_UPDATE` '
+					. ' FROM `'.self::TABELA.'` ';
+
+	const SELECT_VIEW_KEYWORD = 'SELECT `PRKE_ID`,'
+					. ' `PROJ_ID`, '
+					. ' `USUA_ID`, '
+					. ' `PRKE_TX_KEYWORD`, ' 
+					. ' `PRKE_IN_STATUS`, ' 
+					. ' `PRKE_NU_VOLUME`, '
+					. ' `PRKE_VL_CPC`, '
+					. ' `PRKE_NU_DIFICULDADE`, '
+					. ' `PRKE_DT_CADASTRO`,'
+					. ' `PRKE_DT_UPDATE` '
+					. ' FROM `'.self::VIEW_KEYWORD.'` ';
+
+	const SELECT_MAX_ID_PROJ_ID = 'SELECT MAX(`PRKE_ID`) '
+					. ' FROM `'.self::TABELA.'` ';
+
+
+}
+
+?>
