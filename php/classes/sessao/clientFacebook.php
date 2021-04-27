@@ -8,10 +8,12 @@ require_once '../sessao/SessaoServiceImpl.php';
 
 $nome = "Julio Vitorino";
 $email = "julio.vitorino@gmail.com";
-$idfcbk = '2278008755575813';
+$idfcbk = '109441640377672115445';
+$urlfoto = "no-user.png";
+$versao = "1.0.0.20191007.0744";
 
 $ss = new SessaoServiceImpl();
-$ok = $ss->autenticarUsuarioFacebook($idfcbk, $nome, $email);
+$ok = $ss->autenticarUsuarioFacebook($idfcbk, $nome, $email, $urlfoto, $versao);
 var_dump($ok);
 
 ?>
