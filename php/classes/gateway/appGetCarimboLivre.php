@@ -1,7 +1,7 @@
 <?php
 
-// URL http://elitefinanceira.com/cfdi/php/classes/gateway/appGetCarimboLivre.php?tokenid=cb1ed118944b2c4738e8f86765906675d9562de3&campanha=3
-// URL http://localhost/cfdi/php/classes/gateway/appGetCarimboLivre.php?tokenid=cb1ed118944b2c4738e8f86765906675d9562de3&campanha=3
+// URL HMG http://elitefinanceira.com/cfdi/php/classes/gateway/appGetCarimboLivre.php?tokenid=cb1ed118944b2c4738e8f86765906675d9562de3&campanha=3
+// URL DSV http://localhost/cfdi/php/classes/gateway/appGetCarimboLivre.php?tokenid=cb1ed118944b2c4738e8f86765906675d9562de3&campanha=3
 
 // Importar dependencias
 require_once '../campanha/campanhaServiceImpl.php';

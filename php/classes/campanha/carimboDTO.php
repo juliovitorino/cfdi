@@ -21,6 +21,7 @@ class CarimboDTO extends DTOPadraoEntidade implements JsonSerializable
 {
 
     public $carimbo;
+    public $ticket;
 
     public function jsonSerialize()
     {
@@ -28,6 +29,7 @@ class CarimboDTO extends DTOPadraoEntidade implements JsonSerializable
         [
             'id'   => $this->id,
             'carimbo' => $this->carimbo,
+            'ticket' => $this->ticket,
             'status' => $this->status,
 			'dataCadastro' => $this->dataCadastro,
 			'dataAtualizacao' => $this->dataAtualizacao,

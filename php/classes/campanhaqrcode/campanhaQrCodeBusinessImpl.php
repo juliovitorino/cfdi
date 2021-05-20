@@ -404,7 +404,7 @@ class CampanhaQrCodeBusinessImpl implements CampanhaQrCodeBusiness
 
 		$dto->id = sha1($dto->id_campanha . $ts . Util::getCodigo(2048));
 		$dto->qrcodecarimbo = sha1($dto->id_campanha . $ts . Util::getCodigo(2048));
-		$dto->ticket = sha1($dto->id_campanha . $ts . Util::getCodigo(2048)); //Util::getCodigo(100);
+		$dto->ticket = Util::geraCpf(); //Gera um cpf fake como codigo;
 		$dto->status = ConstantesVariavel::STATUS_ATIVO;
 
 		$dao = $daofactory->getCampanhaQrCodeDAO($daofactory);
