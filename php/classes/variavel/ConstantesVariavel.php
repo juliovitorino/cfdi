@@ -37,6 +37,9 @@ class ConstantesVariavel
 	const DEBITO = 'D';
 	const SALDO = 'S';
 
+	const PLANO_GRATIS_SIM = '1';
+	const PLANO_GRATIS_NAO = '0';
+
 	const AUTORIZADOR_TEMPORARIO = 'T';
 	const AUTORIZADOR_PERMANENTE = 'P';
 

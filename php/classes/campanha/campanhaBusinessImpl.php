@@ -506,6 +506,7 @@ class CampanhaBusinessImpl implements CampanhaBusiness
 			if($retorno->status == ConstantesVariavel::STATUS_ATIVO){
 				$carimbodto->id = $retorno->id;
 				$carimbodto->carimbo = $retorno->qrcodecarimbo;
+				$carimbodto->ticket = $retorno->ticket;
 				$carimbodto->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
 				$carimbodto->msgcodeString = MensagemCache::getInstance()->getMensagem($carimbodto->msgcode);
 			} else {

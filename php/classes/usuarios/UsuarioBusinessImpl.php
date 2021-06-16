@@ -671,7 +671,24 @@ class UsuarioBusinessImpl implements UsuarioBusiness
 	public function carregarUsuarioPorLogin($daofactory, $email)
 	{
 		$dao = $daofactory->getUsuarioDAO($daofactory);
-		return $dao->loadUsuarioLogin($email);
+		$dto = $dao->loadUsuarioLogin($email);
+
+		/* aproveita pra marcar a gratuidade do plano com base no plano mais recente */
+		$pubi = new PlanoUsuarioBusinessImpl();
+		$plus = $pubi->carregarPlanoUsuarioPorStatus($daofactory, $dto->id, ConstantesVariavel::STATUS_ATIVO);
+
+		// Por padrão é considerado sempre negado o plano gratuito
+		$dto->isGratuito = ConstantesVariavel::PLANO_GRATIS_NAO;
+		
+		// Trouxe as informações do plano do usuario. Então, temos a necessidade de verificar se o plano ativo
+		// é o plano gratuito
+		if ($plus != NULL && $plus->id != NULL && $plus->usuarioid == $dto->id) {
+			if($plus->planoid == (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::PLANO_GRATUITO_CODIGO)) {
+				$dto->isGratuito = ConstantesVariavel::PLANO_GRATIS_SIM;				
+			}
+		}
+
+		return $dto;
 	}
 
 	/* deprecated - usar carregarPorID() */

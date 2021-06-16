@@ -13,6 +13,7 @@ class UsuarioDTO extends DTOPadrao implements JsonSerializable
 	public $pwd;
 	public $apelido;
 	public $tipoConta;
+    public $isGratuito;
     public $codigoAtivacao;
     public $dataAtivacao;
     public $cupom;
@@ -32,6 +33,7 @@ class UsuarioDTO extends DTOPadrao implements JsonSerializable
             'email' => $this->email,
             'apelido' => $this->apelido,
             'tipoConta' => $this->tipoConta,
+            'isGratuito' => $this->isGratuito,
             'codigoAtivacao' => $this->codigoAtivacao,
             'dataAtivacao' => $this->dataAtivacao,
             'cupom' => $this->cupom,
