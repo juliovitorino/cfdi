@@ -865,6 +865,36 @@ CREATE UNIQUE INDEX UIX_CFDI_TX_QRCODE_REGIST
         ON CFDI(CFDI_TX_QRCODE_REGIST);
 
 /******************************************************************/
+/* CAMPANHA SORTEIO                                                /
+/******************************************************************/
+/* Valores para _IN_STATUS                                         /
+/* A = ATIVO                                                       /
+/* I = INATIVO                                                     /
+/* P = PENDENTE                                                    /
+/******************************************************************/
+
+CREATE TABLE CAMPANHA_SORTEIO
+(
+    `CASO_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID da campanha sorteio',
+    `CAMP_ID` int(11) NOT NULL COMMENT 'ID da campanha',
+    `CASO_TX_NOME`  VARCHAR(100)  NOT NULL COMMENT 'Nome do sorteio',
+    `CASO_TX_URL_REGULAMENTO`  VARCHAR(2000)  NOT NULL  COMMENT 'URL regulamento do sorteio',
+    `CASO_TX_PREMIO`  VARCHAR(2000)  NOT NULL  COMMENT 'Prêmio do sorteio',
+    `CASO_DT_INICIO`  timestamp NULL COMMENT 'Data de início',
+    `CASO_DT_TERMINO`  timestamp NULL COMMENT 'Data de término',
+    `CASO_NU_MAX_TICKET` int(11) NOT NULL DEFAULT 1000 COMMENT 'Máximo de tickets',
+    `CASO_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'P' COMMENT 'Status',
+    `CASO_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+    `CASO_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+  CONSTRAINT PK_CASO_ID PRIMARY KEY(CASO_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+CREATE INDEX IX_CASO_CAMP_ID
+        ON CAMPANHA_SORTEIO(CAMP_ID);
+
+/******************************************************************/
 /* CARTAO - TABELA DE AGREGACAO DO CARTAO                         */
 /******************************************************************/
 /* Valores para CART_IN_STATUS                                     /
@@ -1537,6 +1567,14 @@ ALTER TABLE MKD_EMAIL_LISTA
     FOREIGN KEY (MKCE_ID)
     REFERENCES MKD_CAMPANHA_EMAIL(MKCE_ID);
 
+/* CAMPANHA X CAMPANHA SORTEIO */
+ALTER TABLE CAMPANHA_SORTEIO
+    ADD CONSTRAINT FK_CAMP_CASO
+    FOREIGN KEY (CAMP_ID)
+    REFERENCES CAMPANHA(CAMP_ID) ON DELETE CASCADE;
+
+
 
 /* AJUSTES DE CAMPOS TIMESTAMP */
 ALTER TABLE `CAMPANHA` CHANGE `CAMP_DT_INICIO` `CAMP_DT_INICIO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de início';
+

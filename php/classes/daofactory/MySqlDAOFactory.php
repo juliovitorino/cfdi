@@ -40,6 +40,8 @@ require_once '../usuariocashback/MySqlKinghostUsuarioCashbackDAO.php';
 require_once '../usuarioautorizador/MySqlKinghostUsuarioAutorizadorDAO.php';
 require_once '../usuarioavaliacao/MySqlKinghostUsuarioAvaliacaoDAO.php';
 require_once '../versao/MySqlKinghostVersaoDAO.php';
+require_once '../campanhasorteio/MySqlKinghostCampanhaSorteioDAO.php';
+
 
 class MySqlDAOFactory extends DAOFactory
 {
@@ -365,6 +367,16 @@ class MySqlDAOFactory extends DAOFactory
 	{
 		return new MySqlKinghostMkdListaDAO($daofactory);
 	}
-
+	
+	/**
+	* Retorna uma instância de acesso a dados
+	* @return MySqlKinghostCampanhaSorteioDAO
+	*/
+	public function getCampanhaSorteioDAO($daofactory)
+	{
+		return new MySqlKinghostCampanhaSorteioDAO($daofactory);
+	}
+	 
+	 
 }
 ?>

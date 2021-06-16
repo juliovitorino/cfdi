@@ -1,0 +1,52 @@
+
+cd C:\Users\Julio\Programas\wamp64-3.1.9\bin\mysql\mysql5.7.26\bin
+
+--criar um banco de dados
+CREATE DATABASE `cfd`
+    CHARACTER SET 'utf8'
+    COLLATE 'utf8_unicode_ci';
+
+-------------------------------------------------------------------------------
+-- conectar na linha de comando do mysql no provedor banco de dados hostgator
+-------------------------------------------------------------------------------
+
+-- banco de produção
+#mysql -uelite759_junta10 -p -h 216.172.161.28
+connect elite759_prd_j10;
+show tables;
+
+--banco de homologação
+#mysql -uelite759_junta10 -p -h 216.172.161.28
+connect elite759_junta10;
+show tables;
+
+
+-------------------------------------------------------------------------------
+-- exportação do BD
+-------------------------------------------------------------------------------
+-- executar o export do banco de produção na linha de comando
+mysqldump -u elite759_junta10 -p -h 216.172.161.28 elite759_prd_j10 > c:\temp\dumpJ10bd.sql
+
+-- executar o export do banco de homologação na linha de comando
+mysqldump -u elite759_junta10 -p -h 216.172.161.28 elite759_junta10 > c:\temp\dumpJ10bd.sql
+
+mysqldump -u YourUser -p YourDatabaseName > wantedsqlfile.sql
+
+
+-------------------------------------------------------------------------------
+-- importação do BD
+-------------------------------------------------------------------------------
+
+Comando: mysql -u username -p [-h 216.172.161.28] database_name < file.sql
+
+#ambiente dsv :: mysql -u cfd -p cfd < c:\temp\dumpJ10bd.sql
+#ambiente prd :: mysql -u elite759_junta10 -p [-h 216.172.161.28] elite759_prd_j10 < c:\temp\dumpJ10bd.sql
+#ambiente hmg :: mysql -u elite759_junta10 -p [-h 216.172.161.28] elite759_junta10 < c:\temp\dumpJ10bd.sql
+
+
+Note-1: It is better to use the full path of the SQL file file.sql.
+
+Note-2: Use -R and --triggers to keep the routines and triggers of original database. They are not copied by default.
+
+Note-3 You may have to create the (empty) database from mysql if it doesn't exist already and the exported SQL don't 
+contain CREATE DATABASE (exported with --no-create-db or -n option), before you can import it.

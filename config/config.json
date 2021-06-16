@@ -1,7 +1,7 @@
 {
 	"bd":"MYSQL",
 	"pathjson" : "/../../../dados/",
-	"ambiente" : "producao", 
+	"ambiente" : "desenv", 
 	"configs": 
 	[	
 		{"tipo": "desenv" ,"host":"127.0.0.1:3306","userbd":"cfd",	"pwdbd":"Fork3t56nta205cwv","nomebd":"cfd" },
