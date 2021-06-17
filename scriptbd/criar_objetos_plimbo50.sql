@@ -1,9 +1,10 @@
 /******************************************************************/
 /* DDL para criação das tabelas do Linker                          /
 /*                                                                 /
-/* Autor: Julio Cesar Vitorino                                     /
-/* Data.: 01/06/2018 20:14                                         /
-/* Data.: 01/04/2021 11:55                                         /
+/* Autor.: Julio Cesar Vitorino                                    /
+/* Data..: 01/06/2018 20:14                                        /
+/* Data..: 01/04/2021 11:55                                        /
+/* Versão: 1.3.15                                                  /
 /*                                                                 /
 /******************************************************************/
 /* MySQL 5.7.19                                                    /
@@ -31,10 +32,9 @@
 /* I = Inativado                                                   /
 /******************************************************************/
 /* Valores para USUA_IN_TIPO_CONTA                                 /
-/* C = Comum                                                       /
+/* C = Membro                                                      /
 /* A = Administrador                                               /
-/* P = Parceiro (Estabelecimento/Empreendedor/...)                 /
-/* F = Usuario Fiel                                                /
+/* P = Premium                                                     /
 /******************************************************************/
 CREATE TABLE `USUARIO` (
  `USUA_ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -895,6 +895,31 @@ CREATE INDEX IX_CASO_CAMP_ID
         ON CAMPANHA_SORTEIO(CAMP_ID);
 
 /******************************************************************/
+/* CAMPANHA SORTEIO FILA CRIAÇÃO                                   /
+/******************************************************************/
+/* Valores para _IN_STATUS                                         /
+/* A = ATIVO                                                       /
+/* I = INATIVO                                                     /
+/* P = PENDENTE                                                    /
+/******************************************************************/
+
+CREATE TABLE CAMPANHA_SORTEIO_FILA_CRIACAO
+(
+    `CSFC_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID da campanha sorteio fila criação',
+    `CASO_ID` int(11) NOT NULL COMMENT 'ID da campanha sorteio',
+    `CSFC_QT_LOTE`  int(5) NOT NULL DEFAULT 0 COMMENT 'Qtde lotes de tickets',
+    `CSFC_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'P' COMMENT 'Status',
+    `CSFC_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+    `CSFC_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+  CONSTRAINT PK_CSFC_ID PRIMARY KEY(CSFC_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+CREATE INDEX IX_CSFC_CASO_ID
+        ON CAMPANHA_SORTEIO_FILA_CRIACAO(CASO_ID);
+        
+/******************************************************************/
 /* CARTAO - TABELA DE AGREGACAO DO CARTAO                         */
 /******************************************************************/
 /* Valores para CART_IN_STATUS                                     /
@@ -1572,6 +1597,12 @@ ALTER TABLE CAMPANHA_SORTEIO
     ADD CONSTRAINT FK_CAMP_CASO
     FOREIGN KEY (CAMP_ID)
     REFERENCES CAMPANHA(CAMP_ID) ON DELETE CASCADE;
+
+/* CAMPANHA SORTEIO X CAMPANHA SORTEIO FILA CRIACAO */
+ALTER TABLE CAMPANHA_SORTEIO_FILA_CRIACAO
+    ADD CONSTRAINT FK_CASO_CSFC
+    FOREIGN KEY (CASO_ID) 
+    REFERENCES CAMPANHA_SORTEIO(CASO_ID) ON DELETE CASCADE;   
 
 
 

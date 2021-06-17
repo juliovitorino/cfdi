@@ -106,9 +106,13 @@ class CampanhaSorteioBusinessImpl implements CampanhaSorteioBusiness
          $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
          $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 
-        // verificações gerais
+        // verificações outras regras gerais de negócio
 
         // Verificação de permissão
+        // ... não permitir planos gratuitos
+        // ... não permitir planos vencidos
+        // ... se não puder execcutar, negar.
+        // ... verificar a quantidade permitida de sorteios por campanha
 
 
 

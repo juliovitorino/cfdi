@@ -80,7 +80,7 @@ abstract class DAOFactory
 	public abstract function getFilaQRCodePendenteProduzirDAO($daofactory);
 	public abstract function getMkdListaDAO($daofactory);
 	public abstract function getCampanhaSorteioDAO($daofactory);
-
+	public abstract function getCampanhaSorteioFilaCriacaoDAO($daofactory);
 
 	public function getSession() {
 		return $this->conn;
