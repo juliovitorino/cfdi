@@ -178,7 +178,8 @@ class MySqlKinghostCampanhaDAO implements CampanhaDAO
 		$conexao = $this->daofactory->getSession();
 		$sql = DmlSqlCampanha::SELECT . ' WHERE ' . DmlSqlCampanha::CAMP_ID . '=' . $id ;
 		$res = $conexao->query($sql);
-		if ($res){
+
+		if ($res->num_rows > 0){
 			$retorno = $this->getDTO($res->fetch_assoc());
 		}
 		return $retorno;

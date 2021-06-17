@@ -116,6 +116,13 @@ class PermissaoHelper {
         }
 //var_dump($permissaoItem);
 
+        if($permissaoItem->status == ConstantesVariavel::STATUS_NEGADO){
+            $permissaoItem->msgcode = ConstantesMensagem::NAO_PERMITE_SORTEIO_TROCAR_PLANO;
+            $permissaoItem->msgcodeString = MensagemCache::getInstance()->getMensagem($permissaoItem->msgcode);
+            return $permissaoItem;
+
+        }
+
         $permfactory = PermissaoFactory::getInstance($permissaoItem->periodicidade, $daofactory);
         $permfactdto = $permfactory->resolverPermissao($plusdto, $permissaoItem);
         if($permfactdto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){

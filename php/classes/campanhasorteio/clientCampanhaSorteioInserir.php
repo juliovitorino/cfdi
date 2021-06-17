@@ -16,8 +16,7 @@ $dto->urlRegulamento = "http://junta10.com/"  . Util::getCodigo(10);
 $dto->premio = Util::getLoremIpsum()  . Util::getCodigo(10);
 $dto->dataComecoSorteio = '2019-08-24 17:30:31';
 $dto->dataFimSorteio = '2019-08-24 17:30:31';
-$dto->maxTickets = 20000;
-
+$dto->maxTickets = (int) Util::getCodigoNumerico(4);
 
 $csi = new CampanhaSorteioServiceImpl();
 

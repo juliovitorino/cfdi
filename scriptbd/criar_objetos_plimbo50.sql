@@ -128,6 +128,7 @@ AUTO_INCREMENT = 1000;
 /* 1 - MAXIMO CARTOES                                              /
 /* 2 - PERM_CRIAR_PROMOCAO_PLANO                                   /
 /* 3 - PERM_ADICIONAR_CARTOES_CAMPANHA                             /
+/* 4 - PERM_ADICIONAR_SORTEIO_CAMPANHA                             /
 /*                                                                 /
 /******************************************************************/
 /* Valores para PLAN_IN_STATUS                                     /
@@ -199,7 +200,7 @@ CREATE TABLE PLANO_USUARIO_FATURA
     `PLUF_VL_FATURA`  DECIMAL(10,2) NOT NULL,
     `PLUF_VL_DESCONTO`  DECIMAL(10,2) DEFAULT 0 NOT NULL,
     `PLUF_DT_VENCIMENTO` DATE NOT NULL,
-    `PLUF_DT_PGTO` timestamp,
+    `PLUF_DT_PGTO` timestamp NULL,
     `PLUF_IN_STATUS` VARCHAR(1) DEFAULT 'P' NOT NULL,
     `PLUF_DT_CADASTRO` timestamp DEFAULT CURRENT_TIMESTAMP  NOT NULL,
     `PLUF_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

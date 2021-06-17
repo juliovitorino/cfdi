@@ -8,6 +8,8 @@ require_once '../dto/DTOPaginacao.php';
 
 require_once '../variavel/ConstantesVariavel.php';
 require_once '../variavel/VariavelCache.php';
+require_once '../campanhasorteiofilacriacao/CampanhaSorteioFilaCriacaoBusinessImpl.php';
+require_once '../campanha/campanhaBusinessImpl.php';
 
 /**
 *
@@ -107,14 +109,40 @@ class CampanhaSorteioBusinessImpl implements CampanhaSorteioBusiness
          $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 
         // verificações outras regras gerais de negócio
+        $campbo = new CampanhaBusinessImpl();
+        $campdto = $campbo->carregarPorID($daofactory, $dto->id_campanha);
 
+        if( $campdto == NULL) {
+            $retorno->msgcode = ConstantesMensagem::CAMPANHA_INEXISTENTE;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+
+        }
+
+        //--------------------------
         // Verificação de permissão
+        //--------------------------
+
         // ... não permitir planos gratuitos
-        // ... não permitir planos vencidos
-        // ... se não puder execcutar, negar.
-        // ... verificar a quantidade permitida de sorteios por campanha
+        $sbi = new PlanoUsuarioBusinessImpl();
+        $plusid = $sbi->carregarPlanoUsuarioPorStatus($daofactory, $campdto->id_usuario, ConstantesVariavel::STATUS_ATIVO);
+        $plusdto = $sbi->carregarPorID($daofactory, $plusid->id);
 
+        if($plusdto->planoid == VariavelCache::getInstance()->getVariavel(ConstantesVariavel::PLANO_GRATUITO_CODIGO) ){
+            $dtocheck = new DTOPadrao();
+            $dtocheck->msgcode = ConstantesMensagem::PLANO_GRATUITO_NAO_PERMITE_SORTEIO;
+            $dtocheck->msgcodeString = MensagemCache::getInstance()->getMensagem($dtocheck->msgcode);
+            return $dtocheck;
+        }
 
+		// -----------------------------------------------------------------------------
+		// Verifica permissao PERM_ADICIONAR_SORTEIO_CAMPANHA de acordo com 
+		// plano do usuário registrado mais recente e ATIVO
+		// -----------------------------------------------------------------------------
+		$permdto = PermissaoHelper::verificarPermissao($daofactory,$campdto->id_usuario, ConstantesPlano::PERM_ADICIONAR_SORTEIO_CAMPANHA);
+		if ($permdto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+			return $permdto;	
+		}
 
         // Incluir na base de sorteio da campanha
         $retorno = $this->inserir($daofactory, $dto);
@@ -122,7 +150,38 @@ class CampanhaSorteioBusinessImpl implements CampanhaSorteioBusiness
         // Incluir na fila de criação de número pra não cair por timeout no provedor
         if($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO)
         {
+            // repopula o registro de campanha sorteio mais recente inserido
+            $csdto = $this->pesquisarMaxPKAtivoId_CampanhaPorStatus($daofactory, $dto->id_campanha, ConstantesVariavel::STATUS_PENDENTE);
+
             // preenche a fila
+            $fatorDivisaoLotes = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::FATOR_DIVISAO_TICKETS_EM_LOTES);
+            $contador = $dto->maxTickets;
+            $csfcbo = new CampanhaSorteioFilaCriacaoBusinessImpl();
+
+            while ($contador >= $fatorDivisaoLotes) {
+
+                // Popula DTO e envia para gravação
+                $csfcdto = new CampanhaSorteioFilaCriacaoDTO();
+                $csfcdto->id_caso = $csdto->id;
+                $csfcdto->qtLoteTicketCriar = $fatorDivisaoLotes;
+
+                $csfcbo->inserir($daofactory, $csfcdto);
+
+                // Recalibra contador
+                $contador -= $fatorDivisaoLotes;
+
+            }
+
+            // Grava o restante que sobrou caso o recalibramento seja inferior ao fator de divisão
+            if( $contador > 0)
+            {
+                // Popula DTO e envia para gravação
+                $csfcdto = new CampanhaSorteioFilaCriacaoDTO();
+                $csfcdto->id_caso = $csdto->id;
+                $csfcdto->qtLoteTicketCriar = $contador;
+                $csfcbo->inserir($daofactory, $csfcdto);
+
+            }
         }
 
          return $retorno;
