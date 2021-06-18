@@ -9,6 +9,8 @@ require_once 'traceDAO.php';
 require_once 'DmlSqlTrace.php';
 
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlKinghostTraceDAO implements TraceDAO
 {
@@ -104,6 +106,9 @@ class MySqlKinghostTraceDAO implements TraceDAO
 		$retorno->statusdesc = VariavelCache::getInstance()->getStatusDesc($retorno->status);
 		$retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlTrace::COLS[4]]);
 		$retorno->dataAtualizacao = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlTrace::COLS[5]]);
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		
 		return $retorno;
 	}
 

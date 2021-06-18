@@ -10,6 +10,8 @@ require_once 'DmlSqlUsuario.php';
 require_once 'DmlSqlProjeto.php';
 
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlUsuarioDAO implements UsuarioDAO
 {
@@ -153,7 +155,9 @@ class MySqlUsuarioDAO implements UsuarioDAO
 		$retorno->status = $resultset[DmlSqlUsuario::USUA_IN_STATUS];
 		$retorno->dataCadastro = $resultset[DmlSqlUsuario::USUA_DT_CADASTRO];
 		$retorno->dataAtualizacao = $resultset[DmlSqlUsuario::USUA_DT_UPDATE];
-
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		
 		return $retorno;
 	}
 

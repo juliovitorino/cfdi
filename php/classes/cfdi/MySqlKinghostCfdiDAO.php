@@ -9,6 +9,8 @@ require_once 'cfdiDAO.php';
 require_once 'DmlSqlCfdi.php';
 
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlKinghostCfdiDAO implements cfdiDAO
 {
@@ -151,6 +153,9 @@ class MySqlKinghostCfdiDAO implements cfdiDAO
 		$retorno->statusdesc = VariavelCache::getInstance()->getStatusDesc($retorno->status);
 		$retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlCfdi::COLS[6]]);
 		$retorno->dataAtualizacao = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlCfdi::COLS[7]]);
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		
 		return $retorno;
 	}
 

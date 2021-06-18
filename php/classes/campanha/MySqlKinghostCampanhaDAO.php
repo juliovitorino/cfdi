@@ -11,6 +11,9 @@ require_once 'DmlSqlCampanha.php';
 require_once '../variavel/VariavelCache.php';
 require_once '../daofactory/DmlSql.php';
 
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
+
 class MySqlKinghostCampanhaDAO implements CampanhaDAO
 {
 	private $daofactory;
@@ -609,6 +612,8 @@ class MySqlKinghostCampanhaDAO implements CampanhaDAO
 			ConstantesVariavel::P2 => $retorno->id,
 			ConstantesVariavel::P3 => $resultset[DmlSqlCampanha::CAMP_TX_IMG_RECOMPENSA],
 		]);
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 //var_dump($retorno)		;
 		return $retorno;
 

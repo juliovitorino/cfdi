@@ -153,6 +153,11 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0142
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0143','Não existem carimbos na fila para processar.');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0144','Plano GRATUITO não permite criação de sorteios. Faça a migração para PLANO MEMBRO ou PREMIUM.');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0145','Seu plano não permite criar sorteios. Faça a migração para PLANO MEMBRO ou PREMIUM.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0146','Não existem mais tickets para serem gerados na fila.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0147','Campanha sorteio não existe.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0148','Campanha sorteio precisa ser ativada para criar números.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0149','Campanha sorteio está finalizada.');
+
 
             
 -- variaveis

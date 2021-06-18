@@ -23,6 +23,8 @@ require_once 'DmlSqlCampanhaSorteioFilaCriacao.php';
 
 require_once '../variavel/VariavelCache.php';
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlKinghostCampanhaSorteioFilaCriacaoDAO implements CampanhaSorteioFilaCriacaoDAO
 {
@@ -370,7 +372,10 @@ class MySqlKinghostCampanhaSorteioFilaCriacaoDAO implements CampanhaSorteioFilaC
     */
     public function getDTO($resultset)
     {
-        //echo var_dump($resultset); // ótimo pra debugar
+        if($resultset == NULL){
+            return NULL;
+        }
+        //var_dump($resultset); // ótimo pra debugar
         $retorno = new CampanhaSorteioFilaCriacaoDTO();
         $retorno->id = $resultset[DmlSqlCampanhaSorteioFilaCriacao::CSFC_ID] == NULL ? NULL : $resultset[DmlSqlCampanhaSorteioFilaCriacao::CSFC_ID];
         $retorno->id_caso = $resultset[DmlSqlCampanhaSorteioFilaCriacao::CASO_ID] == NULL ? NULL : $resultset[DmlSqlCampanhaSorteioFilaCriacao::CASO_ID];
@@ -379,6 +384,9 @@ class MySqlKinghostCampanhaSorteioFilaCriacaoDAO implements CampanhaSorteioFilaC
         $retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlCampanhaSorteioFilaCriacao::CSFC_DT_CADASTRO]);
         $retorno->dataAtualizacao = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlCampanhaSorteioFilaCriacao::CSFC_DT_UPDATE]);
         $retorno->statusdesc = VariavelCache::getInstance()->getStatusDesc($retorno->status);
+        $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        
         return $retorno;
 
     }

@@ -9,6 +9,8 @@ require_once 'DmlSqlPlanoUsuarioFatura.php';
 require_once 'PlanoUsuarioFaturaDTO.php';
 
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlKinghostPlanoUsuarioFaturaDAO implements PlanoUsuarioFaturaDAO
 {
@@ -156,7 +158,9 @@ class MySqlKinghostPlanoUsuarioFaturaDAO implements PlanoUsuarioFaturaDAO
 		$retorno->status = $resultset[DmlSqlPlanoUsuarioFatura::PLUF_IN_STATUS];
 		$retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlPlanoUsuarioFatura::PLUF_DT_CADASTRO]);
 		$retorno->dataAtualizacao = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlPlanoUsuarioFatura::PLUF_DT_UPDATE]);
-
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		
 		return $retorno;
 	}
 }

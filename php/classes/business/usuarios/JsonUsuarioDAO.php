@@ -7,6 +7,8 @@
 require_once 'UsuarioDAO.php';
 require_once 'TemplateLoader.php';
 require_once 'UsuarioDTO.php';
+require_once '../../mensagem/ConstantesMensagem.php';
+require_once '../../mensagem/MensagemCache.php';
 
 class JsonUsuarioDAO implements UsuarioDAO
 {
@@ -59,6 +61,8 @@ class JsonUsuarioDAO implements UsuarioDAO
 		$retorno->apelido =  $resultset['apelido'];
 		$retorno->tipoConta =  $resultset['tipo_conta'];
 		$retorno->status = $resultset['status'];
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 
 		// falta fazer o loop no array de projetos
 		foreach ($resultset['projetos'] as $item => $value) {

@@ -9,6 +9,8 @@ require_once 'ProjetoTecnicaDTO.php';
 require_once 'DmlSqlProjetoTecnica.php';
 
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlKinghostProjetoTecnicaDAO implements ProjetoTecnicaDAO
 {
@@ -108,7 +110,9 @@ class MySqlKinghostProjetoTecnicaDAO implements ProjetoTecnicaDAO
 		$retorno->desc = $resultset[DmlSqlProjetoTecnica::PRTE_TX_TECNICAS];
 		$retorno->dataCadastro = $resultset[DmlSqlProjetoTecnica::PRTE_DT_CADASTRO];
 		$retorno->dataAtualizacao = $resultset[DmlSqlProjetoTecnica::PRTE_DT_UPDATE];
-
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		
 		return $retorno;
 	}
 

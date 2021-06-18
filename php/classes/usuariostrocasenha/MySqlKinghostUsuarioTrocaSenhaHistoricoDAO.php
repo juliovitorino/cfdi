@@ -9,6 +9,8 @@ require_once 'DmlSqlUsuarioTrocaSenhaHistorico.php';
 require_once 'UsuarioTrocaSenhaHistoricoDTO.php';
 
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlKinghostUsuarioTrocaSenhaHistoricoDAO implements UsuarioTrocaSenhaHistoricoDAO
 {
@@ -208,7 +210,9 @@ class MySqlKinghostUsuarioTrocaSenhaHistoricoDAO implements UsuarioTrocaSenhaHis
 		$retorno->status = $resultset[DmlSqlUsuarioTrocaSenhaHistorico::UTSH_IN_STATUS];
 		$retorno->dataCadastro = $resultset[DmlSqlUsuarioTrocaSenhaHistorico::UTSH_DT_CADASTRO];
 		$retorno->dataAtualizacao = $resultset[DmlSqlUsuarioTrocaSenhaHistorico::UTSH_DT_UPDATE];
-
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		
 		return $retorno;
 	}
 }

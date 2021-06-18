@@ -919,7 +919,32 @@ AUTO_INCREMENT = 1000;
 
 CREATE INDEX IX_CSFC_CASO_ID
         ON CAMPANHA_SORTEIO_FILA_CRIACAO(CASO_ID);
-        
+
+/******************************************************************/
+/* CAMPANHA SORTEIO NUMEROS PERMITIDOS                             /
+/******************************************************************/
+/* Valores para _IN_STATUS                                         /
+/* A = ATIVO                                                       /
+/* I = INATIVO                                                     /
+/******************************************************************/
+
+CREATE TABLE CAMPANHA_SORTEIO_NUMEROS_PERMITIDOS
+(
+    `CSNP_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID da CSNP',
+    `CASO_ID` int(11) NOT NULL COMMENT 'ID da campanha sorteio',
+    `CSNP_NU_SORTEIO`  int(5) NOT NULL DEFAULT 0 COMMENT 'Número ticket de sorteio',
+    `CSNP_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'A' COMMENT 'Status',
+    `CSNP_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+    `CSNP_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+  CONSTRAINT PK_CSNP_ID PRIMARY KEY(CSNP_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+CREATE INDEX IX_CSNP_CASO_ID
+        ON CAMPANHA_SORTEIO_NUMEROS_PERMITIDOS(CASO_ID);
+
+
 /******************************************************************/
 /* CARTAO - TABELA DE AGREGACAO DO CARTAO                         */
 /******************************************************************/
@@ -1604,6 +1629,12 @@ ALTER TABLE CAMPANHA_SORTEIO_FILA_CRIACAO
     ADD CONSTRAINT FK_CASO_CSFC
     FOREIGN KEY (CASO_ID) 
     REFERENCES CAMPANHA_SORTEIO(CASO_ID) ON DELETE CASCADE;   
+
+/* CAMPANHA SORTEIO X CAMPANHA SORTEIO NUMEROS PERMITIDOS */
+ALTER TABLE CAMPANHA_SORTEIO_NUMEROS_PERMITIDOS
+    ADD CONSTRAINT FK_CASO_CSNP
+    FOREIGN KEY (CASO_ID)
+    REFERENCES CAMPANHA_SORTEIO(CASO_ID) ON DELETE CASCADE;    
 
 
 

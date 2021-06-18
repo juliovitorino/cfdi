@@ -42,7 +42,7 @@ require_once '../usuarioavaliacao/MySqlKinghostUsuarioAvaliacaoDAO.php';
 require_once '../versao/MySqlKinghostVersaoDAO.php';
 require_once '../campanhasorteio/MySqlKinghostCampanhaSorteioDAO.php';
 require_once '../campanhasorteiofilacriacao/MySqlKinghostCampanhaSorteioFilaCriacaoDAO.php';
-
+require_once '../campanhasorteionumerospermitidos/MySqlKinghostCampanhaSorteioNumerosPermitidosDAO.php';
 
 
 class MySqlDAOFactory extends DAOFactory
@@ -387,6 +387,16 @@ class MySqlDAOFactory extends DAOFactory
     {
         return new MySqlKinghostCampanhaSorteioFilaCriacaoDAO($daofactory);
     }
+	
+    /**
+     * Retorna uma instância de acesso a dados
+     * @return MySqlKinghostCampanhaSorteioNumerosPermitidosDAO
+     */
+    public function getCampanhaSorteioNumerosPermitidosDAO($daofactory)
+    {
+        return new MySqlKinghostCampanhaSorteioNumerosPermitidosDAO($daofactory);
+    }
+
 
 	 
 }

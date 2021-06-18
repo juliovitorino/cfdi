@@ -9,6 +9,8 @@ require_once 'ProjetoBeneficioDTO.php';
 require_once 'DmlSqlProjetoBeneficio.php';
 
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlKinghostProjetoBeneficioDAO implements ProjetoBeneficioDAO
 {
@@ -108,6 +110,9 @@ class MySqlKinghostProjetoBeneficioDAO implements ProjetoBeneficioDAO
 		$retorno->desc = $resultset[DmlSqlProjetoBeneficio::PRBE_TX_BENEFICIO];
 		$retorno->dataCadastro = $resultset[DmlSqlProjetoBeneficio::PRBE_DT_CADASTRO];
 		$retorno->dataAtualizacao = $resultset[DmlSqlProjetoBeneficio::PRBE_DT_UPDATE];
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		
 
 		return $retorno;
 	}
