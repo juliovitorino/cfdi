@@ -22,7 +22,11 @@ interface CampanhaSorteioDAO extends DAO
     public function countCampanhaSorteioPorStatus($status);
     public function listCampanhaSorteioPorStatus($status, $pag, $qtde, $coluna, $ordem);
     public function countCampanhaSorteioPorUsuaIdStatus($usuaid, $status);
+    public function countCampanhaSorteioPorCampIdStatus($campid, $status);
+    public function countCampanhaSorteioPorCampId($campid);
     public function listCampanhaSorteioPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+    public function listCampanhaSorteioPorCampIdStatus($campid, $status, $pag, $qtde, $coluna, $ordem);
+    public function listCampanhaSorteioPorCampId($campid, $pag, $qtde, $coluna, $ordem);
 
     public function loadMaxId_CampanhaPK($id_campanha,$status);
 

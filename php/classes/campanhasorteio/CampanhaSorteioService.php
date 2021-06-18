@@ -35,6 +35,8 @@ interface CampanhaSorteioService extends AppService
     public function autalizarStatusCampanhaSorteio($id, $status);
     public function listarCampanhaSorteioPorStatus($status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
     public function listarCampanhaSorteioPorUsuaIdStatus($usuaid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
+    public function listarCampanhaSorteioPorCampIdStatus($campid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
+    public function listarCampanhaSorteioPorCampId($campid, $pag=1, $qtde=0, $coluna=1, $ordem=0);
     public function cancelar($dto);
 
     public function pesquisarMaxPKAtivoId_CampanhaPorStatus($id_campanha,$status);

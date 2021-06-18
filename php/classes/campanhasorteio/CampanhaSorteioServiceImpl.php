@@ -977,6 +977,98 @@ public function pesquisarMaxPKAtivoId_CampanhaPorStatus($id_campanha,$status)
 
 /**
 *
+* listarCampanhaSorteioPorCampIdStatus() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* realizar lista paginada de registros tendo como referência os registros do usuário logado com uma instância de PaginacaoDTO
+*
+* @param $campid
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+* @return $PaginacaoDTO
+*/
+
+public function listarCampanhaSorteioPorCampIdStatus($campid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0)
+{
+    $daofactory = NULL;
+    $retorno = NULL;
+    try {
+        $daofactory = DAOFactory::getDAOFactory();
+        $daofactory->open();
+        $daofactory->beginTransaction();
+
+        //Se qtde por página é indefinido (=0) busca valor default do variavel
+        if($qtde == 0){
+            $qtde = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT);
+        }
+        // listar paginado CampanhaSorteio
+        $bo = new CampanhaSorteioBusinessImpl();
+        $retorno = $bo->listarCampanhaSorteioPorCampIdStatus($daofactory, $campid, $status, $pag, $qtde, $coluna, $ordem);
+        $daofactory->commit();
+    } catch (Exception $e) {
+        // rollback na transação
+     
+    } finally {
+        try {
+            $daofactory->close();
+        } catch (Exception $e) {
+            // faz algo
+        }
+    }
+
+    return $retorno;
+}
+
+
+/**
+*
+* listarCampanhaSorteioPorCampId() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* realizar lista paginada de registros tendo como referência os registros do usuário logado com uma instância de PaginacaoDTO
+*
+* @param $campid
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+* @return $PaginacaoDTO
+*/
+
+public function listarCampanhaSorteioPorCampId($campid, $pag=1, $qtde=0, $coluna=1, $ordem=0)
+{
+    $daofactory = NULL;
+    $retorno = NULL;
+    try {
+        $daofactory = DAOFactory::getDAOFactory();
+        $daofactory->open();
+        $daofactory->beginTransaction();
+
+        //Se qtde por página é indefinido (=0) busca valor default do variavel
+        if($qtde == 0){
+            $qtde = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT);
+        }
+        // listar paginado CampanhaSorteio
+        $bo = new CampanhaSorteioBusinessImpl();
+        $retorno = $bo->listarCampanhaSorteioPorCampId($daofactory, $campid, $pag, $qtde, $coluna, $ordem);
+        $daofactory->commit();
+    } catch (Exception $e) {
+        // rollback na transação
+     
+    } finally {
+        try {
+            $daofactory->close();
+        } catch (Exception $e) {
+            // faz algo
+        }
+    }
+
+    return $retorno;
+}
+
+
+
+/**
+*
 * listarCampanhaSorteioPorUsuaIdStatus() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
 * realizar lista paginada de registros tendo como referência os registros do usuário logado com uma instância de PaginacaoDTO
 *

@@ -107,10 +107,11 @@ class CampanhaSorteioBusinessImpl implements CampanhaSorteioBusiness
          $retorno = new DTOPadrao();
          $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
          $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
-
+//var_dump($dto);
         // verificações outras regras gerais de negócio
         $campbo = new CampanhaBusinessImpl();
         $campdto = $campbo->carregarPorID($daofactory, $dto->id_campanha);
+//var_dump($campdto);
 
         if( $campdto == NULL) {
             $retorno->msgcode = ConstantesMensagem::CAMPANHA_INEXISTENTE;
@@ -127,7 +128,9 @@ class CampanhaSorteioBusinessImpl implements CampanhaSorteioBusiness
         $sbi = new PlanoUsuarioBusinessImpl();
         $plusid = $sbi->carregarPlanoUsuarioPorStatus($daofactory, $campdto->id_usuario, ConstantesVariavel::STATUS_ATIVO);
         $plusdto = $sbi->carregarPorID($daofactory, $plusid->id);
-
+//echo "<br>==========<br>";        
+//echo json_encode($plusdto);
+//echo "<br>==========<br>";        
         if($plusdto->planoid == VariavelCache::getInstance()->getVariavel(ConstantesVariavel::PLANO_GRATUITO_CODIGO) ){
             $dtocheck = new DTOPadrao();
             $dtocheck->msgcode = ConstantesMensagem::PLANO_GRATUITO_NAO_PERMITE_SORTEIO;
@@ -143,7 +146,10 @@ class CampanhaSorteioBusinessImpl implements CampanhaSorteioBusiness
 		if ($permdto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
 			return $permdto;	
 		}
-
+//echo "<br>==========<br>";        
+//var_dump($permdto);
+//echo "<br>==========<br>";        
+        
         // Incluir na base de sorteio da campanha
         $retorno = $this->inserir($daofactory, $dto);
 
@@ -769,6 +775,83 @@ public function inserir($daofactory, $dto)
 
           return $retorno;
      }
+
+/**
+*
+* listarCampanhaSorteioCampIdPorStatus() - Usado para invocar a interface de acesso aos dados (DAO) CampanhaSorteioDAO de forma geral
+* realizar lista paginada de registros dos registros do usuário logado com uma instância de PaginacaoDTO
+*
+* @param $daofactory
+* @param $campid
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+* @return $PaginacaoDTO
+*/
+
+public function listarCampanhaSorteioPorCampIdStatus($daofactory, $campid, $status, $pag, $qtde, $coluna, $ordem)
+{
+    $retorno = new DTOPaginacao();
+    $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+    $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+    $dao = $daofactory->getCampanhaSorteioDAO($daofactory);
+    $retorno->pagina = $pag;
+    $retorno->itensPorPagina = ($qtde == 0 
+    ? (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT)
+    : $qtde);
+      $retorno->totalPaginas = ceil($dao->countCampanhaSorteioPorCampIdStatus($campid, $status) / $retorno->itensPorPagina);
+
+      if($pag > $retorno->totalPaginas) {
+           $retorno->msgcode = ConstantesMensagem::NAO_EXISTEM_MAIS_PAGINAS_APRESENTAR;
+           $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+           return $retorno;
+    }
+    $retorno->lst = $dao->listCampanhaSorteioPorCampIdStatus($campid, $status, $pag, $qtde, $coluna, $ordem);
+
+      return $retorno;
+ }
+
+
+/**
+*
+* listarCampanhaSorteioPorCampId() - Usado para invocar a interface de acesso aos dados (DAO) CampanhaSorteioDAO de forma geral
+* realizar lista paginada de registros dos registros do usuário logado com uma instância de PaginacaoDTO
+*
+* @param $daofactory
+* @param $campid
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+* @return $PaginacaoDTO
+*/
+
+public function listarCampanhaSorteioPorCampId($daofactory, $campid, $pag, $qtde, $coluna, $ordem)
+{
+    $retorno = new DTOPaginacao();
+    $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+    $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+    $dao = $daofactory->getCampanhaSorteioDAO($daofactory);
+    $retorno->pagina = $pag;
+    $retorno->itensPorPagina = ($qtde == 0 
+    ? (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT)
+    : $qtde);
+      $retorno->totalPaginas = ceil($dao->countCampanhaSorteioPorCampId($campid) / $retorno->itensPorPagina);
+
+      if($pag > $retorno->totalPaginas) {
+           $retorno->msgcode = ConstantesMensagem::NAO_EXISTEM_MAIS_PAGINAS_APRESENTAR;
+           $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+           return $retorno;
+    }
+    $retorno->lst = $dao->listCampanhaSorteioPorCampId($campid, $pag, $qtde, $coluna, $ordem);
+
+      return $retorno;
+ }
+
 
 /**
 * validarTamanhoCampo()

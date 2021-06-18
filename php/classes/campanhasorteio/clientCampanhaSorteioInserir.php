@@ -1,5 +1,6 @@
 <?php 
 // URL http://junta10.dsv/cfdi/php/classes/campanhasorteio/clientCampanhaSorteioInserir.php
+// URL http://elitefinanceira.com/cfdi/php/classes/campanhasorteio/clientCampanhaSorteioInserir.php
 
 require_once 'CampanhaSorteioServiceImpl.php';
 require_once 'CampanhaSorteioDTO.php';
@@ -10,7 +11,7 @@ $ts = $date->getTimestamp();
 
 $dto = new CampanhaSorteioDTO();
 
-$dto->id_campanha = 1000;
+$dto->id_campanha = 1004;
 $dto->nome = Util::getLoremIpsum()  . Util::getCodigo(10);
 $dto->urlRegulamento = "http://junta10.com/"  . Util::getCodigo(10);
 $dto->premio = Util::getLoremIpsum()  . Util::getCodigo(10);

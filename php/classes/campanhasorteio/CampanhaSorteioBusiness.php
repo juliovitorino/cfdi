@@ -32,6 +32,8 @@ interface CampanhaSorteioBusiness extends BusinessObject
     public function listarCampanhaSorteioPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);
     public function validarTamanhoCampo($campo, $tamanho, $coment);
     public function listarCampanhaSorteioPorUsuaIdStatus($daofactory, $usuaid, $status, $pag, $qtde, $coluna, $ordem);
+    public function listarCampanhaSorteioPorCampIdStatus($daofactory, $campid, $status, $pag, $qtde, $coluna, $ordem);
+    public function listarCampanhaSorteioPorCampId($daofactory, $campid, $pag, $qtde, $coluna, $ordem);
     public function criarSorteio($daofactory, $dto);
     public function pesquisarMaxPKAtivoId_CampanhaPorStatus($daofactory, $id_campanha, $status);
 

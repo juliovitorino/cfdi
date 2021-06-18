@@ -247,6 +247,80 @@ class MySqlKinghostCampanhaSorteioDAO implements CampanhaSorteioDAO
     }
 
 /**
+* countCampanhaSorteioPorCampIdStatus() - contar a quantidade de registros
+* sob o contexto da classe CampanhaSorteio com base no usuário específico. Esse usuário
+* é o usuário logado na sessão ou no próprio dispositivo móvel e de acordo com a 
+* query em @see $sql na tabela CAMPANHA_SORTEIO 
+*
+* @see listPagina()
+*
+* @param $campid
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+
+public function countCampanhaSorteioPorCampIdStatus($campid, $status)
+{   
+    $retorno = 0;
+    // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+    $conexao = $this->daofactory->getSession();
+    $sql = DmlSqlCampanhaSorteio::SQL_COUNT . ' WHERE ' 
+    . DmlSqlCampanhaSorteio::CAMP_ID . " = $campid "
+    . ' AND ' . DmlSqlCampanhaSorteio::CASO_IN_STATUS . " = '$status'";
+
+   
+    $res = $conexao->query($sql);
+    if ($res){
+        $tmp = $res->fetch_assoc();
+        $retorno = $tmp['contador'];
+    }
+    return $retorno;
+
+}
+
+
+/**
+* countCampanhaSorteioPorCampId() - contar a quantidade de registros
+* sob o contexto da classe CampanhaSorteio com base no usuário específico. Esse usuário
+* é o usuário logado na sessão ou no próprio dispositivo móvel e de acordo com a 
+* query em @see $sql na tabela CAMPANHA_SORTEIO 
+*
+* @see listPagina()
+*
+* @param $campid
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+
+public function countCampanhaSorteioPorCampId($campid)
+{   
+    $retorno = 0;
+    // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+    $conexao = $this->daofactory->getSession();
+    $sql = DmlSqlCampanhaSorteio::SQL_COUNT . ' WHERE ' 
+    . DmlSqlCampanhaSorteio::CAMP_ID . " = $campid ";
+
+   
+    $res = $conexao->query($sql);
+    if ($res){
+        $tmp = $res->fetch_assoc();
+        $retorno = $tmp['contador'];
+    }
+    return $retorno;
+
+}
+
+
+/**
 * listCampanhaSorteioPorUsuaIdStatus() - Listar um conjunto de registro previamente paginado
 * sob o contexto da classe CampanhaSorteio com base no usuário específico. Esse usuário
 * é o usuário logado na sessão ou no próprio dispositivo móvel e de acordo com a 
@@ -271,6 +345,60 @@ class MySqlKinghostCampanhaSorteioDAO implements CampanhaSorteioDAO
         . ' ORDER BY ' . $coluna . ($ordem == 0 ? " ASC": " DESC");
         return $this->listPagina($sql, $pag, $qtde);
     }
+
+/**
+* listCampanhaSorteioPorCampIdStatus() - Listar um conjunto de registro previamente paginado
+* sob o contexto da classe CampanhaSorteio com base no usuário específico. Esse usuário
+* é o usuário logado na sessão ou no próprio dispositivo móvel e de acordo com a 
+* query em @see $sql na tabela CAMPANHA_SORTEIO 
+*
+* @see listPagina()
+*
+* @param $campid
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+public function listCampanhaSorteioPorCampIdStatus($campid, $status, $pag, $qtde, $coluna, $ordem)
+{
+    $sql = DmlSqlCampanhaSorteio::SELECT 
+    . ' WHERE ' . DmlSqlCampanhaSorteio::CAMP_ID . " = $campid "
+    . ' AND ' . DmlSqlCampanhaSorteio::CASO_IN_STATUS . " = '$status'"
+    . ' ORDER BY ' . $coluna . ($ordem == 0 ? " ASC": " DESC");
+    
+    return $this->listPagina($sql, $pag, $qtde);
+}
+
+
+/**
+* listCampanhaSorteioPorCampId() - Listar um conjunto de registro previamente paginado
+* sob o contexto da classe CampanhaSorteio com base no usuário específico. Esse usuário
+* é o usuário logado na sessão ou no próprio dispositivo móvel e de acordo com a 
+* query em @see $sql na tabela CAMPANHA_SORTEIO 
+*
+* @see listPagina()
+*
+* @param $campid
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+public function listCampanhaSorteioPorCampId($campid, $pag, $qtde, $coluna, $ordem)
+{
+    $sql = DmlSqlCampanhaSorteio::SELECT 
+    . ' WHERE ' . DmlSqlCampanhaSorteio::CAMP_ID . " = $campid "
+    . ' ORDER BY ' . $coluna . ($ordem == 0 ? " ASC": " DESC");
+   
+    return $this->listPagina($sql, $pag, $qtde);
+}
+
 
 /**
 * listPagina() - Listar um conjunto de registro previamente paginado
