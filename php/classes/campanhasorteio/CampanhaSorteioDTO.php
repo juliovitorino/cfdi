@@ -11,7 +11,7 @@ require_once '../dto/DTOPadraoEntidade.php';
 */
 class CampanhaSorteioDTO extends DTOPadraoEntidade implements JsonSerializable
 {
-    public $id;
+    //public $id;
     public $id_campanha;
     public $nome;
     public $urlRegulamento;
@@ -19,9 +19,9 @@ class CampanhaSorteioDTO extends DTOPadraoEntidade implements JsonSerializable
     public $dataComecoSorteio;
     public $dataFimSorteio;
     public $maxTickets;
-    public $status;
-    public $dataCadastro;
-    public $dataAtualizacao;
+    //public $status;
+    //public $dataCadastro;
+    //public $dataAtualizacao;
 
     public function jsonSerialize()
     {

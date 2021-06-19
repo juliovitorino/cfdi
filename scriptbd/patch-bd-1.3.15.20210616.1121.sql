@@ -86,4 +86,10 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0146
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0147','Campanha sorteio não existe.');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0148','Campanha sorteio precisa ser ativada para criar números.');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0149','Campanha sorteio está finalizada.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0150','Foi incluida na campanha (*=p1=*) *=p2=* uma nova campanha de sorteio (*=p3=*) *=p4=*. Status = *=p5=*');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0151','A Campanha sorteio precisa estar com status (W) = Executando');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0152','Foi incluida campanha de sorteio (*=p1=*) *=p2=* *=p4=* tickets aleatórios. Status = *=p3=*');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0153','A criação de tickets da campanha de sorteio (*=p1=*) *=p2=* foi finalizada total de *=p4=* tickets criados. Status = *=p3=*');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0154','A campanha sorteio está pronta pra uso');
+
 

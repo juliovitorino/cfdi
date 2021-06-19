@@ -63,6 +63,7 @@ class ConstantesVariavel
 	const STATUS_ATIVO = "A";
 	const STATUS_BLOQUEADO = "B";
 	const STATUS_DESABILITADO = "C";
+	const STATUS_PRONTO_USAR = "D";
 	const STATUS_ENVIADO = "E";
 	const STATUS_FILA = 'F';
 	const STATUS_PURGE = 'G';
@@ -76,9 +77,11 @@ class ConstantesVariavel
 	const STATUS_FINALIZADO = "T";
 	const STATUS_APROVADO = "V";
 	const STATUS_TRABALHANDO = "W";
+	const STATUS_PAUSADO = "U";
 	const STATUS_REPORTAR_BUG = 'Z';
 
 	const STATUS_MANUTENCAO_DESC = "manutenção";
+	const STATUS_PRONTO_USAR_DESC = "pronto pra usar";
 	const STATUS_ATIVO_DESC = "ativo";
 	const STATUS_APROVADO_DESC = "aprovado";
 	const STATUS_INATIVO_DESC = "inativo";
@@ -96,6 +99,7 @@ class ConstantesVariavel
 	const STATUS_REPORTAR_BUG_DESC = 'bug';
 	const STATUS_COMPLETO_DESC = 'completo';
 	const STATUS_DESABILITADO_DESC = 'desabilitado';
+	const STATUS_PAUSADO_DESC = "Pausado";
 
 	const CANIVETE_VERSAO = 'CANIVETE_VERSAO';
 	const CANIVETE_COPY = 'CANIVETE_COPY';

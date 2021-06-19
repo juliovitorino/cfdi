@@ -872,6 +872,9 @@ CREATE UNIQUE INDEX UIX_CFDI_TX_QRCODE_REGIST
 /* A = ATIVO                                                       /
 /* I = INATIVO                                                     /
 /* P = PENDENTE                                                    /
+/* W = WORKING (Trabalhando)                                       /
+/* U = PAUSADO                                                     /
+/* D = PRONTO PRA USAR                                             /
 /******************************************************************/
 
 CREATE TABLE CAMPANHA_SORTEIO

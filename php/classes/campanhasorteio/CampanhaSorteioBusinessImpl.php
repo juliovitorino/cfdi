@@ -10,6 +10,7 @@ require_once '../variavel/ConstantesVariavel.php';
 require_once '../variavel/VariavelCache.php';
 require_once '../campanhasorteiofilacriacao/CampanhaSorteioFilaCriacaoBusinessImpl.php';
 require_once '../campanha/campanhaBusinessImpl.php';
+require_once '../usuarionotificacao/UsuarioNotificacaoHelper.php';
 
 /**
 *
@@ -107,17 +108,15 @@ class CampanhaSorteioBusinessImpl implements CampanhaSorteioBusiness
          $retorno = new DTOPadrao();
          $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
          $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
-//var_dump($dto);
-        // verificações outras regras gerais de negócio
+
+         // verificações outras regras gerais de negócio
         $campbo = new CampanhaBusinessImpl();
         $campdto = $campbo->carregarPorID($daofactory, $dto->id_campanha);
-//var_dump($campdto);
 
         if( $campdto == NULL) {
             $retorno->msgcode = ConstantesMensagem::CAMPANHA_INEXISTENTE;
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
-
         }
 
         //--------------------------
@@ -188,6 +187,22 @@ class CampanhaSorteioBusinessImpl implements CampanhaSorteioBusiness
                 $csfcbo->inserir($daofactory, $csfcdto);
 
             }
+
+            // Envia uma notificação ao ADMIN se chave estiver ligada
+            if (VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_NOTIFICACAO_ADMIN_NOVO_USUARIO) == ConstantesVariavel::ATIVADO){
+                $usuaid_admin = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::NOTIFICACAO_ADMIN_USUA_ID);
+                $msg =  MensagemCache::getInstance()->getMensagemParametrizada(ConstantesMensagem::NOTIFICACAO_NOVO_CAMPANHA_SORTEIO, [
+                    ConstantesVariavel::P1 => $campdto->id,
+                    ConstantesVariavel::P2 => $campdto->nome, 
+                    ConstantesVariavel::P3 => $csdto->id,
+                    ConstantesVariavel::P4 => $csdto->nome,
+                    ConstantesVariavel::P5 => $csdto->statusdesc,
+                ]);
+
+                UsuarioNotificacaoHelper::criarUsuarioNotificacaoPorBusiness($daofactory, $usuaid_admin, $msg, "notify-03.png");
+            }
+
+
         }
 
          return $retorno;

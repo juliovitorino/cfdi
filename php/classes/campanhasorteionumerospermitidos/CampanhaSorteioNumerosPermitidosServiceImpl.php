@@ -209,7 +209,9 @@ public function pesquisarMaxPKAtivoId_CasoPorStatus($id_caso,$status)
            $bo = new CampanhaSorteioNumerosPermitidosBusinessImpl();
            $retorno = $bo->criarNumerosTicketSorteioAleatorios($daofactory, $dto);
 
-           if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+           if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO 
+               || $retorno->msgcode == ConstantesMensagem::NAO_EXISTEM_MAIS_TICKETS_PARA_GERAR     
+           ) {
                 $daofactory->commit();
             } else {
                 $daofactory->rollback();

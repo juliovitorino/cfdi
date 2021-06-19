@@ -201,6 +201,7 @@ public function criarNumerosTicketSorteioAleatorios($daofactory, $dto)
 
     // Obtem dados da CASO e CAMP
     $casodto = CampanhaSorteioHelper::getCampanhaSorteioBusiness($daofactory, $dto->id_caso);
+
     if($casodto == NULL){
         $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_INEXISTENTE;
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
@@ -213,8 +214,20 @@ public function criarNumerosTicketSorteioAleatorios($daofactory, $dto)
         return $retorno;    
     }
 
+    if($casodto->status == ConstantesVariavel::STATUS_PRONTO_USAR) {
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_ESTA_PRONTA_PRA_USAR;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;    
+    }
+
     if($casodto->status == ConstantesVariavel::STATUS_FINALIZADO) {
         $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_ESTA_FINALIZADA;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;    
+    }
+
+    if($casodto->status != ConstantesVariavel::STATUS_TRABALHANDO) {
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_PRECISA_ESTAR_COM_STATUS_TRABALHANDO;
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
         return $retorno;    
     }
@@ -223,7 +236,7 @@ public function criarNumerosTicketSorteioAleatorios($daofactory, $dto)
     $csfcbo = new CampanhaSorteioFilaCriacaoBusinessImpl();
     $csfcdto = $csfcbo->pesquisarMaxPKAtivoId_CasoPorStatus($daofactory, $casodto->id, ConstantesVariavel::STATUS_PENDENTE);
 
-    if($csfcdto != NULL)
+    if(! is_null($csfcdto))
     {
 
         $csnpbo = new CampanhaSorteioNumerosPermitidosBusinessImpl();
@@ -235,7 +248,7 @@ public function criarNumerosTicketSorteioAleatorios($daofactory, $dto)
             do {
                 $nrTicketSorteio = (int) Util::getCodigoNumerico(5);
                 $dtocheck = $this->pesquisarPorCasoIdNrTicketStatus($daofactory, $casodto->id, $nrTicketSorteio, ConstantesVariavel::STATUS_ATIVO);
-                if($dtocheck == NULL) {
+                if(is_null($dtocheck)) {
                     $isRepetido = false;
                 }
             } while($isRepetido);
@@ -250,9 +263,42 @@ public function criarNumerosTicketSorteioAleatorios($daofactory, $dto)
     
         // Muda status da Fila para Concluido/Finalizado 
         $csfcbo->atualizarStatus($daofactory, $csfcdto->id, ConstantesVariavel::STATUS_FINALIZADO );
+
+
+        // Envia uma notificação ao ADMIN se chave estiver ligada
+        if (VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_NOTIFICACAO_ADMIN_NOVO_USUARIO) == ConstantesVariavel::ATIVADO){
+            $usuaid_admin = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::NOTIFICACAO_ADMIN_USUA_ID);
+            $msg =  MensagemCache::getInstance()->getMensagemParametrizada(ConstantesMensagem::GERACAO_NUMEROS_TICKETS_SORTEIO, [
+                ConstantesVariavel::P1 => $casodto->id,
+                ConstantesVariavel::P2 => $casodto->nome,
+                ConstantesVariavel::P3 => $casodto->statusdesc,
+                ConstantesVariavel::P4 => $csfcdto->qtLoteTicketCriar,
+            ]);
+
+            UsuarioNotificacaoHelper::criarUsuarioNotificacaoPorBusiness($daofactory, $usuaid_admin, $msg, "notify-03.png");
+        }
+
     } else {
+
+        // Muda status da campanha sorteio para Concluido/Finalizado 
+        $casobo = new CampanhaSorteioBusinessImpl();
+        $casobo->atualizarStatus($daofactory, $casodto->id, ConstantesVariavel::STATUS_PRONTO_USAR );
+
         $retorno->msgcode = ConstantesMensagem::NAO_EXISTEM_MAIS_TICKETS_PARA_GERAR;
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+        // Envia uma notificação ao ADMIN se chave estiver ligada
+        if (VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_NOTIFICACAO_ADMIN_NOVO_USUARIO) == ConstantesVariavel::ATIVADO){
+            $usuaid_admin = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::NOTIFICACAO_ADMIN_USUA_ID);
+            $msg =  MensagemCache::getInstance()->getMensagemParametrizada(ConstantesMensagem::GERACAO_NUMEROS_TICKETS_SORTEIO_FINALIZADA, [
+                ConstantesVariavel::P1 => $casodto->id,
+                ConstantesVariavel::P2 => $casodto->nome,
+                ConstantesVariavel::P3 => $casodto->statusdesc,
+                ConstantesVariavel::P4 => $casodto->maxTickets,
+            ]);
+
+            UsuarioNotificacaoHelper::criarUsuarioNotificacaoPorBusiness($daofactory, $usuaid_admin, $msg, "notify-03.png");
+        }
 
     }
     
