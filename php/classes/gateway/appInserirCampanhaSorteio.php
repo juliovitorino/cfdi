@@ -5,19 +5,9 @@
 
 
  /*
-Faça um Find/Replace em $_POST por $_GET e use os parametros na URL para simular um GET na HttpRequest
-?tokenid=tk
-&id=tr
-&id_campanha=tr
-&nome=tr
-&urlRegulamento=tr
-&premio=tr
-&dataComecoSorteio=tr
-&dataFimSorteio=tr
-&maxTickets=tr
-&status=tr
-&dataCadastro=tr
-&dataAtualizacao=tr
+Faça um Find/Replace em $_GET por $_POST e use os parametros na URL para simular um GET na HttpRequest
+
+http://elitefinanceira.com/cfdi/php/classes/gateway/appInserirCampanhaSorteio.php?tokenid=c76&idCampanha=1004&nome=testeYK&urlRegulamento=qqhum&premio=qqcoisa&nuMaxTicketSorteio=3000
 
  */
 // URL http://localhost/cfdi/php/classes/gateway/appInserirCampanhaSorteio.php
@@ -50,18 +40,11 @@ include_once '../../inc/validarTokenApp.php';
 
 $dto = new CampanhaSorteioDTO();
 
-$dto->id = $_POST['id'];
-$dto->id_campanha = $_POST['id_campanha'];
+$dto->id_campanha = $_POST['idCampanha'];
 $dto->nome = $_POST['nome'];
 $dto->urlRegulamento = $_POST['urlRegulamento'];
 $dto->premio = $_POST['premio'];
-$dto->dataComecoSorteio = $_POST['dataComecoSorteio'];
-$dto->dataFimSorteio = $_POST['dataFimSorteio'];
-$dto->maxTickets = $_POST['maxTickets'];
-$dto->status = $_POST['status'];
-$dto->dataCadastro = $_POST['dataCadastro'];
-$dto->dataAtualizacao = $_POST['dataAtualizacao'];
-
+$dto->maxTickets = (int) $_POST['nuMaxTicketSorteio'];
 
 $csi = new CampanhaSorteioServiceImpl();
 
