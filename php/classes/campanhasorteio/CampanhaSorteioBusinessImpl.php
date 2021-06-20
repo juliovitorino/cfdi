@@ -3,6 +3,8 @@
 // importar dependencias
 require_once 'CampanhaSorteioBusiness.php';
 require_once 'CampanhaSorteioConstantes.php';
+require_once 'CampanhaSorteioHelper.php';
+
 require_once '../dto/DTOPadrao.php';
 require_once '../dto/DTOPaginacao.php';
 
@@ -96,6 +98,76 @@ class CampanhaSorteioBusinessImpl implements CampanhaSorteioBusiness
 
      }
 
+
+/**
+ * ativarCampanhaSorteio() - Ativa uma campanha em status PENDENTE para status TRABALHANDO
+ * 
+ * @param $daofactory
+ * @param $dto 
+*/
+public function ativarCampanhaSorteio($daofactory, $id)
+{
+    //var_dump("bo::ativarCampanhaSorteio($id)");
+
+    // retorno default
+    $retorno = new DTOPadrao();
+    $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+    $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+    // Localiza a CASO pelo id
+    $casodto = CampanhaSorteioHelper::getCampanhaSorteioBusiness($daofactory, $id);
+//var_dump($casodto);    
+    if (is_null($casodto))
+    {
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_INEXISTENTE;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
+    // Verifica o status da CASO
+    if($casodto->status == ConstantesVariavel::STATUS_TRABALHANDO) 
+    {
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_AGUARDANDO_VERIFICACAO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
+        // Status precisa ser verfificado
+        if($casodto->status != ConstantesVariavel::STATUS_PENDENTE) 
+        {
+            // Envia uma notificação ao ADMIN
+            UsuarioNotificacaoHelper::criarNotificacaoAdmin(
+                $daofactory
+                , ConstantesMensagem::CAMPANHA_SORTEIO_PRECISA_VERFICACAO_ADMIN
+                , [
+                    ConstantesVariavel::P1 => $casodto->id,
+                    ConstantesVariavel::P2 => $casodto->nome, 
+                    ConstantesVariavel::P3 => $casodto->statusdesc,
+                ]
+                ,  "notify-03.png"
+            );
+
+            $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_STATUS_PRECISA_SER_VERIFICADO;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+                ConstantesVariavel::P1 => $casodto->status,
+            ]);
+            return $retorno;
+        }
+    
+
+     $dao = $daofactory->getCampanhaSorteioDAO($daofactory);
+     if(!$dao->updateStatus($id, ConstantesVariavel::STATUS_TRABALHANDO)){
+       $retorno->msgcode = ConstantesMensagem::ERRO_CRUD_ATUALIZAR_REGISTRO;
+       $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+     }
+     // retorna situação
+     return $retorno;
+
+}
+
+
+
 /**
  * criarSorteio() - Cria todo o processo inicial do sorteio para uma campanha
  * 
@@ -187,7 +259,7 @@ class CampanhaSorteioBusinessImpl implements CampanhaSorteioBusiness
                 $csfcbo->inserir($daofactory, $csfcdto);
 
             }
-
+/*
             // Envia uma notificação ao ADMIN se chave estiver ligada
             if (VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_NOTIFICACAO_ADMIN_NOVO_USUARIO) == ConstantesVariavel::ATIVADO){
                 $usuaid_admin = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::NOTIFICACAO_ADMIN_USUA_ID);
@@ -201,7 +273,18 @@ class CampanhaSorteioBusinessImpl implements CampanhaSorteioBusiness
 
                 UsuarioNotificacaoHelper::criarUsuarioNotificacaoPorBusiness($daofactory, $usuaid_admin, $msg, "notify-03.png");
             }
-
+*/
+            UsuarioNotificacaoHelper::criarNotificacaoAdmin(
+              $daofactory
+            , ConstantesMensagem::NOTIFICACAO_NOVO_CAMPANHA_SORTEIO
+            , [
+                ConstantesVariavel::P1 => $campdto->id,
+                ConstantesVariavel::P2 => $campdto->nome, 
+                ConstantesVariavel::P3 => $csdto->id,
+                ConstantesVariavel::P4 => $csdto->nome,
+                ConstantesVariavel::P5 => $csdto->statusdesc,
+            ]
+            , "notify-03.png");
 
         }
 

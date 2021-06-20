@@ -183,6 +183,53 @@ public function pesquisarMaxPKAtivoId_CampanhaPorStatus($id_campanha,$status)
           return $retorno;
      }
 
+     /**
+*
+* ativarCampanhaSorteio() - Ativar uma campanha sorteio com status PENDENTE.
+*
+* @param $id 
+*
+*/
+
+     public function ativarCampanhaSorteio($id)
+     {
+
+        //var_dump("service::ativarCampanhaSorteio($id)");
+
+        $daofactory = NULL;
+        $retorno = NULL;
+        try {
+              $daofactory = DAOFactory::getDAOFactory();
+              $daofactory->open();
+              $daofactory->beginTransaction();
+              
+
+            $bo = new CampanhaSorteioBusinessImpl();
+            $retorno = $bo->ativarCampanhaSorteio($daofactory, $id);
+
+            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO
+                || $retorno->msgcode == ConstantesMensagem::CAMPANHA_SORTEIO_STATUS_PRECISA_SER_VERIFICADO
+            ) {
+                   $daofactory->commit();
+              } else {
+                   $daofactory->rollback();
+              }
+              
+        } catch (Exception $e) {
+              // rollback na transação
+              $daofactory->rollback();
+
+        } finally {
+              try {
+                   $daofactory->close();
+              } catch (Exception $e) {
+                   // faz algo
+              }
+        }
+
+        return $retorno;
+   }
+
 
 /**
 *

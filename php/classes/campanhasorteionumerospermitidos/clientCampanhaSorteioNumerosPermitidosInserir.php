@@ -1,6 +1,7 @@
 <?php 
 // URL http://localhost/cfdi/php/classes/campanhasorteionumerospermitidos/clientCampanhaSorteioNumerosPermitidosInserir.php
 // URL http://junta10.dsv/cfdi/php/classes/campanhasorteionumerospermitidos/clientCampanhaSorteioNumerosPermitidosInserir.php
+// URL http://elitefinanceira.com/cfdi/php/classes/campanhasorteionumerospermitidos/clientCampanhaSorteioNumerosPermitidosInserir.php
 
 require_once 'CampanhaSorteioNumerosPermitidosServiceImpl.php';
 require_once 'CampanhaSorteioNumerosPermitidosDTO.php';

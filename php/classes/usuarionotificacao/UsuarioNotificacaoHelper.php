@@ -4,6 +4,11 @@ require_once 'UsuarioNotificacaoServiceImpl.php';
 require_once 'UsuarioNotificacaoBusinessImpl.php';
 require_once 'UsuarioNotificacaoDTO.php';
 
+require_once '../variavel/VariavelCache.php';
+require_once '../variavel/ConstantesVariavel.php';
+require_once '../mensagem/MensagemCache.php';
+
+
 /**
 *
 * UsuarioNotificacaoHelperHelper - Helper para ServiceImpl e BusinessImpl
@@ -65,9 +70,30 @@ public static function criarUsuarioNotificacaoPorBusiness($daofactory, $idusuari
     $usnodto->tipo = $tipo;
     $usnodto->notificacao = $notificacao;
     $usnodto->json = $json;
-    //var_dump($usnodto);
     return $usnobo->inserir($daofactory, $usnodto);
 
+}
+
+/**
+*
+* criarNotificacaoAdmin - Ajuda para publicar uma notificação ao usuário Admin
+*
+* @param $daofactory
+* @param $msgOrigem
+* @param $parametros
+* @param $icone
+*
+*/
+
+public static function criarNotificacaoAdmin($daofactory, $msgOrigem, $parametros, $icone)
+{
+    // Envia uma notificação ao ADMIN se chave estiver ligada
+    if (VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_NOTIFICACAO_ADMIN_NOVO_USUARIO) == ConstantesVariavel::ATIVADO){
+        $usuaid_admin = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::NOTIFICACAO_ADMIN_USUA_ID);
+        $msg =  MensagemCache::getInstance()->getMensagemParametrizada($msgOrigem,$parametros);
+        self::criarUsuarioNotificacaoPorBusiness($daofactory, $usuaid_admin, $msg, $icone);
+    }
+    
 }
 
 

@@ -28,6 +28,8 @@ require_once '../interfaces/BusinessObject.php';
 
 interface CampanhaSorteioBusiness extends BusinessObject
 {
+    public function ativarCampanhaSorteio($daofactory, $id);
+
     public function atualizarStatus($daofactory, $id, $status);
     public function listarCampanhaSorteioPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);
     public function validarTamanhoCampo($campo, $tamanho, $coment);

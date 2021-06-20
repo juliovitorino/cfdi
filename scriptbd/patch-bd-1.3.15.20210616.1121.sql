@@ -91,5 +91,6 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0151
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0152','Foi incluida campanha de sorteio (*=p1=*) *=p2=* *=p4=* tickets aleatórios. Status = *=p3=*');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0153','A criação de tickets da campanha de sorteio (*=p1=*) *=p2=* foi finalizada total de *=p4=* tickets criados. Status = *=p3=*');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0154','A campanha sorteio está pronta pra uso');
-
-
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0155','A campanha sorteio foi ATIVADA COM SUCESSO e aguarda verificação. Em até 24h estará liberada.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0156','O status da campanha sorteio precisa ser verficado. Status = *=p1=*');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0157','O status da campanha sorteio (*=p1=*) *=p2=* precisa ser verficado pelo ADMIN. Status = *=p3=*');

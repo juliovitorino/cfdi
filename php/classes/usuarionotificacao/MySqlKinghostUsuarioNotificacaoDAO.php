@@ -341,6 +341,7 @@ class MySqlKinghostUsuarioNotificacaoDAO implements UsuarioNotificacaoDAO
         $conexao = $this->daofactory->getSession();
 
         $stmt = $conexao->prepare(DmlSqlUsuarioNotificacao::INS);
+//var_dump(DmlSqlUsuarioNotificacao::INS);        
         $stmt->bind_param(DmlSql::INTEGER_TYPE 
                             . DmlSql::STRING_TYPE 
                             . DmlSql::STRING_TYPE 

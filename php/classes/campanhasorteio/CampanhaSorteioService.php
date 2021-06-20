@@ -31,6 +31,7 @@ require_once '../interfaces/AppService.php';
 
 interface CampanhaSorteioService extends AppService
 {
+    public function ativarCampanhaSorteio($id);
 
     public function autalizarStatusCampanhaSorteio($id, $status);
     public function listarCampanhaSorteioPorStatus($status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);

@@ -517,7 +517,7 @@ public function listCampanhaSorteioPorCampId($campid, $pag, $qtde, $coluna, $ord
     */
     public function getDTO($resultset)
     {
-        if($resultset == NULL){
+        if(is_null($resultset)){
             return NULL;
         }
         //echo var_dump($resultset); // ótimo pra debugar
