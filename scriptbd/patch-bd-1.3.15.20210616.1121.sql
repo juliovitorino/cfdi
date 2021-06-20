@@ -96,3 +96,4 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0156
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0157','O status da campanha sorteio (*=p1=*) *=p2=* precisa ser verficado pelo ADMIN. Status = *=p3=*');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0158','A campanha sorteio já está ATIVADA e funcionando.');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0159','Não é permitido ativar campanhas sorteio simultaneamente. Pause a campanha Ativa.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0160','Não existe campanha sorteio para pausar');

@@ -244,6 +244,82 @@ public function usarCampanhaSorteio($daofactory, $id)
 }
 
 
+/**
+ * pausarCampanhaSorteio() - pausar uma campanha em status A = Ativo para trocar para  status D = Pronto pra usar
+ * 
+ * @param $daofactory
+ * @param $dto 
+*/
+public function pausarCampanhaSorteio($daofactory, $id)
+{
+    //var_dump("bo::ativarCampanhaSorteio($id)");
+
+    // retorno default
+    $retorno = new DTOPadrao();
+    $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+    $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+    // Localiza a CASO pelo id
+    $casodto = CampanhaSorteioHelper::getCampanhaSorteioBusiness($daofactory, $id);
+//var_dump($casodto);    
+    if (is_null($casodto))
+    {
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_INEXISTENTE;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
+    // Verificar se já existe uma campanha sorteio ativa
+    $dao = $daofactory->getCampanhaSorteioDAO($daofactory);
+    if($dao->countCampanhaSorteioPorCampIdStatus($casodto->id_campanha, ConstantesVariavel::STATUS_ATIVO) == 0){
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_NAO_EXISTE_PARA_PAUSAR;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
+    // Verifica o status da CASO
+    if($casodto->status == ConstantesVariavel::STATUS_PRONTO_USAR) 
+    {
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_ESTA_PRONTA_PRA_USAR;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
+    // Status precisa ser verfificado
+    if($casodto->status != ConstantesVariavel::STATUS_ATIVO) 
+    {
+        // Envia uma notificação ao ADMIN
+        UsuarioNotificacaoHelper::criarNotificacaoAdmin(
+            $daofactory
+            , ConstantesMensagem::CAMPANHA_SORTEIO_PRECISA_VERFICACAO_ADMIN
+            , [
+                ConstantesVariavel::P1 => $casodto->id,
+                ConstantesVariavel::P2 => $casodto->nome, 
+                ConstantesVariavel::P3 => $casodto->statusdesc,
+            ]
+            ,  "notify-03.png"
+        );
+
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_STATUS_PRECISA_SER_VERIFICADO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+            ConstantesVariavel::P1 => $casodto->status,
+        ]);
+        return $retorno;
+    }
+
+
+     $dao = $daofactory->getCampanhaSorteioDAO($daofactory);
+     if(!$dao->updateStatus($id, ConstantesVariavel::STATUS_PRONTO_USAR)){
+       $retorno->msgcode = ConstantesMensagem::ERRO_CRUD_ATUALIZAR_REGISTRO;
+       $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+     }
+     // retorna situação
+     return $retorno;
+
+}
+
+
 
 
 /**
