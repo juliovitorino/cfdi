@@ -202,7 +202,7 @@ public function criarNumerosTicketSorteioAleatorios($daofactory, $dto)
     // Obtem dados da CASO e CAMP
     $casodto = CampanhaSorteioHelper::getCampanhaSorteioBusiness($daofactory, $dto->id_caso);
 
-    if($casodto == NULL){
+    if(is_null($casodto)){
         $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_INEXISTENTE;
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
         return $retorno;    

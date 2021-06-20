@@ -13,7 +13,7 @@ $ts = $date->getTimestamp();
 $dto = new CampanhaSorteioNumerosPermitidosDTO();
 
 $dto->id = 1;
-$dto->id_caso =1010;
+$dto->id_caso =1000;
 $dto->nrTicketSorteio =(int) Util::getCodigoNumerico(5);
 
 

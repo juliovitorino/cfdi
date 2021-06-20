@@ -166,9 +166,9 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0155
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0156','O status da campanha sorteio precisa ser verficado. Status = *=p1=*');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0157','O status da campanha sorteio (*=p1=*) *=p2=* precisa ser verficado pelo ADMIN. Status = *=p3=*');
 
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0158','A campanha sorteio já está ATIVADA e funcionando.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0159','Não é permitido ativar campanhas sorteio simultaneamente. Pause a campanha Ativa.');
 
-
-CAMPANHA_SORTEIO_AGUARDANDO_VERIFICACAO
 -- variaveis
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CANIVETE_VERSAO','Versão do Canivete','1.0.0');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CANIVETE_COPY','Direitos reservados do Canivete','Julio Vitorino');
