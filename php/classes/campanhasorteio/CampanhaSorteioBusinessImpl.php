@@ -410,6 +410,65 @@ public function desativarCampanhaSorteio($daofactory, $id)
 }
 
 
+/**
+ * apagarCampanhaSorteio() - Apagar uma campanha sorteio desde que seu status = PENDENTE
+ * 
+ * @param $daofactory
+ * @param $dto 
+*/
+public function apagarCampanhaSorteio($daofactory, $id)
+{
+    //var_dump("bo::ativarCampanhaSorteio($id)");
+
+    // retorno default
+    $retorno = new DTOPadrao();
+    $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+    $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+    // Localiza a CASO pelo id
+    $casodto = CampanhaSorteioHelper::getCampanhaSorteioBusiness($daofactory, $id);
+//var_dump($casodto);    
+    if (is_null($casodto))
+    {
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_INEXISTENTE;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
+    // Status precisa ser verfificado
+    if($casodto->status != ConstantesVariavel::STATUS_PENDENTE) 
+    {
+        // Envia uma notificação ao ADMIN
+        UsuarioNotificacaoHelper::criarNotificacaoAdmin(
+            $daofactory
+            , ConstantesMensagem::CAMPANHA_SORTEIO_PRECISA_VERFICACAO_ADMIN
+            , [
+                ConstantesVariavel::P1 => $casodto->id,
+                ConstantesVariavel::P2 => $casodto->nome, 
+                ConstantesVariavel::P3 => $casodto->statusdesc,
+            ]
+            ,  "notify-03.png"
+        );
+
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_STATUS_PRECISA_SER_VERIFICADO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+            ConstantesVariavel::P1 => $casodto->status,
+        ]);
+        return $retorno;
+    }
+
+
+     $dao = $daofactory->getCampanhaSorteioDAO($daofactory);
+     if(!$dao->delete($casodto)){
+       $retorno->msgcode = ConstantesMensagem::ERRO_CRUD_EXCLUIR_REGISTRO;
+       $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+    }
+    // retorna situação
+    return $retorno;
+
+}
+
+
 
 
 /**

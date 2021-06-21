@@ -35,6 +35,7 @@ interface CampanhaSorteioService extends AppService
     public function usarCampanhaSorteio($id);
     public function pausarCampanhaSorteio($id);
     public function desativarCampanhaSorteio($id);
+    public function apagarCampanhaSorteio($id);
 
     public function autalizarStatusCampanhaSorteio($id, $status);
     public function listarCampanhaSorteioPorStatus($status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);

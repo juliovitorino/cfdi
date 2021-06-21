@@ -372,6 +372,52 @@ public function desativarCampanhaSorteio($id)
 }
 
 
+/**
+*
+* apagarCampanhaSorteio() - Apagar uma campanha sorteio seguindo critérios.
+*
+* @param $id 
+*
+*/
+
+public function apagarCampanhaSorteio($id)
+{
+
+   $daofactory = NULL;
+   $retorno = NULL;
+   try {
+         $daofactory = DAOFactory::getDAOFactory();
+         $daofactory->open();
+         $daofactory->beginTransaction();
+         
+
+       $bo = new CampanhaSorteioBusinessImpl();
+       $retorno = $bo->apagarCampanhaSorteio($daofactory, $id);
+
+       if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO
+           || $retorno->msgcode == ConstantesMensagem::CAMPANHA_SORTEIO_STATUS_PRECISA_SER_VERIFICADO
+       ) {
+              $daofactory->commit();
+         } else {
+              $daofactory->rollback();
+         }
+         
+   } catch (Exception $e) {
+         // rollback na transação
+         $daofactory->rollback();
+
+   } finally {
+         try {
+              $daofactory->close();
+         } catch (Exception $e) {
+              // faz algo
+         }
+   }
+
+   return $retorno;
+}
+
+
 
 /**
 *
