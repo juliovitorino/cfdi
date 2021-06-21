@@ -171,6 +171,21 @@ class MySqlKinghostCartaoDAO implements CartaoDAO
 		return $retorno;
 	}
 
+	public function countCartaoPorCampId($id_campanha)
+	{	
+		$retorno = 0;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlCartao::SQL_COUNT . ' WHERE ' 
+		. DmlSqlCartao::COLS[1] . '=' . $id_campanha);
+		if ($res){
+			$tmp = $res->fetch_assoc();
+			$retorno = $tmp['contador'];
+		}
+		return $retorno;
+
+	}
+
 	public function countParticipantesCampanha($id_campanha)
 	{	
 		$retorno = 0;

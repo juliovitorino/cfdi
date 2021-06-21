@@ -229,7 +229,9 @@ class DmlSqlCampanha extends DmlSql
 		. ' FROM `'.self::TABELA.'` ';
 
 
-
+	const SQL_COUNT = 'SELECT COUNT(*) AS contador '
+	. ' FROM `'.self::TABELA.'` ';
+   
 
 }
 ?>

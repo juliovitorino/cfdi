@@ -32,6 +32,7 @@ require_once '../usuarioavaliacao/UsuarioAvaliacaoBusinessImpl.php';
 require_once '../permissao/PermissaoHelper.php';
 require_once '../cartaopedido/CartaoPedidoBusinessImpl.php';
 require_once '../cartaopedido/CartaoPedidoDTO.php';
+require_once '../plano/ConstantesPlano.php';
 
 /**
  * CampanhaBusinessImpl - Implementação da classe de negocio
@@ -917,6 +918,21 @@ var_dump($carimbodto);*/
 			return $permdto;
 		}
 
+		// Verificar se a quantidade permitida do plano do usuário já existe na CAMP
+		$campdao = $daofactory->getCampanhaDAO($daofactory);
+        $qtdecaso = $campdao->countCampanhaPorUsuaId($dto->id_usuario);
+
+		$qtdePermitido = (int) $permdto->qtdepermitida;
+        if($qtdecaso >= $qtdePermitido) 
+        {
+            $retorno->msgcode = ConstantesMensagem::CAMPANHA_QTDE_EXCEDIDA;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+                ConstantesVariavel::P1 => $qtdePermitido,
+            ]);  
+            
+            return $retorno;
+        }
+
 		// Monta a regra do QRCode da Campanha
 		$dto->QrCodeAtivo = sha1($dto->id_usuario . $dto->dataInicio . $dto->dataTermino . Util::getCodigo(1024));
 		$dto->status = ConstantesVariavel::STATUS_FILA;
@@ -962,6 +978,22 @@ var_dump($carimbodto);*/
 		if ($permdto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
 			return $permdto;
 		}
+
+		// Verificar se a quantidade permitida do plano do usuário já existe na CAMP
+		$campdao = $daofactory->getCampanhaDAO($daofactory);
+        $qtdecaso = $campdao->countCampanhaPorUsuaId($dto->id_usuario);
+
+		$qtdePermitido = (int) $permdto->qtdepermitida;
+        if($qtdecaso >= $qtdePermitido) 
+        {
+            $retorno->msgcode = ConstantesMensagem::CAMPANHA_QTDE_EXCEDIDA;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+                ConstantesVariavel::P1 => $qtdePermitido,
+            ]);  
+            
+            return $retorno;
+        }
+
 
 		// Obtem o máximo de cartões permitidos para esse plano do usuario
 		$permdto = PermissaoHelper::verificarPermissao($daofactory, $dto->id_usuario, ConstantesPlano::PERM_MAXIMO_CARTOES);

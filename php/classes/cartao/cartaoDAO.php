@@ -24,6 +24,7 @@ interface CartaoDAO extends DAO
 	public function updateFavorito($idcartao, $isFavorito);
 	public function listAllCartaoComentarios($idcampanha, $isPositivo, $qtdeComentarios);
 	public function countParticipantesCampanha($id_campanha);
+	public function countCartaoPorCampId($id_campanha);
 	public function listParticipantesCampanha($id_campanha, $pag, $qtde);
 }
 ?>

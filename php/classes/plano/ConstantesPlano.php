@@ -16,7 +16,7 @@ class ConstantesPlano
 	const STATUS_SEM_USO = 'I';
 
 	const PERIODICIDADE_LIVRE = 'LI';
-	const PERIODICIDADE_MAXIMA = 'MX';
+	const PERIODICIDADE_MAXIMA = 'MX'; // Deprecated
 	const PERIODICIDADE_DIARIA = 'DD';
 	const PERIODICIDADE_SEMANAL = 'SM';
 	const PERIODICIDADE_QUINZENAL = 'QZ';

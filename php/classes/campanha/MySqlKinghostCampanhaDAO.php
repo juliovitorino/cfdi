@@ -475,6 +475,24 @@ class MySqlKinghostCampanhaDAO implements CampanhaDAO
 	}
 
 
+	public function countCampanhaPorUsuaId($usuaid)
+	{   
+		$retorno = 0;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$sql = DmlSqlCampanha::SQL_COUNT . ' WHERE ' 
+		. DmlSqlCampanha::USUA_ID . " = $usuaid ";
+	
+		$res = $conexao->query($sql);
+		if ($res){
+			$tmp = $res->fetch_assoc();
+			$retorno = $tmp['contador'];
+		}
+		return $retorno;
+
+	}
+
+
 	public function insert($dto) 
 	{		
 		$retorno = false;
