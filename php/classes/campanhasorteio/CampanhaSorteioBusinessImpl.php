@@ -524,6 +524,21 @@ public function apagarCampanhaSorteio($daofactory, $id)
 //var_dump($permdto);
 //echo "<br>==========<br>";        
         
+        // Verificar se a quantidade permitida do plano do usuário já existe na CASO
+        $casodao = $daofactory->getCampanhaSorteioDAO($daofactory);
+
+        $qtdePermitido = (int) $permdto->qtdepermitida;
+        $qtdecaso = $casodao->countCampanhaSorteioPorCampId($campdto->id);
+        if($qtdecaso >= $qtdePermitido) 
+        {
+            $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_QTDE_EXCEDIDA;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+                ConstantesVariavel::P1 => $qtdePermitido,
+            ]);  
+            
+            return $retorno;
+        }
+
         // Incluir na base de sorteio da campanha
         $retorno = $this->inserir($daofactory, $dto);
 
