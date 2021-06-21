@@ -31,6 +31,8 @@ interface CampanhaSorteioBusiness extends BusinessObject
     public function ativarCampanhaSorteio($daofactory, $id);
     public function usarCampanhaSorteio($daofactory, $id);
     public function pausarCampanhaSorteio($daofactory, $id);
+    public function desativarCampanhaSorteio($daofactory, $id);
+
 
     public function atualizarStatus($daofactory, $id, $status);
     public function listarCampanhaSorteioPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);

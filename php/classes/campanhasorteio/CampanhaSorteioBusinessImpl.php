@@ -132,27 +132,34 @@ public function ativarCampanhaSorteio($daofactory, $id)
         return $retorno;
     }
 
-        // Status precisa ser verfificado
-        if($casodto->status != ConstantesVariavel::STATUS_PENDENTE) 
-        {
-            // Envia uma notificação ao ADMIN
-            UsuarioNotificacaoHelper::criarNotificacaoAdmin(
-                $daofactory
-                , ConstantesMensagem::CAMPANHA_SORTEIO_PRECISA_VERFICACAO_ADMIN
-                , [
-                    ConstantesVariavel::P1 => $casodto->id,
-                    ConstantesVariavel::P2 => $casodto->nome, 
-                    ConstantesVariavel::P3 => $casodto->statusdesc,
-                ]
-                ,  "notify-03.png"
-            );
+    if($casodto->status == ConstantesVariavel::STATUS_INATIVO) 
+    {
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_JA_ESTA_INATIVADA;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
 
-            $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_STATUS_PRECISA_SER_VERIFICADO;
-            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
-                ConstantesVariavel::P1 => $casodto->status,
-            ]);
-            return $retorno;
-        }
+    // Status precisa ser verfificado
+    if($casodto->status != ConstantesVariavel::STATUS_PENDENTE) 
+    {
+        // Envia uma notificação ao ADMIN
+        UsuarioNotificacaoHelper::criarNotificacaoAdmin(
+            $daofactory
+            , ConstantesMensagem::CAMPANHA_SORTEIO_PRECISA_VERFICACAO_ADMIN
+            , [
+                ConstantesVariavel::P1 => $casodto->id,
+                ConstantesVariavel::P2 => $casodto->nome, 
+                ConstantesVariavel::P3 => $casodto->statusdesc,
+            ]
+            ,  "notify-03.png"
+        );
+
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_STATUS_PRECISA_SER_VERIFICADO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+            ConstantesVariavel::P1 => $casodto->status,
+        ]);
+        return $retorno;
+    }
     
 
      $dao = $daofactory->getCampanhaSorteioDAO($daofactory);
@@ -197,6 +204,13 @@ public function usarCampanhaSorteio($daofactory, $id)
     if($casodto->status == ConstantesVariavel::STATUS_ATIVO) 
     {
         $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_JA_ESTA_ATIVADA;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
+    if($casodto->status == ConstantesVariavel::STATUS_INATIVO) 
+    {
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_JA_ESTA_INATIVADA;
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
         return $retorno;
     }
@@ -277,6 +291,13 @@ public function pausarCampanhaSorteio($daofactory, $id)
         return $retorno;
     }
 
+    if($casodto->status == ConstantesVariavel::STATUS_INATIVO) 
+    {
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_JA_ESTA_INATIVADA;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
     // Verifica o status da CASO
     if($casodto->status == ConstantesVariavel::STATUS_PRONTO_USAR) 
     {
@@ -310,6 +331,75 @@ public function pausarCampanhaSorteio($daofactory, $id)
 
      $dao = $daofactory->getCampanhaSorteioDAO($daofactory);
      if(!$dao->updateStatus($id, ConstantesVariavel::STATUS_PRONTO_USAR)){
+       $retorno->msgcode = ConstantesMensagem::ERRO_CRUD_ATUALIZAR_REGISTRO;
+       $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+     }
+     // retorna situação
+     return $retorno;
+
+}
+
+
+/**
+ * desativarCampanhaSorteio() - desativar uma campanha sorteio é torna-la INATIVA mudando o status para I. Uma vez realizada
+ * essa operação ela não poderá mais set desfeita.
+ * 
+ * @param $daofactory
+ * @param $dto 
+*/
+public function desativarCampanhaSorteio($daofactory, $id)
+{
+    //var_dump("bo::ativarCampanhaSorteio($id)");
+
+    // retorno default
+    $retorno = new DTOPadrao();
+    $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+    $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+    // Localiza a CASO pelo id
+    $casodto = CampanhaSorteioHelper::getCampanhaSorteioBusiness($daofactory, $id);
+//var_dump($casodto);    
+    if (is_null($casodto))
+    {
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_INEXISTENTE;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
+    // Verifica o status da CASO
+    if($casodto->status == ConstantesVariavel::STATUS_INATIVO) 
+    {
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_JA_ESTA_INATIVADA;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
+    // Status precisa ser verfificado
+    if($casodto->status != ConstantesVariavel::STATUS_ATIVO) 
+    {
+        // Envia uma notificação ao ADMIN
+        UsuarioNotificacaoHelper::criarNotificacaoAdmin(
+            $daofactory
+            , ConstantesMensagem::CAMPANHA_SORTEIO_PRECISA_VERFICACAO_ADMIN
+            , [
+                ConstantesVariavel::P1 => $casodto->id,
+                ConstantesVariavel::P2 => $casodto->nome, 
+                ConstantesVariavel::P3 => $casodto->statusdesc,
+            ]
+            ,  "notify-03.png"
+        );
+
+        $retorno->msgcode = ConstantesMensagem::CAMPANHA_SORTEIO_STATUS_PRECISA_SER_VERIFICADO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+            ConstantesVariavel::P1 => $casodto->status,
+        ]);
+        return $retorno;
+    }
+
+
+     $dao = $daofactory->getCampanhaSorteioDAO($daofactory);
+     if(!$dao->updateStatus($id, ConstantesVariavel::STATUS_INATIVO)){
        $retorno->msgcode = ConstantesMensagem::ERRO_CRUD_ATUALIZAR_REGISTRO;
        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 
