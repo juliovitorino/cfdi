@@ -52,7 +52,6 @@ class MySqlKinghostCampanhaSorteioDAO implements CampanhaSorteioDAO
         $sql = DmlSqlCampanhaSorteio::SELECT_MAX_PK . ' WHERE ' 
         . DmlSqlCampanhaSorteio::CAMP_ID . " = $id_campanha "
         . " AND " . DmlSqlCampanhaSorteio::CASO_IN_STATUS . " = '$status'";
-
         $res = $conexao->query($sql);
         if ($res){
             $tmp = $res->fetch_assoc();

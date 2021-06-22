@@ -43,6 +43,8 @@ require_once '../versao/MySqlKinghostVersaoDAO.php';
 require_once '../campanhasorteio/MySqlKinghostCampanhaSorteioDAO.php';
 require_once '../campanhasorteiofilacriacao/MySqlKinghostCampanhaSorteioFilaCriacaoDAO.php';
 require_once '../campanhasorteionumerospermitidos/MySqlKinghostCampanhaSorteioNumerosPermitidosDAO.php';
+require_once '../usuariocampanhasorteio/MySqlKinghostUsuarioCampanhaSorteioDAO.php';
+require_once '../usuariocampanhasorteioticket/MySqlKinghostUsuarioCampanhaSorteioTicketDAO.php';
 
 
 class MySqlDAOFactory extends DAOFactory
@@ -395,6 +397,24 @@ class MySqlDAOFactory extends DAOFactory
     public function getCampanhaSorteioNumerosPermitidosDAO($daofactory)
     {
         return new MySqlKinghostCampanhaSorteioNumerosPermitidosDAO($daofactory);
+    }
+
+    /**
+     * Retorna uma instância de acesso a dados
+     * @return MySqlKinghostUsuarioCampanhaSorteioDAO
+     */
+    public function getUsuarioCampanhaSorteioDAO($daofactory)
+    {
+        return new MySqlKinghostUsuarioCampanhaSorteioDAO($daofactory);
+    }
+
+    /**
+     * Retorna uma instância de acesso a dados
+     * @return MySqlKinghostUsuarioCampanhaSorteioTicketDAO
+     */
+    public function getUsuarioCampanhaSorteioTicketDAO($daofactory)
+    {
+        return new MySqlKinghostUsuarioCampanhaSorteioTicketDAO($daofactory);
     }
 
 

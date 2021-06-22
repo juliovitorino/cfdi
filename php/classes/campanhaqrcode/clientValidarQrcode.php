@@ -1,6 +1,6 @@
 <?php  
 // URL exemplo 
-// http://elitefinanceira.com/cfdi/php/classes/campanhaqrcode/clientValidarQrcode.php?qrc=xxx&token=b599c6c578a87b5f7740db3e4510253603fbefde
+// http://elitefinanceira.com/cfdi/php/classes/campanhaqrcode/clientValidarQrcode.php?qrc=xxx&token=b1140f4824186714febf6152588826f9a9842119
 
 require_once 'campanhaQrCodeServiceImpl.php';
 

@@ -1163,6 +1163,54 @@ CREATE INDEX IX_USAV_USUA_ID
         ON USUARIO(USUA_ID);
 
 /*************************************************************************/
+/* USUARIO_CAMPANHA_SORTEIO - USUARIOS PARTICIPANTES DE SORTEIOS         */
+/*************************************************************************/
+/* Valores para IN_STATUS                                                 /
+/* A = ATIVO                                                              /
+/* I = INATIVO                                                            /
+/*************************************************************************/
+CREATE TABLE `USUARIO_CAMPANHA_SORTEIO` (
+    `USCS_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID Usuario Campanha Sorteio',
+    `USUA_ID` int(11) NOT NULL COMMENT 'ID do usuário',
+    `CASO_ID` int(11) NOT NULL COMMENT 'ID Campanha Sorteio',
+    `USCS_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+    `USCS_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+    `USCS_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+    CONSTRAINT PK_USCS_ID PRIMARY KEY (USCS_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+CREATE INDEX IX_USCS_CASO_ID
+        ON USUARIO_CAMPANHA_SORTEIO(CASO_ID);
+
+CREATE INDEX IX_USCS_USUA_ID
+        ON USUARIO_CAMPANHA_SORTEIO(USUA_ID);
+
+/*************************************************************************/
+/* USUARIO_CAMPANHA_SORTEIO_TICKETS - TICKETS DE SORTEIOS DO USUARIO     */
+/*************************************************************************/
+/* Valores para IN_STATUS                                                 /
+/* A = ATIVO                                                              /
+/* I = INATIVO                                                            /
+/*************************************************************************/
+CREATE TABLE `USUARIO_CAMPANHA_SORTEIO_TICKETS` (
+    `UCST_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID Usuario Campanha Sorteio Ticket',
+    `USCS_ID` int(11) NOT NULL COMMENT 'ID Usuario Campanha Sorteio',
+    `UCST_NU_TICKET` int(11) NOT NULL DEFAULT 0 COMMENT 'Número do Ticket',
+    `UCST_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+    `UCST_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+    `UCST_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+    CONSTRAINT PK_UCST_ID PRIMARY KEY (UCST_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+CREATE INDEX IX_UCST_USCS_ID
+        ON USUARIO_CAMPANHA_SORTEIO_TICKETS(USCS_ID);
+
+
+/*************************************************************************/
 /* USUARIO_CASHBACK - PROGRAMA DE CASHBACK DO USUARIO                    */
 /*************************************************************************/
 /* Valores para _IN_STATUS                                                /
@@ -1639,6 +1687,24 @@ ALTER TABLE CAMPANHA_SORTEIO_NUMEROS_PERMITIDOS
     FOREIGN KEY (CASO_ID)
     REFERENCES CAMPANHA_SORTEIO(CASO_ID) ON DELETE CASCADE;    
 
+/* USUARIO X USUARIO_CAMPANHA_SORTEIO */    
+ALTER TABLE USUARIO_CAMPANHA_SORTEIO
+    ADD CONSTRAINT FK_USCS_CASO
+    FOREIGN KEY (CASO_ID)
+    REFERENCES CAMPANHA_SORTEIO(CASO_ID) ON DELETE CASCADE;
+
+ALTER TABLE USUARIO_CAMPANHA_SORTEIO
+    ADD CONSTRAINT FK_USCS_USUA
+    FOREIGN KEY (USUA_ID)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
+
+/* USUARIO_CAMPANHA_SORTEIO X USUARIO_CAMPANHA_SORTEIO_TICKET */
+ALTER TABLE USUARIO_CAMPANHA_SORTEIO_TICKETS
+    ADD CONSTRAINT FK_UCST_USCS
+    FOREIGN KEY (USCS_ID)
+    REFERENCES USUARIO_CAMPANHA_SORTEIO(USCS_ID) ON DELETE CASCADE;
+    
+    
 
 
 /* AJUSTES DE CAMPOS TIMESTAMP */

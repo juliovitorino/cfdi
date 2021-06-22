@@ -31,6 +31,8 @@ require_once '../usuariocashback/UsuarioCashbackBusinessImpl.php';
 require_once '../campanhatopdez/CampanhaTopDezBusinessImpl.php';
 require_once '../permissao/PermissaoHelper.php';
 require_once '../plano/ConstantesPlano.php';
+require_once '../campanhasorteio/CampanhaSorteioBusinessImpl.php';
+require_once '../usuariocampanhasorteio/UsuarioCampanhaSorteioBusinessImpl.php';
 
 
 require_once '../daofactory/DAOFactory.php';
@@ -160,8 +162,7 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 				// tem vaga no cartão digital dele mais recente.
 				$cartbo = new CartaoBusinessImpl();
 				$cartdto = $cartbo->pesquisarPorCampanhaUsuarioStatus($daofactory, $usuariodto->id, $vt->id_campanha, ConstantesVariavel::STATUS_ATIVO);
-//var_dump($cartdto);
-//exit(0);				
+
 				if( 
 					( $campcheckdto->maximoSelos - $cartdto->contador == 0) || 
 					( $cartdto->id_usuario == 0 && $cartdto->id_campanha == 0) 
@@ -177,8 +178,6 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 
 			}
 			
-
-		
 			// Finalizar o ticket fornecido pelo parceiro
 			$bo = new CfdiBusinessImpl();
 			$retorno = $bo->carimbarQrCodeCfdi($daofactory, $vt->id_campanha, $usuariodto->id, $vt->qrcodecarimbo);
@@ -233,9 +232,29 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 					UsuarioNotificacaoHelper::criarUsuarioNotificacaoPorBusiness($daofactory, $usuaid_admin, $msg, "notify-03.png");
 				}
 
+				//-------------------------------------------------------------------------
+				// Verifica se essa campanha tem alguma Campanha Sorteio ativa. status = A
+				//-------------------------------------------------------------------------
+				$casobo = new CampanhaSorteioBusinessImpl();
+				$casodto = $casobo->pesquisarMaxPKAtivoId_CampanhaPorStatus($daofactory,1009, ConstantesVariavel::STATUS_ATIVO);
+//echo "<br>===============================<br>";				
+//var_dump($casodto);				
+//echo "<br>===============================<br>";				
+				if(!is_null($casodto))
+				{
+					$uscsdto = new UsuarioCampanhaSorteioDTO();
 
+					$uscsdto->idUsuario = $usuariodto->id;
+					$uscsdto->idCampanhaSorteio = $casodto->id;
+					//$uscsdto->ticket = (int) Util::getCodigoNumerico(5); /* deprecated */
 
+					$ucsbo = new UsuarioCampanhaSorteioBusinessImpl();
+					$retorno = $ucsbo->inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto);
+				}
+
+				//-----------------------------------------------------------
 				// Verifica se a Chave Geral do PRograma Cashback está ligada
+				//-----------------------------------------------------------
 				if(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_PROGRAMA_CASHBACK) == ConstantesVariavel::ATIVADO){
 
 					// Pesquisa o MaxID de Usuario x Cashback

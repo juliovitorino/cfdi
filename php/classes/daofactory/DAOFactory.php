@@ -82,7 +82,8 @@ abstract class DAOFactory
 	public abstract function getCampanhaSorteioDAO($daofactory);
 	public abstract function getCampanhaSorteioFilaCriacaoDAO($daofactory);
 	public abstract function getCampanhaSorteioNumerosPermitidosDAO($daofactory);
-
+	public abstract function getUsuarioCampanhaSorteioDAO($daofactory);
+	public abstract function getUsuarioCampanhaSorteioTicketDAO($daofactory);
 
 	public function getSession() {
 		return $this->conn;
