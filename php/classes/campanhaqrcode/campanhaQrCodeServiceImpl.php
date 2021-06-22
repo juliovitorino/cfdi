@@ -236,7 +236,7 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 				// Verifica se essa campanha tem alguma Campanha Sorteio ativa. status = A
 				//-------------------------------------------------------------------------
 				$casobo = new CampanhaSorteioBusinessImpl();
-				$casodto = $casobo->pesquisarMaxPKAtivoId_CampanhaPorStatus($daofactory,1009, ConstantesVariavel::STATUS_ATIVO);
+				$casodto = $casobo->pesquisarMaxPKAtivoId_CampanhaPorStatus($daofactory, $vt->id_campanha, ConstantesVariavel::STATUS_ATIVO);
 //echo "<br>===============================<br>";				
 //var_dump($casodto);				
 //echo "<br>===============================<br>";				
@@ -250,6 +250,29 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 
 					$ucsbo = new UsuarioCampanhaSorteioBusinessImpl();
 					$retorno = $ucsbo->inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto);
+				}
+
+				//-------------------------------------------------------------------------------------
+				// Verifica se essa campanha permite participação paralela em uma campanha de sorteio
+				// do Junta10 além da que ela mesma está promovendo
+				//-------------------------------------------------------------------------------------
+				$casocheckj10 = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CODIGO_CAMPANHA_SORTEIO_J10_PARALELA);
+			
+				if(
+					($campdto->permiteCampanhaSorteioJ10) && 
+					(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_PERMITIR_CAMPANHA_SORTEIO_J10_PARALELA) == ConstantesVariavel::ATIVADO) &&
+					($casocheckj10 != $casodto->id)
+				)
+				{
+					$uscsdto = new UsuarioCampanhaSorteioDTO();
+
+					$uscsdto->idUsuario = $usuariodto->id;
+					$uscsdto->idCampanhaSorteio = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CODIGO_CAMPANHA_SORTEIO_J10_PARALELA);
+					//$uscsdto->ticket = (int) Util::getCodigoNumerico(5); /* deprecated */
+
+					$ucsbo = new UsuarioCampanhaSorteioBusinessImpl();
+					$retorno = $ucsbo->inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto);
+
 				}
 
 				//-----------------------------------------------------------

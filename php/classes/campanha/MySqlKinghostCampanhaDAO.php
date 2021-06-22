@@ -585,6 +585,7 @@ class MySqlKinghostCampanhaDAO implements CampanhaDAO
 		$retorno->contadorCartoes = (int) $resultset[DmlSqlCampanha::CAMP_NU_CONT_CARTAO];
 		$retorno->maximoSelos = (int) $resultset[DmlSqlCampanha::CAMP_NU_MAX_SELOS];
 		$retorno->permiteAlterarMaximoSelos = $resultset[DmlSqlCampanha::CAMP_IN_UPD_MAX_SELOS] == ConstantesVariavel::STATUS_PERMITIDO;
+		$retorno->permiteCampanhaSorteioJ10 = $resultset[DmlSqlCampanha::CAMP_IN_PERM_CSJ10] == ConstantesVariavel::STATUS_PERMITIDO;
 		$retorno->minimoDelay = $resultset[DmlSqlCampanha::CAMP_NU_MIN_DELAY];
 		$retorno->QrCodeAtivo = $resultset[DmlSqlCampanha::CAMP_TX_QRCODE_ATIVO];
 		$retorno->fraseEfeito = $resultset[DmlSqlCampanha::CAMP_TX_FRASE_EFEITO];

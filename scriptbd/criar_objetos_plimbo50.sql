@@ -689,6 +689,7 @@ CREATE TABLE CAMPANHA
     `CAMP_IN_UPD_MAX_SELOS` varchar(1)  NOT NULL DEFAULT 'S' COMMENT 'Permite atualização de Máx. Selos',
     `CAMP_TX_IMG`  VARCHAR(1500) NOT NULL  DEFAULT 'sem-imagem.jpeg' COMMENT 'URL da imagem da campanha',
     `CAMP_TX_IMG_RECOMPENSA`  VARCHAR(1500) NOT NULL DEFAULT 'sem-imagem.jpeg' COMMENT 'URL da imagem da recompensa',
+    `CAMP_IN_PERM_CSJ10` VARCHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Permite participar de uma campanha sorteio do J10',
     `CAMP_NU_LIKE` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador de Curtir',
     `CAMP_NU_CONT_STAR_1` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Péssima',
     `CAMP_NU_CONT_STAR_2` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Ruim',
