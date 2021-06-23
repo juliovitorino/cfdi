@@ -228,7 +228,7 @@ public function  pesquisarMaxPKAtivoIdusuarioIdcampanhaPorStatus($daofactory, $i
 *
 * @return DTOPadrao
 */ 
-public function inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto)
+public function inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto, $ignorarstatus=false)
 { 
     $retorno = new DTOPadrao();
     $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
@@ -252,11 +252,15 @@ public function inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto)
         return $retorno;
     }
 
+
     // Se a campanha sorteio não esiver ativa apenas ignora. Não existe inserir.
-    if($casodto->status != ConstantesVariavel::STATUS_ATIVO) {
-        $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
-        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
-        return $retorno;
+    if(! $ignorarstatus)
+    {
+        if($casodto->status != ConstantesVariavel::STATUS_ATIVO) {
+            $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+        }
     }
 
     // Verifica se já existe pelo menos registro para esse usuario + campanha sorteio com status ativo 

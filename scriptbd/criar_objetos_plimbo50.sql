@@ -1401,6 +1401,28 @@ CREATE TABLE `JOBS` (
 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 AUTO_INCREMENT = 1000;
 
+/*************************************************************************/
+/* REGISTRO_INDICACAO                                                    */
+/*************************************************************************/
+/* Valores para IN_STATUS                                                 /
+/* A = ATIVO                                                              /
+/* I = INATIVO                                                            /
+/*************************************************************************/
+CREATE TABLE `REGISTRO_INDICACAO` (
+ `REIN_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID Registro Indicação',
+ `USUA_ID_PROMOTOR` int(11) NOT NULL COMMENT 'ID do usuário Promotor',
+ `USUA_ID_INDICADO` int(11) NOT NULL COMMENT 'ID do usuário Indicado',
+ `REIN_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `REIN_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `REIN_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_REIN_ID PRIMARY KEY (REIN_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+CREATE UNIQUE INDEX UIX_FIPO_USUA_ID
+        ON REGISTRO_INDICACAO(USUA_ID_PROMOTOR, USUA_ID_INDICADO);
+
 -- CONSTRAINTS FOREIGN KEY
 
 -- PLANOS X USUARIO X PLANO_USUARIO
@@ -1704,9 +1726,18 @@ ALTER TABLE USUARIO_CAMPANHA_SORTEIO_TICKETS
     ADD CONSTRAINT FK_UCST_USCS
     FOREIGN KEY (USCS_ID)
     REFERENCES USUARIO_CAMPANHA_SORTEIO(USCS_ID) ON DELETE CASCADE;
-    
-    
 
+/* REGISTRO_INDICADOR X USUARIO */
+ALTER TABLE REGISTRO_INDICACAO
+    ADD CONSTRAINT FK_REIN_USUA_ID_P
+    FOREIGN KEY (USUA_ID_PROMOTOR)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
+
+ALTER TABLE REGISTRO_INDICACAO
+    ADD CONSTRAINT FK_REIN_USUA_ID_I
+    FOREIGN KEY (USUA_ID_INDICADO)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
+    
 
 /* AJUSTES DE CAMPOS TIMESTAMP */
 ALTER TABLE `CAMPANHA` CHANGE `CAMP_DT_INICIO` `CAMP_DT_INICIO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de início';

@@ -45,6 +45,8 @@ require_once '../campanhasorteiofilacriacao/MySqlKinghostCampanhaSorteioFilaCria
 require_once '../campanhasorteionumerospermitidos/MySqlKinghostCampanhaSorteioNumerosPermitidosDAO.php';
 require_once '../usuariocampanhasorteio/MySqlKinghostUsuarioCampanhaSorteioDAO.php';
 require_once '../usuariocampanhasorteioticket/MySqlKinghostUsuarioCampanhaSorteioTicketDAO.php';
+require_once '../registroindicacao/MySqlKinghostRegistroIndicacaoDAO.php';
+
 
 
 class MySqlDAOFactory extends DAOFactory
@@ -415,6 +417,15 @@ class MySqlDAOFactory extends DAOFactory
     public function getUsuarioCampanhaSorteioTicketDAO($daofactory)
     {
         return new MySqlKinghostUsuarioCampanhaSorteioTicketDAO($daofactory);
+    }
+
+    /**
+     * Retorna uma instância de acesso a dados
+     * @return MySqlKinghostRegistroIndicacaoDAO
+     */
+    public function getRegistroIndicacaoDAO($daofactory)
+    {
+        return new MySqlKinghostRegistroIndicacaoDAO($daofactory);
     }
 
 

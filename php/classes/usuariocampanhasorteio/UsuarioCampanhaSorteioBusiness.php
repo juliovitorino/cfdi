@@ -27,7 +27,7 @@ require_once '../interfaces/BusinessObject.php';
 
 interface UsuarioCampanhaSorteioBusiness extends BusinessObject
 {
-    public function inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto);
+    public function inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto, $ignorarstatus=false);
     public function atualizarStatus($daofactory, $id, $status);
     public function listarUsuarioCampanhaSorteioPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);
     public function validarTamanhoCampo($campo, $tamanho, $coment);
