@@ -35,6 +35,7 @@ interface UsuarioCampanhaSorteioTicketService extends AppService
     public function autalizarStatusUsuarioCampanhaSorteioTicket($id, $status);
     public function listarUsuarioCampanhaSorteioTicketPorStatus($status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
     public function listarUsuarioCampanhaSorteioTicketPorUsuaIdStatus($usuaid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
+    public function listarUsuarioCampanhaSorteioTicketPorUscsIdStatus($uscsid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
     public function cancelar($dto);
     public function pesquisarMaxPKAtivoIduscsPorStatus($iduscs,$status);
 

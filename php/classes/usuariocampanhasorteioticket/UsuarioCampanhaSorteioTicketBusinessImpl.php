@@ -421,6 +421,45 @@ public function inserir($daofactory, $dto)
     }
 
 /**
+*
+* listarUsuarioCampanhaSorteioTicketUsuaIdPorStatus() - Usado para invocar a interface de acesso aos dados (DAO) UsuarioCampanhaSorteioTicketDAO de forma geral
+* realizar lista paginada de registros dos registros do usuário logado com uma instância de PaginacaoDTO
+*
+* @param $daofactory
+* @param $usuaid
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+* @return $PaginacaoDTO
+*/
+
+public function listarUsuarioCampanhaSorteioTicketPorUscsIdStatus($daofactory, $uscsid, $status, $pag, $qtde, $coluna, $ordem)
+{   
+    $retorno = new DTOPaginacao();
+    $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+    $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+    $dao = $daofactory->getUsuarioCampanhaSorteioTicketDAO($daofactory);
+    $retorno->pagina = $pag;
+    $retorno->itensPorPagina = ($qtde == 0 
+    ? (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT)
+    : $qtde);
+    $retorno->totalPaginas = ceil($dao->countUsuarioCampanhaSorteioTicketPorUscsIdStatus($uscsid, $status) / $retorno->itensPorPagina);
+
+    if($pag > $retorno->totalPaginas) {
+        $retorno->msgcode = ConstantesMensagem::NAO_EXISTEM_MAIS_PAGINAS_APRESENTAR;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+    $retorno->lst = $dao->listUsuarioCampanhaSorteioTicketPorUscsIdStatus($uscsid, $status, $pag, $qtde, $coluna, $ordem);
+
+    return $retorno;
+}
+
+
+/**
 * validarTamanhoCampo()
 *
 * Validador de tamanho de campos UsuarioCampanhaSorteioTicketDTO

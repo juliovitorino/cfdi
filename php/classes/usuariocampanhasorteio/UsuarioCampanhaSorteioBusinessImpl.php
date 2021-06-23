@@ -14,6 +14,8 @@ require_once '../usuarios/UsuarioHelper.php';
 require_once '../campanhasorteionumerospermitidos/CampanhaSorteioNumerosPermitidosBusinessImpl.php';
 require_once '../usuariocampanhasorteioticket/UsuarioCampanhaSorteioTicketBusinessImpl.php';
 require_once '../usuariocampanhasorteioticket/UsuarioCampanhaSorteioTicketDTO.php';
+require_once '../campanha/campanhaBusinessImpl.php';
+require_once '../campanhasorteio/CampanhaSorteioBusinessImpl.php';
 
 /**
 *
@@ -166,7 +168,25 @@ public function  pesquisarMaxPKAtivoIdusuarioIdcampanhaPorStatus($daofactory, $i
     public function carregarPorID($daofactory, $id)
     { 
         $dao = $daofactory->getUsuarioCampanhaSorteioDAO($daofactory);
-        return $dao->loadPK($id);
+        $uscsdto = $dao->loadPK($id);
+        if(is_null($uscsdto)){
+            return NULL;
+        }
+
+        // Popular a campanha sorteio
+        $casobo = new CampanhaSorteioBusinessImpl();
+        $uscsdto->campanhaSorteio = $casobo->carregarPorID($daofactory, $uscsdto->idCampanhaSorteio);
+
+        // Popular a campanha
+        $campbo = new CampanhaBusinessImpl();
+        $uscsdto->campanha = $campbo->carregarPorID($daofactory, $uscsdto->campanhaSorteio->id_campanha);
+        
+        // Popular a dados do dono da campanha
+        $usuabo = new UsuarioBusinessImpl();
+        $uscsdto->usuario = $usuabo->carregarPorID($daofactory, $uscsdto->campanha->id_usuario);
+        
+        return $uscsdto;
+
     }
 
 /**
@@ -520,6 +540,22 @@ public function inserir($daofactory, $dto)
             return $retorno;
         }
         $retorno->lst = $dao->listUsuarioCampanhaSorteioPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+
+        // Recarregar DTO completo campanha Sorteio e Campanha
+        if(count($retorno->lst) > 0)
+        {
+            $novalst = [];
+            foreach ($retorno->lst as $key => $dto) {
+//echo "<br>********* vou recarregar os elementos **************<br>"    ;            
+                $novodto = $this->carregarPorID($daofactory,$dto->id);
+//echo "<br>********* vou mostrar o retorno **************<br>"    ;            
+                if( ! is_null($novodto))
+                {
+                    array_push($novalst, $novodto);
+                }
+            }
+            $retorno->lst = $novalst;
+        }
 
         return $retorno;
     }

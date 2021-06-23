@@ -23,6 +23,8 @@ interface UsuarioCampanhaSorteioTicketDAO extends DAO
     public function listUsuarioCampanhaSorteioTicketPorStatus($status, $pag, $qtde, $coluna, $ordem);
     public function countUsuarioCampanhaSorteioTicketPorUsuaIdStatus($usuaid, $status);
     public function listUsuarioCampanhaSorteioTicketPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+    public function countUsuarioCampanhaSorteioTicketPorUscsIdStatus($uscsid, $status);
+    public function listUsuarioCampanhaSorteioTicketPorUscsIdStatus($uscsid, $status, $pag, $qtde, $coluna, $ordem);
 
     public function loadMaxIduscsPK($iduscs,$status);
 

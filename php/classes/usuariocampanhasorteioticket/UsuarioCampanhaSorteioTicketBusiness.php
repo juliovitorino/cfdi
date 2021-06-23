@@ -32,6 +32,7 @@ interface UsuarioCampanhaSorteioTicketBusiness extends BusinessObject
     public function listarUsuarioCampanhaSorteioTicketPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);
     public function validarTamanhoCampo($campo, $tamanho, $coment);
     public function listarUsuarioCampanhaSorteioTicketPorUsuaIdStatus($daofactory, $usuaid, $status, $pag, $qtde, $coluna, $ordem);
+    public function listarUsuarioCampanhaSorteioTicketPorUscsIdStatus($daofactory, $uscsid, $status, $pag, $qtde, $coluna, $ordem);
 
     public function pesquisarMaxPKAtivoIduscsPorStatus($daofactory, $iduscs, $status);
 

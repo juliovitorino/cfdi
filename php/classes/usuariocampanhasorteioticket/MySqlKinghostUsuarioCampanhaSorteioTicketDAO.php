@@ -262,6 +262,69 @@ class MySqlKinghostUsuarioCampanhaSorteioTicketDAO implements UsuarioCampanhaSor
         return $this->listPagina($sql, $pag, $qtde);
     }
 
+
+
+/**
+* countUsuarioCampanhaSorteioTicketPorUscsIdStatus() - contar a quantidade de registros
+* sob o contexto da classe UsuarioCampanhaSorteioTicket com base no usuário específico. Esse usuário
+* é o usuário logado na sessão ou no próprio dispositivo móvel e de acordo com a 
+* query em @see $sql na tabela USUARIO_CAMPANHA_SORTEIO_TICKET 
+*
+* @see listPagina()
+*
+* @param $usuaid
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+
+public function countUsuarioCampanhaSorteioTicketPorUscsIdStatus($uscsid, $status)
+{   
+    $retorno = 0;
+    // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+    $conexao = $this->daofactory->getSession();
+    $res = $conexao->query(DmlSqlUsuarioCampanhaSorteioTicket::SQL_COUNT . ' WHERE ' 
+    . DmlSqlUsuarioCampanhaSorteioTicket::USCS_ID . " = $uscsid "
+    . ' AND ' . DmlSqlUsuarioCampanhaSorteioTicket::UCST_IN_STATUS . " = '$status'"
+    );
+    if ($res){
+        $tmp = $res->fetch_assoc();
+        $retorno = $tmp['contador'];
+    }
+    return $retorno;
+
+}
+
+/**
+* listUsuarioCampanhaSorteioTicketPorUscsIdStatus() - Listar um conjunto de registro previamente paginado
+* sob o contexto da classe UsuarioCampanhaSorteioTicket com base no usuário específico. Esse usuário
+* é o usuário logado na sessão ou no próprio dispositivo móvel e de acordo com a 
+* query em @see $sql na tabela USUARIO_CAMPANHA_SORTEIO_TICKET 
+*
+* @see listPagina()
+*
+* @param $usuaid
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+public function listUsuarioCampanhaSorteioTicketPorUscsIdStatus($uscsid, $status, $pag, $qtde, $coluna, $ordem)
+{
+    $sql = DmlSqlUsuarioCampanhaSorteioTicket::SELECT 
+    . ' WHERE ' . DmlSqlUsuarioCampanhaSorteioTicket::USCS_ID . " = $uscsid "
+    . ' AND ' . DmlSqlUsuarioCampanhaSorteioTicket::UCST_IN_STATUS . " = '$status'"
+    . ' ORDER BY ' . $coluna . ($ordem == 0 ? " ASC": " DESC");
+    return $this->listPagina($sql, $pag, $qtde);
+}
+
 /**
 * listPagina() - Listar um conjunto de registro previamente paginado
 * e de acordo com a query em @see $sql na tabela USUARIO_CAMPANHA_SORTEIO_TICKET 
