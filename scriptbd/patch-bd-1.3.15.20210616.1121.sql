@@ -185,6 +185,7 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0164
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0165','Tentativa Negada. É proibida a auto-indicação da plataforma Junta10.');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0166','Tentativa Negada. Usuário já foi indicado por outra pessoa.');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0167','Tentativa Negada. Usuário já foi indicado por você.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0168','O usuário *=p1=* acaba de indicar *=p2=*');
 
 
 -- ajustes nas permissões (*deprecated em tipos MX)

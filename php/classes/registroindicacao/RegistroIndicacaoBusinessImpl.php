@@ -12,6 +12,8 @@ require_once '../variavel/VariavelCache.php';
 require_once '../usuariocampanhasorteio/UsuarioCampanhaSorteioDTO.php';
 require_once '../usuariocampanhasorteio/UsuarioCampanhaSorteioBusinessImpl.php';
 require_once '../mensagens/MSGCODE.php';
+require_once '../usuarionotificacao/UsuarioNotificacaoHelper.php';
+require_once '../usuarios/UsuarioHelper.php';
 
 /**
 *
@@ -315,6 +317,18 @@ public function inserir($daofactory, $dto)
             return $retorno;
         }
     }
+
+    // Inserir notificacao ao admin
+    $usuaPromotor = UsuarioHelper::getUsuarioBusinessNoKeys($daofactory, $dto->idUsuarioPromotor);
+    $usuaIndicado = UsuarioHelper::getUsuarioBusinessNoKeys($daofactory, $dto->idUsuarioIndicado);
+    UsuarioNotificacaoHelper::criarNotificacaoAdmin($daofactory,
+        ConstantesMensagem::AVISO_INDICACAO_NOVA_INSTALACAO, 
+        [
+            ConstantesVariavel::P1 => $usuaPromotor->apelido,
+            ConstantesVariavel::P2 => $usuaIndicado->apelido,
+        ], 
+        "notify-03.png"
+    );
 
     return $retorno;
 }
