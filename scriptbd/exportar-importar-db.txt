@@ -25,10 +25,10 @@ show tables;
 -- exportação do BD
 -------------------------------------------------------------------------------
 -- executar o export do banco de produção na linha de comando
-mysqldump -u elite759_junta10 -p -h 216.172.161.28 elite759_prd_j10 > c:\temp\dumpJ10bd.sql
+mysqldump -u elite759_junta10 -p -h 216.172.161.28 elite759_prd_j10 > c:\temp\dumpJ10bdprd-20210621-1249.sql
 
 -- executar o export do banco de homologação na linha de comando
-mysqldump -u elite759_junta10 -p -h 216.172.161.28 elite759_junta10 > c:\temp\dumpJ10bd.sql
+mysqldump -u elite759_junta10 -p -h 216.172.161.28 elite759_junta10 > c:\temp\dumpJ10bdhmg.sql
 
 mysqldump -u YourUser -p YourDatabaseName > wantedsqlfile.sql
 
@@ -40,8 +40,8 @@ mysqldump -u YourUser -p YourDatabaseName > wantedsqlfile.sql
 Comando: mysql -u username -p [-h 216.172.161.28] database_name < file.sql
 
 #ambiente dsv :: mysql -u cfd -p cfd < c:\temp\dumpJ10bd.sql
-#ambiente prd :: mysql -u elite759_junta10 -p [-h 216.172.161.28] elite759_prd_j10 < c:\temp\dumpJ10bd.sql
-#ambiente hmg :: mysql -u elite759_junta10 -p [-h 216.172.161.28] elite759_junta10 < c:\temp\dumpJ10bd.sql
+#ambiente prd :: mysql -u elite759_junta10 -p -h 216.172.161.28 elite759_prd_j10 < c:\temp\dumpJ10bd.sql
+#ambiente hmg :: mysql -u elite759_junta10 -p -h 216.172.161.28 elite759_junta10 < c:\temp\dumpJ10bd.sql
 
 
 Note-1: It is better to use the full path of the SQL file file.sql.
