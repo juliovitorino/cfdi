@@ -6,7 +6,7 @@ require_once 'CampanhaCashbackCCServiceImpl.php';
 
 
 $csi = new CampanhaCashbackCCServiceImpl();
-$id_usuario = 2893;
+$id_usuario = 1003;
 
 $retorno = $csi->registrarSaldoCashbackCC($id_usuario);
 var_dump($retorno);
