@@ -329,8 +329,7 @@ public function inserir($daofactory, $dto)
     {
 
         $cacaidAtiva = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CODIGO_CAMPANHA_CASHBACK_ATIVO_INDICACAO);
-//        $cacavlAtiva = floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_CAMPANHA_CASHBACK_ATIVO_INDICACAO));
-        $cacavlAtiva = floatval(Util::getCodigoNumerico(2));
+        $cacavlAtiva = floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_CAMPANHA_CASHBACK_ATIVO_INDICACAO));
         if($cacaidAtiva > 0 && $cacavlAtiva > 0)
         {
 
