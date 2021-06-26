@@ -14,6 +14,8 @@ require_once '../usuariocampanhasorteio/UsuarioCampanhaSorteioBusinessImpl.php';
 require_once '../mensagens/MSGCODE.php';
 require_once '../usuarionotificacao/UsuarioNotificacaoHelper.php';
 require_once '../usuarios/UsuarioHelper.php';
+require_once '../campanhacashback/CampanhaCashbackBusinessImpl.php';
+require_once '../campanhacashbackcc/CampanhaCashbackCCBusinessImpl.php';
 
 /**
 *
@@ -301,7 +303,9 @@ public function inserir($daofactory, $dto)
         return $retorno;
     }
 
+    //--------------------------------------------------------------------------------------
     // Obtem no variavel qual o codigo da campanha sorteio ativo para indicacao se a chave geral estiver ligada
+    //--------------------------------------------------------------------------------------
     if(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_GERAL_INDICACAO_PERMITE_CAMPANHA_SORTEIO) == ConstantesVariavel::ATIVADO )
     {
         // Libera 1 bilhete (ticket) como prêmio para o usuário promotor
@@ -317,6 +321,54 @@ public function inserir($daofactory, $dto)
             return $retorno;
         }
     }
+
+    //--------------------------------------------------------------------------------------
+    // Verifica se a premiação no Campanha Cashback está ativa para recompensa financeira
+    //--------------------------------------------------------------------------------------
+    if(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_GERAL_CAMPANHA_CASHBACK_ATIVO_INDICACAO) == ConstantesVariavel::ATIVADO )
+    {
+
+        $cacaidAtiva = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CODIGO_CAMPANHA_CASHBACK_ATIVO_INDICACAO);
+//        $cacavlAtiva = floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_CAMPANHA_CASHBACK_ATIVO_INDICACAO));
+        $cacavlAtiva = floatval(Util::getCodigoNumerico(2));
+        if($cacaidAtiva > 0 && $cacavlAtiva > 0)
+        {
+
+            // Obtem o registro da campanha cashback ativa no variavel
+            $cacabo = new CampanhaCashbackBusinessImpl(); 
+            $cacadto = $cacabo->carregarPorID($daofactory, $cacaidAtiva);
+
+            // Pesquisa se o indicado já foi indicado por outra pessoa
+            $reinuidto = UsuarioHelper::getUsuarioBusinessNoKeys($daofactory, $dto->idUsuarioIndicado);
+
+            // Insere uma linha de registro no cashback conta corrente
+            $caccbo = new CampanhaCashbackCCBusinessImpl();
+            $caccbo->lancarMovimentoCashbackCC($daofactory, 
+                $dto->idUsuarioPromotor,
+                $cacadto->id_campanha, 
+                $cacavlAtiva , 
+                
+                MensagemCache::getInstance()->getMensagemParametrizada(ConstantesMensagem::PARABENS_PELA_RECOMPENSA_DE_INDICACAO, [
+                    ConstantesVariavel::P1 => $reinuidto->apelido
+                ])
+            );
+
+        }
+
+        // Libera 1 bilhete (ticket) como prêmio para o usuário promotor
+        $uscsdto = new UsuarioCampanhaSorteioDTO();
+
+        $uscsdto->idUsuario = $dto->idUsuarioPromotor;
+        $uscsdto->idCampanhaSorteio = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CODIGO_CAMPANHA_SORTEIO_ATIVO_INDICACAO);
+
+        $ucsbo = new UsuarioCampanhaSorteioBusinessImpl();
+        $retorno = $ucsbo->inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto, true);
+        if($retorno->msgcode != MSGCODE::MSG_COMANDO_EXECUTADO_COM_SUCESSO) 
+        {
+            return $retorno;
+        }
+    }
+
 
     // Inserir notificacao ao admin
     $usuaPromotor = UsuarioHelper::getUsuarioBusinessNoKeys($daofactory, $dto->idUsuarioPromotor);
