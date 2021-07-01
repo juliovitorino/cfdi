@@ -53,7 +53,7 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0042
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0043','Falha ao tentar atualizar status em [campanha_qrcodes]');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0044','Campanha com status AGUARDANDO NA FILA DE PROCESSAMENTO. Troca de Status Inválida.');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0045','Não existem campanhas pendentes na fila para processamento.');
-INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0046','Sessão do usuário inválida e/ou expirada.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0046','Sessão do usuário inválida e/ou expirada. Faça um novo login.');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0047','Conta do usuário *=nome=* com status INATIVO. Verificar com administrador do sistema.');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0048','Conta do usuário *=nome=* com status BLOQUEADO. Verificar com administrador do sistema.');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0049','Não foi possível registrar um novo carimbo porque sua cartela JÁ ESTÁ CHEIA! Hora de resgatar a recompensa e começar uma nova cartela.');
