@@ -9,6 +9,8 @@ require_once 'DmlSqlPlanoUsuario.php';
 require_once 'PlanoUsuarioDTO.php';
 
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlKinghostPlanoUsuarioDAO implements PlanoUsuarioDAO
 {
@@ -139,7 +141,9 @@ class MySqlKinghostPlanoUsuarioDAO implements PlanoUsuarioDAO
 		$retorno->status = $resultset[DmlSqlPlanoUsuario::PLUS_IN_STATUS];
 		$retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlPlanoUsuario::PLUS_DT_CADASTRO]);
 		$retorno->dataAtualizacao = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlPlanoUsuario::PLUS_DT_UPDATE]);
-
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		
 		return $retorno;
 	}
 }

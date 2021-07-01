@@ -23,6 +23,8 @@ require_once 'DmlSqlCartao.php';
 
 require_once '../daofactory/DmlSql.php';
 require_once '../util/util.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlKinghostCartaoDAO implements CartaoDAO
 {
@@ -167,6 +169,21 @@ class MySqlKinghostCartaoDAO implements CartaoDAO
 			}
 		}
 		return $retorno;
+	}
+
+	public function countCartaoPorCampId($id_campanha)
+	{	
+		$retorno = 0;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlCartao::SQL_COUNT . ' WHERE ' 
+		. DmlSqlCartao::COLS[1] . '=' . $id_campanha);
+		if ($res){
+			$tmp = $res->fetch_assoc();
+			$retorno = $tmp['contador'];
+		}
+		return $retorno;
+
 	}
 
 	public function countParticipantesCampanha($id_campanha)
@@ -439,7 +456,9 @@ class MySqlKinghostCartaoDAO implements CartaoDAO
 		$retorno->rating = $resultset[DmlSqlCartao::COLS[15]];
 		$retorno->comentario = $resultset[DmlSqlCartao::COLS[16]];
 		$retorno->idselocuringa =  $resultset[DmlSqlCartao::COLS[18]] != null ? (int) $resultset[DmlSqlCartao::COLS[18]] : 0;
-
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		
 		return $retorno;
 	}
 

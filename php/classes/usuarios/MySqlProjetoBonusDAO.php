@@ -9,6 +9,8 @@ require_once 'BonusDTO.php';
 require_once 'DmlSqlProjetoBonus.php';
 
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlProjetoBonusDAO implements ProjetoBonusDAO
 {
@@ -110,7 +112,9 @@ class MySqlProjetoBonusDAO implements ProjetoBonusDAO
 		$retorno->desc = $resultset[DmlSqlProjetoBonus::PRBO_TX_BONUS];
 		$retorno->dataCadastro = $resultset[DmlSqlProjetoBonus::PRBO_DT_CADASTRO];
 		$retorno->dataAtualizacao = $resultset[DmlSqlProjetoBonus::PRBO_DT_UPDATE];
-
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		
 		return $retorno;
 	}
 

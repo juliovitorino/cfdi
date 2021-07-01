@@ -44,5 +44,7 @@ interface CampanhaDAO extends DAO
 	public function listCampanhasUsuarioStatus($id_usuario, $status);
 	public function updateTotalCarimbosAdicionados($id_campanha, $qtde);
 	public function updateTotalCartoesAdicionados($id_campanha, $qtde);
+	public function countCampanhaPorUsuaId($usuaid);
+
 }
 ?>

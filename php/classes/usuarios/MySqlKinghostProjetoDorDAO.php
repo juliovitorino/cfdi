@@ -9,6 +9,8 @@ require_once 'ProjetoDorDTO.php';
 require_once 'DmlSqlProjetoDor.php';
 
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlKinghostProjetoDorDAO implements ProjetoDorDAO
 {
@@ -107,6 +109,8 @@ class MySqlKinghostProjetoDorDAO implements ProjetoDorDAO
 		$retorno->desc = $resultset[DmlSqlProjetoDor::PRDO_TX_DOR];
 		$retorno->dataCadastro = $resultset[DmlSqlProjetoDor::PRDO_DT_CADASTRO];
 		$retorno->dataAtualizacao = $resultset[DmlSqlProjetoDor::PRDO_DT_UPDATE];
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 
 		return $retorno;
 	}

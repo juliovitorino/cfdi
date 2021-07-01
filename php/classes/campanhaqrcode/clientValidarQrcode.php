@@ -1,6 +1,6 @@
 <?php  
 // URL exemplo 
-// http://localhost/cfdi/php/classes/campanhaqrcode/clientValidarQrcode.php?qrc=3bcaeada1ef0e7384cc595b4d1f5ea568302f0ea&token=5dc12a47928bab564e1984e20869e3d24532917a
+// http://elitefinanceira.com/cfdi/php/classes/campanhaqrcode/clientValidarQrcode.php?qrc=xxx&token=4a1d5be0aa1c02c68ba7d3349dbbda8dddd28773
 
 require_once 'campanhaQrCodeServiceImpl.php';
 
@@ -10,6 +10,6 @@ $idfiel = $_GET['token']; // Token da sessao do banco de dados
 
 $csi = new CampanhaQrCodeServiceImpl();
 $retorno = $csi->validarQRCode($idfiel, $qrc);
-var_dump($retorno);
+echo json_encode($retorno);
 
 ?>

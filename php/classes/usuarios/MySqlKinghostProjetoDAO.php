@@ -9,6 +9,8 @@ require_once 'ProjetoDTO.php';
 require_once 'DmlSqlProjeto.php';
 
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlKinghostProjetoDAO implements ProjetoDAO
 {
@@ -231,6 +233,9 @@ class MySqlKinghostProjetoDAO implements ProjetoDAO
 		$retorno->status = $resultset[DmlSqlProjeto::PROJ_IN_STATUS];
 		$retorno->dataCadastro = $resultset[DmlSqlProjeto::PROJ_DT_CADASTRO];
 		$retorno->dataAtualizacao = $resultset[DmlSqlProjeto::PROJ_DT_UPDATE];
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		
 
 		return $retorno;
 	}

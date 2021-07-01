@@ -7,6 +7,7 @@
 class Util
 {
 	const str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890';
+	const numerico = '012345678901234567890123456789012345678901234567890123456789';
 
 	static function getCodigo($tamanho) 
 	{
@@ -14,6 +15,18 @@ class Util
 		for ($i=0; $i < $tamanho; $i++) { 
 			$pos = rand(0, strlen(self::str));
 			$retorno = $retorno . substr(self::str, $pos, 1);
+		}
+
+
+		return $retorno;
+	}
+
+	static function getCodigoNumerico($tamanho) 
+	{
+		$retorno = "";
+		for ($i=0; $i < $tamanho; $i++) { 
+			$pos = rand(0, strlen(self::numerico));
+			$retorno = $retorno . substr(self::numerico, $pos, 1);
 		}
 
 

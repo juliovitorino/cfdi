@@ -11,6 +11,9 @@ require_once 'DmlSqlCampanha.php';
 require_once '../variavel/VariavelCache.php';
 require_once '../daofactory/DmlSql.php';
 
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
+
 class MySqlKinghostCampanhaDAO implements CampanhaDAO
 {
 	private $daofactory;
@@ -178,7 +181,8 @@ class MySqlKinghostCampanhaDAO implements CampanhaDAO
 		$conexao = $this->daofactory->getSession();
 		$sql = DmlSqlCampanha::SELECT . ' WHERE ' . DmlSqlCampanha::CAMP_ID . '=' . $id ;
 		$res = $conexao->query($sql);
-		if ($res){
+
+		if ($res->num_rows > 0){
 			$retorno = $this->getDTO($res->fetch_assoc());
 		}
 		return $retorno;
@@ -471,6 +475,24 @@ class MySqlKinghostCampanhaDAO implements CampanhaDAO
 	}
 
 
+	public function countCampanhaPorUsuaId($usuaid)
+	{   
+		$retorno = 0;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$sql = DmlSqlCampanha::SQL_COUNT . ' WHERE ' 
+		. DmlSqlCampanha::USUA_ID . " = $usuaid ";
+	
+		$res = $conexao->query($sql);
+		if ($res){
+			$tmp = $res->fetch_assoc();
+			$retorno = $tmp['contador'];
+		}
+		return $retorno;
+
+	}
+
+
 	public function insert($dto) 
 	{		
 		$retorno = false;
@@ -563,6 +585,7 @@ class MySqlKinghostCampanhaDAO implements CampanhaDAO
 		$retorno->contadorCartoes = (int) $resultset[DmlSqlCampanha::CAMP_NU_CONT_CARTAO];
 		$retorno->maximoSelos = (int) $resultset[DmlSqlCampanha::CAMP_NU_MAX_SELOS];
 		$retorno->permiteAlterarMaximoSelos = $resultset[DmlSqlCampanha::CAMP_IN_UPD_MAX_SELOS] == ConstantesVariavel::STATUS_PERMITIDO;
+		$retorno->permiteCampanhaSorteioJ10 = $resultset[DmlSqlCampanha::CAMP_IN_PERM_CSJ10] == ConstantesVariavel::STATUS_PERMITIDO;
 		$retorno->minimoDelay = $resultset[DmlSqlCampanha::CAMP_NU_MIN_DELAY];
 		$retorno->QrCodeAtivo = $resultset[DmlSqlCampanha::CAMP_TX_QRCODE_ATIVO];
 		$retorno->fraseEfeito = $resultset[DmlSqlCampanha::CAMP_TX_FRASE_EFEITO];
@@ -608,6 +631,8 @@ class MySqlKinghostCampanhaDAO implements CampanhaDAO
 			ConstantesVariavel::P2 => $retorno->id,
 			ConstantesVariavel::P3 => $resultset[DmlSqlCampanha::CAMP_TX_IMG_RECOMPENSA],
 		]);
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 //var_dump($retorno)		;
 		return $retorno;
 

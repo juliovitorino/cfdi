@@ -10,6 +10,8 @@ require_once 'DmlSqlCidade.php';
 
 require_once '../variavel/VariavelCache.php';
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlKinghostCidadeDAO implements CidadeDAO
 {
@@ -174,6 +176,9 @@ class MySqlKinghostCidadeDAO implements CidadeDAO
         $retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlCidade::CIDA_DT_CADASTRO]);
         $retorno->dataAtualizacao = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlCidade::CIDA_DT_UPDATE]);
         $retorno->statusdesc = VariavelCache::getInstance()->getStatusDesc($retorno->status);
+        $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        
         return $retorno;
 
     }

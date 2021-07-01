@@ -12,7 +12,7 @@ require_once '../dto/DTOPadraoEntidade.php';
 */
 class UsuarioCashbackDTO extends DTOPadraoEntidade implements JsonSerializable
 {
-    public $id;
+    ///public $id;
     public $id_usuario;
     public $vlMinimoResgate;
     public $percentual;
@@ -25,9 +25,9 @@ class UsuarioCashbackDTO extends DTOPadraoEntidade implements JsonSerializable
     public $contadorStar_4;
     public $contadorStar_5;
     public $ratingCalculado;
-    public $status;
-    public $dataCadastro;
-    public $dataAtualizacao;
+    //public $status;
+    //public $dataCadastro;
+    //public $dataAtualizacao;
 
     public function jsonSerialize()
     {

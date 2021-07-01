@@ -9,6 +9,8 @@ require_once 'DmlSqlVariavel.php';
 require_once 'VariavelDTO.php';
 
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlKinghostVariavelDAO implements VariavelDAO
 {
@@ -109,7 +111,9 @@ class MySqlKinghostVariavelDAO implements VariavelDAO
 		$retorno->status = $resultset[DmlSqlVariavel::VARI_IN_STATUS];
 		$retorno->dataCadastro = $resultset[DmlSqlVariavel::VARI_DT_CADASTRO];
 		$retorno->dataAtualizacao = $resultset[DmlSqlVariavel::VARI_DT_UPDATE];
-
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		
 		return $retorno;
 	}
 

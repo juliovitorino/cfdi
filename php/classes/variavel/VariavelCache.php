@@ -132,7 +132,6 @@ class VariavelCache
 				break;
 			case ConstantesVariavel::STATUS_PERMITIDO:
 				$retorno = ConstantesVariavel::STATUS_PERMITIDO_DESC;
-				# code...
 				break;
 			case ConstantesVariavel::STATUS_REALIZADO:
 				$retorno = ConstantesVariavel::STATUS_REALIZADO_DESC;
@@ -164,9 +163,16 @@ class VariavelCache
 			case ConstantesVariavel::STATUS_DESABILITADO:
 				$retorno = ConstantesVariavel::STATUS_DESABILITADO_DESC;
 				break;
+			case ConstantesVariavel::STATUS_PAUSADO:
+				$retorno = ConstantesVariavel::STATUS_PAUSADO_DESC;
+				break;
 			case ConstantesVariavel::STATUS_MANUTENCAO:
 				$retorno = ConstantesVariavel::STATUS_MANUTENCAO_DESC;
 				break;
+			case ConstantesVariavel::STATUS_PRONTO_USAR:
+				$retorno = ConstantesVariavel::STATUS_PRONTO_USAR_DESC;
+				break;
+	
 			default:
 				$retorno = "sem tradução de status";
 				break;

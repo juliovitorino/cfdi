@@ -1,7 +1,7 @@
 <?php  
 
 // url de teste GET
-// http://localhost/cfdi/php/classes/campanhaqrcode/clientValidarTicket.php?ticket=7K4PR8xI&token=d3850e72de58c9e72aa016ff90156d4d3c81d418
+// http://elitefinanceira.com/cfdi/php/classes/campanhaqrcode/clientValidarTicket.php?ticket=66f78ecdf6de32dba17851e966f5ca1796e47372&token=71dbfdccab975515f3e364f5206e910bde217eb1
 
 require_once 'campanhaQrCodeServiceImpl.php';
 

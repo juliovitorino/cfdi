@@ -9,6 +9,8 @@ require_once 'DmlSqlSessao.php';
 require_once 'SessaoDTO.php';
 
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlSessaoDAO implements SessaoDAO
 {
@@ -130,7 +132,9 @@ class MySqlSessaoDAO implements SessaoDAO
 		$retorno->status = $resultset[DmlSqlSessao::SESS_IN_STATUS];
 		$retorno->dataCadastro = $resultset[DmlSqlSessao::SESS_DT_CADASTRO];
 		$retorno->dataAtualizacao = $resultset[DmlSqlSessao::SESS_DT_UPDATE];
-
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		
 		return $retorno;
 	}
 

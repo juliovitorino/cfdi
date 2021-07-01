@@ -34,6 +34,8 @@ require_once 'EstatisticaFuncaoDAO.php';
 require_once 'DmlSqlEstatisticaFuncao.php';
 
 require_once '../daofactory/DmlSql.php';
+require_once '../mensagem/ConstantesMensagem.php';
+require_once '../mensagem/MensagemCache.php';
 
 class MySqlKinghostEstatisticaFuncaoDAO implements EstatisticaFuncaoDAO
 {
@@ -458,6 +460,9 @@ class MySqlKinghostEstatisticaFuncaoDAO implements EstatisticaFuncaoDAO
 		$retorno->qtde = $resultset[DmlSqlEstatisticaFuncao::ESFU_QT_FUNCAO];
 		$retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlEstatisticaFuncao::ESFU_DT_CADASTRO]);
 		$retorno->dataAtualizacao = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlEstatisticaFuncao::ESFU_DT_UPDATE]);
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		
 
 		return $retorno;
 	}

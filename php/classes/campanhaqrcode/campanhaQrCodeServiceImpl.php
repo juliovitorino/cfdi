@@ -18,6 +18,7 @@ require_once '../estatisticafuncao/EstatisticaFuncaoHelper.php';
 require_once '../estatisticafuncao/EstatisticaFuncaoServiceImpl.php';
 require_once '../estatisticafuncao/ConstantesEstatisticaFuncao.php';
 require_once '../cartao/cartaoServiceImpl.php';
+require_once '../cartao/cartaoBusinessImpl.php';
 require_once '../campanhacashback/CampanhaCashbackBusinessImpl.php';
 require_once '../campanhacashbackcc/CampanhaCashbackCCBusinessImpl.php';
 require_once '../usuarionotificacao/UsuarioNotificacaoBusinessImpl.php';
@@ -28,6 +29,11 @@ require_once '../selocuringa/seloCuringaServiceImpl.php';
 require_once '../selocuringa/seloCuringaDTO.php';
 require_once '../usuariocashback/UsuarioCashbackBusinessImpl.php';
 require_once '../campanhatopdez/CampanhaTopDezBusinessImpl.php';
+require_once '../permissao/PermissaoHelper.php';
+require_once '../plano/ConstantesPlano.php';
+require_once '../campanhasorteio/CampanhaSorteioBusinessImpl.php';
+require_once '../usuariocampanhasorteio/UsuarioCampanhaSorteioBusinessImpl.php';
+
 
 require_once '../daofactory/DAOFactory.php';
 
@@ -47,7 +53,6 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 
 	public function validarQRCode($idfiel, $qrc)
 	{
-		
 		$vt = $this->carregarQRCodeLivre($qrc);
 		if ($vt->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
 			return $vt;
@@ -98,6 +103,7 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 			$campbo = new CampanhaServiceImpl();
 			$campdto = $campbo->pesquisarPorID($vt->id_campanha);
 
+			// Controle pela tabela de campanha - controle de overflow
 			if($campdto->contadorCartoes >= $campdto->maximoCartoes){
 				$campdto->msgcode = ConstantesMensagem::LIMITE_DE_CARTOES_EXCEDIDO;
 				$campdto->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($campdto->msgcode,[
@@ -135,13 +141,47 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 			$daofactory = DAOFactory::getDAOFactory();
 			$daofactory->open();
 			$daofactory->beginTransaction();
+
+
+			// Verifica o sucesso de verificarPermissao
+			$campcheckdto = $campbo->pesquisarPorID($vt->id_campanha);
+			$permdto = PermissaoHelper::verificarPermissao($daofactory, $campcheckdto->id_usuario, ConstantesPlano::PERM_MAXIMO_CARTOES);
+			if ($permdto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->rollback();
+				return $permdto;
+			}
+
+			// Verificar se a quantidade permitida do plano do usuário já existe na CAMP
+			$cartdao = $daofactory->getCartaoDAO($daofactory);
+			$qtdecaso = $cartdao->countCartaoPorCampId($campcheckdto->id);
+
+			$qtdePermitido = (int) $permdto->qtdepermitida;
+			if($qtdecaso >= $qtdePermitido) 
+			{
+				// Antes de dar o bloqueio tem que verificar se esse usuário que está carimbando 
+				// tem vaga no cartão digital dele mais recente.
+				$cartbo = new CartaoBusinessImpl();
+				$cartdto = $cartbo->pesquisarPorCampanhaUsuarioStatus($daofactory, $usuariodto->id, $vt->id_campanha, ConstantesVariavel::STATUS_ATIVO);
+
+				if( 
+					( $campcheckdto->maximoSelos - $cartdto->contador == 0) || 
+					( $cartdto->id_usuario == 0 && $cartdto->id_campanha == 0) 
+				)
+				{
+					$retorno->msgcode = ConstantesMensagem::CAMPANHA_CARTAO_ACABOU_DEVIDO_PLANO_INFERIOR;
+					$retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+						ConstantesVariavel::P1 => $qtdePermitido,
+					]);  
+					$daofactory->rollback();
+					return $retorno;
+				}
+
+			}
 			
 			// Finalizar o ticket fornecido pelo parceiro
 			$bo = new CfdiBusinessImpl();
 			$retorno = $bo->carimbarQrCodeCfdi($daofactory, $vt->id_campanha, $usuariodto->id, $vt->qrcodecarimbo);
 			$cfdidto = $bo->carregarPorCarimbo($daofactory, $vt->qrcodecarimbo);
-
-//var_dump($cfdidto)			;
 
 			// Busca informações do carimbo na campanha qrcodes
 			$cqrbo = new CampanhaQrCodeBusinessImpl();
@@ -192,9 +232,52 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 					UsuarioNotificacaoHelper::criarUsuarioNotificacaoPorBusiness($daofactory, $usuaid_admin, $msg, "notify-03.png");
 				}
 
+				//-------------------------------------------------------------------------
+				// Verifica se essa campanha tem alguma Campanha Sorteio ativa. status = A
+				//-------------------------------------------------------------------------
+				$casobo = new CampanhaSorteioBusinessImpl();
+				$casodto = $casobo->pesquisarMaxPKAtivoId_CampanhaPorStatus($daofactory, $vt->id_campanha, ConstantesVariavel::STATUS_ATIVO);
+//echo "<br>===============================<br>";				
+//var_dump($casodto);				
+//echo "<br>===============================<br>";				
+				if(!is_null($casodto))
+				{
+					$uscsdto = new UsuarioCampanhaSorteioDTO();
 
+					$uscsdto->idUsuario = $usuariodto->id;
+					$uscsdto->idCampanhaSorteio = $casodto->id;
+					//$uscsdto->ticket = (int) Util::getCodigoNumerico(5); /* deprecated */
 
+					$ucsbo = new UsuarioCampanhaSorteioBusinessImpl();
+					$retorno = $ucsbo->inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto);
+				}
+
+				//-------------------------------------------------------------------------------------
+				// Verifica se essa campanha permite participação paralela em uma campanha de sorteio
+				// do Junta10 além da que ela mesma está promovendo
+				//-------------------------------------------------------------------------------------
+				$casocheckj10 = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CODIGO_CAMPANHA_SORTEIO_J10_PARALELA);
+			
+				if(
+					($campdto->permiteCampanhaSorteioJ10) && 
+					(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_PERMITIR_CAMPANHA_SORTEIO_J10_PARALELA) == ConstantesVariavel::ATIVADO) &&
+					($casocheckj10 != $casodto->id)
+				)
+				{
+					$uscsdto = new UsuarioCampanhaSorteioDTO();
+
+					$uscsdto->idUsuario = $usuariodto->id;
+					$uscsdto->idCampanhaSorteio = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CODIGO_CAMPANHA_SORTEIO_J10_PARALELA);
+					//$uscsdto->ticket = (int) Util::getCodigoNumerico(5); /* deprecated */
+
+					$ucsbo = new UsuarioCampanhaSorteioBusinessImpl();
+					$retorno = $ucsbo->inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto);
+
+				}
+
+				//-----------------------------------------------------------
 				// Verifica se a Chave Geral do PRograma Cashback está ligada
+				//-----------------------------------------------------------
 				if(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_PROGRAMA_CASHBACK) == ConstantesVariavel::ATIVADO){
 
 					// Pesquisa o MaxID de Usuario x Cashback
@@ -308,7 +391,7 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 				//Completou cartela?
 				$cdto = $cartaosi->pesquisarPorID($cdto->id);
 
-				if($cdto != null && $cdto->id != null){
+				if(!is_null($cdto) && ! is_null($cdto->id) ){
 					if($cdto->contador == $campdto->maximoSelos){
 						$temp = $cartaosi->atualizarStatus($cdto->id, ConstantesVariavel::STATUS_VALIDAR_COMPLETOU);
 						$lcompletou = true;
@@ -324,8 +407,6 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 		}
 
 		if ($lcompletou){
-			$retorno->msgcode = ConstantesMensagem::CARTAO_ACABOU_DE_COMPLETAR;
-			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 			//============================================================================
 			// Emite uma notificação
 			//============================================================================
@@ -354,6 +435,9 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 
 			$retorno = $scsi->cadastrar($dto);
 			
+			// Mensagem de saída
+			$retorno->msgcode = ConstantesMensagem::CARTAO_ACABOU_DE_COMPLETAR;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 
 		} else {
 			if($cdto->contador == ($campdto->maximoSelos-1)){

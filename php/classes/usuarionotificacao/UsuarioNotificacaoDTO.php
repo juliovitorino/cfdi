@@ -12,7 +12,7 @@ require_once '../dto/DTOPadraoEntidade.php';
 */
 class UsuarioNotificacaoDTO extends DTOPadraoEntidade implements JsonSerializable
 {
-    public $id;
+    //public $id;
     public $id_usuario;
     public $notificacao;
     public $icone;
@@ -21,9 +21,9 @@ class UsuarioNotificacaoDTO extends DTOPadraoEntidade implements JsonSerializabl
     public $tipo;
     public $dataPrevApagar;
     public $json;
-    public $status;
-    public $dataCadastro;
-    public $dataAtualizacao;
+    //public $status;
+    //public $dataCadastro;
+    //public $dataAtualizacao;
 
     public function jsonSerialize()
     {
