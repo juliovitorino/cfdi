@@ -344,7 +344,7 @@ public function inserir($daofactory, $dto)
             $caccbo = new CampanhaCashbackCCBusinessImpl();
             $caccbo->lancarMovimentoCashbackCC($daofactory, 
                 $dto->idUsuarioPromotor,
-                $cacadto->id_campanha, 
+                $cacadto->id_usuario, 
                 $cacavlAtiva , 
                 
                 MensagemCache::getInstance()->getMensagemParametrizada(ConstantesMensagem::PARABENS_PELA_RECOMPENSA_DE_INDICACAO, [
@@ -355,6 +355,7 @@ public function inserir($daofactory, $dto)
         }
 
         // Libera 1 bilhete (ticket) como prêmio para o usuário promotor
+        /*
         $uscsdto = new UsuarioCampanhaSorteioDTO();
 
         $uscsdto->idUsuario = $dto->idUsuarioPromotor;
@@ -366,6 +367,7 @@ public function inserir($daofactory, $dto)
         {
             return $retorno;
         }
+        */
     }
 
 
