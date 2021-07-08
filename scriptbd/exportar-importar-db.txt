@@ -40,7 +40,7 @@ mysqldump -u YourUser -p YourDatabaseName > wantedsqlfile.sql
 Comando: mysql -u username -p [-h 216.172.161.28] database_name < file.sql
 
 #ambiente dsv :: mysql -u cfd -p cfd < c:\temp\dumpJ10bd.sql
-#ambiente prd :: mysql -u elite759_junta10 -p -h 216.172.161.28 elite759_prd_j10 < c:\temp\dumpJ10bd.sql
+#ambiente prd :: mysql -u elite759_junta10 -p -h 216.172.161.28 elite759_prd_j10 < c:\temp\dumpJ10bd.sql <=== *** PERIGOSO CUIDADO
 #ambiente hmg :: mysql -u elite759_junta10 -p -h 216.172.161.28 elite759_junta10 < c:\temp\dumpJ10bd.sql
 
 
