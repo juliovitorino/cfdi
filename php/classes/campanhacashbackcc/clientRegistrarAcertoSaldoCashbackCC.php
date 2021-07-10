@@ -1,7 +1,7 @@
 <?php 
 
-// URL http://localhost/cfdi/php/classes/campanhacashbackcc/clientRegistrarCashbackCC.php
-// URL http://elitefinanceira.com/producao/cfdi/php/classes/campanhacashbackcc/clientRegistrarCashbackCC.php?usua_id=1000
+// URL http://localhost/cfdi/php/classes/campanhacashbackcc/clientRegistrarAcertoSaldoCashbackCC.php
+// URL http://elitefinanceira.com/producao/cfdi/php/classes/campanhacashbackcc/clientRegistrarAcertoSaldoCashbackCC.php?usua_id=1000
 
 require_once 'CampanhaCashbackCCServiceImpl.php';
 
