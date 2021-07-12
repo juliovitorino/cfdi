@@ -275,6 +275,27 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 
 				}
 
+				//-------------------------------------------------------------------------------------
+				// Verifica se essa campanha permite bonificação especial J10 dando um $$$ pelo carimbo
+				// lanca um credito na campanha J10 (CACA_ID) noo cashback
+				//-------------------------------------------------------------------------------------
+				if(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_PERMITIR_BONIFICACAO_J10) == ConstantesVariavel::ATIVADO)
+				{
+					$vllancar = floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_CASHBACK_CC_BONIFICACAO_J10));
+					$cacaid_bonificacao = VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CODIGO_CASHBACK_BONIFICACAO_J10);
+
+					$cacabo_bonificacao = new CampanhaCashbackBusinessImpl();
+					$cacadto_bonificacao = $cacabo_bonificacao->carregarPorID($daofactory, $cacaid_bonificacao);
+					
+					$caccbo = new CampanhaCashbackCCBusinessImpl();
+					
+					$descricao_bonificacao = MensagemCache::getInstance()->getMensagemParametrizada(ConstantesMensagem::MSG_CASHBACK_BONIFICACAO_J10, [
+						ConstantesVariavel::P1 => Util::getMoeda($vllancar),
+						ConstantesVariavel::P2 => $campdto->nome,
+					]);
+					$retcredito = $caccbo->CreditarCashbackCC($daofactory, $usuariodto->id, $cacadto_bonificacao->id_usuario, $vllancar, $descricao_bonificacao);
+				}
+
 				//-----------------------------------------------------------
 				// Verifica se a Chave Geral do PRograma Cashback está ligada
 				//-----------------------------------------------------------
@@ -285,7 +306,7 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 					$uscadto = $uscabo->PesquisarMaxPKAtivoId_UsuarioPorStatus($daofactory, $campdto->id_usuario,ConstantesVariavel::STATUS_ATIVO);
 
 					// Campanha permite participação em campanhas de cashback?
-					if($campdto->permissaoCashback == ConstantesVariavel::SIM) {
+					if($campdto->permissaoCashback == ConstantesVariavel::SIM && ! is_null($uscadto)) {
 						$cashbo = new CampanhaCashbackBusinessImpl();
 
 						$cashdto = $cashbo->PesquisarMaxPKAtivoId_UsuarioIdCampanhaPorStatus($daofactory, $campdto->id_usuario, $campdto->id, ConstantesVariavel::STATUS_ATIVO);

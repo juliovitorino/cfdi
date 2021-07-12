@@ -395,6 +395,10 @@ class MySqlKinghostUsuarioCashbackDAO implements UsuarioCashbackDAO
     public function getDTO($resultset)
     {
         //echo var_dump($resultset); // ótimo pra debugar
+        if(is_null($resultset)) {
+            return NULL;
+        }
+            
         $retorno = new UsuarioCashbackDTO();
         $retorno->id = $resultset[DmlSqlUsuarioCashback::USCA_ID] == NULL ? NULL : (int) $resultset[DmlSqlUsuarioCashback::USCA_ID];
         $retorno->id_usuario = $resultset[DmlSqlUsuarioCashback::USUA_ID] == NULL ? NULL : (int) $resultset[DmlSqlUsuarioCashback::USUA_ID];
