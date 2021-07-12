@@ -241,6 +241,9 @@ class MySqlKinghostCampanhaQrCodeDAO implements CampanhaQrCodeDAO
 	public function getDTO($resultset)
 	{
 		//echo var_dump($resultset); // ótimo pra debugar
+		if(is_null($resultset)) {
+			return NULL;
+		}
 		$retorno = new CampanhaQrCodeDTO();
 		$retorno->id = $resultset[DmlSqlCampanhaQrCode::CAQR_ID];
 		$retorno->id_campanha = $resultset[DmlSqlCampanhaQrCode::CAMP_ID];
