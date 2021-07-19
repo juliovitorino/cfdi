@@ -26,6 +26,7 @@ interface CartaoBusiness extends BusinessObject
 	public function listarAllCartaoComentarios($daofactory, $idcampanha, $isPositivo, $qtdeComentarios=0 );	
 	public function contarParticipantesCampanha($daofactory, $id_campanha);
 	public function listarParticipantesCampanha($daofactory, $id_campanha, $pag, $qtde);
+	public function moverCartaoInteiroParaOutroUsuario($daofactory, $idusuarioDono, $idusuarioDestino, $idCartao);
 
 
 }

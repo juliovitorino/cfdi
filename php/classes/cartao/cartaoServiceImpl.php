@@ -58,6 +58,44 @@ class CartaoServiceImpl implements CartaoService
 		return $retorno;
 	}
 
+	public function moverCartaoInteiroParaOutroUsuario($idusuarioDono, $idusuarioDestino, $idCartao)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+ 			$bo = new CartaoBusinessImpl();
+			$retorno = $bo->moverCartaoInteiroParaOutroUsuario($daofactory, $idusuarioDono, $idusuarioDestino, $idCartao);
+
+			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
+				$daofactory->commit();
+ 			} else {
+				$daofactory->rollback();
+ 			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+
+	}
+
+    public function moverSeloCartaoParaOutroUsuario($idusuarioDono, $idusuarioDestino, $idCartao)
+	{
+
+	}
+
 	public function realizarAvaliacaoCartao($hash, $id_usuario, $rating, $comentario)
 	{
 		$daofactory = NULL;

@@ -48,6 +48,53 @@ class CartaoBusinessImpl implements CartaoBusiness
 		return $dao->listPagina($pag, $qtde);
 	}
 	
+
+	public function moverCartaoInteiroParaOutroUsuario($daofactory, $idusuarioDono, $idusuarioDestino, $idCartao)
+	{
+		// retorno padrão
+		$retorno = new DTOPadrao();
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+		// busca dados do usuario dono e usuario destino
+		$usuabo = new UsuarioBusinessImpl();
+		$usuarioDonoDTO = $usuabo->carregarPorID($daofactory, $idusuarioDono);
+		$usuarioDestinoDTO = $usuabo->carregarPorID($daofactory, $idusuarioDestino);
+
+		$cartaobo = new CartaoBusinessImpl();
+		$cartaodto = $cartaobo->carregarPorID($daofactory, $idCartao); 
+
+		// busca dados do cartão em aberto
+
+		//----------------------------------
+		// verificações de regras de negócio
+		//----------------------------------
+
+		// cartão inexistente por qualquer motivo, falha
+		// usuario dono == usuariodestino, falha
+		// usuariodono != cartaodto->idusuario, falha
+		// usuariodestino status != A, falha
+		// usuariodestino tem um cartão ativo em aberto, falha
+		// status cartão acima de status "resgatado", falha
+
+		//------------------------------------------------------------------------
+		// todas as condições estão satisfatorias. move o cartão para outra pessoa
+		//------------------------------------------------------------------------
+		
+		// trocar o usua_id do cartão atual do usuario atual para o novo destinatario
+		$cartdao = $daofactory->getCartaoDAO();
+		if( ! $cartdao->updateMoverCartaoInteiroParaOutroUsuario($idusuarioDestino, $idCartao)) 
+		{
+			// emite erro
+			
+		}
+		// pega todos os carimbos do cartão e troca do dono na CFDI
+
+
+		return $retorno;
+
+	}
+
 	public function pesquisarPorCampanhaUsuarioStatus($daofactory, $idusuario, $idcampanha, $status)
 	{ 
 		$dao = $daofactory->getCartaoDAO($daofactory);

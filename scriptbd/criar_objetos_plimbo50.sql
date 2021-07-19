@@ -1331,6 +1331,32 @@ CREATE INDEX IX_CACC_USUA_ID  ON CAMPANHA_CASHBACK_CC(USUA_ID);
 CREATE INDEX IX_CACC_USUA_ID_DONO  ON CAMPANHA_CASHBACK_CC(USUA_ID_DONO);
 CREATE INDEX IX_CACC_01  ON CAMPANHA_CASHBACK_CC(USUA_ID, USUA_ID_DONO);
 
+/*************************************************************************/
+/* RESGATE_CASHBACK_PIX                                                  */
+/*************************************************************************/
+/* Valores para _IN_STATUS                                                /
+/* A = ATIVO                                                              /
+/* I = INATIVO                                                            /
+/*************************************************************************/
+CREATE TABLE `RESGATE_CASHBACK_PIX` (
+ `RECA_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID Resgate Cashback',
+ `CACA_ID` int(11) NOT NULL COMMENT 'ID Campanha x Cashback',
+ `USUA_ID` int(11) NOT NULL COMMENT 'ID do usuário resgate',
+ `CACA_VL_PERC_CASHBACK` DECIMAL(6,2) NOT NULL DEFAULT 0 COMMENT 'Percentual',
+ `CACA_DT_TERMINO` timestamp COMMENT 'Data de término',
+ `CACA_TX_OBS` varchar(2000) DEFAULT NULL COMMENT 'Observação',
+ `CACA_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `CACA_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `CACA_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_CACA_ID PRIMARY KEY (CACA_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+CREATE INDEX IX_CACA_CAMP_ID
+        ON CAMPANHA_CASHBACK(CAMP_ID);
+
+
 
 /*************************************************************************/
 /* USUARIO x TIPO EMPREENDIMENTO                                         */
