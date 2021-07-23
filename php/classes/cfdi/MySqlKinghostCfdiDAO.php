@@ -87,6 +87,25 @@ class MySqlKinghostCfdiDAO implements cfdiDAO
 		return $retorno;
 	}
 
+	public function updateUsuaIdPorCarimbo($carimbo, $usuaid)
+	{	
+
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlCfdi::SQL_UPD_USUA_ID_POR_CARIMBO);
+		$stmt->bind_param(DmlSql::INTEGER_TYPE 
+							. DmlSql::STRING_TYPE 
+							,$usuaid
+							,$carimbo);
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
 
 	public function updateStatus($id, $status)
 	{	

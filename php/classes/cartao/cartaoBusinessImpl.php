@@ -69,6 +69,7 @@ class CartaoBusinessImpl implements CartaoBusiness
 		var_dump($usuarioDestinoDTO);
 		var_dump($cartaodto);
 */		
+
 		//----------------------------------
 		// verificações de regras de negócio
 		//----------------------------------
@@ -157,7 +158,11 @@ class CartaoBusinessImpl implements CartaoBusiness
 		//------------------------------------------------------------------------
 		// todas as condições estão satisfatorias. move o cartão para outra pessoa
 		//------------------------------------------------------------------------
-		
+
+		// Carrega o cartão full
+		$cartaodto = $this->carregarCartaoFull($daofactory, $cartaodto->id, $idusuarioDono);
+		//echo json_encode($cartaodto);	
+
 		// trocar o usua_id do cartão atual do usuario atual para o novo destinatario
 		
 		$cartdao = $daofactory->getCartaoDAO($daofactory);
@@ -169,8 +174,14 @@ class CartaoBusinessImpl implements CartaoBusiness
 			return $retorno;
 			
 		}
-		
-		// pega todos os carimbos do cartão e troca do dono na CFDI
+
+		// troca todos os cartimbos de CFDI para o usuario destino
+		foreach ($cartaodto->cartao->lstcarimbos as $key => $value) {
+			$cfdibo = new CfdiBusinessImpl();
+			$carimbo = $value->qrcode;
+			
+			$cfdibo->atualizarUsuaIdPorCarimbo($daofactory, $carimbo, $idusuarioDestino);
+		} 
 
 
 		return $retorno;
