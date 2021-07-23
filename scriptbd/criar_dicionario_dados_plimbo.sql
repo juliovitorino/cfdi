@@ -178,6 +178,10 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0167
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0168','O usuário *=p1=* acaba de indicar *=p2=*');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0169','Prêmio pela indicação de usuário *=p1=*');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0170','credito de bonificação de *=p1=* por carimbar seu cartão na campanha *=p2=* de nossa rede credenciada');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0171','Usuário Dono do Cartão e Destino não podem ser o mesmo.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0172','Usuário Dono do Cartão é inconsistente com usuário enviado');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0173','Usuário destino possui cartão em aberto nesta mesma campanha');
+
 
 -- variaveis
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CANIVETE_VERSAO','Versão do Canivete','1.0.0');
@@ -254,7 +258,6 @@ INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONT
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CHAVE_GERAL_CAMPANHA_CASHBACK_ATIVO_INDICACAO','Chave Geral da campanha cashback premiar indicação clientes para J10','OFF');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CODIGO_CAMPANHA_CASHBACK_ATIVO_INDICACAO','Código da campanha cashback (CACA_ID) premiar indicação do J10 para clientes','0000');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('VALOR_CAMPANHA_CASHBACK_ATIVO_INDICACAO','Valor do Prêmio da campanha cashback premiar indicação do J10 para clientes','1.50');
-
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CHAVE_PERMITIR_BONIFICACAO_J10','Chave Geral Permitir J10 bonificar financeiramente ao carimbar cartão' ,'OFF');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('VALOR_CASHBACK_CC_BONIFICACAO_J10','Valor credito de cashback J10 bonificação financeira ao carimbar cartão' ,'0.50');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CODIGO_CASHBACK_BONIFICACAO_J10','Código Campanha Cashback (CACA_ID) referencia ao carimbar cartão' ,'0');

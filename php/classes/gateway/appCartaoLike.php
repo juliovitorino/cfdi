@@ -4,7 +4,7 @@
 // URL http://localhost/cfdi/php/classes/gateway/appCartaoLike.php?tokenid=cb1ed118944b2c4738e8f86765906675d9562de3&cardid=1
 
 // Importar dependencias
-require_once '../campanha/campanhaServiceImpl.php';
+require_once '../cartao/cartaoServiceImpl.php';
 
 // Obtem o token de sessao (pode ser dispositivo ou outro hardware qualquer)
 $token = $_GET['tokenid'];

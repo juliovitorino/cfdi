@@ -61,33 +61,115 @@ class CartaoBusinessImpl implements CartaoBusiness
 		$usuarioDonoDTO = $usuabo->carregarPorID($daofactory, $idusuarioDono);
 		$usuarioDestinoDTO = $usuabo->carregarPorID($daofactory, $idusuarioDestino);
 
+		// busca dados do cartão
 		$cartaobo = new CartaoBusinessImpl();
 		$cartaodto = $cartaobo->carregarPorID($daofactory, $idCartao); 
-
-		// busca dados do cartão em aberto
-
+/*
+		var_dump($usuarioDonoDTO);
+		var_dump($usuarioDestinoDTO);
+		var_dump($cartaodto);
+*/		
 		//----------------------------------
 		// verificações de regras de negócio
 		//----------------------------------
 
+		// usuario dono invalido
+		if(is_null($usuarioDonoDTO) || 
+			is_null($usuarioDonoDTO->id)
+		)
+		{
+			$retorno->msgcode = ConstantesMensagem::USUARIO_INVALIDO_PARA_CARTAO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			return $retorno;
+		}
+
+		// usuario destino invalido
+		if(is_null($usuarioDestinoDTO) || 
+			is_null($usuarioDestinoDTO->id)
+		)
+		{
+			$retorno->msgcode = ConstantesMensagem::USUARIO_INVALIDO_PARA_CARTAO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			return $retorno;
+		}
+
 		// cartão inexistente por qualquer motivo, falha
+		if(is_null($cartaodto) || 
+			$cartaodto->id == 0
+		)
+		{
+			$retorno->msgcode = ConstantesMensagem::CARTAO_INVALIDO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			return $retorno;
+		}
+
 		// usuario dono == usuariodestino, falha
+		if($idusuarioDono == $idusuarioDestino)
+		{
+			$retorno->msgcode = ConstantesMensagem::USUARIO_DONO_DESTINO_IGUAIS;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			return $retorno;
+		}
+
 		// usuariodono != cartaodto->idusuario, falha
+		if($usuarioDonoDTO->id != $cartaodto->id_usuario)
+		{
+			$retorno->msgcode = ConstantesMensagem::USUARIO_DONO_CARTAO_INCONSISTENTE;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			return $retorno;
+		}
+
+
 		// usuariodestino status != A, falha
-		// usuariodestino tem um cartão ativo em aberto, falha
+		if($usuarioDestinoDTO->status != ConstantesVariavel::STATUS_ATIVO)
+		{
+			$retorno->msgcode = ConstantesMensagem::STATUS_CONTA_USUARIO_COM_PROBLEMAS;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+				"*=nome=*" => $usuarioDestinoDTO->apelido,
+			]);
+			return $retorno;
+		}
+
+		// usuariodestino tem algum cartão ativo da mesma campanha em aberto, falha
+		$lstCrtDestino = $this->listarCartoesFullInfo($daofactory, $idusuarioDestino, ConstantesVariavel::STATUS_ATIVO);
+//echo json_encode($lstCrtDestino);
+		if(count($lstCrtDestino) > 0)
+		{
+			foreach ($lstCrtDestino as $key => $value) {
+				if($value->campanha->id == $cartaodto->id_campanha)
+				{
+					$retorno->msgcode = ConstantesMensagem::USUARIO_DESTINO_CARTAO_ABERTO_NA_MESMA_CAMPANHA;
+					$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+					return $retorno;		
+				}
+			}
+
+		}
+
 		// status cartão acima de status "resgatado", falha
+		if($cartaodto->status != ConstantesVariavel::STATUS_ATIVO && $cartaodto->status != ConstantesVariavel::STATUS_VALIDAR_COMPLETOU)
+		{
+			$retorno->msgcode = ConstantesMensagem::STATUS_NAO_COMPATIVEL_COM_ESTE_PROCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			return $retorno;
+		}
 
 		//------------------------------------------------------------------------
 		// todas as condições estão satisfatorias. move o cartão para outra pessoa
 		//------------------------------------------------------------------------
 		
 		// trocar o usua_id do cartão atual do usuario atual para o novo destinatario
-		$cartdao = $daofactory->getCartaoDAO();
+		
+		$cartdao = $daofactory->getCartaoDAO($daofactory);
 		if( ! $cartdao->updateMoverCartaoInteiroParaOutroUsuario($idusuarioDestino, $idCartao)) 
 		{
 			// emite erro
+			$retorno->msgcode = ConstantesMensagem::ERRO_CRUD_ATUALIZAR_REGISTRO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			return $retorno;
 			
 		}
+		
 		// pega todos os carimbos do cartão e troca do dono na CFDI
 
 
