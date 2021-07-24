@@ -9,6 +9,7 @@ require_once '../cfdi/cfdiBusinessImpl.php';
 require_once '../variavel/ConstantesVariavel.php';
 require_once '../variavel/VariavelCache.php';
 require_once '../selocuringa/seloCuringaDAO.php';
+require_once '../campanha/CampanhaHelper.php';
 
 /**********************************************************
 ===========================================================
@@ -100,6 +101,24 @@ class CartaoBusinessImpl implements CartaoBusiness
 		)
 		{
 			$retorno->msgcode = ConstantesMensagem::CARTAO_INVALIDO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			return $retorno;
+		}
+
+		// obtem a campanha a que este cartão se refere. Se o usuario destino 
+		// for igual do dono da campanha, falha.
+		$campdto = CampanhaHelper::getCampanhaBusiness($daofactory, $cartaodto->id_campanha);
+		if($campdto->id_usuario == $idusuarioDestino)
+		{
+			$retorno->msgcode = ConstantesMensagem::USUARIO_DESTINO_IGUAL_DONO_CAMPANHA;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			return $retorno;
+		}
+
+		// verifica se a campanha permite mover cartão entre usuarios
+		if(! $campdto->permiteMoverCartaoEntreUsuario)
+		{
+			$retorno->msgcode = ConstantesMensagem::CAMPANHA_NAO_PERMITE_MOVER_CARTAO_ENTRE_USUARIOS;
 			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 			return $retorno;
 		}
