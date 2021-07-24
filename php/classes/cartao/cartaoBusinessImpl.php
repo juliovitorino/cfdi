@@ -10,6 +10,7 @@ require_once '../variavel/ConstantesVariavel.php';
 require_once '../variavel/VariavelCache.php';
 require_once '../selocuringa/seloCuringaDAO.php';
 require_once '../campanha/CampanhaHelper.php';
+require_once '../cartaomoverhistorico/CartaoMoverHistoricoBusinessImpl.php';
 
 /**********************************************************
 ===========================================================
@@ -202,6 +203,13 @@ class CartaoBusinessImpl implements CartaoBusiness
 			$cfdibo->atualizarUsuaIdPorCarimbo($daofactory, $carimbo, $idusuarioDestino);
 		} 
 
+		// faz o registro da movimentação de transferencia
+		$camhbo = new CartaoMoverHistoricoBusinessImpl();
+		$camhdto = new CartaoMoverHistoricoDTO();
+		$camhdto->idCartao = $idCartao;
+		$camhdto->idUsuarioDoador = $idusuarioDono;
+		$camhdto->idUsuarioReceptor = $idusuarioDestino;
+		$retorno = $camhbo->inserir($daofactory, $camhdto);
 
 		return $retorno;
 
