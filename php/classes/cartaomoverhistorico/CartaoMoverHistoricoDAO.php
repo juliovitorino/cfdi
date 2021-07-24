@@ -23,6 +23,8 @@ interface CartaoMoverHistoricoDAO extends DAO
     public function listCartaoMoverHistoricoPorStatus($status, $pag, $qtde, $coluna, $ordem);
     public function countCartaoMoverHistoricoPorUsuaIdStatus($usuaid, $status);
     public function listCartaoMoverHistoricoPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+    public function countCartaoMoverHistoricoPorCartIdStatus($cartid, $status);
+    public function listCartaoMoverHistoricoPorCartIdStatus($cartid, $status, $pag, $qtde, $coluna, $ordem);
 
     public function loadMaxIdcartaoPK($idCartao,$status);
 

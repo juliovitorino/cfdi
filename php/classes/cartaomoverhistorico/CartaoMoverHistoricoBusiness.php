@@ -32,6 +32,8 @@ interface CartaoMoverHistoricoBusiness extends BusinessObject
     public function listarCartaoMoverHistoricoPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);
     public function validarTamanhoCampo($campo, $tamanho, $coment);
     public function listarCartaoMoverHistoricoPorUsuaIdStatus($daofactory, $usuaid, $status, $pag, $qtde, $coluna, $ordem);
+    public function listarCartaoMoverHistoricoPorCartIdStatus($daofactory, $cartid, $status, $pag, $qtde, $coluna, $ordem);
+
 
     public function pesquisarMaxPKAtivoIdcartaoPorStatus($daofactory, $idCartao, $status);
 

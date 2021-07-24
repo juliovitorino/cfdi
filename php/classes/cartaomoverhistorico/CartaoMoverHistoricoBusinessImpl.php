@@ -9,6 +9,8 @@ require_once '../dto/DTOPaginacao.php';
 
 require_once '../variavel/ConstantesVariavel.php';
 require_once '../variavel/VariavelCache.php';
+require_once '../cartao/cartaoBusinessImpl.php';
+require_once '../usuarios/UsuarioHelper.php';
 
 /**
 *
@@ -431,6 +433,58 @@ public function inserir($daofactory, $dto)
         $dao = $daofactory->getCartaoMoverHistoricoDAO($daofactory);
         return $dao->loadIdusuarioreceptor($idUsuarioReceptor);
     }
+
+/**
+*
+* listarCartaoMoverHistoricoPorCartIdStatus() - Usado para invocar a interface de acesso aos dados (DAO) CartaoMoverHistoricoDAO de forma geral
+* realizar lista paginada de registros dos registros do usuário logado com uma instância de PaginacaoDTO
+*
+* @param $daofactory
+* @param $cartid
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+* @return $PaginacaoDTO
+*/
+
+public function listarCartaoMoverHistoricoPorCartIdStatus($daofactory, $cartid, $status, $pag, $qtde, $coluna, $ordem)
+{   
+
+    $retorno = new DTOPaginacao();
+    $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+    $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+    $dao = $daofactory->getCartaoMoverHistoricoDAO($daofactory);
+    $retorno->pagina = $pag;
+    $retorno->itensPorPagina = ($qtde == 0 
+    ? (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT)
+    : $qtde);
+    $retorno->totalPaginas = ceil($dao->countCartaoMoverHistoricoPorCartIdStatus($cartid, $status) / $retorno->itensPorPagina);
+
+    if($pag > $retorno->totalPaginas) {
+        $retorno->msgcode = ConstantesMensagem::NAO_EXISTEM_MAIS_PAGINAS_APRESENTAR;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+    $retorno->lst = $dao->listCartaoMoverHistoricoPorCartIdStatus($cartid, $status, $pag, $qtde, $coluna, $ordem);
+    // Carrega as informações acidionais dentro de objetos completos de cartao, doador e receptor
+    if(count($retorno->lst) > 0)
+    {
+        $cartbo = new CartaoBusinessImpl();
+        //for ($i = 0; $i < count($retorno->lst); $i++ )
+        foreach ($retorno->lst as $key => $value)
+        {
+            $value->cartao = $cartbo->carregarPorID($daofactory,  $value->idCartao);
+            $value->usuarioDoador = UsuarioHelper::getUsuarioBusinessNoKeys($daofactory,  $value->idUsuarioDoador);
+            $value->usuarioReceptor = UsuarioHelper::getUsuarioBusinessNoKeys($daofactory,  $value->idUsuarioReceptor);
+        }
+    }
+
+    return $retorno;
+}
+
 
 /**
 *

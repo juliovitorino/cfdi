@@ -17,6 +17,7 @@
 * @since 23/08/2019 10:06:20
 *
 */
+require_once 'CartaoMoverHistoricoFullDTO.php';
 require_once 'CartaoMoverHistoricoDTO.php';
 require_once 'CartaoMoverHistoricoDAO.php';
 require_once 'DmlSqlCartaoMoverHistorico.php';
@@ -265,6 +266,69 @@ class MySqlKinghostCartaoMoverHistoricoDAO implements CartaoMoverHistoricoDAO
     }
 
 /**
+* countCartaoMoverHistoricoPorCartIdStatus() - contar a quantidade de registros
+* sob o contexto da classe CartaoMoverHistorico com base no usuário específico. Esse usuário
+* é o usuário logado na sessão ou no próprio dispositivo móvel e de acordo com a 
+* query em @see $sql na tabela CARTAO_MOVER_HISTORICO 
+*
+* @see listPagina()
+*
+* @param $cartid
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+
+public function countCartaoMoverHistoricoPorCartIdStatus($cartid, $status)
+{   
+    $retorno = 0;
+    // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+    $conexao = $this->daofactory->getSession();
+    $res = $conexao->query(DmlSqlCartaoMoverHistorico::SQL_COUNT . ' WHERE ' 
+    . DmlSqlCartaoMoverHistorico::CART_ID . " = $cartid "
+    . ' AND ' . DmlSqlCartaoMoverHistorico::CAMH_IN_STATUS . " = '$status'"
+    );
+    if ($res){
+        $tmp = $res->fetch_assoc();
+        $retorno = $tmp['contador'];
+    }
+    return $retorno;
+
+}
+
+/**
+* listCartaoMoverHistoricoPorCartIdStatus() - Listar um conjunto de registro previamente paginado
+* sob o contexto da classe CartaoMoverHistorico com base no usuário específico. Esse usuário
+* é o usuário logado na sessão ou no próprio dispositivo móvel e de acordo com a 
+* query em @see $sql na tabela CARTAO_MOVER_HISTORICO 
+*
+* @see listPagina()
+*
+* @param $cartid
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+public function listCartaoMoverHistoricoPorCartIdStatus($cartid, $status, $pag, $qtde, $coluna, $ordem)
+{
+    $sql = DmlSqlCartaoMoverHistorico::SELECT 
+    . ' WHERE ' . DmlSqlCartaoMoverHistorico::CART_ID . " = $cartid "
+    . ' AND ' . DmlSqlCartaoMoverHistorico::CAMH_IN_STATUS . " = '$status'"
+    . ' ORDER BY ' . $coluna . ($ordem == 0 ? " ASC": " DESC");
+
+    return $this->listPagina($sql, $pag, $qtde);
+}
+
+
+/**
 * listPagina() - Listar um conjunto de registro previamente paginado
 * e de acordo com a query em @see $sql na tabela CARTAO_MOVER_HISTORICO 
 *
@@ -279,7 +343,6 @@ class MySqlKinghostCartaoMoverHistoricoDAO implements CartaoMoverHistoricoDAO
         $retorno = array();
         $final = $pag * $qtde - $qtde;
         $sql = $sql . " LIMIT $final, $qtde" ;
-
         // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
         $conexao = $this->daofactory->getSession();
         $res = $conexao->query($sql );
@@ -381,7 +444,7 @@ class MySqlKinghostCartaoMoverHistoricoDAO implements CartaoMoverHistoricoDAO
         }
 
         //echo var_dump($resultset); // ótimo pra debugar
-        $retorno = new CartaoMoverHistoricoDTO();
+        $retorno = new CartaoMoverHistoricoFullDTO();
         $retorno->id = $resultset[DmlSqlCartaoMoverHistorico::CAMH_ID] == NULL ? NULL : $resultset[DmlSqlCartaoMoverHistorico::CAMH_ID];
         $retorno->idCartao = $resultset[DmlSqlCartaoMoverHistorico::CART_ID] == NULL ? NULL : $resultset[DmlSqlCartaoMoverHistorico::CART_ID];
         $retorno->idUsuarioDoador = $resultset[DmlSqlCartaoMoverHistorico::USUA_ID_DE] == NULL ? NULL : $resultset[DmlSqlCartaoMoverHistorico::USUA_ID_DE];

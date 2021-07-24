@@ -35,6 +35,7 @@ interface CartaoMoverHistoricoService extends AppService
     public function autalizarStatusCartaoMoverHistorico($id, $status);
     public function listarCartaoMoverHistoricoPorStatus($status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
     public function listarCartaoMoverHistoricoPorUsuaIdStatus($usuaid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
+    public function listarCartaoMoverHistoricoPorCartIdStatus($cartid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
     public function cancelar($dto);
     public function pesquisarMaxPKAtivoIdcartaoPorStatus($idCartao,$status);
 
