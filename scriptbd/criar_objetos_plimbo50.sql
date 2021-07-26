@@ -1353,31 +1353,47 @@ CREATE INDEX IX_CACC_USUA_ID_DONO  ON CAMPANHA_CASHBACK_CC(USUA_ID_DONO);
 CREATE INDEX IX_CACC_01  ON CAMPANHA_CASHBACK_CC(USUA_ID, USUA_ID_DONO);
 
 /*************************************************************************/
-/* RESGATE_CASHBACK_PIX                                                  */
+/* CAMPANHA_CASHBACK_RESGATE_PIX                                         */
 /*************************************************************************/
 /* Valores para _IN_STATUS                                                /
 /* A = ATIVO                                                              /
 /* I = INATIVO                                                            /
 /*************************************************************************/
-CREATE TABLE `RESGATE_CASHBACK_PIX` (
- `RECA_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID Resgate Cashback',
+/* Valores para CCRP_IN_TIPO_CHAVE_PIX                                    /
+/* 0 = CPF (padrão)                                                       /
+/* 1 = CNPJ                                                               /
+/* 2 = DDD+CELULAR                                                        /
+/* 3 = EMAIL                                                              /
+/* 4 = CHAVE ALEATORIA                                                    /
+/*************************************************************************/
+/* Valores para CCRP_IN_ESTAGIO_RT                                        /
+/* 0 = Pendente                                                           /
+/* 1 = Em analise                                                         /
+/* 2 = Financeiro                                                         /
+/* 3 = Erro                                                               /
+/* 4 = Transferido                                                        /
+/*************************************************************************/
+CREATE TABLE `CAMPANHA_CASHBACK_RESGATE_PIX` (
+ `CCRP_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID Resgate Cashback',
  `CACA_ID` int(11) NOT NULL COMMENT 'ID Campanha x Cashback',
- `USUA_ID` int(11) NOT NULL COMMENT 'ID do usuário resgate',
- `CACA_VL_PERC_CASHBACK` DECIMAL(6,2) NOT NULL DEFAULT 0 COMMENT 'Percentual',
- `CACA_DT_TERMINO` timestamp COMMENT 'Data de término',
- `CACA_TX_OBS` varchar(2000) DEFAULT NULL COMMENT 'Observação',
- `CACA_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
- `CACA_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
- `CACA_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
- CONSTRAINT PK_CACA_ID PRIMARY KEY (CACA_ID)
+ `USUA_ID` int(11) NOT NULL COMMENT 'ID do usuário solicitante',
+ `CCRP_IN_TIPO_CHAVE_PIX` varchar(1) NOT NULL DEFAULT '0' COMMENT 'Tipo da Chave PIX',
+ `CCRP_TX_CHAVE_PIX` varchar(100) NOT NULL COMMENT 'Chave PIX',
+ `CCRP_VL_RESGATE` DECIMAL(11,2) NOT NULL DEFAULT 0 COMMENT 'Valor Pretendido a Resgatar',
+ `CCRP_TX_AUTENT_BCO` varchar(200) DEFAULT NULL COMMENT 'Autenticação do Banco',
+ `CCRP_IN_ESTAGIO_RT` varchar(1) NOT NULL DEFAULT '0' COMMENT 'Estágio Real Time',
+ `CCRP_DT_ESTAGIO_ANALISE` timestamp NULL COMMENT 'Data Registro Estágio Análise',
+ `CCRP_DT_ESTAGIO_FINANCEIRO` timestamp NULL COMMENT 'Data Registro Estágio Financeiro',
+ `CCRP_DT_ESTAGIO_ERRO` timestamp NULL COMMENT 'Data Registro Estágio Erro',
+ `CCRP_DT_ESTAGIO_TRANSF_BCO` timestamp NULL COMMENT 'Data Registro Estágio Transferido Bco',
+ `CCRP_TX_LIVRE_ESTAGIO_RT` varchar(2000) DEFAULT NULL COMMENT 'Texto Livre do Estagio RT',
+ `CCRP_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `CCRP_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `CCRP_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_CCRP_ID PRIMARY KEY (CCRP_ID)
 ) ENGINE=InnoDB 
 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 AUTO_INCREMENT = 1000;
-
-CREATE INDEX IX_CACA_CAMP_ID
-        ON CAMPANHA_CASHBACK(CAMP_ID);
-
-
 
 /*************************************************************************/
 /* USUARIO x TIPO EMPREENDIMENTO                                         */
@@ -1800,6 +1816,17 @@ ALTER TABLE CARTAO_MOVER_HISTORICO
 ALTER TABLE CARTAO_MOVER_HISTORICO
     ADD CONSTRAINT FK_CAMH_USUA_ID_PARA
     FOREIGN KEY (USUA_ID_PARA)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
+
+/* CASHBACK_RESGATE_PIX */
+ALTER TABLE CAMPANHA_CASHBACK_RESGATE_PIX 
+    ADD CONSTRAINT FK_CCRP_CACA
+    FOREIGN KEY (CACA_ID)
+    REFERENCES CAMPANHA_CASHBACK(CACA_ID) ON DELETE CASCADE;
+
+ALTER TABLE CAMPANHA_CASHBACK_RESGATE_PIX
+    ADD CONSTRAINT FK_CCRP_USUA
+    FOREIGN KEY (USUA_ID)
     REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
 
 /* AJUSTES DE CAMPOS TIMESTAMP */
