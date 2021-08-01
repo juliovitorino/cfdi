@@ -23,10 +23,12 @@ interface CampanhaCashbackResgatePixDAO extends DAO
     public function listCampanhaCashbackResgatePixPorStatus($status, $pag, $qtde, $coluna, $ordem);
     public function countCampanhaCashbackResgatePixPorUsuaIdStatus($usuaid, $status);
     public function listCampanhaCashbackResgatePixPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+    public function countCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus($usuaid, $usuaidDevedor, $status);
+    public function listCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus($usuaid, $usuaidDevedor, $status, $pag, $qtde, $coluna, $ordem);
 
-    public function loadMaxIdcampanhacashbackPK($idCampanhaCashback,$status);
+    public function loadMaxIdUsuarioDevedorPK($idUsuarioDevedor,$status);
 
-    public function loadIdcampanhacashback($idCampanhaCashback);
+    public function loadIdUsuarioDevedor($idUsuarioDevedor);
     public function loadIdusuariosolicitante($idUsuarioSolicitante);
     public function loadTipochavepix($tipoChavePix);
     public function loadChavepix($chavePix);
@@ -42,7 +44,7 @@ interface CampanhaCashbackResgatePixDAO extends DAO
     public function loadDatacadastro($dataCadastro);
     public function loadDataatualizacao($dataAtualizacao);
 
-    public function updateIdcampanhacashback($id, $idCampanhaCashback);
+    public function updateIdUsuarioDevedor($id, $idUsuarioDevedor);
     public function updateIdusuariosolicitante($id, $idUsuarioSolicitante);
     public function updateTipochavepix($id, $tipoChavePix);
     public function updateChavepix($id, $chavePix);

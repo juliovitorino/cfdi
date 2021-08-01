@@ -8,7 +8,7 @@
 Faça um Find/Replace em $_POST por $_GET e use os parametros na URL para simular um GET na HttpRequest
 ?tokenid=tk
 &id=tr
-&idCampanhaCashback=tr
+&idUsuarioDevedor=tr
 &idUsuarioSolicitante=tr
 &tipoChavePix=tr
 &chavePix=tr
@@ -56,7 +56,7 @@ include_once '../../inc/validarTokenApp.php';
 $dto = new CampanhaCashbackResgatePixDTO();
 
 $dto->id = $_POST['id'];
-$dto->idCampanhaCashback = $_POST['idCampanhaCashback'];
+$dto->idUsuarioDevedor = $_POST['idUsuarioDevedor'];
 $dto->idUsuarioSolicitante = $_POST['idUsuarioSolicitante'];
 $dto->tipoChavePix = $_POST['tipoChavePix'];
 $dto->chavePix = $_POST['chavePix'];

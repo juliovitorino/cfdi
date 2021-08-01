@@ -32,8 +32,10 @@ interface CampanhaCashbackResgatePixBusiness extends BusinessObject
     public function listarCampanhaCashbackResgatePixPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);
     public function validarTamanhoCampo($campo, $tamanho, $coment);
     public function listarCampanhaCashbackResgatePixPorUsuaIdStatus($daofactory, $usuaid, $status, $pag, $qtde, $coluna, $ordem);
-    public function pesquisarMaxPKAtivoIdcampanhacashbackPorStatus($daofactory, $idCampanhaCashback, $status);
-    public function pesquisarPorIdcampanhacashback($daofactory, $idCampanhaCashback);
+    public function listarCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus($daofactory, $usuaid, $usuaidDevedor, $status, $pag, $qtde, $coluna, $ordem);
+
+    public function pesquisarMaxPKAtivoIdUsuarioDevedorPorStatus($daofactory, $idUsuarioDevedor, $status);
+    public function pesquisarPorIdUsuarioDevedor($daofactory, $idUsuarioDevedor);
     public function pesquisarPorIdusuariosolicitante($daofactory, $idUsuarioSolicitante);
     public function pesquisarPorTipochavepix($daofactory, $tipoChavePix);
     public function pesquisarPorChavepix($daofactory, $chavePix);
@@ -47,7 +49,7 @@ interface CampanhaCashbackResgatePixBusiness extends BusinessObject
     public function pesquisarPorTxtlivreestagiort($daofactory, $txtLivreEstagioRT);
     //public function pesquisarPorStatus($daofactory, $status);
 
-    public function atualizarIdcampanhacashbackPorPK($daofactory,$idCampanhaCashback,$id);
+    public function atualizarIdUsuarioDevedorPorPK($daofactory,$idUsuarioDevedor,$id);
     public function atualizarIdusuariosolicitantePorPK($daofactory,$idUsuarioSolicitante,$id);
     public function atualizarTipochavepixPorPK($daofactory,$tipoChavePix,$id);
     public function atualizarChavepixPorPK($daofactory,$chavePix,$id);

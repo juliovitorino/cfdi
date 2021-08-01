@@ -37,20 +37,20 @@ class MySqlKinghostCampanhaCashbackResgatePixDAO implements CampanhaCashbackResg
 
 
 /**
-* loadMaxIdcampanhacashbackPK() - Carrega um MaxID (pk) para um ${CAMPO} e status
+* loadMaxIdUsuarioDevedorPK() - Carrega um MaxID (pk) para um ${CAMPO} e status
 *
-* @param $idCampanhaCashback
+* @param $idUsuarioDevedor
 * @param $status
 * @return $dto
 */ 
 
-    public function loadMaxIdcampanhacashbackPK($idCampanhaCashback,$status)
+    public function loadMaxIdUsuarioDevedorPK($idUsuarioDevedor,$status)
     {   
         $retorno = 0;
         // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
         $conexao = $this->daofactory->getSession();
         $sql = DmlSqlCampanhaCashbackResgatePix::SELECT_MAX_PK . ' WHERE ' 
-        . DmlSqlCampanhaCashbackResgatePix::CACA_ID . " = $idCampanhaCashback "
+        . DmlSqlCampanhaCashbackResgatePix::USUA_ID_DEVEDOR . " = $idUsuarioDevedor "
         . " AND " . DmlSqlCampanhaCashbackResgatePix::CCRP_IN_STATUS . " = '$status'";
 
         $res = $conexao->query($sql);
@@ -103,7 +103,7 @@ class MySqlKinghostCampanhaCashbackResgatePixDAO implements CampanhaCashbackResg
                             . DmlSql::STRING_TYPE 
                             . DmlSql::STRING_TYPE 
                             . DmlSql::INTEGER_TYPE 
-                            ,$dto->idCampanhaCashback
+                            ,$dto->idUsuarioDevedor
                             ,$dto->idUsuarioSolicitante
                             ,$dto->tipoChavePix
                             ,$dto->chavePix
@@ -282,6 +282,73 @@ class MySqlKinghostCampanhaCashbackResgatePixDAO implements CampanhaCashbackResg
         return $this->listPagina($sql, $pag, $qtde);
     }
 
+
+
+/**
+* countCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus() - contar a quantidade de registros
+* sob o contexto da classe CampanhaCashbackResgatePix com base no usuário específico. Esse usuário
+* é o usuário logado na sessão ou no próprio dispositivo móvel e de acordo com a 
+* query em @see $sql na tabela CAMPANHA_CASHBACK_RESGATE_PIX 
+*
+* @see listPagina()
+*
+* @param $usuaid
+* @param $usuaidDevedor
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+
+public function countCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus($usuaid, $usuaidDevedor, $status)
+{   
+    $retorno = 0;
+    // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+    $conexao = $this->daofactory->getSession();
+    $res = $conexao->query(DmlSqlCampanhaCashbackResgatePix::SQL_COUNT . ' WHERE ' 
+    . DmlSqlCampanhaCashbackResgatePix::USUA_ID . " = $usuaid "
+    . ' AND ' . DmlSqlCampanhaCashbackResgatePix::USUA_ID_DEVEDOR . " = $usuaidDevedor "
+    . ' AND ' . DmlSqlCampanhaCashbackResgatePix::CCRP_IN_STATUS . " = '$status'"
+    );
+    if ($res){
+        $tmp = $res->fetch_assoc();
+        $retorno = $tmp['contador'];
+    }
+    return $retorno;
+
+}
+
+/**
+* listCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus() - Listar um conjunto de registro previamente paginado
+* sob o contexto da classe CampanhaCashbackResgatePix com base no usuário específico. Esse usuário
+* é o usuário logado na sessão ou no próprio dispositivo móvel e de acordo com a 
+* query em @see $sql na tabela CAMPANHA_CASHBACK_RESGATE_PIX 
+*
+* @see listPagina()
+*
+* @param $usuaid
+* @param $usuaidDevedor
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+public function listCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus($usuaid, $usuaidDevedor, $status, $pag, $qtde, $coluna, $ordem)
+{
+    $sql = DmlSqlCampanhaCashbackResgatePix::SELECT 
+    . ' WHERE ' . DmlSqlCampanhaCashbackResgatePix::USUA_ID . " = $usuaid "
+    . ' AND ' . DmlSqlCampanhaCashbackResgatePix::USUA_ID_DEVEDOR . " = $usuaidDevedor "
+    . ' AND ' . DmlSqlCampanhaCashbackResgatePix::CCRP_IN_STATUS . " = '$status' "
+    . ' ORDER BY ' . $coluna . ($ordem == 0 ? " ASC": " DESC");
+    return $this->listPagina($sql, $pag, $qtde);
+}
+
 /**
 * listPagina() - Listar um conjunto de registro previamente paginado
 * e de acordo com a query em @see $sql na tabela CAMPANHA_CASHBACK_RESGATE_PIX 
@@ -379,7 +446,7 @@ class MySqlKinghostCampanhaCashbackResgatePixDAO implements CampanhaCashbackResg
                             . DmlSql::STRING_TYPE 
                             . DmlSql::STRING_TYPE 
                             . DmlSql::DOUBLE_TYPE 
-                            ,$dto->idCampanhaCashback
+                            ,$dto->idUsuarioDevedor
                             ,$dto->idUsuarioSolicitante
                             ,$dto->tipoChavePix
                             ,$dto->chavePix
@@ -405,11 +472,12 @@ class MySqlKinghostCampanhaCashbackResgatePixDAO implements CampanhaCashbackResg
         //echo var_dump($resultset); // ótimo pra debugar
         $retorno = new CampanhaCashbackResgatePixDTO();
         $retorno->id = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_ID] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_ID];
-        $retorno->idCampanhaCashback = $resultset[DmlSqlCampanhaCashbackResgatePix::CACA_ID] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CACA_ID];
+        $retorno->idUsuarioDevedor = $resultset[DmlSqlCampanhaCashbackResgatePix::USUA_ID_DEVEDOR] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::USUA_ID_DEVEDOR];
         $retorno->idUsuarioSolicitante = $resultset[DmlSqlCampanhaCashbackResgatePix::USUA_ID] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::USUA_ID];
         $retorno->tipoChavePix = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_IN_TIPO_CHAVE_PIX] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_IN_TIPO_CHAVE_PIX];
         $retorno->chavePix = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_CHAVE_PIX] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_CHAVE_PIX];
         $retorno->valorResgate = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_VL_RESGATE] == NULL ? 0 : floatval($resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_VL_RESGATE]);
+        $retorno->valorResgateCurrency = Util::getMoeda($retorno->valorResgate);
         $retorno->autenticacaoBco = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_AUTENT_BCO] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_AUTENT_BCO];
         $retorno->estagioRealTime = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_IN_ESTAGIO_RT] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_IN_ESTAGIO_RT];
         $retorno->dtEstagioAnalise = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_DT_ESTAGIO_ANALISE] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_DT_ESTAGIO_ANALISE];
@@ -423,22 +491,79 @@ class MySqlKinghostCampanhaCashbackResgatePixDAO implements CampanhaCashbackResg
         $retorno->statusdesc = VariavelCache::getInstance()->getStatusDesc($retorno->status);
         $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+     
+        // Traduz flag da chave pix
+        switch ($retorno->tipoChavePix) {
+            case CampanhaCashbackResgatePixConstantes::TIPO_CHAVEPIX_CPF :
+                $retorno->tipoChavePixDesc = CampanhaCashbackResgatePixConstantes::TIPO_CHAVEPIX_CPF_DESC;
+                break;
+            
+            case CampanhaCashbackResgatePixConstantes::TIPO_CHAVEPIX_CNPJ :
+                $retorno->tipoChavePixDesc = CampanhaCashbackResgatePixConstantes::TIPO_CHAVEPIX_CNPJ_DESC;
+                break;
+            
+            case CampanhaCashbackResgatePixConstantes::TIPO_CHAVEPIX_CELULAR :
+                $retorno->tipoChavePixDesc = CampanhaCashbackResgatePixConstantes::TIPO_CHAVEPIX_CELULAR_DESC;
+                break;
+                
+            case CampanhaCashbackResgatePixConstantes::TIPO_CHAVEPIX_EMAIL :
+                $retorno->tipoChavePixDesc = CampanhaCashbackResgatePixConstantes::TIPO_CHAVEPIX_EMAIL_DESC;
+                break;
+                        
+            case CampanhaCashbackResgatePixConstantes::TIPO_CHAVEPIX_ALEATORIA :
+                $retorno->tipoChavePixDesc = CampanhaCashbackResgatePixConstantes::TIPO_CHAVEPIX_ALEATORIA_DESC;
+                break;
+                
+            default:
+                $retorno->tipoChavePixDesc = CampanhaCashbackResgatePixConstantes::TIPO_CHAVEPIX_INVALIDA_DESC;
+                break;
+        }
+
+        // Traduz estagio RT
+        switch ($retorno->estagioRealTime) {
+            case CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_PENDENTE :
+                $retorno->estagioRealTimeDesc = CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_PENDENTE_DESC;
+                break;
+            
+            case CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_ANALISE :
+                $retorno->estagioRealTimeDesc = CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_ANALISE_DESC;
+                break;
+            
+            case CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_FINANCEIRO :
+                $retorno->estagioRealTimeDesc = CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_FINANCEIRO_DESC;
+                break;
+                
+            case CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_ERRO :
+                $retorno->estagioRealTimeDesc = CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_ERRO_DESC;
+                break;
+                        
+            case CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_TRANSFERIDO :
+                $retorno->estagioRealTimeDesc = CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_TRANSFERIDO_DESC;
+                break;
+                
+            default:
+                $retorno->estagioRealTimeDesc = CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_INVALIDO_DESC;
+                break;
+        }
+
+
+
         return $retorno;
 
     }
 
     /**
-    * updateIdcampanhacashback() - implementação da assinatura em CampanhaCashbackResgatePixDAO
+    * updateIdUsuarioDevedor() - implementação da assinatura em CampanhaCashbackResgatePixDAO
     */
-    public function updateIdcampanhacashback($id, $idCampanhaCashback)
+    public function updateIdUsuarioDevedor($id, $idUsuarioDevedor)
     {   
         $retorno = false;
         // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
         $conexao = $this->daofactory->getSession();
-        $stmt = $conexao->prepare(DmlSqlCampanhaCashbackResgatePix::UPD_CAMPANHA_CASHBACK_RESGATE_PIX_CACA_ID_PK);
+        $stmt = $conexao->prepare(DmlSqlCampanhaCashbackResgatePix::UPD_CAMPANHA_CASHBACK_RESGATE_PIX_USUA_ID_DEVEDOR_PK);
         $stmt->bind_param(DmlSql::INTEGER_TYPE 
                             . DmlSql::INTEGER_TYPE
-                            ,$idCampanhaCashback
+                            ,$idUsuarioDevedor
                             ,$id);
         if ($stmt->execute())
         {
@@ -683,15 +808,15 @@ class MySqlKinghostCampanhaCashbackResgatePixDAO implements CampanhaCashbackResg
 
 
     /**
-    * loadIdcampanhacashback() - implementação da assinatura em CampanhaCashbackResgatePixDAO
+    * loadIdUsuarioDevedor() - implementação da assinatura em CampanhaCashbackResgatePixDAO
     */
 
-    public function loadIdcampanhacashback($idCampanhaCashback)
+    public function loadIdUsuarioDevedor($idUsuarioDevedor)
     {   
         $retorno = NULL;
         // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
         $conexao = $this->daofactory->getSession();
-        $res = $conexao->query(DmlSqlCampanhaCashbackResgatePix::SELECT . ' WHERE ' . DmlSqlCampanhaCashbackResgatePix::CACA_ID . '=' . $idCampanhaCashback );
+        $res = $conexao->query(DmlSqlCampanhaCashbackResgatePix::SELECT . ' WHERE ' . DmlSqlCampanhaCashbackResgatePix::USUA_ID_DEVEDOR . '=' . $idUsuarioDevedor );
         if ($res){
             $retorno = $this->getDTO($res->fetch_assoc());
         }

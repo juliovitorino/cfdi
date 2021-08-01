@@ -11,7 +11,7 @@ $ts = $date->getTimestamp();
 
 $dto = new CampanhaCashbackResgatePixDTO();
 
-$dto->idCampanhaCashback = 1000;
+$dto->idUsuarioDevedor = 1;
 $dto->idUsuarioSolicitante = 1000;
 
 /* possibilidades para teste 

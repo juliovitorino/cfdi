@@ -26,9 +26,30 @@ class CampanhaCashbackResgatePixConstantes
    const TIPO_CHAVEPIX_EMAIL = '3';
    const TIPO_CHAVEPIX_ALEATORIA = '4';
 
+   const TIPO_CHAVEPIX_CPF_DESC = 'CPF';
+   const TIPO_CHAVEPIX_CNPJ_DESC = 'CNPJ';
+   const TIPO_CHAVEPIX_CELULAR_DESC = 'CELULAR';
+   const TIPO_CHAVEPIX_EMAIL_DESC = 'EMAIL';
+   const TIPO_CHAVEPIX_ALEATORIA_DESC = 'ALEATORIA';
+   const TIPO_CHAVEPIX_INVALIDA_DESC = 'INVALIDA';
+
+   /* definição de contantes para estagio real time */
+   const ESTAGIO_RT_PENDENTE = 0;
+   const ESTAGIO_RT_ANALISE = 1;
+   const ESTAGIO_RT_FINANCEIRO = 2;
+   const ESTAGIO_RT_ERRO = 3;
+   const ESTAGIO_RT_TRANSFERIDO = 4;
+
+   const ESTAGIO_RT_PENDENTE_DESC = 'PENDENTE';
+   const ESTAGIO_RT_ANALISE_DESC = 'EM ANÁLISE';
+   const ESTAGIO_RT_FINANCEIRO_DESC = 'FINANCEIRO';
+   const ESTAGIO_RT_ERRO_DESC = 'ERRO';
+   const ESTAGIO_RT_TRANSFERIDO_DESC = 'TRANSFERIDO';
+   const ESTAGIO_RT_INVALIDO_DESC = 'INVÁLIDO';
+   
    /* definição para colunas do banco de dados */
    const COL_CCRP_ID = 'CCRP_ID';
-   const COL_CACA_ID = 'CACA_ID';
+   const COL_USUA_ID_DEVEDOR = 'USUA_ID_DEVEDOR';
    const COL_USUA_ID = 'USUA_ID';
    const COL_CCRP_IN_TIPO_CHAVE_PIX = 'CCRP_IN_TIPO_CHAVE_PIX';
    const COL_CCRP_TX_CHAVE_PIX = 'CCRP_TX_CHAVE_PIX';
@@ -46,7 +67,7 @@ class CampanhaCashbackResgatePixConstantes
 
    /* definição para campos do CampanhaCashbackResgatePixDTO */
    const DTO_ID = 'id';
-   const DTO_IDCAMPANHACASHBACK = 'idCampanhaCashback';
+   const DTO_IDUSUARIODEVEDOR = 'idUsuarioDevedor';
    const DTO_IDUSUARIOSOLICITANTE = 'idUsuarioSolicitante';
    const DTO_TIPOCHAVEPIX = 'tipoChavePix';
    const DTO_CHAVEPIX = 'chavePix';
@@ -64,7 +85,7 @@ class CampanhaCashbackResgatePixConstantes
 
    /* definição de tamanhos para os campos */
    const LEN_ID = 11;
-   const LEN_IDCAMPANHACASHBACK = 11;
+   const LEN_IDUSUARIODEVEDOR = 11;
    const LEN_IDUSUARIOSOLICITANTE = 11;
    const LEN_TIPOCHAVEPIX = 1;
    const LEN_CHAVEPIX = 100;
@@ -82,7 +103,7 @@ class CampanhaCashbackResgatePixConstantes
 
    /* definição de tamanhos para os campos */
    const DESC_ID = 'ID Resgate Cashback';
-   const DESC_IDCAMPANHACASHBACK = 'ID Campanha x Cashback';
+   const DESC_IDUSUARIODEVEDOR = 'ID do usuário devedor';
    const DESC_IDUSUARIOSOLICITANTE = 'ID do usuário solicitante';
    const DESC_TIPOCHAVEPIX = 'Tipo da Chave PIX';
    const DESC_CHAVEPIX = 'Chave PIX';

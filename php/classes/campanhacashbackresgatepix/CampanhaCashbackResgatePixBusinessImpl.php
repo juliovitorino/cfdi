@@ -54,15 +54,15 @@ class CampanhaCashbackResgatePixBusinessImpl implements CampanhaCashbackResgateP
     public function listarTudo($daofactory) {   }
 
 /**
-* pesquisarMaxPKAtivoIdcampanhacashbackPorStatus() - Carrega apenas um registro com base no idCampanhaCashback  e status para buscar a MAIOR PK
+* pesquisarMaxPKAtivoIdUsuarioDevedorPorStatus() - Carrega apenas um registro com base no idUsuarioDevedor  e status para buscar a MAIOR PK
 * @param $daofactory
 * @param $status
 * @return CampanhaCashbackResgatePixDTO
 */ 
-    public function pesquisarMaxPKAtivoIdcampanhacashbackPorStatus($daofactory, $idCampanhaCashback,$status)
+    public function pesquisarMaxPKAtivoIdUsuarioDevedorPorStatus($daofactory, $idUsuarioDevedor,$status)
     { 
         $dao = $daofactory->getCampanhaCashbackResgatePixDAO($daofactory);
-        $maxid = $dao->loadMaxIdcampanhacashbackPK($idCampanhaCashback,$status);
+        $maxid = $dao->loadMaxIdUsuarioDevedorPK($idUsuarioDevedor,$status);
         return $this->carregarPorID($daofactory, $maxid);
     }
 
@@ -203,12 +203,6 @@ public function inserir($daofactory, $dto)
 
     // Efetua validações no campo $dto->id com tamanho CampanhaCashbackResgatePixConstantes::LEN_ID
     $ok = $this->validarTamanhoCampo($dto->id, CampanhaCashbackResgatePixConstantes::LEN_ID, CampanhaCashbackResgatePixConstantes::DESC_ID);
-    if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
-        return $ok;
-    }
-
-    // Efetua validações no campo $dto->idCampanhaCashback com tamanho CampanhaCashbackResgatePixConstantes::LEN_IDCAMPANHACASHBACK
-    $ok = $this->validarTamanhoCampo($dto->idCampanhaCashback, CampanhaCashbackResgatePixConstantes::LEN_IDCAMPANHACASHBACK, CampanhaCashbackResgatePixConstantes::DESC_IDCAMPANHACASHBACK);
     if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
         return $ok;
     }
@@ -354,23 +348,23 @@ public function inserir($daofactory, $dto)
 
 /**
 *
-* atualizarIdcampanhacashbackPorPK() - Usado para invocar a classe de negócio CampanhaCashbackResgatePixBusinessImpl de forma geral
+* atualizarIdUsuarioDevedorPorPK() - Usado para invocar a classe de negócio CampanhaCashbackResgatePixBusinessImpl de forma geral
 * realizar uma atualização de ID Campanha x Cashback diretamente na tabela CAMPANHA_CASHBACK_RESGATE_PIX campo CACA_ID
 * @param $daofactory
 * @param $id
-* @param $idCampanhaCashback
+* @param $idUsuarioDevedor
 * @return CampanhaCashbackResgatePixDTO
 *
 * 
 */
-    public function atualizarIdcampanhacashbackPorPK($daofactory,$idCampanhaCashback,$id)
+    public function atualizarIdUsuarioDevedorPorPK($daofactory,$idUsuarioDevedor,$id)
     {
         $dao = $daofactory->getCampanhaCashbackResgatePixDAO($daofactory);
 
         // resposta padrão
         $retorno = new DTOPadrao();
 
-        if($dao->updateIdcampanhacashback($id, $idCampanhaCashback)){   
+        if($dao->updateIdUsuarioDevedor($id, $idUsuarioDevedor)){   
             $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
         }       
 
@@ -691,18 +685,18 @@ public function inserir($daofactory, $dto)
 
 /**
 *
-* pesquisarPorIdcampanhacashback() - Usado para invocar a classe de negócio CampanhaCashbackResgatePixBusinessImpl de forma geral
-* realizar uma busca de ID Campanha x Cashback diretamente na tabela CAMPANHA_CASHBACK_RESGATE_PIX campo CACA_ID
+* pesquisarPorIdUsuarioDevedor() - Usado para invocar a classe de negócio CampanhaCashbackResgatePixBusinessImpl de forma geral
+* realizar uma busca de ID Campanha x Cashback diretamente na tabela CAMPANHA_CASHBACK_RESGATE_PIX campo USUA_ID_DEVEDOR
 *
-* @param $idCampanhaCashback
+* @param $idUsuarioDevedor
 * @return CampanhaCashbackResgatePixDTO
 *
 * 
 */
-    public function pesquisarPorIdcampanhacashback($daofactory,$idCampanhaCashback)
+    public function pesquisarPorIdUsuarioDevedor($daofactory,$idUsuarioDevedor)
     { 
         $dao = $daofactory->getCampanhaCashbackResgatePixDAO($daofactory);
-        return $dao->loadIdcampanhacashback($idCampanhaCashback);
+        return $dao->loadIdUsuarioDevedor($idUsuarioDevedor);
     }
 
 /**
@@ -929,6 +923,47 @@ public function inserir($daofactory, $dto)
 
         return $retorno;
     }
+
+
+/**
+*
+* listarCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus() - Usado para invocar a interface de acesso aos dados (DAO) CampanhaCashbackResgatePixDAO de forma geral
+* realizar lista paginada de registros dos registros do usuário logado com uma instância de PaginacaoDTO
+*
+* @param $daofactory
+* @param $usuaid
+* @param $usuaidDevedor
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+* @return $PaginacaoDTO
+*/
+
+    public function listarCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus($daofactory, $usuaid, $usuaidDevedor, $status, $pag, $qtde, $coluna, $ordem)
+    {   
+        $retorno = new DTOPaginacao();
+        $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+        $dao = $daofactory->getCampanhaCashbackResgatePixDAO($daofactory);
+        $retorno->pagina = $pag;
+        $retorno->itensPorPagina = ($qtde == 0 
+        ? (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT)
+        : $qtde);
+        $retorno->totalPaginas = ceil($dao->countCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus($usuaid, $usuaidDevedor, $status) / $retorno->itensPorPagina);
+
+        if($pag > $retorno->totalPaginas) {
+            $retorno->msgcode = ConstantesMensagem::NAO_EXISTEM_MAIS_PAGINAS_APRESENTAR;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+        }
+        $retorno->lst = $dao->listCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus($usuaid, $usuaidDevedor, $status, $pag, $qtde, $coluna, $ordem);
+
+        return $retorno;
+    }
+
 
 /**
 * validarTamanhoCampo()

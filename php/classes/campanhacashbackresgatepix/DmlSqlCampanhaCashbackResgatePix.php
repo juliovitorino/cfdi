@@ -33,7 +33,7 @@ class DmlSqlCampanhaCashbackResgatePix extends DmlSql
 
     // colunas da tabela
     const CCRP_ID = 'CCRP_ID';
-    const CACA_ID = 'CACA_ID';
+    const USUA_ID_DEVEDOR = 'USUA_ID_DEVEDOR';
     const USUA_ID = 'USUA_ID';
     const CCRP_IN_TIPO_CHAVE_PIX = 'CCRP_IN_TIPO_CHAVE_PIX';
     const CCRP_TX_CHAVE_PIX = 'CCRP_TX_CHAVE_PIX';
@@ -51,7 +51,7 @@ class DmlSqlCampanhaCashbackResgatePix extends DmlSql
 
     // Comandos DML
     const INS = 'INSERT INTO `' . self::TABELA . '` ('
-        . ' `' . self::CACA_ID . '`, '
+        . ' `' . self::USUA_ID_DEVEDOR . '`, '
         . ' `' . self::USUA_ID . '`, '
         . ' `' . self::CCRP_IN_TIPO_CHAVE_PIX . '`, '
         . ' `' . self::CCRP_TX_CHAVE_PIX . '`, '
@@ -62,7 +62,7 @@ class DmlSqlCampanhaCashbackResgatePix extends DmlSql
     'WHERE ' . ' `' . self::CCRP_ID . '` = ? ' ;
 
     const UPD_PK = 'UPDATE `' . self::TABELA . '` set '
-    . ' `' . self::CACA_ID . '` = ?, '
+    . ' `' . self::USUA_ID_DEVEDOR . '` = ?, '
     . ' `' . self::USUA_ID . '` = ?, '
     . ' `' . self::CCRP_IN_TIPO_CHAVE_PIX . '` = ?, '
     . ' `' . self::CCRP_TX_CHAVE_PIX . '` = ?, '
@@ -84,7 +84,7 @@ class DmlSqlCampanhaCashbackResgatePix extends DmlSql
 
     const SELECT = 'SELECT ' 
         . ' `' . self::CCRP_ID . '`, ' 
-        . ' `' . self::CACA_ID . '`, ' 
+        . ' `' . self::USUA_ID_DEVEDOR . '`, ' 
         . ' `' . self::USUA_ID . '`, ' 
         . ' `' . self::CCRP_IN_TIPO_CHAVE_PIX . '`, ' 
         . ' `' . self::CCRP_TX_CHAVE_PIX . '`, ' 
@@ -104,7 +104,7 @@ class DmlSqlCampanhaCashbackResgatePix extends DmlSql
     const SQL_COUNT = 'SELECT COUNT(*) AS contador '
     . ' FROM `'.self::TABELA.'` ';
 
-    const UPD_CAMPANHA_CASHBACK_RESGATE_PIX_CACA_ID_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::CACA_ID . '` = ? ' . 'WHERE ' . ' `' . self::CCRP_ID . '` = ? ' ;
+    const UPD_CAMPANHA_CASHBACK_RESGATE_PIX_USUA_ID_DEVEDOR_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::USUA_ID_DEVEDOR . '` = ? ' . 'WHERE ' . ' `' . self::CCRP_ID . '` = ? ' ;
     const UPD_CAMPANHA_CASHBACK_RESGATE_PIX_USUA_ID_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::USUA_ID . '` = ? ' . 'WHERE ' . ' `' . self::CCRP_ID . '` = ? ' ;
     const UPD_CAMPANHA_CASHBACK_RESGATE_PIX_CCRP_IN_TIPO_CHAVE_PIX_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::CCRP_IN_TIPO_CHAVE_PIX . '` = ? ' . 'WHERE ' . ' `' . self::CCRP_ID . '` = ? ' ;
     const UPD_CAMPANHA_CASHBACK_RESGATE_PIX_CCRP_TX_CHAVE_PIX_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::CCRP_TX_CHAVE_PIX . '` = ? ' . 'WHERE ' . ' `' . self::CCRP_ID . '` = ? ' ;

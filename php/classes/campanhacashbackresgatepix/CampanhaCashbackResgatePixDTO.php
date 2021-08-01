@@ -10,13 +10,16 @@ require_once '../dto/DTOPadraoEntidade.php';
 */
 class CampanhaCashbackResgatePixDTO extends DTOPadraoEntidade implements JsonSerializable
 {
-    public $idCampanhaCashback;
+    public $idUsuarioDevedor;
     public $idUsuarioSolicitante;
     public $tipoChavePix;
+    public $tipoChavePixDesc;
     public $chavePix;
     public $valorResgate;
+    public $valorResgateCurrency;
     public $autenticacaoBco;
     public $estagioRealTime;
+    public $estagioRealTimeDesc;
     public $dtEstagioAnalise;
     public $dtEstagioFinanceiro;
     public $dtEstagioErro;
@@ -28,13 +31,16 @@ class CampanhaCashbackResgatePixDTO extends DTOPadraoEntidade implements JsonSer
         return 
             [
                 'id' => $this->id,
-                'idCampanhaCashback' => $this->idCampanhaCashback,
+                'idUsuarioDevedor' => $this->idUsuarioDevedor,
                 'idUsuarioSolicitante' => $this->idUsuarioSolicitante,
                 'tipoChavePix' => $this->tipoChavePix,
+                'tipoChavePixDesc' => $this->tipoChavePixDesc,
                 'chavePix' => $this->chavePix,
                 'valorResgate' => $this->valorResgate,
+                'valorResgateCurrency' => $this->valorResgateCurrency,
                 'autenticacaoBco' => $this->autenticacaoBco,
                 'estagioRealTime' => $this->estagioRealTime,
+                'estagioRealTimeDesc' => $this->estagioRealTimeDesc,
                 'dtEstagioAnalise' => $this->dtEstagioAnalise,
                 'dtEstagioFinanceiro' => $this->dtEstagioFinanceiro,
                 'dtEstagioErro' => $this->dtEstagioErro,

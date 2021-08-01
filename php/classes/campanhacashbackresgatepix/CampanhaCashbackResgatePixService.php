@@ -35,10 +35,11 @@ interface CampanhaCashbackResgatePixService extends AppService
     public function autalizarStatusCampanhaCashbackResgatePix($id, $status);
     public function listarCampanhaCashbackResgatePixPorStatus($status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
     public function listarCampanhaCashbackResgatePixPorUsuaIdStatus($usuaid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
+    public function listarCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus($usuaid, $usuaidDevedor, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
     public function cancelar($dto);
-    public function pesquisarMaxPKAtivoIdcampanhacashbackPorStatus($idCampanhaCashback,$status);
+    public function pesquisarMaxPKAtivoIdUsuarioDevedorPorStatus($idUsuarioDevedor,$status);
 
-    public function pesquisarPorIdcampanhacashback($idCampanhaCashback);
+    public function pesquisarPorIdUsuarioDevedor($idUsuarioDevedor);
     public function pesquisarPorIdusuariosolicitante($idUsuarioSolicitante);
     public function pesquisarPorTipochavepix($tipoChavePix);
     public function pesquisarPorChavepix($chavePix);
@@ -52,7 +53,7 @@ interface CampanhaCashbackResgatePixService extends AppService
     public function pesquisarPorTxtlivreestagiort($txtLivreEstagioRT);
     //public function pesquisarPorStatus($status);
 
-    public function atualizarIdcampanhacashbackPorPK($idCampanhaCashback,$id);
+    public function atualizarIdUsuarioDevedorPorPK($idUsuarioDevedor,$id);
     public function atualizarIdusuariosolicitantePorPK($idUsuarioSolicitante,$id);
     public function atualizarTipochavepixPorPK($tipoChavePix,$id);
     public function atualizarChavepixPorPK($chavePix,$id);
