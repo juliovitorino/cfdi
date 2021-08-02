@@ -7,6 +7,7 @@ require_once 'CampanhaCashbackResgatePixServiceImpl.php';
 require_once '../variavel/VariavelCache.php';
 require_once '../variavel/ConstantesVariavel.php';
 require_once '../mensagem/MensagemCache.php';
+require_once '../usuarios/UsuarioHelper.php';
 
 /**
 *
@@ -62,13 +63,13 @@ class CampanhaCashbackResgatePixHelper
 *
 */
 
-public static function criarNotificacaoAdmin($daofactory, $msgOrigem, $parametros, $icone)
+public static function criarNotificacaoAdmin($daofactory, $msgOrigem, $parametros, $icone="money.png")
 {
     // Envia uma notificação ao ADMIN se chave estiver ligada
     if (VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_NOTIFICACAO_ADMIN_NOVO_USUARIO) == ConstantesVariavel::ATIVADO){
         $usuaid_admin = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::NOTIFICACAO_ADMIN_USUA_ID);
         $msg =  MensagemCache::getInstance()->getMensagemParametrizada($msgOrigem,$parametros);
-        self::criarUsuarioNotificacaoPorBusiness($daofactory, $usuaid_admin, $msg, $icone);
+        UsuarioNotificacaoHelper::criarUsuarioNotificacaoPorBusiness($daofactory, $usuaid_admin, $msg, $icone);
     }
     
 }

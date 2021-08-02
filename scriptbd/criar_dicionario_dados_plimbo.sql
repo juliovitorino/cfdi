@@ -183,6 +183,7 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0172
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0173','Usuário destino possui cartão em aberto nesta mesma campanha');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0174','Usuário destino é o próprio dono da campanha. Operação não pode ser realizada');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0175','Esta campanha não permite transferir cartão entre usuários. Operação não pode ser realizada');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0176','O usuário USUA_ID=*=p1=* acabou de solicitar resgate via PIX no valor de *=p2=*. Código Usuário devedor = *=p3=*');
 
 
 -- variaveis

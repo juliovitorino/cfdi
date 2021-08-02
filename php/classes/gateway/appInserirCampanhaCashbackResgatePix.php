@@ -6,23 +6,7 @@
 
  /*
 Faça um Find/Replace em $_POST por $_GET e use os parametros na URL para simular um GET na HttpRequest
-?tokenid=tk
-&id=tr
-&idUsuarioDevedor=tr
-&idUsuarioSolicitante=tr
-&tipoChavePix=tr
-&chavePix=tr
-&valorResgate=tr
-&autenticacaoBco=tr
-&estagioRealTime=tr
-&dtEstagioAnalise=tr
-&dtEstagioFinanceiro=tr
-&dtEstagioErro=tr
-&dtEstagioTranfBco=tr
-&txtLivreEstagioRT=tr
-&status=tr
-&dataCadastro=tr
-&dataAtualizacao=tr
+http://elitefinanceira.com/cfdi/php/classes/gateway/appInserirCampanhaCashbackResgatePix.php?tokenid=tk&idUsuarioDevedor=tr&tipoChavePix=tr&chavePix=tr&valorResgate=tr
 
  */
 // URL http://localhost/cfdi/php/classes/gateway/appInserirCampanhaCashbackResgatePix.php
@@ -55,12 +39,13 @@ include_once '../../inc/validarTokenApp.php';
 
 $dto = new CampanhaCashbackResgatePixDTO();
 
-$dto->id = $_POST['id'];
+//--$dto->id = $_POST['id'];
 $dto->idUsuarioDevedor = $_POST['idUsuarioDevedor'];
-$dto->idUsuarioSolicitante = $_POST['idUsuarioSolicitante'];
+$dto->idUsuarioSolicitante = $sessaodto->usuariodto->id; //$_POST['idUsuarioSolicitante'];
 $dto->tipoChavePix = $_POST['tipoChavePix'];
 $dto->chavePix = $_POST['chavePix'];
-$dto->valorResgate = $_POST['valorResgate'];
+$dto->valorResgate = floatval($_POST['valorResgate']);
+/*
 $dto->autenticacaoBco = $_POST['autenticacaoBco'];
 $dto->estagioRealTime = $_POST['estagioRealTime'];
 $dto->dtEstagioAnalise = $_POST['dtEstagioAnalise'];
@@ -71,7 +56,7 @@ $dto->txtLivreEstagioRT = $_POST['txtLivreEstagioRT'];
 $dto->status = $_POST['status'];
 $dto->dataCadastro = $_POST['dataCadastro'];
 $dto->dataAtualizacao = $_POST['dataAtualizacao'];
-
+*/
 
 $csi = new CampanhaCashbackResgatePixServiceImpl();
 
@@ -80,27 +65,3 @@ $retorno = $csi->cadastrar($dto);
 echo json_encode($retorno, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 
 ?>
-
-<?php
-
-// URL http://elitefinanceira.com/cfdi/php/classes/gateway/appListarCampanhaCashbackResgatePix.php?tokenid=cb1&pag=1
-// URL http://localhost/cfdi/php/classes/gateway/appListarCampanhaCashbackResgatePix.php?tokenid=cb1&pag=1
-
-// Importar dependencias
-require_once '../campanhacashbackresgatepix/CampanhaCashbackResgatePixServiceImpl.php';
-
-// Obtem o token de sessao (pode ser dispositivo ou outro hardware qualquer)
-$token = $_GET['tokenid'];
-$pag = $_GET['pag'];
-
-include_once '../../inc/validarTokenApp.php';
-
-// >>>Backend
-$csi = new CampanhaCashbackResgatePixServiceImpl();
-$retorno = $csi->listarCampanhaCashbackResgatePix($pag);
-
-echo json_encode($retorno);
-
-
-?>
-

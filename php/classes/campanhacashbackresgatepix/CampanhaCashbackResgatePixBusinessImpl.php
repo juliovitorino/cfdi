@@ -299,7 +299,16 @@ public function inserir($daofactory, $dto)
         $retorno = new DTOPadrao();
         $retorno->msgcode = ConstantesMensagem::ERRO_CRUD_INSERIR_REGISTRO;
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
     }
+
+    // avisa ao admin sobre o pedido de resgate
+    $msgOrigem = ConstantesMensagem::INICIAR_PROCESSO_RESGATE_PIX;
+    CampanhaCashbackResgatePixHelper::criarNotificacaoAdmin($daofactory, $msgOrigem, [
+        ConstantesVariavel::P1 => $dto->idUsuarioSolicitante ,
+        ConstantesVariavel::P2 => Util::getMoeda($dto->valorResgate) ,
+        ConstantesVariavel::P3 => $dto->idUsuarioDevedor ,
+    ]);
 
     return $retorno;
 }
