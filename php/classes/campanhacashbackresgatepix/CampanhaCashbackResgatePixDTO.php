@@ -21,9 +21,13 @@ class CampanhaCashbackResgatePixDTO extends DTOPadraoEntidade implements JsonSer
     public $estagioRealTime;
     public $estagioRealTimeDesc;
     public $dtEstagioAnalise;
+    public $txtEstagioAnalise;
     public $dtEstagioFinanceiro;
+    public $txtEstagioFinanceiro;
     public $dtEstagioErro;
+    public $txtEstagioErro;
     public $dtEstagioTranfBco;
+    public $txtEstagioTranfBco;
     public $txtLivreEstagioRT;
 
     public function jsonSerialize()
@@ -42,9 +46,13 @@ class CampanhaCashbackResgatePixDTO extends DTOPadraoEntidade implements JsonSer
                 'estagioRealTime' => $this->estagioRealTime,
                 'estagioRealTimeDesc' => $this->estagioRealTimeDesc,
                 'dtEstagioAnalise' => $this->dtEstagioAnalise,
+                'txtEstagioAnalise' => $this->txtEstagioAnalise,
                 'dtEstagioFinanceiro' => $this->dtEstagioFinanceiro,
+                'txtEstagioFinanceiro' => $this->txtEstagioFinanceiro,
                 'dtEstagioErro' => $this->dtEstagioErro,
+                'txtEstagioErro' => $this->txtEstagioErro,
                 'dtEstagioTranfBco' => $this->dtEstagioTranfBco,
+                'txtEstagioTranfBco' => $this->txtEstagioTranfBco,
                 'txtLivreEstagioRT' => $this->txtLivreEstagioRT,
                 'status' => $this->status,
                 'dataCadastro' => $this->dataCadastro,

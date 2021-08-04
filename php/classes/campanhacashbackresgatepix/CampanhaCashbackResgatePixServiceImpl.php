@@ -64,7 +64,7 @@ class CampanhaCashbackResgatePixServiceImpl implements CampanhaCashbackResgatePi
 *
 */
 
-public function pesquisarMaxPKAtivoIdUsuarioDevedorPorStatus($idUsuarioDevedor,$status)
+public function pesquisarMaxPKPorStatus($idUsuarioSolicitante, $idUsuarioDevedor,$status)
 {
     $daofactory = NULL;
     $retorno = NULL;
@@ -74,7 +74,7 @@ public function pesquisarMaxPKAtivoIdUsuarioDevedorPorStatus($idUsuarioDevedor,$
         $daofactory->beginTransaction();
         
        $bo = new CampanhaCashbackResgatePixBusinessImpl();
-       $retorno = $bo->pesquisarMaxPKAtivoIdUsuarioDevedorPorStatus($daofactory, $idUsuarioDevedor,$status);
+       $retorno = $bo->pesquisarMaxPKPorStatus($daofactory, $idUsuarioSolicitante, $idUsuarioDevedor,$status);
        if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
             $daofactory->commit();
         } else {
@@ -207,9 +207,12 @@ public function pesquisarMaxPKAtivoIdUsuarioDevedorPorStatus($idUsuarioDevedor,$
             
 
            $bo = new CampanhaCashbackResgatePixBusinessImpl();
-           $retorno = $bo->inserir($daofactory, $dto);
+           $retorno = $bo->solicitarResgatePIX($daofactory, $dto);
 
            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+                $retorno->msgcode = ConstantesMensagem::SOLICITACAO_PIX_REALIZADA_COM_SUCESSO;
+                $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+    
                 $daofactory->commit();
             } else {
                 $daofactory->rollback();

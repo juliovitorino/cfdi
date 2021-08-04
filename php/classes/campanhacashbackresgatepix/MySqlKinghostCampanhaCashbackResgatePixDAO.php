@@ -37,22 +37,22 @@ class MySqlKinghostCampanhaCashbackResgatePixDAO implements CampanhaCashbackResg
 
 
 /**
-* loadMaxIdUsuarioDevedorPK() - Carrega um MaxID (pk) para um ${CAMPO} e status
+* loadMaxPK() - Carrega um MaxID (pk) para um ${CAMPO} e status
 *
 * @param $idUsuarioDevedor
 * @param $status
 * @return $dto
 */ 
 
-    public function loadMaxIdUsuarioDevedorPK($idUsuarioDevedor,$status)
+    public function loadMaxPK($idUsuarioSolicitante, $idUsuarioDevedor,$status)
     {   
         $retorno = 0;
         // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
         $conexao = $this->daofactory->getSession();
         $sql = DmlSqlCampanhaCashbackResgatePix::SELECT_MAX_PK . ' WHERE ' 
-        . DmlSqlCampanhaCashbackResgatePix::USUA_ID_DEVEDOR . " = $idUsuarioDevedor "
+        . DmlSqlCampanhaCashbackResgatePix::USUA_ID . " = $idUsuarioSolicitante "
+        . " AND " .  DmlSqlCampanhaCashbackResgatePix::USUA_ID_DEVEDOR . " = $idUsuarioDevedor "
         . " AND " . DmlSqlCampanhaCashbackResgatePix::CCRP_IN_STATUS . " = '$status'";
-
         $res = $conexao->query($sql);
         if ($res){
             $tmp = $res->fetch_assoc();
@@ -102,6 +102,10 @@ class MySqlKinghostCampanhaCashbackResgatePixDAO implements CampanhaCashbackResg
                             . DmlSql::STRING_TYPE 
                             . DmlSql::STRING_TYPE 
                             . DmlSql::STRING_TYPE 
+                            . DmlSql::STRING_TYPE 
+                            . DmlSql::STRING_TYPE 
+                            . DmlSql::STRING_TYPE 
+                            . DmlSql::STRING_TYPE 
                             . DmlSql::INTEGER_TYPE 
                             ,$dto->idUsuarioDevedor
                             ,$dto->idUsuarioSolicitante
@@ -111,9 +115,13 @@ class MySqlKinghostCampanhaCashbackResgatePixDAO implements CampanhaCashbackResg
                             ,$dto->autenticacaoBco
                             ,$dto->estagioRealTime
                             ,$dto->dtEstagioAnalise
+                            ,$dto->txtEstagioAnalise
                             ,$dto->dtEstagioFinanceiro
+                            ,$dto->txtEstagioFinanceiro
                             ,$dto->dtEstagioErro
+                            ,$dto->txtEstagioErro
                             ,$dto->dtEstagioTranfBco
+                            ,$dto->txtEstagioTranfBco
                             ,$dto->txtLivreEstagioRT
                             ,$dto->id );
         if ($stmt->execute())
@@ -481,9 +489,13 @@ public function listCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus($usua
         $retorno->autenticacaoBco = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_AUTENT_BCO] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_AUTENT_BCO];
         $retorno->estagioRealTime = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_IN_ESTAGIO_RT] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_IN_ESTAGIO_RT];
         $retorno->dtEstagioAnalise = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_DT_ESTAGIO_ANALISE] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_DT_ESTAGIO_ANALISE];
+        $retorno->txtEstagioAnalise = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_ESTAGIO_ANALISE] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_ESTAGIO_ANALISE];
         $retorno->dtEstagioFinanceiro = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_DT_ESTAGIO_FINANCEIRO] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_DT_ESTAGIO_FINANCEIRO];
+        $retorno->txtEstagioFinanceiro = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_ESTAGIO_FINANCEIRO] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_ESTAGIO_FINANCEIRO];
         $retorno->dtEstagioErro = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_DT_ESTAGIO_ERRO] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_DT_ESTAGIO_ERRO];
+        $retorno->txtEstagioErro = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_ESTAGIO_ERRO] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_ESTAGIO_ERRO];
         $retorno->dtEstagioTranfBco = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_DT_ESTAGIO_TRANSF_BCO] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_DT_ESTAGIO_TRANSF_BCO];
+        $retorno->txtEstagioTransfBco = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_ESTAGIO_TRANSF_BCO] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_ESTAGIO_TRANSF_BCO];
         $retorno->txtLivreEstagioRT = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_LIVRE_ESTAGIO_RT] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_TX_LIVRE_ESTAGIO_RT];
         $retorno->status = $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_IN_STATUS] == NULL ? NULL : $resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_IN_STATUS];
         $retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlCampanhaCashbackResgatePix::CCRP_DT_CADASTRO]);

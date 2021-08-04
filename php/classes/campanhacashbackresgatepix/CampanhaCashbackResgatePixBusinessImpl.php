@@ -9,6 +9,10 @@ require_once '../dto/DTOPaginacao.php';
 
 require_once '../variavel/ConstantesVariavel.php';
 require_once '../variavel/VariavelCache.php';
+require_once '../usuariocashback/UsuarioCashbackBusinessImpl.php';
+require_once '../campanhacashbackcc/CampanhaCashbackCCBusinessImpl.php';
+require_once '../campanhacashbackcc/SaldoGeralCashbackCCDTO.php';
+require_once '../campanhacashbackcc/SaldoUsuarioDonoCashbackCCDTO.php';
 
 /**
 *
@@ -54,15 +58,15 @@ class CampanhaCashbackResgatePixBusinessImpl implements CampanhaCashbackResgateP
     public function listarTudo($daofactory) {   }
 
 /**
-* pesquisarMaxPKAtivoIdUsuarioDevedorPorStatus() - Carrega apenas um registro com base no idUsuarioDevedor  e status para buscar a MAIOR PK
+* pesquisarMaxPKPorStatus() - Carrega apenas um registro com base no idUsuarioDevedor  e status para buscar a MAIOR PK
 * @param $daofactory
 * @param $status
 * @return CampanhaCashbackResgatePixDTO
 */ 
-    public function pesquisarMaxPKAtivoIdUsuarioDevedorPorStatus($daofactory, $idUsuarioDevedor,$status)
+    public function pesquisarMaxPKPorStatus($daofactory, $idUsuarioSolicitante, $idUsuarioDevedor,$status)
     { 
         $dao = $daofactory->getCampanhaCashbackResgatePixDAO($daofactory);
-        $maxid = $dao->loadMaxIdUsuarioDevedorPK($idUsuarioDevedor,$status);
+        $maxid = $dao->loadMaxPK($idUsuarioSolicitante, $idUsuarioDevedor,$status);
         return $this->carregarPorID($daofactory, $maxid);
     }
 
@@ -181,6 +185,147 @@ class CampanhaCashbackResgatePixBusinessImpl implements CampanhaCashbackResgateP
         return $retorno;
     }
 
+/**
+* solicitarResgatePIX() - inserir um registro com base no CampanhaCashbackResgatePixDTO. Alguns atributos dentro do DTO
+* serão ignorados caso estejam populados.
+*
+* Atributos da classe CampanhaCashbackResgatePixDTO sumariamente IGNORADOS por este método MESMO que estejam preenchidos:
+* id
+* status
+* dataCadastro
+* dataAtualizacao
+*
+* @param $daofactory
+*
+* @return DTOPadrao
+*/ 
+
+    public function solicitarResgatePIX($daofactory, $dto)
+    { 
+        $retorno = new DTOPadrao();
+        $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+        //---------------------------------------------------------------
+        // ckecklist de regras de negócio
+        //---------------------------------------------------------------
+        
+        //-- verifica se o tipo da chave pix está dentro dos parametros requiridos.
+        if( $dto->tipoChavePix < 0 || $dto->tipoChavePix > 4) 
+        {
+            $retorno->msgcode = ConstantesMensagem::PIX_TIPO_DA_INVALIDA;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+        }
+
+        //-- valor do resgate <= 0.00, falha
+        if($dto->valorResgate <= 0)
+        {
+            $retorno->msgcode = ConstantesMensagem::PIX_VALOR_PARA_RESGATE_INVALIDO;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+        }
+
+        //-- se o registro mais recente Resgate PIX estiver nos estágios PENDENTE, EM ANALISE OU FINANCEIRO, falha.
+        $maxPixDto = $this->pesquisarMaxPKPorStatus($daofactory, $dto->idUsuarioSolicitante, $dto->idUsuarioDevedor,  ConstantesVariavel::STATUS_ATIVO);
+        if( is_null($maxPixDto))
+        {
+            $retorno->msgcode = ConstantesMensagem::PIX_MAX_ID_REGISTRO_INVALIDO;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+        } else {
+            $estagiort = (int) $maxPixDto->estagioRealTime;
+            switch ($estagiort) {
+                case CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_PENDENTE:
+                case CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_ANALISE:
+                case CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_FINANCEIRO:
+                    $retorno->msgcode = ConstantesMensagem::PIX_SOLICITACAO_RESGATE_PIX_EM_ANDAMENTO;
+                    $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+                    return $retorno;
+                
+                default:
+                    # code...
+                    break;
+            }
+
+        }
+        
+        //-- se o usuário do DTO retornar NULO, falha.
+
+        //-- se o valor do resgate solicitado for maior que o saldo a receber do devedor, falha.
+        $cacaccbo = new CampanhaCashbackCCBusinessImpl();
+        $sldGeralDto = new SaldoGeralCashbackCCDTO();
+        $sldGeralDto = $cacaccbo->getSaldoCashbackCC($daofactory, $dto->idUsuarioSolicitante);
+
+        if($sldGeralDto->vlsldGeral == 0) 
+        {
+            $retorno->msgcode = ConstantesMensagem::PIX_SALDO_INSUFICIENTE_PARA_RESGATE;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+        }
+
+        if(count($sldGeralDto->sldUsuarioDono) == 0)
+        {
+            $retorno->msgcode = ConstantesMensagem::PIX_SALDO_INSUFICIENTE_PARA_RESGATE;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+        }
+
+        // Saldo do Devedor 
+        $sldCredito = 0;
+        foreach ($sldGeralDto->sldUsuarioDono as $key => $value) 
+        { // $value = SaldoUsuarioDonoCashbackCCDTO
+
+            if((int) $value->id_dono == $dto->idUsuarioDevedor ) 
+            {
+                $sldCredito = $value->vlsld;
+            }
+        }
+
+        if($sldCredito == 0)
+        {
+            $retorno->msgcode = ConstantesMensagem::PIX_SALDO_INSUFICIENTE_PARA_RESGATE;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+        }
+
+        if($dto->valorResgate > $sldCredito )
+        {
+            $retorno->msgcode = ConstantesMensagem::PIX_TENTATIVA_RESGATE_ACIMA_VALOR_PERMITIDO;
+            
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode,[
+                ConstantesVariavel::P1 => Util::getMoeda($sldCredito),
+            ]);
+            return $retorno;
+        }
+
+
+        //-- se o valor do resgate for menor que o mínimo exigido pela maxima USCA_ID, falha.
+        $uscabo = new UsuarioCashbackBusinessImpl();
+        $uscadto = $uscabo->PesquisarMaxPKAtivoId_UsuarioPorStatus($daofactory, $dto->idUsuarioDevedor, ConstantesVariavel::STATUS_ATIVO);
+        if(is_null($uscadto))
+        {
+            $retorno->msgcode = ConstantesMensagem::PIX_USUARIO_DEVEDOR_SEM_CONFIGURACAO_CASHBACK;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+        }
+        
+        // Saldo está abaixo do minimo configurado?
+        if($sldCredito < $uscadto->vlMinimoResgate)
+        {
+            $retorno->msgcode = ConstantesMensagem::PIX_VALOR_INFERIOR_AO_CONFIGURADO;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode,[
+                ConstantesVariavel::P1 => $uscadto->vlMinimoResgateMoeda,
+            ]);
+            return $retorno;
+        }
+
+        //---------------------------------------------------------------
+        // Tudo Ok, encaminha para processo de registro
+        //---------------------------------------------------------------
+        return $this->inserir($daofactory, $dto);
+    }
+    
 /**
 * inserir() - inserir um registro com base no CampanhaCashbackResgatePixDTO. Alguns atributos dentro do DTO
 * serão ignorados caso estejam populados.

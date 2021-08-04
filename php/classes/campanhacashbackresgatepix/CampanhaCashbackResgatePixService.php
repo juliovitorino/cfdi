@@ -37,7 +37,7 @@ interface CampanhaCashbackResgatePixService extends AppService
     public function listarCampanhaCashbackResgatePixPorUsuaIdStatus($usuaid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
     public function listarCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus($usuaid, $usuaidDevedor, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
     public function cancelar($dto);
-    public function pesquisarMaxPKAtivoIdUsuarioDevedorPorStatus($idUsuarioDevedor,$status);
+    public function pesquisarMaxPKPorStatus($idUsuarioSolicitante, $idUsuarioDevedor,$status);
 
     public function pesquisarPorIdUsuarioDevedor($idUsuarioDevedor);
     public function pesquisarPorIdusuariosolicitante($idUsuarioSolicitante);

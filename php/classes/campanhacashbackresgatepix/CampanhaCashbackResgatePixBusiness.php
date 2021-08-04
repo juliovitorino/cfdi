@@ -28,13 +28,14 @@ require_once '../interfaces/BusinessObject.php';
 
 interface CampanhaCashbackResgatePixBusiness extends BusinessObject
 {
+    public function solicitarResgatePIX($daofactory, $dto);
     public function atualizarStatus($daofactory, $id, $status);
     public function listarCampanhaCashbackResgatePixPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);
     public function validarTamanhoCampo($campo, $tamanho, $coment);
     public function listarCampanhaCashbackResgatePixPorUsuaIdStatus($daofactory, $usuaid, $status, $pag, $qtde, $coluna, $ordem);
     public function listarCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus($daofactory, $usuaid, $usuaidDevedor, $status, $pag, $qtde, $coluna, $ordem);
 
-    public function pesquisarMaxPKAtivoIdUsuarioDevedorPorStatus($daofactory, $idUsuarioDevedor, $status);
+    public function pesquisarMaxPKPorStatus($daofactory, $idUsuarioSolicitante, $idUsuarioDevedor, $status);
     public function pesquisarPorIdUsuarioDevedor($daofactory, $idUsuarioDevedor);
     public function pesquisarPorIdusuariosolicitante($daofactory, $idUsuarioSolicitante);
     public function pesquisarPorTipochavepix($daofactory, $tipoChavePix);

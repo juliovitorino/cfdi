@@ -10,6 +10,18 @@
 -- SCRIPTS NAS TABELAS VARIAVEL E MENSAGEM DEVEM SER RODADOS EM TODOS OS AMBIENTES
 ----------------------------------------------------------------------------------
 
+
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0178','Tipo da chave PIX inválida.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0179','valor para resgate PIX inválido.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0180','registro MAX deste PIX inválido.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0181','Já existe uma solicitação de resgate PIX em andamento.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0182','Usuário Devedor sem configuração adequada. Codigo USCA');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0183','O valor resgatado é inferior ao valor configurado de *=p1=*');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0184','Saldo Insuficiente para resgate pelo PIX');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0185','Tentativa de resgate acima do valor permitido em caixa de *=p1=*. Operação Não Realizada.');
+
+
+
 -- Atualização estrutural de tabelas e campos
 ALTER TABLE `CAMPANHA` MODIFY COLUMN `CAMP_DT_TERMINO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de término';
 ALTER TABLE `CAMPANHA` ADD COLUMN `CAMP_IN_PERM_MOVER_CART` VARCHAR(1) NOT NULL DEFAULT 'S' COMMENT 'Permite mover cartão outro usuário';
@@ -55,10 +67,14 @@ CREATE TABLE `CAMPANHA_CASHBACK_RESGATE_PIX` (
  `CCRP_TX_AUTENT_BCO` varchar(200) DEFAULT NULL COMMENT 'Autenticação do Banco',
  `CCRP_IN_ESTAGIO_RT` varchar(1) NOT NULL DEFAULT '0' COMMENT 'Estágio Real Time',
  `CCRP_DT_ESTAGIO_ANALISE` timestamp NULL COMMENT 'Data Registro Estágio Análise',
+ `CCRP_TX_ESTAGIO_ANALISE` varchar(2000) DEFAULT NULL COMMENT 'Texto conclusão do Estagio Analise RT',
  `CCRP_DT_ESTAGIO_FINANCEIRO` timestamp NULL COMMENT 'Data Registro Estágio Financeiro',
+ `CCRP_TX_ESTAGIO_FINANCEIRO` varchar(2000) DEFAULT NULL COMMENT 'Texto conclusão do Estagio Financeiro RT',
  `CCRP_DT_ESTAGIO_ERRO` timestamp NULL COMMENT 'Data Registro Estágio Erro',
- `CCRP_DT_ESTAGIO_TRANSF_BCO` timestamp NULL COMMENT 'Data Registro Estágio Transferido Bco',
- `CCRP_TX_LIVRE_ESTAGIO_RT` varchar(2000) DEFAULT 'Sua solicitação está aguardando entrada em análise' COMMENT 'Texto Livre do Estagio RT',
+ `CCRP_TX_ESTAGIO_ERRO` varchar(2000) DEFAULT NULL COMMENT 'Texto conclusão do Estagio Erro RT',
+ `CCRP_DT_ESTAGIO_TRANSF_BCO` timestamp NULL COMMENT 'Data Registro Estágio Transf. Bco',
+ `CCRP_TX_ESTAGIO_TRANSF_BCO` varchar(2000) DEFAULT NULL COMMENT 'Texto conclusão do Estagio Transf. Bco',
+ `CCRP_TX_LIVRE_ESTAGIO_RT` varchar(2000) DEFAULT NULL COMMENT 'Texto Livre do Estagio RT',
  `CCRP_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
  `CCRP_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
  `CCRP_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',

@@ -42,7 +42,7 @@ $dto = new CampanhaCashbackResgatePixDTO();
 //--$dto->id = $_POST['id'];
 $dto->idUsuarioDevedor = $_POST['idUsuarioDevedor'];
 $dto->idUsuarioSolicitante = $sessaodto->usuariodto->id; //$_POST['idUsuarioSolicitante'];
-$dto->tipoChavePix = $_POST['tipoChavePix'];
+$dto->tipoChavePix = (int) $_POST['tipoChavePix'];
 $dto->chavePix = $_POST['chavePix'];
 $dto->valorResgate = floatval($_POST['valorResgate']);
 /*

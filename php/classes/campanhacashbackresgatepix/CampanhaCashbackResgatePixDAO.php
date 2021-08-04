@@ -26,7 +26,7 @@ interface CampanhaCashbackResgatePixDAO extends DAO
     public function countCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus($usuaid, $usuaidDevedor, $status);
     public function listCampanhaCashbackResgatePixPorUsuaIdUsuaIdDevedorStatus($usuaid, $usuaidDevedor, $status, $pag, $qtde, $coluna, $ordem);
 
-    public function loadMaxIdUsuarioDevedorPK($idUsuarioDevedor,$status);
+    public function loadMaxPK($idUsuarioSolicitante, $idUsuarioDevedor,$status);
 
     public function loadIdUsuarioDevedor($idUsuarioDevedor);
     public function loadIdusuariosolicitante($idUsuarioSolicitante);

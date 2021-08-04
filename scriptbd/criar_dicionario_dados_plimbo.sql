@@ -184,7 +184,15 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0173
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0174','Usuário destino é o próprio dono da campanha. Operação não pode ser realizada');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0175','Esta campanha não permite transferir cartão entre usuários. Operação não pode ser realizada');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0176','O usuário USUA_ID=*=p1=* acabou de solicitar resgate via PIX no valor de *=p2=*. Código Usuário devedor = *=p3=*');
-
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0177','Sua solicitação PIX foi recebida com sucesso. Operação em Processamento.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0178','Tipo da chave PIX inválida.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0179','valor para resgate PIX inválido.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0180','registro MAX deste PIX inválido.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0181','Já existe uma solicitação de resgate PIX em andamento.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0182','Usuário Devedor sem configuração adequada. Codigo USCA');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0183','O valor resgatado é inferior ao valor configurado de *=p1=*');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0184','Saldo Insuficiente para resgate pelo PIX');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0185','Tentativa de resgate acima do valor permitido em caixa de *=p1=*. Operação Não Realizada.');
 
 -- variaveis
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CANIVETE_VERSAO','Versão do Canivete','1.0.0');
