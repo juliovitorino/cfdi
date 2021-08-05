@@ -185,6 +185,67 @@ class CampanhaCashbackResgatePixBusinessImpl implements CampanhaCashbackResgateP
         return $retorno;
     }
 
+
+/**
+* removerSolicitacaoPix() - remover um registro com base no CampanhaCashbackResgatePixDTO. Alguns atributos dentro do DTO
+* serão ignorados caso estejam populados.
+*
+* Atributos da classe CampanhaCashbackResgatePixDTO sumariamente IGNORADOS por este método MESMO que estejam preenchidos:
+* id
+* status
+* dataCadastro
+* dataAtualizacao
+*
+* @param $daofactory
+*
+* @return DTOPadrao
+*/ 
+
+public function removerSolicitacaoPix($daofactory, $dto)
+{ 
+    $retorno = new DTOPadrao();
+    $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+    $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+    //---------------------------------------------------------------
+    // ckecklist de regras de negócio
+    //---------------------------------------------------------------
+    
+    $idPix = $dto->id;
+    $dto = $this->carregarPorID($daofactory, $idPix);
+    if(is_null($dto))
+    {
+        $retorno->msgcode = ConstantesMensagem::PIX_SOLICITACAO_INVALIDA;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode,[
+            ConstantesVariavel::P1 => $idPix,
+        ]);
+        return $retorno;
+    }
+
+    //-- verifica se o tipo da chave pix está dentro dos parametros requiridos, falha.
+    if((int) $dto->estagioRealTime > 0 && (int) $dto->estagioRealTime < 3) 
+    {
+        $retorno->msgcode = ConstantesMensagem::PIX_SOLICITACAO_RESGATE_PIX_EM_ANDAMENTO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
+    if((int) $dto->estagioRealTime >= 3) 
+    {
+        $retorno->msgcode = ConstantesMensagem::PIX_SOLICITACAO_RESGATE_PIX_CONCLUIDA;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
+
+    //---------------------------------------------------------------
+    // Tudo Ok, encaminha para processo de registro
+    //---------------------------------------------------------------
+    return $this->deletar($daofactory, $dto);
+}
+
+
+
 /**
 * solicitarResgatePIX() - inserir um registro com base no CampanhaCashbackResgatePixDTO. Alguns atributos dentro do DTO
 * serão ignorados caso estejam populados.
@@ -228,12 +289,12 @@ class CampanhaCashbackResgatePixBusinessImpl implements CampanhaCashbackResgateP
 
         //-- se o registro mais recente Resgate PIX estiver nos estágios PENDENTE, EM ANALISE OU FINANCEIRO, falha.
         $maxPixDto = $this->pesquisarMaxPKPorStatus($daofactory, $dto->idUsuarioSolicitante, $dto->idUsuarioDevedor,  ConstantesVariavel::STATUS_ATIVO);
-        if( is_null($maxPixDto))
-        {
+        if( ! is_null($maxPixDto))
+        {/*
             $retorno->msgcode = ConstantesMensagem::PIX_MAX_ID_REGISTRO_INVALIDO;
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
-        } else {
+        } else { */
             $estagiort = (int) $maxPixDto->estagioRealTime;
             switch ($estagiort) {
                 case CampanhaCashbackResgatePixConstantes::ESTAGIO_RT_PENDENTE:

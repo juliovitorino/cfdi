@@ -29,6 +29,7 @@ require_once '../interfaces/BusinessObject.php';
 interface CampanhaCashbackResgatePixBusiness extends BusinessObject
 {
     public function solicitarResgatePIX($daofactory, $dto);
+    public function removerSolicitacaoPix($daofactory, $dto);
     public function atualizarStatus($daofactory, $id, $status);
     public function listarCampanhaCashbackResgatePixPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);
     public function validarTamanhoCampo($campo, $tamanho, $coment);

@@ -51,8 +51,56 @@ class CampanhaCashbackResgatePixServiceImpl implements CampanhaCashbackResgatePi
 
     public function listarTudo() {  }
     public function pesquisar($dto){ }
-    public function apagar($dto) { }
     public function cancelar($dto) { }
+
+/**
+*
+* apagar() - Usado para invocar a classe de negócio CampanhaCashbackResgatePixBusinessImpl de forma geral
+* para gerenciar a exclusão de registro de acordo as regras de negócio do sistema.
+*
+* @param $dto - Instância de CampanhaCashbackResgatePixDTO
+*
+* @return uma instância de CampanhaCashbackResgatePixDTO com resultdo da operação
+*
+*/
+
+
+public function apagar($dto)
+{
+    $daofactory = NULL;
+    $retorno = NULL;
+    try {
+        $daofactory = DAOFactory::getDAOFactory();
+        $daofactory->open();
+        $daofactory->beginTransaction();
+        
+
+       $bo = new CampanhaCashbackResgatePixBusinessImpl();
+       $retorno = $bo->removerSolicitacaoPix($daofactory, $dto);
+
+       if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+            $retorno->msgcode = ConstantesMensagem::REGISTRO_FOI_REMOVIDO_COM_SUCESSO;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+            $daofactory->commit();
+        } else {
+            $daofactory->rollback();
+        }
+        
+    } catch (Exception $e) {
+        // rollback na transação
+        $daofactory->rollback();
+
+    } finally {
+        try {
+            $daofactory->close();
+        } catch (Exception $e) {
+            // faz algo
+        }
+    }
+
+    return $retorno;
+}
 
 /**
 *

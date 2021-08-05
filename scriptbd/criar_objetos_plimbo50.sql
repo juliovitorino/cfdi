@@ -1390,7 +1390,7 @@ CREATE TABLE `CAMPANHA_CASHBACK_RESGATE_PIX` (
  `CCRP_TX_ESTAGIO_ERRO` varchar(2000) DEFAULT NULL COMMENT 'Texto conclusão do Estagio Erro RT',
  `CCRP_DT_ESTAGIO_TRANSF_BCO` timestamp NULL COMMENT 'Data Registro Estágio Transf. Bco',
  `CCRP_TX_ESTAGIO_TRANSF_BCO` varchar(2000) DEFAULT NULL COMMENT 'Texto conclusão do Estagio Transf. Bco',
- `CCRP_TX_LIVRE_ESTAGIO_RT` varchar(2000) DEFAULT NULL COMMENT 'Texto Livre do Estagio RT',
+ `CCRP_TX_LIVRE_ESTAGIO_RT` varchar(2000) DEFAULT 'Sua solicitação está aguardando a entrada em análise dos dados' COMMENT 'Texto Livre do Estagio RT',
  `CCRP_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
  `CCRP_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
  `CCRP_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
