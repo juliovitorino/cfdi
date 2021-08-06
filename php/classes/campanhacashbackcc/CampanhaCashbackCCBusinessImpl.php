@@ -76,11 +76,20 @@ class CampanhaCashbackCCBusinessImpl implements CampanhaCashbackCCBusiness
 
 public function transferirEntreMembroCashbackCC($daofactory, $id_usuario, $id_destino, $id_dono, $vllancar, $descricao)
 {
-
     // Verifica se tem saldo para devolver
     $retorno = $this->getSaldoCashbackCCPeloDono($daofactory, $id_usuario, $id_dono);
     $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
     $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+    // Verifica se configuração do USCA permite transferencia entre membros
+    $uscabo = new UsuarioCashbackBusinessImpl();
+    $uscadto = $uscabo->PesquisarMaxPKAtivoId_UsuarioPorStatus($daofactory, $id_dono, ConstantesVariavel::STATUS_ATIVO);
+    if($uscadto->permitirTransferenciaMembrosJ10 == ConstantesVariavel::NAO)
+    {
+        $retorno->msgcode = ConstantesMensagem::USUARIO_CASHBACK_NAO_PERMITE_TRANSFERIR_ENTRE_MEMBRO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
 
     // se o valor a resgatar for superior ao saldo em conta - emite erro e termina o processo
     if($vllancar > $retorno->vlsldGeral ) {

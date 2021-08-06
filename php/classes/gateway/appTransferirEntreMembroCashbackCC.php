@@ -1,7 +1,7 @@
 <?php
 
-// URL http://elitefinanceira.com/cfdi/php/classes/gateway/appTransferirEntreMembroCashbackCC.php?tokenid=ch1&usuaid=dfgdf&donoid=12&vlr=1.09&desc=bxzc
-// URL http://localhost/cfdi/php/classes/gateway/appTransferirEntreMembroCashbackCC.php?tokenid=ch1&usuaid=cbahsdf&donoid=12&vlr=1.09&desc=bxzc
+// URL http://elitefinanceira.com/cfdi/php/classes/gateway/appTransferirEntreMembroCashbackCC.php?tokenid=ch1&usuaid=token&donoid=12&vlr=1.09&desc=bxzc
+// URL http://localhost/cfdi/php/classes/gateway/appTransferirEntreMembroCashbackCC.php?tokenid=ch1&usuaid=token&donoid=12&vlr=1.09&desc=bxzc
 
 // Importar dependencias
 require_once '../campanhacashbackcc/CampanhaCashbackCCServiceImpl.php';
@@ -33,7 +33,6 @@ switch ($sessaotmp->msgcode) {
         # code...
         break;
 }
-
 
 $csi = new CampanhaCashbackCCServiceImpl();
 $retorno = $csi->transferirEntreMembroCashbackCC($id_usuario, $sessaotmp->usuariodto->id,$id_dono, $vllancar, $descricao);
