@@ -49,6 +49,7 @@ class DmlSqlCampanha extends DmlSql
 	const CAMP_IN_CASHBACK = 'CAMP_IN_CASHBACK';
 	const CAMP_IN_PERM_CSJ10 = 'CAMP_IN_PERM_CSJ10';
 	const CAMP_IN_PERM_MOVER_CART = 'CAMP_IN_PERM_MOVER_CART';
+	const CAMP_IN_PERM_BONIF_J10 = 'CAMP_IN_PERM_BONIF_J10';
 
 	// Comandos DML
 	const INS = 'INSERT INTO `' . self::TABELA . '` ('
@@ -204,6 +205,7 @@ class DmlSqlCampanha extends DmlSql
 		. ' `' . self::CAMP_IN_UPD_MAX_SELOS . '`, ' 
 		. ' `' . self::CAMP_IN_PERM_CSJ10 . '`, ' 
 		. ' `' . self::CAMP_IN_PERM_MOVER_CART . '`, ' 
+		. ' `' . self::CAMP_IN_PERM_BONIF_J10 . '`, ' 
 		. ' `' . self::CAMP_NU_MIN_DELAY . '`, ' 
 		. ' `' . self::CAMP_TX_QRCODE_ATIVO . '`, ' 
 		. ' `' . self::CAMP_TX_FRASE_EFEITO . '`, ' 

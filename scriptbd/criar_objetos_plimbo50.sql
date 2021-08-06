@@ -691,6 +691,7 @@ CREATE TABLE CAMPANHA
     `CAMP_TX_IMG_RECOMPENSA`  VARCHAR(1500) NOT NULL DEFAULT 'sem-imagem.jpeg' COMMENT 'URL da imagem da recompensa',
     `CAMP_IN_PERM_CSJ10` VARCHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Permite participar de uma campanha sorteio do J10',
     `CAMP_IN_PERM_MOVER_CART` varchar(1)  NOT NULL DEFAULT 'S' COMMENT 'Permite mover cartão outro usuário',
+    `CAMP_IN_PERM_BONIF_J10` varchar(1)  NOT NULL DEFAULT 'S' COMMENT 'Permite bonificar financeiramento no J10',
     `CAMP_NU_LIKE` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador de Curtir',
     `CAMP_NU_CONT_STAR_1` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Péssima',
     `CAMP_NU_CONT_STAR_2` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Ruim',

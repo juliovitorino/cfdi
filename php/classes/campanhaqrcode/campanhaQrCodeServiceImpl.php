@@ -279,7 +279,10 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 				// Verifica se essa campanha permite bonificação especial J10 dando um $$$ pelo carimbo
 				// lanca um credito na campanha J10 (CACA_ID) noo cashback
 				//-------------------------------------------------------------------------------------
-				if(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_PERMITIR_BONIFICACAO_J10) == ConstantesVariavel::ATIVADO)
+				if( 
+					($campdto->permiteBonificarCarimboJ10) &&
+					(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_PERMITIR_BONIFICACAO_J10) == ConstantesVariavel::ATIVADO) 
+				)
 				{
 					$vllancar = floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_CASHBACK_CC_BONIFICACAO_J10));
 					$cacaid_bonificacao = VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CODIGO_CASHBACK_BONIFICACAO_J10);
