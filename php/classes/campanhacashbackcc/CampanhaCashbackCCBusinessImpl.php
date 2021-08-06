@@ -91,6 +91,14 @@ public function transferirEntreMembroCashbackCC($daofactory, $id_usuario, $id_de
         return $retorno;
     }
 
+    // Verifica se o usuário destino é o mesmo id_dono
+    if($id_destino == $id_dono)
+    {
+        $retorno->msgcode = ConstantesMensagem::USUARIO_TRANSFERENCIA_DONO_DO_CASHBACK;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
     // se o valor a resgatar for superior ao saldo em conta - emite erro e termina o processo
     if($vllancar > $retorno->vlsldGeral ) {
         $retorno->msgcode = ConstantesMensagem::SALDO_INSUFICIENTE_RESGATE;
