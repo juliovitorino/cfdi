@@ -7,6 +7,7 @@ require_once 'SaldoUsuarioDonoCashbackCCDTO.php';
 
 require_once '../usuarios/UsuarioBusinessImpl.php';
 require_once '../usuarios/UsuarioHelper.php';
+require_once '../usuariocashback/UsuarioCashbackBusinessImpl.php';
 require_once '../usuarionotificacao/UsuarioNotificacaoHelper.php';
 
 require_once '../dto/DTOPadrao.php';
@@ -661,6 +662,9 @@ public function getSaldoCashbackCCPeloDono($daofactory, $id_usuario, $id_dono)
                 $sudcashccdto->id_dono = $id_usuario_dono;
                 //$sudcashccdto->dono = $usbo->carregarPorID($daofactory, $id_usuario_dono);
                 $sudcashccdto->dono = UsuarioHelper::getUsuarioBusinessNoKeys($daofactory, $id_usuario_dono);
+
+                $uscabo = new UsuarioCashbackBusinessImpl();
+                $sudcashccdto->usca = $uscabo->PesquisarMaxPKAtivoId_UsuarioPorStatus($daofactory, $id_usuario_dono, ConstantesVariavel::STATUS_ATIVO);
 
                 // Existe um saldo calculado ?
                 if($idSaldoDonoCC == NULL){

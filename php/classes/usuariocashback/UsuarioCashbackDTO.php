@@ -25,6 +25,8 @@ class UsuarioCashbackDTO extends DTOPadraoEntidade implements JsonSerializable
     public $contadorStar_4;
     public $contadorStar_5;
     public $ratingCalculado;
+    public $permitirTransferenciaMembrosJ10;
+    public $permitirResgateViaPix;
     //public $status;
     //public $dataCadastro;
     //public $dataAtualizacao;
@@ -46,6 +48,8 @@ class UsuarioCashbackDTO extends DTOPadraoEntidade implements JsonSerializable
         'contadorStar_4' => $this->contadorStar_4,
         'contadorStar_5' => $this->contadorStar_5,
         'ratingCalculado' => $this->ratingCalculado,
+        'permitirTransferenciaMembrosJ10' => $this->permitirTransferenciaMembrosJ10,
+        'permitirResgateViaPix' => $this->permitirResgateViaPix,
         'status' => $this->status,
         'dataCadastro' => $this->dataCadastro,
         'dataAtualizacao' => $this->dataAtualizacao,
