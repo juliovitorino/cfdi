@@ -381,6 +381,15 @@ public function removerSolicitacaoPix($daofactory, $dto)
             return $retorno;
         }
 
+        // Configuração do usuario cashback permite resgate via pix?
+        if($uscadto->permitirResgateViaPix == ConstantesVariavel::NAO)
+        {
+            $retorno->msgcode = ConstantesMensagem::USUARIO_CASHBACK_NAO_PERMITE_RESGATE_VIA_PIX;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+        }
+
+
         //---------------------------------------------------------------
         // Tudo Ok, encaminha para processo de registro
         //---------------------------------------------------------------
