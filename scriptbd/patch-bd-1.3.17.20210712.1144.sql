@@ -7,9 +7,9 @@
 .##.....##....##....########.##....##..######..##.....##..#######.
 
 ----------------------------------------------------------------------------------
--- SCRIPTS NAS TABELAS VARIAVEL E MENSAGEM DEVEM SER RODADOS EM TODOS OS AMBIENTES
+-- NÃO EESQUECER DE AJUSTAR A TABELA VARIAVEIS
 ----------------------------------------------------------------------------------
-
+=> Conferir o arquivo "variaveis-ajustar-import.txt"
 
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0178','Tipo da chave PIX inválida.');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0179','valor para resgate PIX inválido.');
@@ -108,3 +108,7 @@ ALTER TABLE CAMPANHA_CASHBACK_RESGATE_PIX
 /* UPDATES NECESSÁRIOS */
 UPDATE `USUARIO_CASHBACK` SET USCA_IN_PERM_TRANSF_MEMJ10 = 'N' WHERE USCA_ID = 1000;
 UPDATE `USUARIO_CASHBACK` SET USCA_IN_PERM_RESGATE_PIX = 'S' WHERE USCA_ID = 1000;
+
+UPDATE `CAMPANHA` SET CAMP_IN_PERM_MOVER_CART = 'N' WHERE CAMP_ID = 1000;
+UPDATE `CAMPANHA` SET CAMP_IN_PERM_BONIF_J10 = 'N' WHERE CAMP_ID = 1000;
+
