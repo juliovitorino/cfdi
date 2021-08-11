@@ -14,6 +14,7 @@ include_once '../../inc/validarTokenApp.php';
 // >>>Backend
 $csi = new CampanhaCashbackCCServiceImpl();
 $retorno = $csi->getSaldoCashbackCC($sessaodto->usuariodto->id);
+//var_dump($retorno);
 echo json_encode($retorno, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 
 

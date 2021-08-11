@@ -45,6 +45,11 @@ class DmlSqlCartao extends DmlSql
 	'WHERE ' . ' `' . self::COLS[0] . '` = ? ' ;
 
 	const SQL_UPD = 'UPDATE `' . self::TABELA . '` set ';
+
+	const SQL_UPD_USUA_ID = 'UPDATE `' . self::TABELA . '` set '
+	. ' `' . self::COLS[2] . '` = ? '
+	. 'WHERE ' . ' `' . self::COLS[0] . '` = ? ' ;
+
 	const SQL_UPD_STATUS = 'UPDATE `' . self::TABELA . '` set '
 	. ' `' . self::COLS[4] . '` = ? '
 	. 'WHERE ' . ' `' . self::COLS[0] . '` = ? ' ;

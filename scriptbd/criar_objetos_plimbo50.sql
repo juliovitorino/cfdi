@@ -690,6 +690,8 @@ CREATE TABLE CAMPANHA
     `CAMP_TX_IMG`  VARCHAR(1500) NOT NULL  DEFAULT 'sem-imagem.jpeg' COMMENT 'URL da imagem da campanha',
     `CAMP_TX_IMG_RECOMPENSA`  VARCHAR(1500) NOT NULL DEFAULT 'sem-imagem.jpeg' COMMENT 'URL da imagem da recompensa',
     `CAMP_IN_PERM_CSJ10` VARCHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Permite participar de uma campanha sorteio do J10',
+    `CAMP_IN_PERM_MOVER_CART` varchar(1)  NOT NULL DEFAULT 'S' COMMENT 'Permite mover cartão outro usuário',
+    `CAMP_IN_PERM_BONIF_J10` varchar(1)  NOT NULL DEFAULT 'S' COMMENT 'Permite bonificar financeiramento no J10',
     `CAMP_NU_LIKE` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador de Curtir',
     `CAMP_NU_CONT_STAR_1` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Péssima',
     `CAMP_NU_CONT_STAR_2` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Ruim',
@@ -1067,6 +1069,26 @@ CREATE INDEX IX_CAPE_CAMP
 CREATE INDEX UIX_HASH
         ON CARTAO_PEDIDO(CAPE_TX_HASH);
 
+/******************************************************************/
+/* CARTAO_MOVER_HISTORICO - HISTORICO DE TRANSFERENCIA DE CARTAO  */
+/******************************************************************/
+/* Valores para CART_IN_STATUS                                     /
+/* A = ATIVO                                                       /
+/* I = INATIVO                                                     /
+/******************************************************************/
+CREATE TABLE `CARTAO_MOVER_HISTORICO` (
+ `CAMH_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID do hsitorico cartão transferido',
+ `CART_ID` int(11) NOT NULL COMMENT 'ID do cartão',
+ `USUA_ID_DE` int(11) NOT NULL COMMENT 'ID do usuário doador',
+ `USUA_ID_PARA` int(11) NOT NULL COMMENT 'ID do usuário receptor',
+ `CAMH_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'Status do cartão',
+ `CAMH_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `CAMH_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_CAMH_ID PRIMARY KEY (CAMH_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
 /*************************************************************************/
 /* USUARIO_PUBLICIDADE - PUBLICIDADES REALIZADAS PELO USUARIO            */
 /*************************************************************************/
@@ -1223,6 +1245,8 @@ CREATE TABLE `USUARIO_CASHBACK` (
  `USUA_ID` int(11) NOT NULL COMMENT 'ID do usuário',
  `USCA_VL_RESGATE` DECIMAL(10,2) NOT NULL DEFAULT 0 COMMENT 'Resgatar a partir de',
  `USCA_VL_PERC_CASHBACK` DECIMAL(6,2) NOT NULL DEFAULT 0 COMMENT 'Percentual',
+ `USCA_IN_PERM_TRANSF_MEMJ10` varchar(1) NOT NULL DEFAULT 'S' COMMENT 'Permite transferir saldo entre membros J10',
+ `USCA_IN_PERM_RESGATE_PIX` varchar(1) NOT NULL DEFAULT 'N' COMMENT 'Permite solicitar resgate via PIX',
  `USCA_TX_OBS` varchar(2000) DEFAULT NULL COMMENT 'Observação',
  `USCA_NU_CONT_STAR_1` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Péssima',
  `USCA_NU_CONT_STAR_2` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Ruim',
@@ -1331,6 +1355,52 @@ CREATE INDEX IX_CACC_USUA_ID  ON CAMPANHA_CASHBACK_CC(USUA_ID);
 CREATE INDEX IX_CACC_USUA_ID_DONO  ON CAMPANHA_CASHBACK_CC(USUA_ID_DONO);
 CREATE INDEX IX_CACC_01  ON CAMPANHA_CASHBACK_CC(USUA_ID, USUA_ID_DONO);
 
+/*************************************************************************/
+/* CAMPANHA_CASHBACK_RESGATE_PIX                                         */
+/*************************************************************************/
+/* Valores para _IN_STATUS                                                /
+/* A = ATIVO                                                              /
+/* I = INATIVO                                                            /
+/*************************************************************************/
+/* Valores para CCRP_IN_TIPO_CHAVE_PIX                                    /
+/* 0 = CPF (padrão)                                                       /
+/* 1 = CNPJ                                                               /
+/* 2 = DDD+CELULAR                                                        /
+/* 3 = EMAIL                                                              /
+/* 4 = CHAVE ALEATORIA                                                    /
+/*************************************************************************/
+/* Valores para CCRP_IN_ESTAGIO_RT                                        /
+/* 0 = Pendente                                                           /
+/* 1 = Em analise                                                         /
+/* 2 = Financeiro                                                         /
+/* 3 = Erro                                                               /
+/* 4 = Transferido                                                        /
+/*************************************************************************/
+CREATE TABLE `CAMPANHA_CASHBACK_RESGATE_PIX` (
+ `CCRP_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID Resgate Cashback',
+ `USUA_ID_DEVEDOR` int(11) NOT NULL COMMENT 'ID do usuário devedor',
+ `USUA_ID` int(11) NOT NULL COMMENT 'ID do usuário solicitante',
+ `CCRP_IN_TIPO_CHAVE_PIX` varchar(1) NOT NULL DEFAULT '0' COMMENT 'Tipo da Chave PIX',
+ `CCRP_TX_CHAVE_PIX` varchar(100) NOT NULL COMMENT 'Chave PIX',
+ `CCRP_VL_RESGATE` DECIMAL(11,2) NOT NULL DEFAULT 0 COMMENT 'Valor Pretendido a Resgatar',
+ `CCRP_TX_AUTENT_BCO` varchar(200) DEFAULT NULL COMMENT 'Autenticação do Banco',
+ `CCRP_IN_ESTAGIO_RT` varchar(1) NOT NULL DEFAULT '0' COMMENT 'Estágio Real Time',
+ `CCRP_DT_ESTAGIO_ANALISE` timestamp NULL COMMENT 'Data Registro Estágio Análise',
+ `CCRP_TX_ESTAGIO_ANALISE` varchar(2000) DEFAULT NULL COMMENT 'Texto conclusão do Estagio Analise RT',
+ `CCRP_DT_ESTAGIO_FINANCEIRO` timestamp NULL COMMENT 'Data Registro Estágio Financeiro',
+ `CCRP_TX_ESTAGIO_FINANCEIRO` varchar(2000) DEFAULT NULL COMMENT 'Texto conclusão do Estagio Financeiro RT',
+ `CCRP_DT_ESTAGIO_ERRO` timestamp NULL COMMENT 'Data Registro Estágio Erro',
+ `CCRP_TX_ESTAGIO_ERRO` varchar(2000) DEFAULT NULL COMMENT 'Texto conclusão do Estagio Erro RT',
+ `CCRP_DT_ESTAGIO_TRANSF_BCO` timestamp NULL COMMENT 'Data Registro Estágio Transf. Bco',
+ `CCRP_TX_ESTAGIO_TRANSF_BCO` varchar(2000) DEFAULT NULL COMMENT 'Texto conclusão do Estagio Transf. Bco',
+ `CCRP_TX_LIVRE_ESTAGIO_RT` varchar(2000) DEFAULT 'Sua solicitação está aguardando a entrada em análise dos dados' COMMENT 'Texto Livre do Estagio RT',
+ `CCRP_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `CCRP_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `CCRP_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_CCRP_ID PRIMARY KEY (CCRP_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
 
 /*************************************************************************/
 /* USUARIO x TIPO EMPREENDIMENTO                                         */
@@ -1737,7 +1807,34 @@ ALTER TABLE REGISTRO_INDICACAO
     ADD CONSTRAINT FK_REIN_USUA_ID_I
     FOREIGN KEY (USUA_ID_INDICADO)
     REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
-    
+
+
+/* CARTAO_MOVER_HISTORICO - HISTORICO DE TRANSFERENCIA DE CARTAO  */
+ALTER TABLE CARTAO_MOVER_HISTORICO 
+    ADD CONSTRAINT FK_CAMH_CART
+    FOREIGN KEY (CART_ID)
+    REFERENCES CARTAO(CART_ID) ON DELETE CASCADE;
+
+ALTER TABLE CARTAO_MOVER_HISTORICO
+    ADD CONSTRAINT FK_CAMH_USUA_ID_DE
+    FOREIGN KEY (USUA_ID_DE)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
+
+ALTER TABLE CARTAO_MOVER_HISTORICO
+    ADD CONSTRAINT FK_CAMH_USUA_ID_PARA
+    FOREIGN KEY (USUA_ID_PARA)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
+
+/* CASHBACK_RESGATE_PIX */
+ALTER TABLE CAMPANHA_CASHBACK_RESGATE_PIX 
+    ADD CONSTRAINT FK_CCRP_USUA_ID_DEVEDOR
+    FOREIGN KEY (USUA_ID_DEVEDOR)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
+
+ALTER TABLE CAMPANHA_CASHBACK_RESGATE_PIX
+    ADD CONSTRAINT FK_CCRP_USUA
+    FOREIGN KEY (USUA_ID)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
 
 /* AJUSTES DE CAMPOS TIMESTAMP */
 ALTER TABLE `CAMPANHA` CHANGE `CAMP_DT_INICIO` `CAMP_DT_INICIO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de início';

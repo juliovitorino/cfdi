@@ -46,6 +46,8 @@ class DmlSqlUsuarioCashback extends DmlSql
     const USCA_IN_STATUS = 'USCA_IN_STATUS';
     const USCA_DT_CADASTRO = 'USCA_DT_CADASTRO';
     const USCA_DT_UPDATE = 'USCA_DT_UPDATE';
+    const USCA_IN_PERM_TRANSF_MEMJ10 = 'USCA_IN_PERM_TRANSF_MEMJ10';
+    const USCA_IN_PERM_RESGATE_PIX = 'USCA_IN_PERM_RESGATE_PIX';
 
     // Comandos DML
     const INS = 'INSERT INTO `' . self::TABELA . '` ('
@@ -90,6 +92,8 @@ const SELECT_MAX_PK = 'SELECT MAX(USCA_ID) AS maxid FROM `'.self::TABELA.'` ';
         . ' `' . self::USCA_NU_CONT_STAR_4 . '`, ' 
         . ' `' . self::USCA_NU_CONT_STAR_5 . '`, ' 
         . ' `' . self::USCA_NU_RATING . '`, ' 
+        . ' `' . self::USCA_IN_PERM_TRANSF_MEMJ10 . '`, ' 
+        . ' `' . self::USCA_IN_PERM_RESGATE_PIX . '`, ' 
         . ' `' . self::USCA_IN_STATUS . '`, ' 
         . ' `' . self::USCA_DT_CADASTRO . '`, ' 
         . ' `' . self::USCA_DT_UPDATE . '` ' 
@@ -108,6 +112,8 @@ const SELECT_MAX_PK = 'SELECT MAX(USCA_ID) AS maxid FROM `'.self::TABELA.'` ';
     const UPD_USUARIO_CASHBACK_USCA_NU_CONT_STAR_4_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::USCA_NU_CONT_STAR_4 . '` = ? ' . 'WHERE ' . ' `' . self::USCA_ID . '` = ? ' ;
     const UPD_USUARIO_CASHBACK_USCA_NU_CONT_STAR_5_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::USCA_NU_CONT_STAR_5 . '` = ? ' . 'WHERE ' . ' `' . self::USCA_ID . '` = ? ' ;
     const UPD_USUARIO_CASHBACK_USCA_NU_RATING_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::USCA_NU_RATING . '` = ? ' . 'WHERE ' . ' `' . self::USCA_ID . '` = ? ' ;
+    const UPD_USUARIO_CASHBACK_USCA_IN_PERM_TRANSF_MEMJ10_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::USCA_IN_PERM_TRANSF_MEMJ10 . '` = ? ' . 'WHERE ' . ' `' . self::USCA_ID . '` = ? ' ;
+    const UPD_USUARIO_CASHBACK_USCA_IN_PERM_RESGATE_PIX_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::USCA_IN_PERM_RESGATE_PIX . '` = ? ' . 'WHERE ' . ' `' . self::USCA_ID . '` = ? ' ;
     const UPD_USUARIO_CASHBACK_USCA_IN_STATUS_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::USCA_IN_STATUS . '` = ? ' . 'WHERE ' . ' `' . self::USCA_ID . '` = ? ' ;
     const UPD_USUARIO_CASHBACK_USCA_DT_CADASTRO_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::USCA_DT_CADASTRO . '` = ? ' . 'WHERE ' . ' `' . self::USCA_ID . '` = ? ' ;
     const UPD_USUARIO_CASHBACK_USCA_DT_UPDATE_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::USCA_DT_UPDATE . '` = ? ' . 'WHERE ' . ' `' . self::USCA_ID . '` = ? ' ;

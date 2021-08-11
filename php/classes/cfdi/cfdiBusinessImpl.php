@@ -85,6 +85,25 @@ class CfdiBusinessImpl implements CfdiBusiness
 		return $dto;
 	}
 
+	public function atualizarUsuaIdPorCarimbo($daofactory, $carimbo, $usuaid)
+	{
+		$dao = $daofactory->getCfdiDAO($daofactory);
+
+		// resposta padrão
+		$retorno = new DTOPadrao();
+
+		if($dao->updateUsuaIdPorCarimbo($carimbo, $usuaid)){	
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		} else {
+			$retorno->msgcode = ConstantesMensagem::ERRO_CRUD_ATUALIZAR_REGISTRO;
+		}		
+
+		// Obtem o texto da mensagem em razão do código de retorno
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+		return $retorno;
+	}
+
 	public function atualizarUsuarioGeradorQRCode($daofactory, $carimbo)
 	{
 
