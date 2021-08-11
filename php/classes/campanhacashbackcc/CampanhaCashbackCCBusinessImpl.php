@@ -330,6 +330,12 @@ public function CreditarCashbackCC($daofactory, $id_usuario, $id_dono, $vllancar
         ]) 
         , $icone="money.png");
 
+        UsuarioNotificacaoHelper::criarNotificacaoAdmin($daofactory, ConstantesMensagem::NOTIFICACAO_CREDITO_CLIENTE,[
+            ConstantesVariavel::P1 => $usuaResgate->apelido,
+            ConstantesVariavel::P2 => $retorno->vlCalcRecompensaMoeda,
+            ConstantesVariavel::P3 => $usuaDono->apelido,
+        ], "money.png");
+
     }
     return $retorno;
 
