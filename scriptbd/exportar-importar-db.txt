@@ -22,9 +22,9 @@ show tables;
 
 
 -------------------------------------------------------------------------------
--- exportação do BD
+-- exportação do BD => BACKUP
 -------------------------------------------------------------------------------
--- executar o export do banco de produção na linha de comando
+-- executar o export do BANCO DE PRODUÇÃO na linha de comando
 mysqldump -u elite759_junta10 -p -h 216.172.161.28 elite759_prd_j10 > c:\temp\dumpJ10bdprd-1.4.0.5.20210630-1949.sql
 
 -- executar o export do banco de homologação na linha de comando
@@ -40,7 +40,7 @@ mysqldump -u YourUser -p YourDatabaseName > wantedsqlfile.sql
 Comando: mysql -u username -p [-h 216.172.161.28] database_name < file.sql
 
 #ambiente dsv :: mysql -u cfd -p cfd < c:\temp\dumpJ10bd.sql
-#ambiente prd :: mysql -u elite759_junta10 -p -h 216.172.161.28 elite759_prd_j10 < c:\temp\dumpJ10bd.sql <=== *** PERIGOSO CUIDADO
+#ambiente prd :: mysql -u elite759_junta10 -p -h 216.172.161.28 elite759_prd_j10 < c:\temp\dumpJ10bd.sql <=== *** MUITO PERIGOSO, CUIDADO!
 #ambiente hmg :: mysql -u elite759_junta10 -p -h 216.172.161.28 elite759_junta10 < c:\temp\dumpJ10bd.sql
 
 

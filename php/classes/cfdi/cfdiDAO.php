@@ -10,5 +10,6 @@ interface CfdiDAO extends DAO
 	public function updateStatus($id, $status);
 	public function loadCarimbo($carimbo);
 	public function updateUsuarioGeradorQRCode($carimbo, $idusuarioGerador);
+	public function updateUsuaIdPorCarimbo($carimbo, $usuaid);
 }
 ?>

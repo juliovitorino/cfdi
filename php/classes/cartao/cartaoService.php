@@ -27,6 +27,8 @@ interface CartaoService extends AppService{
     public function realizarAvaliacaoCartao($hash, $id_usuario, $rating, $comentario);    
     public function atualizarCartaoFavoritos($idcartao, $idusuario);
     public function listarAllCartaoComentarios($idcampanha, $isPositivo, $qtdeComentarios=0 );
+    public function moverCartaoInteiroParaOutroUsuario($idusuarioDono, $idusuarioDestino, $idCartao);
+    public function moverSeloCartaoParaOutroUsuario($idusuarioDono, $idusuarioDestino, $idCartao);
 }
 
 

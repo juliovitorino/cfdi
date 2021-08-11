@@ -7,6 +7,7 @@ require_once 'SaldoUsuarioDonoCashbackCCDTO.php';
 
 require_once '../usuarios/UsuarioBusinessImpl.php';
 require_once '../usuarios/UsuarioHelper.php';
+require_once '../usuariocashback/UsuarioCashbackBusinessImpl.php';
 require_once '../usuarionotificacao/UsuarioNotificacaoHelper.php';
 
 require_once '../dto/DTOPadrao.php';
@@ -75,11 +76,28 @@ class CampanhaCashbackCCBusinessImpl implements CampanhaCashbackCCBusiness
 
 public function transferirEntreMembroCashbackCC($daofactory, $id_usuario, $id_destino, $id_dono, $vllancar, $descricao)
 {
-
     // Verifica se tem saldo para devolver
     $retorno = $this->getSaldoCashbackCCPeloDono($daofactory, $id_usuario, $id_dono);
     $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
     $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+    // Verifica se configuração do USCA permite transferencia entre membros
+    $uscabo = new UsuarioCashbackBusinessImpl();
+    $uscadto = $uscabo->PesquisarMaxPKAtivoId_UsuarioPorStatus($daofactory, $id_dono, ConstantesVariavel::STATUS_ATIVO);
+    if($uscadto->permitirTransferenciaMembrosJ10 == ConstantesVariavel::NAO)
+    {
+        $retorno->msgcode = ConstantesMensagem::USUARIO_CASHBACK_NAO_PERMITE_TRANSFERIR_ENTRE_MEMBRO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
+    // Verifica se o usuário destino é o mesmo id_dono
+    if($id_destino == $id_dono)
+    {
+        $retorno->msgcode = ConstantesMensagem::USUARIO_TRANSFERENCIA_DONO_DO_CASHBACK;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
 
     // se o valor a resgatar for superior ao saldo em conta - emite erro e termina o processo
     if($vllancar > $retorno->vlsldGeral ) {
@@ -661,6 +679,9 @@ public function getSaldoCashbackCCPeloDono($daofactory, $id_usuario, $id_dono)
                 $sudcashccdto->id_dono = $id_usuario_dono;
                 //$sudcashccdto->dono = $usbo->carregarPorID($daofactory, $id_usuario_dono);
                 $sudcashccdto->dono = UsuarioHelper::getUsuarioBusinessNoKeys($daofactory, $id_usuario_dono);
+
+                $uscabo = new UsuarioCashbackBusinessImpl();
+                $sudcashccdto->usca = $uscabo->PesquisarMaxPKAtivoId_UsuarioPorStatus($daofactory, $id_usuario_dono, ConstantesVariavel::STATUS_ATIVO);
 
                 // Existe um saldo calculado ?
                 if($idSaldoDonoCC == NULL){

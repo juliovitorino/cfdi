@@ -178,6 +178,27 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0167
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0168','O usuário *=p1=* acaba de indicar *=p2=*');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0169','Prêmio pela indicação de usuário *=p1=*');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0170','credito de bonificação de *=p1=* por carimbar seu cartão na campanha *=p2=* de nossa rede credenciada');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0171','Usuário Dono do Cartão e Destino não podem ser o mesmo.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0172','Usuário Dono do Cartão é inconsistente com usuário enviado');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0173','Usuário destino possui cartão em aberto nesta mesma campanha');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0174','Usuário destino é o próprio dono da campanha. Operação não pode ser realizada');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0175','Esta campanha não permite transferir cartão entre usuários. Operação não pode ser realizada');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0176','O usuário USUA_ID=*=p1=* acabou de solicitar resgate via PIX no valor de *=p2=*. Código Usuário devedor = *=p3=*');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0177','Sua solicitação PIX foi recebida com sucesso. Operação em Processamento.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0178','Tipo da chave PIX inválida.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0179','valor para resgate PIX inválido.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0180','registro MAX deste PIX inválido.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0181','Já existe uma solicitação de resgate PIX em andamento.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0182','Usuário Devedor sem configuração adequada. Codigo USCA');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0183','O valor resgatado é inferior ao valor configurado de *=p1=*');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0184','Saldo Insuficiente para resgate pelo PIX');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0185','Tentativa de resgate acima do valor permitido em caixa de *=p1=*. Operação Não Realizada.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0186','O registro foi REMOVIDO com sucesso');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0187','Solicitação de PIX (*=p1=*) é inválida');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0188','Solicitação de PIX já está concluída');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0189','O cashback deste membro NÃO PERMITE transferência com outros membros.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0190','O cashback deste membro NÃO PERMITE resgate via PIX.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0191','O usuário destino é o dono do cashback. Operação não pode ser realizada.');
 
 -- variaveis
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CANIVETE_VERSAO','Versão do Canivete','1.0.0');
@@ -254,7 +275,6 @@ INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONT
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CHAVE_GERAL_CAMPANHA_CASHBACK_ATIVO_INDICACAO','Chave Geral da campanha cashback premiar indicação clientes para J10','OFF');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CODIGO_CAMPANHA_CASHBACK_ATIVO_INDICACAO','Código da campanha cashback (CACA_ID) premiar indicação do J10 para clientes','0000');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('VALOR_CAMPANHA_CASHBACK_ATIVO_INDICACAO','Valor do Prêmio da campanha cashback premiar indicação do J10 para clientes','1.50');
-
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CHAVE_PERMITIR_BONIFICACAO_J10','Chave Geral Permitir J10 bonificar financeiramente ao carimbar cartão' ,'OFF');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('VALOR_CASHBACK_CC_BONIFICACAO_J10','Valor credito de cashback J10 bonificação financeira ao carimbar cartão' ,'0.50');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CODIGO_CASHBACK_BONIFICACAO_J10','Código Campanha Cashback (CACA_ID) referencia ao carimbar cartão' ,'0');

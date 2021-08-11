@@ -48,6 +48,10 @@ class DmlSqlCfdi extends DmlSql
 	. ' `' . self::COLS[9] . '` = ? '
 	. 'WHERE ' . ' `' . self::COLS[3] . '` = ? ' ;
 
+	const SQL_UPD_USUA_ID_POR_CARIMBO = 'UPDATE `' . self::TABELA . '` set '
+	. ' `' . self::COLS[2] . '` = ? '
+	. 'WHERE ' . ' `' . self::COLS[3] . '` = ? ' ;
+
 	const SQL_SELECT = 'SELECT ' 
 		. ' `' . self::COLS[0] . '`, ' 
 		. ' `' . self::COLS[1] . '`, ' 

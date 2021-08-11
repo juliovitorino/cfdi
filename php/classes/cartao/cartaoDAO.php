@@ -12,6 +12,7 @@ interface CartaoDAO extends DAO
 	public function updateDataCartaoValidou($id);
 	public function updateDataCartaoEntregou($id);
 	public function updateDataCartaoRecebeuRecompensa($id);
+	public function updateMoverCartaoInteiroParaOutroUsuario($idusuarioDestino, $idCartao);
 	public function loadCampanhaUsuarioStatus($idusuario, $idcampanha, $status);
 	public function loadHashResgate($hash);
 	public function incrementarContador($id,$qrcodecarimbo);

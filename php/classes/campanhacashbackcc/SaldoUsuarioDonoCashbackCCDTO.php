@@ -18,6 +18,7 @@ class SaldoUsuarioDonoCashbackCCDTO extends DTOPadraoEntidade implements JsonSer
     public $usuario;
     public $id_dono;
     public $dono;
+    public $usca;
     public $vlconsumo;
     public $vlsld;
     public $vlconsumoMoeda;
@@ -33,6 +34,7 @@ class SaldoUsuarioDonoCashbackCCDTO extends DTOPadraoEntidade implements JsonSer
             'usuario' => $this->usuario == NULL ? NULL : $this->usuario->jsonSerialize(),
             'id_dono' => $this->id_dono,
             'dono' => $this->dono == NULL ? NULL : $this->dono->jsonSerialize(),
+            'usca' => $this->usca == NULL ? NULL : $this->usca->jsonSerialize(),
             'vlconsumo' => $this->vlconsumo,
             'vlsld' => $this->vlsld,
             'vlconsumoMoeda' => $this->vlconsumoMoeda,

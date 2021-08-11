@@ -265,6 +265,27 @@ class MySqlKinghostCartaoDAO implements CartaoDAO
 
 		return $retorno;
 	}
+
+	public function updateMoverCartaoInteiroParaOutroUsuario($idusuarioDestino, $idCartao)
+	{	
+
+		$retorno = false;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$stmt = $conexao->prepare(DmlSqlCartao::SQL_UPD_USUA_ID);
+		$stmt->bind_param(DmlSql::INTEGER_TYPE 
+							. DmlSql::INTEGER_TYPE
+							,$idusuarioDestino
+							,$idCartao);
+		if ($stmt->execute())
+		{
+			$retorno = true;
+		}
+
+		return $retorno;
+	}
+
+
 	public function updateDataCartaoCompletou($id)
 	{	
 

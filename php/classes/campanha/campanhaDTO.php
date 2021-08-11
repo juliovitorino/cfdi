@@ -42,6 +42,8 @@ class CampanhaDTO extends DTOPadraoEntidade implements JsonSerializable
     public $valorMetaMoeda;
     public $permiteAlterarMaximoSelos;
     public $permiteCampanhaSorteioJ10;
+    public $permiteMoverCartaoEntreUsuario;
+    public $permiteBonificarCarimboJ10;
     public $msgAgradecimento;
     public $img;
     public $imgRecompensa;

@@ -413,6 +413,8 @@ class MySqlKinghostUsuarioCashbackDAO implements UsuarioCashbackDAO
         $retorno->contadorStar_4 = $resultset[DmlSqlUsuarioCashback::USCA_NU_CONT_STAR_4] == NULL ? NULL : $resultset[DmlSqlUsuarioCashback::USCA_NU_CONT_STAR_4];
         $retorno->contadorStar_5 = $resultset[DmlSqlUsuarioCashback::USCA_NU_CONT_STAR_5] == NULL ? NULL : $resultset[DmlSqlUsuarioCashback::USCA_NU_CONT_STAR_5];
         $retorno->ratingCalculado = $resultset[DmlSqlUsuarioCashback::USCA_NU_RATING] == NULL ? NULL : $resultset[DmlSqlUsuarioCashback::USCA_NU_RATING];
+        $retorno->permitirTransferenciaMembrosJ10 = $resultset[DmlSqlUsuarioCashback::USCA_IN_PERM_TRANSF_MEMJ10] == NULL ? NULL : $resultset[DmlSqlUsuarioCashback::USCA_IN_PERM_TRANSF_MEMJ10];
+        $retorno->permitirResgateViaPix = $resultset[DmlSqlUsuarioCashback::USCA_IN_PERM_RESGATE_PIX] == NULL ? NULL : $resultset[DmlSqlUsuarioCashback::USCA_IN_PERM_RESGATE_PIX];
         $retorno->status = $resultset[DmlSqlUsuarioCashback::USCA_IN_STATUS] == NULL ? NULL : $resultset[DmlSqlUsuarioCashback::USCA_IN_STATUS];
         $retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlUsuarioCashback::USCA_DT_CADASTRO]);
         $retorno->dataAtualizacao = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlUsuarioCashback::USCA_DT_UPDATE]);
