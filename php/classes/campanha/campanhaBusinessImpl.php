@@ -33,6 +33,11 @@ require_once '../permissao/PermissaoHelper.php';
 require_once '../cartaopedido/CartaoPedidoBusinessImpl.php';
 require_once '../cartaopedido/CartaoPedidoDTO.php';
 require_once '../plano/ConstantesPlano.php';
+require_once '../registroindicacao/RegistroIndicacaoBusinessImpl.php';
+require_once '../campanhacashbackcc/CampanhaCashbackCCBusinessImpl.php';
+require_once '../usuarionotificacao/UsuarioNotificacaoHelper.php';
+require_once '../usuarios/UsuarioHelper.php';
+
 
 /**
  * CampanhaBusinessImpl - Implementação da classe de negocio
@@ -1033,6 +1038,75 @@ var_dump($carimbodto);*/
 				ConstantesEstatisticaFuncao::FUNCAO_CRIAR_CAMPANHA
 			);
 		}
+
+		//----------------------------------------------------------
+		// Premiar o promotor que indicou esse usuário
+		//----------------------------------------------------------
+
+		// falta testar se o plano do usuario é gratuito
+		/* aproveita pra marcar a gratuidade do plano com base no plano mais recente */
+		$pubi = new PlanoUsuarioBusinessImpl();
+		$plus = $pubi->carregarPlanoUsuarioPorStatus($daofactory, $dto->id_usuario, ConstantesVariavel::STATUS_ATIVO);
+
+		// Por padrão é considerado sempre negado o plano gratuito
+		$isGratuito = ConstantesVariavel::PLANO_GRATIS_NAO;
+		
+		// Trouxe as informações do plano do usuario. Então, temos a necessidade de verificar se o plano ativo
+		// é o plano gratuito
+		if ($plus != NULL && $plus->id != NULL && $plus->usuarioid == $dto->id_usuario) {
+			if($plus->planoid == (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::PLANO_GRATUITO_CODIGO)) {
+				$isGratuito = ConstantesVariavel::PLANO_GRATIS_SIM;				
+			}
+		}
+
+		if(
+			(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_GERAL_PERMITE_REMUNERAR_PROMOTOR) == ConstantesVariavel::ATIVADO) &&
+			( $isGratuito == ConstantesVariavel::PLANO_GRATIS_NAO )
+		)
+		{
+			$vllancar = floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_REMUNERAR_PROMOTOR));
+			$usuaid_debitar = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::USUA_ID_DEBITAR_REMUNERAR_PROMOTOR);
+			$descricao = MensagemCache::getInstance()->getMensagem(ConstantesMensagem::REMUNERACAO_PROMOTOR);
+
+			// localiza a pessoa que indicou este dono de campanha
+			$reinbo = new RegistroIndicacaoBusinessImpl();
+			$reindto = $reinbo->pesquisarPorIdusuarioindicado($daofactory, $dto->id_usuario);
+			if(! is_null($reindto))
+			{
+				$cacaccbo = new CampanhaCashbackCCBusinessImpl();
+				$retcc = $cacaccbo->lancarMovimentoCashbackCC($daofactory, $reindto->idUsuarioPromotor, $usuaid_debitar, $vllancar, $descricao, ConstantesVariavel::CREDITO);
+
+				// Busca dados para popular mensagens
+				$usuarioPromotor = UsuarioHelper::getUsuarioBusinessNoKeys($daofactory, $reindto->idUsuarioPromotor);
+				$usuarioIndicado = UsuarioHelper::getUsuarioBusinessNoKeys($daofactory, $dto->id_usuario);
+				
+				$msgRemunerarPromotor = MensagemCache::getInstance()->getMensagemParametrizada(ConstantesMensagem::NOTIFICACAO_REMUNERACAO_PROMOTOR,
+					[
+						ConstantesVariavel::P1 => $usuarioPromotor->apelido,
+						ConstantesVariavel::P2 => Util::getMoeda($vllancar), 
+						ConstantesVariavel::P3 => $usuarioIndicado->apelido,
+					]
+				);
+
+				// Notifica o usuario
+				UsuarioNotificacaoHelper::criarUsuarioNotificacaoPorBusiness($daofactory, $reindto->idUsuarioPromotor, $msgRemunerarPromotor);	
+
+				// Envia uma notificação ao ADMIN
+				UsuarioNotificacaoHelper::criarNotificacaoAdmin(
+					$daofactory
+					, ConstantesMensagem::NOTIFICACAO_REMUNERACAO_PROMOTOR
+					, [
+						ConstantesVariavel::P1 => $usuarioPromotor->apelido,
+						ConstantesVariavel::P2 => Util::getMoeda($vllancar), 
+						ConstantesVariavel::P3 => $usuarioIndicado->apelido,
+					]
+				);
+
+	
+			}
+		}
+
+
 
 		if ($ok) {
 			$retorno = new DTOPadrao();
