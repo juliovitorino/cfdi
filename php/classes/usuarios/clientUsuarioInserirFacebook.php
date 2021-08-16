@@ -5,6 +5,7 @@ require_once 'UsuarioDTO.php';
 require_once 'UsuarioServiceImpl.php';
 require_once '../mensagem/ConstantesMensagem.php';
 require_once '../mensagem/MensagemCache.php';
+require_once '../util/util.php';
 
 
 $dtousuario = getUsuarioFacebook();
@@ -28,7 +29,7 @@ function getUsuarioFacebook()
 
 	$dto = new UsuarioDTO();
 	$dto->iduserfacebook = $ts;
-	$dto->email = 'julio.vitorino@gmail.com';
+	$dto->email = 'julio.vitorino.' . Util::getCodigoNumerico(4) . '@gmail.com';
 	$dto->pwd = MensagemCache::getInstance()->getMensagem(ConstantesMensagem::AUTENTICACAO_AUTORIZADA_FACEBOOK);
 	$dto->apelido = 'Julio ' . $ts . ' Vitorino';
 	$dto->tipoConta = 'C';
