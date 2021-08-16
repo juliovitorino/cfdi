@@ -41,6 +41,7 @@ require_once '../daofactory/DAOFactory.php';
 require_once '../estatisticafuncao/EstatisticaFuncaoDTO.php';
 require_once '../estatisticafuncao/ConstantesEstatisticaFuncao.php';
 require_once '../estatisticafuncao/EstatisticaFuncaoHelper.php';
+require_once '../campanhacashbackcc/CampanhaCashbackCCBusinessImpl.php';
 
 class UsuarioBusinessImpl implements UsuarioBusiness
 {
