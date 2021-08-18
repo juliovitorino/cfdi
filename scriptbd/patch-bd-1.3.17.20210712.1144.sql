@@ -24,6 +24,47 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0194
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0195','Olá *=p1=*, você acaba de receber um CRÉDITO de *=p2=* no seu cashback por você ter instalado o aplicativo Junta10. Parabéns!');
 
 -- Atualização estrutural de tabelas e campos
+/*************************************************************************/
+/* FUNDO_PARTICIPACAO_GLOBAL                                             */
+/*************************************************************************/
+/* Valores para _IN_STATUS                                                /
+/* A = ATIVO                                                              /
+/* I = INATIVO                                                            /
+/*************************************************************************/
+/* Valores para _IN_TIPO                                                  /
+/* C=CREDITO | D=DEBITO | S=SALDO                                        */
+/*************************************************************************/
+CREATE TABLE `FUNDO_PARTICIPACAO_GLOBAL` (
+ `FPGL_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID da Conta Corrente Cashback',
+ `USUA_ID` int(11) NOT NULL COMMENT 'ID do usuário participante',
+ `USUA_ID_BONIFICADO` int(11) NULL COMMENT 'ID do usuário bonificado',
+ `PLUF_ID` int(11) NULL COMMENT 'ID do plano fatura do usuário',
+ `FPGL_IN_TIPO` varchar(1) NOT NULL DEFAULT 'C' COMMENT 'Tipo do movimento', 
+ `FPGL_VL_TRANSACAO` DECIMAL(10,2) NOT NULL DEFAULT 0 COMMENT 'Valor dO crédito ou débito',
+ `FPGL_TX_DESCRICAO` varchar(500) NOT NULL COMMENT 'descrição',
+ `FPGL_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `FPGL_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `FPGL_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_FPGL_ID PRIMARY KEY (FPGL_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+
+ALTER TABLE `FUNDO_PARTICIPACAO_GLOBAL` 
+    ADD CONSTRAINT FK_FPGL_USUA
+    FOREIGN KEY (USUA_ID)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
+    
+ALTER TABLE `FUNDO_PARTICIPACAO_GLOBAL` 
+    ADD CONSTRAINT FK_FPGL_USUA_BON
+    FOREIGN KEY (USUA_ID_BONIFICADO)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
+    
+ALTER TABLE `FUNDO_PARTICIPACAO_GLOBAL` 
+    ADD CONSTRAINT FK_FPGL_PLUF
+    FOREIGN KEY (PLUF_ID)
+    REFERENCES PLANO_USUARIO_FATURA(PLUF_ID) ON DELETE CASCADE;
 
 
 /* UPDATES NECESSÁRIOS */
