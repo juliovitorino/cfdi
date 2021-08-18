@@ -87,6 +87,7 @@ abstract class DAOFactory
 	public abstract function getRegistroIndicacaoDAO($daofactory);
 	public abstract function getCartaoMoverHistoricoDAO($daofactory);
 	public abstract function getCampanhaCashbackResgatePixDAO($daofactory);
+	public abstract function getFundoParticipacaoGlobalDAO($daofactory);
 
 
 	public function getSession() {

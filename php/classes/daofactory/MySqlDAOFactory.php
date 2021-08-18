@@ -48,6 +48,7 @@ require_once '../usuariocampanhasorteioticket/MySqlKinghostUsuarioCampanhaSortei
 require_once '../registroindicacao/MySqlKinghostRegistroIndicacaoDAO.php';
 require_once '../cartaomoverhistorico/MySqlKinghostCartaoMoverHistoricoDAO.php';
 require_once '../campanhacashbackresgatepix/MySqlKinghostCampanhaCashbackResgatePixDAO.php';
+require_once '../fundoparticipacaoglobal/MySqlKinghostFundoParticipacaoGlobalDAO.php';
 
 
 class MySqlDAOFactory extends DAOFactory
@@ -447,7 +448,16 @@ class MySqlDAOFactory extends DAOFactory
         return new MySqlKinghostCampanhaCashbackResgatePixDAO($daofactory);
     }
 
-
+	/**
+ 	 * Retorna uma instância de acesso a dados
+ 	 * @return MySqlKinghostFundoParticipacaoGlobalDAO
+ 	 */
+    public function getFundoParticipacaoGlobalDAO($daofactory)
+    {
+        return new MySqlKinghostFundoParticipacaoGlobalDAO($daofactory);
+    }
+	 
+	 
 	 
 }
 ?>
