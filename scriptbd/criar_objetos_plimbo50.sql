@@ -1509,7 +1509,7 @@ CREATE TABLE `FUNDO_PARTICIPACAO_GLOBAL` (
  `USUA_ID_BONIFICADO` int(11) NULL COMMENT 'ID do usuário bonificado',
  `PLUF_ID` int(11) NULL COMMENT 'ID do plano fatura do usuário',
  `FPGL_IN_TIPO` varchar(1) NOT NULL DEFAULT 'C' COMMENT 'Tipo do movimento', 
- `FPGL_VL_TRANSACAO` DECIMAL(10,2) NOT NULL DEFAULT 0 COMMENT 'Valor dO crédito ou débito',
+ `FPGL_VL_TRANSACAO` DECIMAL(10,2) NOT NULL DEFAULT 0 COMMENT 'Valor do crédito ou débito',
  `FPGL_TX_DESCRICAO` varchar(500) NOT NULL COMMENT 'descrição',
  `FPGL_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
  `FPGL_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
