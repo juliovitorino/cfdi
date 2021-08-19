@@ -30,8 +30,12 @@ interface FundoParticipacaoGlobalBusiness extends BusinessObject
 {
     public function atualizarStatus($daofactory, $id, $status);
     public function listarFundoParticipacaoGlobalPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);
+    public function listarFundoParticipacaoGlobalCreditoDebitoAcimaPK($daofactory, $fpglid, $status);
     public function validarTamanhoCampo($campo, $tamanho, $coment);
     public function listarFundoParticipacaoGlobalPorUsuaIdStatus($daofactory, $usuaid, $status, $pag, $qtde, $coluna, $ordem);
+    public function inserirCreditoParticipante($daofactory, $dto);
+    public function inserirCreditoBonificacao($daofactory, $dto);
+    public function getSaldoFundoParticipacaoGlobal($daofactory);
 
     public function pesquisarMaxPKAtivoIdusuarioparticipantePorStatus($daofactory, $idUsuarioParticipante, $status);
 

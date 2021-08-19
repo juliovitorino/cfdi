@@ -67,6 +67,20 @@ class FundoParticipacaoGlobalBusinessImpl implements FundoParticipacaoGlobalBusi
     }
 
 /**
+* pesquisarMaxPKAtivoIndicadorSaldoStatus() - Carrega apenas um registro no maior ID do status SALDO a MAIOR PK
+* @param $daofactory
+* @param $status
+* @return FundoParticipacaoGlobalDTO
+*/ 
+public function pesquisarMaxPKAtivoIndicadorSaldoStatus($daofactory, $idUsuarioDominador)
+{ 
+    $dao = $daofactory->getFundoParticipacaoGlobalDAO($daofactory);
+    $maxid = $dao->loadMaxPKAtivoIndicadorSaldoStatus($idUsuarioDominador, ConstantesVariavel::SALDO, ConstantesVariavel::STATUS_ATIVO);
+    return $this->carregarPorID($daofactory, $maxid);
+}
+
+
+/**
 * atualizar() - atualiza apenas um registro com base no dto FundoParticipacaoGlobalDTO->id
 * @param $daofactory
 *
@@ -182,6 +196,154 @@ class FundoParticipacaoGlobalBusinessImpl implements FundoParticipacaoGlobalBusi
     }
 
 /**
+* inserirCreditoBonificacao() - inserir um registro com base no FundoParticipacaoGlobalDTO. Alguns atributos dentro do DTO
+* serão ignorados caso estejam populados.
+*
+* Atributos da classe FundoParticipacaoGlobalDTO sumariamente IGNORADOS por este método MESMO que estejam preenchidos:
+* id
+* status
+* dataCadastro
+* dataAtualizacao
+*
+* @param $daofactory
+*
+* @return DTOPadrao
+*/ 
+public function inserirCreditoBonificacao($daofactory, $dto)
+{ 
+    $retorno = new DTOPadrao();
+    $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+    $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+    // Regras de Negócio
+    // ...
+    
+    // Aceita somente valores negativos. Valor de crédito >= 0 , falha.
+    if($dto->valorTransacao >= 0)
+    {
+        $retorno->msgcode = ConstantesMensagem::VALOR_INVALIDO_FUNDO_PARTICIPACAO_GLOBAL;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+
+    // Saldo insuficiente no fundo, falha.
+    $vlrSaldoFpgl = $this->getSaldoFundoParticipacaoGlobal($daofactory) ;
+    if( ($vlrSaldoFpgl <= 0) || ($dto->valorTransacao * -1 > $vlrSaldoFpgl))  
+    {
+        $retorno->msgcode = ConstantesMensagem::SALDO_INSUFICIENTE_FUNDO_PARTICIPACAO_GLOBAL;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+    }
+    // Somente usuário do grupo de administradores pode executar essa função (futuro)
+    // ...
+    
+    //--- Tudo ok com regras de negócio. Pode inserir o registro 
+    // Prepara registro  de bonificação
+    $dto->tipoMovimento = ConstantesVariavel::DEBITO;
+
+
+    return $this->inserirBonificacao($daofactory, $dto);
+}
+
+/**
+* listarFundoParticipacaoGlobalCreditoDebitoAcimaPK() - Listar registros de D/C acima de um fpgl_id informado
+*
+* @param $daofactory
+*
+* @return DTOPadrao
+*/ 
+public function listarFundoParticipacaoGlobalCreditoDebitoAcimaPK($daofactory, $fpglid, $status)
+{
+    $dao = $daofactory->getFundoParticipacaoGlobalDAO($daofactory);
+    return $dao->listFundoParticipacaoGlobalCreditoDebitoAcimaPK($fpglid, $status);
+
+}
+
+/**
+* getSaldoFundoParticipacaoGlobal() - inserir um registro com base no FundoParticipacaoGlobalDTO. Alguns atributos dentro do DTO
+* serão ignorados caso estejam populados.
+*
+* Atributos da classe FundoParticipacaoGlobalDTO sumariamente IGNORADOS por este método MESMO que estejam preenchidos:
+* id
+* status
+* dataCadastro
+* dataAtualizacao
+*
+* @param $daofactory
+*
+* @return DTOPadrao
+*/ 
+public function getSaldoFundoParticipacaoGlobal($daofactory)
+{
+
+    // Inicializa calculadora do saldo
+    $vlrFpgl = 0;
+    $fpglid_inicial = 0;
+    
+    // Obtem o maior fpgl_id com fpgl_in_tipo = "S" e status "A"
+    $fpgldto = $this->pesquisarMaxPKAtivoIndicadorSaldoStatus($daofactory, (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::USUA_ID_DOMINADOR_SALDO_FPGL));
+
+    if( ! is_null($fpgldto) )
+    {
+        $vlrFpgl = $fpgldto->valorTransacao;
+        $fpglid_inicial = $fpgldto->id;
+    }
+
+    // Obtem todos os registro com fpgl_in_tipo = "C" ou "D" que sejam acima do maior fpgl_id obtido acima
+    $lstfpgl = $this->listarFundoParticipacaoGlobalCreditoDebitoAcimaPK($daofactory, $fpglid_inicial, ConstantesVariavel::STATUS_ATIVO);
+
+    // Retornou linhas de credito e/ou debito do FPGL ?
+    if(count($lstfpgl) > 0) 
+    {
+        foreach ($lstfpgl as $key => $fpglitemdto) {
+            $vlrFpgl += $fpglitemdto->valorTransacao;
+        }
+    }
+
+    // calcula o saldo na iteração
+    //var_dump("saldo calculado ==>" . $vlrFpgl);
+    return $vlrFpgl;
+}
+
+/**
+* inseririnserirCreditoParticipante() - inserir um registro com base no FundoParticipacaoGlobalDTO. Alguns atributos dentro do DTO
+* serão ignorados caso estejam populados.
+*
+* Atributos da classe FundoParticipacaoGlobalDTO sumariamente IGNORADOS por este método MESMO que estejam preenchidos:
+* id
+* status
+* dataCadastro
+* dataAtualizacao
+*
+* @param $daofactory
+*
+* @return DTOPadrao
+*/ 
+public function inserirCreditoParticipante($daofactory, $dto)
+{ 
+    $retorno = new DTOPadrao();
+    $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+    $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+    // Regras de Negócio
+    // ...
+    
+    // Valor de crédito <= 0 , falha.
+    // O usuário participa de um plano gratuito, falha.
+    // Permissao tá OK?
+    // Somente usuário do grupo de administradores pode executar essa função (futuro)
+    // Só pode haver uma plufid por registro de crédito do participante. Falha.
+
+    
+    //--- Tudo ok com regras de negócio. Pode inserir o registro 
+    // Prepara registro  de bonificação
+    $dto->tipoMovimento = ConstantesVariavel::CREDITO;
+
+
+    return $this->inserir($daofactory, $dto);
+}
+
+/**
 * inserir() - inserir um registro com base no FundoParticipacaoGlobalDTO. Alguns atributos dentro do DTO
 * serão ignorados caso estejam populados.
 *
@@ -260,12 +422,6 @@ public function inserir($daofactory, $dto)
     if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
         return $ok;
     }
-
-    // Prepara registro  de bonificação
-    $dto->tipoMovimento = ConstantesVariavel::DEBITO;
-    if($dto->valorTransacao < 0) {
-        $dto->valorTransacao = $dto->valorTransacao * -1;
-    } 
 
     $dto->status = ConstantesVariavel::STATUS_ATIVO;
     $dao = $daofactory->getFundoParticipacaoGlobalDAO($daofactory);
@@ -359,14 +515,6 @@ public function inserirBonificacao($daofactory, $dto)
     if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
         return $ok;
     }
-
-    // Prepara registro  de bonificação
-    $dto->tipoMovimento = ConstantesVariavel::DEBITO;
-    if($dto->valorTransacao > 0) {
-        $dto->valorTransacao = $dto->valorTransacao * -1;
-    } 
-
-
 
     $dto->status = ConstantesVariavel::STATUS_ATIVO;
     $dao = $daofactory->getFundoParticipacaoGlobalDAO($daofactory);

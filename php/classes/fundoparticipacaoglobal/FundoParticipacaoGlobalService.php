@@ -32,6 +32,9 @@ require_once '../interfaces/AppService.php';
 interface FundoParticipacaoGlobalService extends AppService
 {
 
+    public function cadastrarCreditoPartipante($dto);
+    public function cadastrarCreditoBonificacao($dto);
+
     public function autalizarStatusFundoParticipacaoGlobal($id, $status);
     public function listarFundoParticipacaoGlobalPorStatus($status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
     public function listarFundoParticipacaoGlobalPorUsuaIdStatus($usuaid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);

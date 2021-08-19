@@ -62,6 +62,34 @@ class MySqlKinghostFundoParticipacaoGlobalDAO implements FundoParticipacaoGlobal
 
     }
 
+
+/**
+* loadMaxPKAtivoIndicadorSaldoStatus() - Carrega um MaxID (pk) para um ${CAMPO} e status
+*
+* @param $idUsuarioParticipante
+* @param $status
+* @return $dto
+*/ 
+
+    public function loadMaxPKAtivoIndicadorSaldoStatus($idUsuarioDominador, $tipoMovimento, $status)
+    {   
+        $retorno = 0;
+        // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+        $conexao = $this->daofactory->getSession();
+        $sql = DmlSqlFundoParticipacaoGlobal::SELECT_MAX_PK . ' WHERE ' 
+        . DmlSqlFundoParticipacaoGlobal::USUA_ID . " = $idUsuarioDominador "
+        . " AND " . DmlSqlFundoParticipacaoGlobal::FPGL_IN_TIPO . " = '$tipoMovimento'"
+        . " AND " . DmlSqlFundoParticipacaoGlobal::FPGL_IN_STATUS . " = '$status'";
+
+        $res = $conexao->query($sql);
+        if ($res){
+            $tmp = $res->fetch_assoc();
+            $retorno = $tmp['maxid'] == NULL ? 0 : $tmp['maxid'];
+        }
+        return $retorno;
+
+    }
+
 /**
 * load() - Carrega apenas um registro com base no campo id do DTO = (TIPO_EMPREENDIMENTO::TIEM_ID)
 *
@@ -141,6 +169,25 @@ class MySqlKinghostFundoParticipacaoGlobalDAO implements FundoParticipacaoGlobal
         // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
         $conexao = $this->daofactory->getSession();
         $res = $conexao->query(DmlSqlFundoParticipacaoGlobal::SELECT . 'WHERE `' . DmlSqlFundoParticipacaoGlobal::FPGL_IN_STATUS . "` = '$status'" );
+        if ($res){
+            while ($row = $res->fetch_assoc()) {
+                array_push($retorno, $this->getDTO($row));
+            }
+        }
+        return $retorno;
+    }
+
+    public function listFundoParticipacaoGlobalCreditoDebitoAcimaPK($fpglid, $status)
+    {
+        $retorno = array();
+
+        // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+        $conexao = $this->daofactory->getSession();
+        $sql = DmlSqlFundoParticipacaoGlobal::SELECT 
+        . " WHERE `" . DmlSqlFundoParticipacaoGlobal::FPGL_ID . "` > $fpglid "
+        . " AND `" . DmlSqlFundoParticipacaoGlobal::FPGL_IN_STATUS . "` = '$status' "
+        . " AND `" . DmlSqlFundoParticipacaoGlobal::FPGL_IN_TIPO . "` IN ('C','D') ";
+        $res = $conexao->query($sql);
         if ($res){
             while ($row = $res->fetch_assoc()) {
                 array_push($retorno, $this->getDTO($row));
@@ -407,7 +454,7 @@ class MySqlKinghostFundoParticipacaoGlobalDAO implements FundoParticipacaoGlobal
                             . DmlSql::DOUBLE_TYPE 
                             . DmlSql::STRING_TYPE 
                             ,$dto->idUsuarioParticipante
-                            ,$dto->idUsuariobonificado
+                            ,$dto->idUsuarioBonificado
                             ,$dto->tipoMovimento
                             ,$dto->valorTransacao
                             ,$dto->descricao
@@ -436,7 +483,7 @@ class MySqlKinghostFundoParticipacaoGlobalDAO implements FundoParticipacaoGlobal
         $retorno->idUsuarioBonificado = $resultset[DmlSqlFundoParticipacaoGlobal::USUA_ID_BONIFICADO] == NULL ? NULL : $resultset[DmlSqlFundoParticipacaoGlobal::USUA_ID_BONIFICADO];
         $retorno->idPlanoFatura = $resultset[DmlSqlFundoParticipacaoGlobal::PLUF_ID] == NULL ? NULL : $resultset[DmlSqlFundoParticipacaoGlobal::PLUF_ID];
         $retorno->tipoMovimento = $resultset[DmlSqlFundoParticipacaoGlobal::FPGL_IN_TIPO] == NULL ? NULL : $resultset[DmlSqlFundoParticipacaoGlobal::FPGL_IN_TIPO];
-        $retorno->valorTransacao = $resultset[DmlSqlFundoParticipacaoGlobal::FPGL_VL_TRANSACAO] == NULL ? NULL : $resultset[DmlSqlFundoParticipacaoGlobal::FPGL_VL_TRANSACAO];
+        $retorno->valorTransacao = $resultset[DmlSqlFundoParticipacaoGlobal::FPGL_VL_TRANSACAO] == NULL ? 0 : floatval($resultset[DmlSqlFundoParticipacaoGlobal::FPGL_VL_TRANSACAO]);
         $retorno->descricao = $resultset[DmlSqlFundoParticipacaoGlobal::FPGL_TX_DESCRICAO] == NULL ? NULL : $resultset[DmlSqlFundoParticipacaoGlobal::FPGL_TX_DESCRICAO];
         $retorno->status = $resultset[DmlSqlFundoParticipacaoGlobal::FPGL_IN_STATUS] == NULL ? NULL : $resultset[DmlSqlFundoParticipacaoGlobal::FPGL_IN_STATUS];
         $retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlFundoParticipacaoGlobal::FPGL_DT_CADASTRO]);

@@ -1,6 +1,8 @@
 <?php
 
 //importar dependencias
+require_once '../daofactory/DAOFactory.php';
+
 require_once 'campanhaQrCodeService.php';
 require_once 'campanhaQrCodeBusinessImpl.php';
 
@@ -33,9 +35,8 @@ require_once '../permissao/PermissaoHelper.php';
 require_once '../plano/ConstantesPlano.php';
 require_once '../campanhasorteio/CampanhaSorteioBusinessImpl.php';
 require_once '../usuariocampanhasorteio/UsuarioCampanhaSorteioBusinessImpl.php';
-
-
-require_once '../daofactory/DAOFactory.php';
+require_once '../fundoparticipacaoglobal/FundoParticipacaoGlobalBusinessImpl.php';
+require_once '../usuariosplanos/PlanoUsuarioBusinessImpl.php';
 
 
 /**
@@ -102,7 +103,6 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 		){
 			$campbo = new CampanhaServiceImpl();
 			$campdto = $campbo->pesquisarPorID($vt->id_campanha);
-
 			// Controle pela tabela de campanha - controle de overflow
 			if($campdto->contadorCartoes >= $campdto->maximoCartoes){
 				$campdto->msgcode = ConstantesMensagem::LIMITE_DE_CARTOES_EXCEDIDO;
@@ -237,9 +237,6 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 				//-------------------------------------------------------------------------
 				$casobo = new CampanhaSorteioBusinessImpl();
 				$casodto = $casobo->pesquisarMaxPKAtivoId_CampanhaPorStatus($daofactory, $vt->id_campanha, ConstantesVariavel::STATUS_ATIVO);
-//echo "<br>===============================<br>";				
-//var_dump($casodto);				
-//echo "<br>===============================<br>";				
 				if(!is_null($casodto))
 				{
 					$uscsdto = new UsuarioCampanhaSorteioDTO();
@@ -363,6 +360,58 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 						}
 					}
 
+				}
+
+				//-------------------------------------------------------
+				// Verifica a Chave Geral do Fundo de Participação Global
+				//-------------------------------------------------------
+				if(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_GERAL_FUNDO_PARTICIPACAO_GLOBAL_FPGL) == ConstantesVariavel::ATIVADO)
+				{
+					$okfpgl = true;
+
+					//------------------------------------------
+					// Aplica regras de negócio para FPGL e CACC
+					//------------------------------------------
+
+					// Somente planos pagos
+					$plusfpglbo = new PlanoUsuarioBusinessImpl();
+					if($plusfpglbo->isPlanoGratuito($daofactory, $campdto->id_usuario))
+					{
+						$okfpgl = false;
+					}
+
+					// dono da campanha tem que ter registro na USCA
+					$uscafpglbo = new UsuarioCashbackBusinessImpl();
+					$uscafpgldto = $uscafpglbo->PesquisarMaxPKAtivoId_UsuarioPorStatus($daofactory, $campdto->id_usuario, ConstantesVariavel::STATUS_ATIVO);
+					if(is_null($uscafpgldto))
+					{
+						$okfpgl = false;
+					}
+
+					if($okfpgl)
+					{
+						// Tudo Ok. Pode realizar o pagamento ao cliente que carimbou
+						$dtofpgl = new FundoParticipacaoGlobalDTO();
+	
+						$dtofpgl->idUsuarioParticipante = $campdto->id_usuario;
+						$dtofpgl->idUsuarioBonificado = $usuariodto->id;
+						$dtofpgl->valorTransacao = floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_FUNDO_PARTICIPACAO_GLOBAL_FPGL)) * -1;
+						$dtofpgl->descricao = MensagemCache::getInstance()->getMensagemParametrizada(ConstantesMensagem::AVISO_CREDITO_FUNDO_PARTICIPACAO_GLOBAL,[
+							ConstantesVariavel::P1 => $usuariodto->apelido,
+							ConstantesVariavel::P2 => Util::getMoeda($dtofpgl->valorTransacao * -1),
+						]);
+//var_dump($dtofpgl);				
+						$fpglbo = new FundoParticipacaoGlobalBusinessImpl();
+						$retfpgl = $fpglbo->inserirCreditoBonificacao($daofactory, $dtofpgl);
+	
+						// Pode inserir o registro de crédito o cashback_cc?
+						if($retfpgl->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO)
+						{
+							$caccfpglbo = new CampanhaCashbackCCBusinessImpl();
+							$retfpgl = $caccfpglbo->lancarMovimentoCashbackCC($daofactory, $usuariodto->id, $campdto->id_usuario, $dtofpgl->valorTransacao * -1, $dtofpgl->descricao, ConstantesVariavel::CREDITO);
+
+						}
+					}	
 				}
 
 			}

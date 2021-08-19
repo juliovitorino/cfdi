@@ -15,6 +15,7 @@ interface PlanoUsuarioBusiness extends BusinessObject
 	public function carregarPlanoUsuarioPorStatus($daofactory, $usuarioid, $status);
 	public function atualizarPlanoUsuarioPorId($daofactory, $plusid, $status);
 	public function verificarPermissaoPlano($daofactory, $usuarioid, $funcionalidade);
+	public function isPlanoGratuito($daofactory, $usuarioid);
 
 }
 

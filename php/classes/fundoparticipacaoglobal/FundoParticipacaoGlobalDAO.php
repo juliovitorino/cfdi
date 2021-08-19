@@ -19,6 +19,7 @@ interface FundoParticipacaoGlobalDAO extends DAO
 {
     public function insertBonificacao($dto);
     public function updateStatus($id, $status);
+    public function listFundoParticipacaoGlobalCreditoDebitoAcimaPK($fpglid, $status);
     public function listFundoParticipacaoGlobalStatus($status);
     public function countFundoParticipacaoGlobalPorStatus($status);
     public function listFundoParticipacaoGlobalPorStatus($status, $pag, $qtde, $coluna, $ordem);
@@ -26,6 +27,7 @@ interface FundoParticipacaoGlobalDAO extends DAO
     public function listFundoParticipacaoGlobalPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
 
     public function loadMaxIdusuarioparticipantePK($idUsuarioParticipante,$status);
+    public function loadMaxPKAtivoIndicadorSaldoStatus($idUsuarioDominador, $tipoMovimento, $status);
 
     public function loadIdusuarioparticipante($idUsuarioParticipante);
     public function loadIdusuariobonificado($idUsuarioBonificado);

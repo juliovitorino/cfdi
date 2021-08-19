@@ -293,6 +293,107 @@ public function apagar($dto)
 
         return $retorno;
     }
+/**
+*
+* cadastrarCreditoBonificacao() - Usado para invocar a classe de negócio FundoParticipacaoGlobalBusinessImpl de forma geral
+* para gerenciar a criação de registro de acordo as regras de negócio do sistema.
+*
+* @param $dto - Instância de FundoParticipacaoGlobalDTO
+*
+* @return uma instância de FundoParticipacaoGlobalDTO com resultdo da operação
+*
+*/
+
+
+public function cadastrarCreditoBonificacao($dto)
+{
+    $daofactory = NULL;
+    $retorno = NULL;
+    try {
+        $daofactory = DAOFactory::getDAOFactory();
+        $daofactory->open();
+        $daofactory->beginTransaction();
+        
+
+       $bo = new FundoParticipacaoGlobalBusinessImpl();
+       $retorno = $bo->inserirCreditoBonificacao($daofactory, $dto);
+
+       if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+           // Trocar a constante abaixo COMANDO_REALIZADO_COM_SUCESSO que é a mensagem padrão 
+           // por algo que faça mais sentido para o usuário no frontend
+
+           $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+           $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            $daofactory->commit();
+        } else {
+            $daofactory->rollback();
+        }
+        
+    } catch (Exception $e) {
+        // rollback na transação
+        $daofactory->rollback();
+
+    } finally {
+        try {
+            $daofactory->close();
+        } catch (Exception $e) {
+            // faz algo
+        }
+    }
+
+    return $retorno;
+}
+
+/**
+*
+* cadastrarCreditoPartipante() - Usado para invocar a classe de negócio FundoParticipacaoGlobalBusinessImpl de forma geral
+* para gerenciar a criação de registro de acordo as regras de negócio do sistema.
+*
+* @param $dto - Instância de FundoParticipacaoGlobalDTO
+*
+* @return uma instância de FundoParticipacaoGlobalDTO com resultdo da operação
+*
+*/
+
+
+    public function cadastrarCreditoPartipante($dto)
+    {
+        $daofactory = NULL;
+        $retorno = NULL;
+        try {
+            $daofactory = DAOFactory::getDAOFactory();
+            $daofactory->open();
+            $daofactory->beginTransaction();
+            
+
+           $bo = new FundoParticipacaoGlobalBusinessImpl();
+           $retorno = $bo->inserirCreditoParticipante($daofactory, $dto);
+
+           if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+               // Trocar a constante abaixo COMANDO_REALIZADO_COM_SUCESSO que é a mensagem padrão 
+               // por algo que faça mais sentido para o usuário no frontend
+
+               $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+               $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+                $daofactory->commit();
+            } else {
+                $daofactory->rollback();
+            }
+            
+        } catch (Exception $e) {
+            // rollback na transação
+            $daofactory->rollback();
+
+        } finally {
+            try {
+                $daofactory->close();
+            } catch (Exception $e) {
+                // faz algo
+            }
+        }
+
+        return $retorno;
+    }
 
 /**
 *
