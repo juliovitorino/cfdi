@@ -1247,7 +1247,7 @@ CREATE TABLE `USUARIO_CASHBACK` (
  `USCA_VL_RESGATE` DECIMAL(10,2) NOT NULL DEFAULT 0 COMMENT 'Resgatar a partir de',
  `USCA_VL_PERC_CASHBACK` DECIMAL(6,2) NOT NULL DEFAULT 0 COMMENT 'Percentual',
  `USCA_IN_PERM_TRANSF_MEMJ10` varchar(1) NOT NULL DEFAULT 'S' COMMENT 'Permite transferir saldo entre membros J10',
- `USCA_IN_PERM_RESGATE_PIX` varchar(1) NOT NULL DEFAULT 'N' COMMENT 'Permite solicitar resgate via PIX',
+ `USCA_IN_PERM_RESGATE_PIX` varchar(1) NOT NULL DEFAULT 'S' COMMENT 'Permite solicitar resgate via PIX',
  `USCA_TX_OBS` varchar(2000) DEFAULT NULL COMMENT 'Observação',
  `USCA_NU_CONT_STAR_1` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Péssima',
  `USCA_NU_CONT_STAR_2` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Ruim',

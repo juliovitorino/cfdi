@@ -38,6 +38,8 @@ require_once '../campanhacashbackcc/CampanhaCashbackCCBusinessImpl.php';
 require_once '../usuarionotificacao/UsuarioNotificacaoHelper.php';
 require_once '../usuarios/UsuarioHelper.php';
 require_once '../fundoparticipacaoglobal/FundoParticipacaoGlobalBusinessImpl.php';
+require_once '../usuariocashback/UsuarioCashbackBusinessImpl.php';
+require_once '../usuariocashback/UsuarioCashbackDTO.php';
 
 
 /**
@@ -1038,6 +1040,20 @@ var_dump($carimbodto);*/
 				$maxid,
 				ConstantesEstatisticaFuncao::FUNCAO_CRIAR_CAMPANHA
 			);
+
+			// Insere uma USCA caso não exista
+			$uscabo = new UsuarioCashbackBusinessImpl();
+			$uscadto = $uscabo->PesquisarMaxPKAtivoId_UsuarioPorStatus($daofactory, $dto->id_usuario, ConstantesVariavel::STATUS_ATIVO);
+			if(is_null($uscadto))
+			{
+				$uscadto = new UsuarioCashbackDTO();
+				$uscadto->id_usuario = $dto->id_usuario;
+				$uscadto->vlMinimoResgate = 100;
+				$uscadto->percentual = 1;
+				$uscadto->obs = "inserido via junta10";
+				$uscabo->inserir($daofactory, $uscadto);
+			}
+
 		}
 
 		//----------------------------------------------------------
