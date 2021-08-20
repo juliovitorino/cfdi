@@ -9,6 +9,11 @@ require_once '../dto/DTOPaginacao.php';
 
 require_once '../variavel/ConstantesVariavel.php';
 require_once '../variavel/VariavelCache.php';
+require_once '../usuariosplanos/PlanoUsuarioBusinessImpl.php';
+require_once '../campanhacashbackcc/CampanhaCashbackCCBusinessImpl.php';
+require_once '../permissao/PermissaoHelper.php';
+require_once '../plano/ConstantesPlano.php';
+require_once '../usuariocashback/UsuarioCashbackBusinessImpl.php';
 
 /**
 *
@@ -305,6 +310,78 @@ public function getSaldoFundoParticipacaoGlobal($daofactory)
     return $vlrFpgl;
 }
 
+
+/**
+* lancarMovimentoFundoParticipacaoGlobal() - inserir uma movimentação conjugada com cashback_cc.
+*
+* Atributos da classe FundoParticipacaoGlobalDTO sumariamente IGNORADOS por este método MESMO que estejam preenchidos:
+* id
+* status
+* dataCadastro
+* dataAtualizacao
+*
+* @param $daofactory
+*
+* @return DTOPadrao
+*/ 
+
+public function lancarMovimentoFundoParticipacaoGlobal($daofactory, $usuaid_debitar, $usuaid_bonificar, $vlrlancar, $descricao)
+{
+    //-------------------------------------------------------
+    // Verifica a Chave Geral do Fundo de Participação Global
+    //-------------------------------------------------------
+    if(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_GERAL_FUNDO_PARTICIPACAO_GLOBAL_FPGL) == ConstantesVariavel::ATIVADO)
+    {
+        $okfpgl = true;
+
+        //------------------------------------------
+        // Aplica regras de negócio para FPGL e CACC
+        //------------------------------------------
+
+        // Somente planos pagos
+        $plusfpglbo = new PlanoUsuarioBusinessImpl();
+        if($plusfpglbo->isPlanoGratuito($daofactory, $usuaid_debitar))
+        {
+            $okfpgl = false;
+        }
+
+        //---> colocar verificacao da permissao do plano porque nem todo plano pago permite retiradda do FPGL
+        $permdto = PermissaoHelper::verificarPermissao($daofactory, $usuaid_debitar, ConstantesPlano::PERM_ACESSO_FUNDO_PARTICIPACAO_GLOBAL);
+        if ($permdto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+            $okfpgl = false;
+        }
+
+        // dono da campanha tem que ter registro na USCA
+        $uscafpglbo = new UsuarioCashbackBusinessImpl();
+        $uscafpgldto = $uscafpglbo->PesquisarMaxPKAtivoId_UsuarioPorStatus($daofactory, $usuaid_debitar, ConstantesVariavel::STATUS_ATIVO);
+        if(is_null($uscafpgldto))
+        {
+            $okfpgl = false;
+        }
+
+        if($okfpgl)
+        {
+            // Tudo Ok. Pode realizar o pagamento ao cliente que carimbou
+            $dtofpgl = new FundoParticipacaoGlobalDTO();
+
+            $dtofpgl->idUsuarioParticipante = $usuaid_debitar;
+            $dtofpgl->idUsuarioBonificado = $usuaid_bonificar;
+            $dtofpgl->valorTransacao = $vlrlancar * -1;
+            $dtofpgl->descricao = $descricao;
+
+            $retfpgl = $this->inserirCreditoBonificacao($daofactory, $dtofpgl);
+
+            // Pode inserir o registro de crédito o cashback_cc?
+            if($retfpgl->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO)
+            {
+                $caccfpglbo = new CampanhaCashbackCCBusinessImpl();
+                $retfpgl = $caccfpglbo->lancarMovimentoCashbackCC($daofactory, $usuaid_bonificar, $usuaid_debitar, $vlrlancar, $descricao, ConstantesVariavel::CREDITO);
+
+            }
+        }	
+    }
+}
+
 /**
 * inseririnserirCreditoParticipante() - inserir um registro com base no FundoParticipacaoGlobalDTO. Alguns atributos dentro do DTO
 * serão ignorados caso estejam populados.
@@ -325,14 +402,43 @@ public function inserirCreditoParticipante($daofactory, $dto)
     $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
     $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 
+    // ............................
     // Regras de Negócio
-    // ...
+    // ............................
     
     // Valor de crédito <= 0 , falha.
+    if($dto->valorTransacao <= 0)
+    {
+        $retorno->msgcode = ConstantesMensagem::SALDO_INSUFICIENTE_FUNDO_PARTICIPACAO_GLOBAL;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;           
+    }
+
     // O usuário participa de um plano gratuito, falha.
+    $plusfpgl = new PlanoUsuarioBusinessImpl();
+    if($plusfpgl->isPlanoGratuito($daofactory, $dto->idUsuarioParticipante))
+    {
+        $retorno->msgcode = ConstantesMensagem::PLANO_GRATUITO_NAO_PERMITE_FPGL;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+            ConstantesVariavel::P1 => $dto->idUsuarioParticipante,
+        ]);
+        return $retorno;           
+    }
+
     // Permissao tá OK?
     // Somente usuário do grupo de administradores pode executar essa função (futuro)
+    
     // Só pode haver uma plufid por registro de crédito do participante. Falha.
+    $fpgldto = $this->pesquisarPorIdusuarioparticipanteIdplanofatura($daofactory, $dto->idUsuarioParticipante, $dto->idPlanoFatura);
+    if( ! is_null($fpgldto))
+    {
+        $retorno->msgcode = ConstantesMensagem::FPFL_JA_EXISTE_PARTICIPANTE_FATURA;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($retorno->msgcode, [
+            ConstantesVariavel::P1 => $dto->idUsuarioParticipante,
+            ConstantesVariavel::P2 => $dto->idPlanoFatura,
+        ]);
+        return $retorno;           
+    }
 
     
     //--- Tudo ok com regras de negócio. Pode inserir o registro 
@@ -754,6 +860,23 @@ public function inserirBonificacao($daofactory, $dto)
     { 
         $dao = $daofactory->getFundoParticipacaoGlobalDAO($daofactory);
         return $dao->loadIdusuarioparticipante($idUsuarioParticipante);
+    }
+
+
+/**
+*
+* pesquisarPorIdusuarioparticipanteIdplanofatura() - Usado para invocar a classe de negócio FundoParticipacaoGlobalBusinessImpl de forma geral
+* realizar uma busca de ID do usuário participante diretamente na tabela FUNDO_PARTICIPACAO_GLOBAL campo USUA_ID
+*
+* @param $idUsuarioParticipante
+* @return FundoParticipacaoGlobalDTO
+*
+* 
+*/
+    public function pesquisarPorIdusuarioparticipanteIdplanofatura($daofactory, $idUsuarioParticipante, $idPlanoFatura)
+    { 
+        $dao = $daofactory->getFundoParticipacaoGlobalDAO($daofactory);
+        return $dao->loadIdusuarioparticipanteIdplanofatura($idUsuarioParticipante, $idPlanoFatura);
     }
 
 /**

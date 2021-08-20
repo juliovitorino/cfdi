@@ -29,6 +29,7 @@ interface FundoParticipacaoGlobalDAO extends DAO
     public function loadMaxIdusuarioparticipantePK($idUsuarioParticipante,$status);
     public function loadMaxPKAtivoIndicadorSaldoStatus($idUsuarioDominador, $tipoMovimento, $status);
 
+    public function loadIdusuarioparticipanteIdplanofatura($idUsuarioParticipante, $idPlanoFatura);
     public function loadIdusuarioparticipante($idUsuarioParticipante);
     public function loadIdusuariobonificado($idUsuarioBonificado);
     public function loadIdplanofatura($idPlanoFatura);

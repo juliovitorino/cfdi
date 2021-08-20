@@ -37,8 +37,11 @@ interface FundoParticipacaoGlobalBusiness extends BusinessObject
     public function inserirCreditoBonificacao($daofactory, $dto);
     public function getSaldoFundoParticipacaoGlobal($daofactory);
 
+    public function lancarMovimentoFundoParticipacaoGlobal($daofactory, $usuaid_debitar, $usuaid_bonificar, $vlrlancar, $descricao);
+
     public function pesquisarMaxPKAtivoIdusuarioparticipantePorStatus($daofactory, $idUsuarioParticipante, $status);
 
+    public function pesquisarPorIdusuarioparticipanteIdplanofatura($daofactory, $idUsuarioParticipante, $idPlanoFatura);
     public function pesquisarPorIdusuarioparticipante($daofactory, $idUsuarioParticipante);
     public function pesquisarPorIdusuariobonificado($daofactory, $idUsuarioBonificado);
     public function pesquisarPorIdplanofatura($daofactory, $idPlanoFatura);

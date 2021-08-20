@@ -13,6 +13,7 @@ require_once '../variavel/VariavelCache.php';
 require_once '../campanhasorteiofilacriacao/CampanhaSorteioFilaCriacaoBusinessImpl.php';
 require_once '../campanha/campanhaBusinessImpl.php';
 require_once '../usuarionotificacao/UsuarioNotificacaoHelper.php';
+require_once '../permissao/PermissaoHelper.php';
 
 /**
 *

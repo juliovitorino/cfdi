@@ -129,6 +129,7 @@ AUTO_INCREMENT = 1000;
 /* 2 - PERM_CRIAR_PROMOCAO_PLANO                                   /
 /* 3 - PERM_ADICIONAR_CARTOES_CAMPANHA                             /
 /* 4 - PERM_ADICIONAR_SORTEIO_CAMPANHA                             /
+/* 5 - PERM_ACESSO_FUNDO_PARTICIPACAO_GLOBAL                       /
 /*                                                                 /
 /******************************************************************/
 /* Valores para PLAN_IN_STATUS                                     /
@@ -1518,6 +1519,9 @@ CREATE TABLE `FUNDO_PARTICIPACAO_GLOBAL` (
 ) ENGINE=InnoDB 
 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 AUTO_INCREMENT = 1000;
+
+CREATE INDEX IX_FPGL_USUA_PLUF_ID
+        ON FUNDO_PARTICIPACAO_GLOBAL(USUA_ID, PLUF_ID);
 
 -- CONSTRAINTS FOREIGN KEY
 

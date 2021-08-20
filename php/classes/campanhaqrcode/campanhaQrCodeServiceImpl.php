@@ -362,6 +362,21 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 
 				}
 
+				//------------------------------------------------------------------------------------------------
+				// Lançar movimento sobre o Fundo de Participação Global e o conta corrente do usuário bonificado
+				//------------------------------------------------------------------------------------------------
+				$fpglbo = new FundoParticipacaoGlobalBusinessImpl();
+				$fpglbo->lancarMovimentoFundoParticipacaoGlobal($daofactory
+					, $campdto->id_usuario
+					, $usuariodto->id
+					, floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_FUNDO_PARTICIPACAO_GLOBAL_FPGL))
+					, MensagemCache::getInstance()->getMensagemParametrizada(ConstantesMensagem::AVISO_CREDITO_FUNDO_PARTICIPACAO_GLOBAL,[
+						ConstantesVariavel::P1 => $usuariodto->apelido,
+						ConstantesVariavel::P2 => Util::getMoeda(floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_FUNDO_PARTICIPACAO_GLOBAL_FPGL))),
+					])
+				);
+
+/* PODE APAGAR EM FUTURO MOMENTO -- CODIGO FOI SUBSTITUIDO POR UMA FUNÇÃO DE USO GERAL DENTRO DAS CLASSES FPGL
 				//-------------------------------------------------------
 				// Verifica a Chave Geral do Fundo de Participação Global
 				//-------------------------------------------------------
@@ -377,6 +392,12 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 					$plusfpglbo = new PlanoUsuarioBusinessImpl();
 					if($plusfpglbo->isPlanoGratuito($daofactory, $campdto->id_usuario))
 					{
+						$okfpgl = false;
+					}
+
+					//---> colocar verificacao da permissao do plano porque nem todo plano pago permite retiradda do FPGL
+					$permdto = PermissaoHelper::verificarPermissao($daofactory,$campdto->id_usuario, ConstantesPlano::PERM_ACESSO_FUNDO_PARTICIPACAO_GLOBAL);
+					if ($permdto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
 						$okfpgl = false;
 					}
 
@@ -400,7 +421,7 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 							ConstantesVariavel::P1 => $usuariodto->apelido,
 							ConstantesVariavel::P2 => Util::getMoeda($dtofpgl->valorTransacao * -1),
 						]);
-//var_dump($dtofpgl);				
+
 						$fpglbo = new FundoParticipacaoGlobalBusinessImpl();
 						$retfpgl = $fpglbo->inserirCreditoBonificacao($daofactory, $dtofpgl);
 	
@@ -413,7 +434,7 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 						}
 					}	
 				}
-
+*/
 			}
 
  			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {

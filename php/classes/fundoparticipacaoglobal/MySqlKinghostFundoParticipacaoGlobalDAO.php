@@ -637,6 +637,26 @@ class MySqlKinghostFundoParticipacaoGlobalDAO implements FundoParticipacaoGlobal
         return $retorno;
     }
 
+
+    /**
+    * loadIdusuarioparticipanteIdplanofatura() - implementação da assinatura em FundoParticipacaoGlobalDAO
+    */
+
+    public function loadIdusuarioparticipanteIdplanofatura($idUsuarioParticipante, $idPlanoFatura)
+    {   
+        $retorno = NULL;
+        // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+        $conexao = $this->daofactory->getSession();
+        $sql = DmlSqlFundoParticipacaoGlobal::SELECT 
+            . " WHERE " . DmlSqlFundoParticipacaoGlobal::USUA_ID . " = $idUsuarioParticipante"
+            . " AND "   . DmlSqlFundoParticipacaoGlobal::PLUF_ID . " = $idPlanoFatura";
+        $res = $conexao->query($sql);
+        if ($res){
+            $retorno = $this->getDTO($res->fetch_assoc());
+        }
+        return $retorno;
+    }
+
     /**
     * loadIdusuariobonificado() - implementação da assinatura em FundoParticipacaoGlobalDAO
     */

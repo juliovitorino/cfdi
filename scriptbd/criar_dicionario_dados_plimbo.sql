@@ -206,6 +206,10 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0195
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0196','Aviso. Saldo Insuficiente para remunerar carimbo pelo Fundo de Participação Global');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0197','Valor inválido para lançamento no Fundo de Participação Global');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0198','Olá *=p1=*, você acaba de ser bonificado pelo nosso FPGL com um crédito de *=p2=* no seu cashback');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0199','Já existe lançamento em FPGL para USUA_ID = *=p1=* / PLUF_ID = *=p2=*');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0200','Plano atual do USUA_ID *=p1=* é gratuito. FPGL não permitido.');
+
+
 -- variaveis
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CANIVETE_VERSAO','Versão do Canivete','1.0.0');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CANIVETE_COPY','Direitos reservados do Canivete','Julio Vitorino');

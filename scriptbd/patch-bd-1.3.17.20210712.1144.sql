@@ -28,6 +28,9 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0195
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0196','Aviso. Saldo Insuficiente para remunerar carimbo pelo Fundo de Participação Global');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0197','Valor inválido para lançamento no Fundo de Participação Global');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0198','Olá *=p1=*, você acaba de ser bonificado pelo nosso FPGL com um crédito de *=p2=* no seu cashback');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0199','Já existe lançamento em FPGL para USUA_ID = *=p1=* / PLUF_ID = *=p2=*');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0200','Plano atual do USUA_ID *=p1=* é gratuito. FPGL não permitido.');
+
 
 -- Atualização estrutural de tabelas e campos
 /*************************************************************************/
@@ -56,6 +59,9 @@ CREATE TABLE `FUNDO_PARTICIPACAO_GLOBAL` (
 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 AUTO_INCREMENT = 1000;
 
+
+CREATE INDEX IX_FPGL_USUA_PLUF_ID
+        ON FUNDO_PARTICIPACAO_GLOBAL(USUA_ID, PLUF_ID);
 
 ALTER TABLE `FUNDO_PARTICIPACAO_GLOBAL` 
     ADD CONSTRAINT FK_FPGL_USUA
