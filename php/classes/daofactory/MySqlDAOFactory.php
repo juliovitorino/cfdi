@@ -7,6 +7,11 @@
  * @since 25/07/2018
  */
 
+require_once '../funcoesadministrativas/MySqlKinghostFuncoesAdministrativasDAO.php';
+require_once '../grupoadministracao/MySqlKinghostGrupoAdministracaoDAO.php';
+require_once '../grupoadminfuncoesadmin/MySqlKinghostGrupoAdminFuncoesAdminDAO.php';
+require_once '../grupoadminfuncoesadminusuario/MySqlKinghostGrupoAdminFuncoesAdminUsuarioDAO.php';
+
 require_once '../mkdlista/MySqlKinghostMkdListaDAO.php';
 require_once '../filaqrcodependenteproduzir/MySqlKinghostFilaQRCodePendenteProduzirDAO.php';
 require_once '../usuarioversao/MySqlKinghostUsuarioVersaoDAO.php';
@@ -68,6 +73,42 @@ class MySqlDAOFactory extends DAOFactory
 	{
 	return 1;
 	}
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	* @return MySqlKinghostFuncoesAdministrativasDAO
+	*/
+	public function getFuncoesAdministrativasDAO($daofactory)
+	{
+		return new MySqlKinghostFuncoesAdministrativasDAO($daofactory);
+	}
+  
+	/**
+	* Retorna uma instância de acesso a dados
+	* @return MySqlKinghostGrupoAdministracaoDAO
+	*/
+	public function getGrupoAdministracaoDAO($daofactory)
+	{
+	return new MySqlKinghostGrupoAdministracaoDAO($daofactory);
+	}
+
+	/**
+     * Retorna uma instância de acesso a dados
+     * @return MySqlKinghostGrupoAdminFuncoesAdminDAO
+     */
+    public function getGrupoAdminFuncoesAdminDAO($daofactory)
+    {
+        return new MySqlKinghostGrupoAdminFuncoesAdminDAO($daofactory);
+    }
+
+    /**
+     * Retorna uma instância de acesso a dados
+     * @return MySqlKinghostGrupoAdminFuncoesAdminUsuarioDAO
+     */
+    public function getGrupoAdminFuncoesAdminUsuarioDAO($daofactory)
+    {
+        return new MySqlKinghostGrupoAdminFuncoesAdminUsuarioDAO($daofactory);
+    }
 
 	/**
 	 * Retorna uma instância de acesso a dados

@@ -63,6 +63,86 @@ AUTO_INCREMENT = 1000;
 CREATE INDEX IX_FPGL_USUA_PLUF_ID
         ON FUNDO_PARTICIPACAO_GLOBAL(USUA_ID, PLUF_ID);
 
+/******************************************************************/
+/* SEGLOG_FUNCOES_ADMINISTRATIVAS                                 */
+/******************************************************************/
+/* Valores para USUA_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* I = Inativado                                                   /
+/******************************************************************/
+CREATE TABLE `SEGLOG_FUNCOES_ADMINISTRATIVAS` (
+ `FUAD_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID funções administrativas',
+ `FUAD_NM_DESCRICAO` VARCHAR(100) NOT NULL COMMENT 'Descricao da função administrativa',
+ `FUAD_IN_STATUS` VARCHAR(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `FUAD_DT_CADASTRO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `FUAD_DT_UPDATE` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_FUAD_ID PRIMARY KEY (FUAD_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+/******************************************************************/
+/* SEGLOG_GRUPO_ADMINISTRACAO                                     */
+/******************************************************************/
+/* Valores para USUA_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* I = Inativado                                                   /
+/******************************************************************/
+CREATE TABLE `SEGLOG_GRUPO_ADMINISTRACAO` (
+ `GRAD_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID grupo administração',
+ `GRAD_NM_DESCRICAO` VARCHAR(100) NOT NULL COMMENT 'Descricao do grupo administração',
+ `GRAD_IN_STATUS` VARCHAR(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `GRAD_DT_CADASTRO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `GRAD_DT_UPDATE` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_GRAD_ID PRIMARY KEY (GRAD_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+/******************************************************************/
+/* SEGLOG_GRUPO_ADM_FUNCAO_ADM                                    */
+/******************************************************************/
+/* Valores para USUA_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* I = Inativado                                                   /
+/******************************************************************/
+CREATE TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM` (
+ `GAFA_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID grupo admin x função admin',
+ `GRAD_ID` int(11) NOT NULL COMMENT 'ID grupo administração',
+ `FUAD_ID` int(11) NOT NULL COMMENT 'ID funções administrativas',
+ `GAFA_NM_DESCRICAO` VARCHAR(100) NOT NULL COMMENT 'Descricao do grupo admin x função admin',
+ `GAFA_IN_CRUD_CRIAR` VARCHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Permissão CRUD Criar',
+ `GAFA_IN_CRUD_RECUPERAR` VARCHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Permissão CRUD Recuperar',
+ `GAFA_IN_CRUD_ATUALIZAR` VARCHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Permissão CRUD Atualizar',
+ `GAFA_IN_CRUD_EXCLUIR` VARCHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Permissão CRUD Excluir',
+ `GAFA_IN_STATUS` VARCHAR(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `GAFA_DT_CADASTRO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `GAFA_DT_UPDATE` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_GAFA_ID PRIMARY KEY (GAFA_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+/******************************************************************/
+/* SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO                            */
+/******************************************************************/
+/* Valores para USUA_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* I = Inativado                                                   /
+/******************************************************************/
+CREATE TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO` (
+ `GAFAU_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID grupo admin x função admin x usuário',
+ `GAFA_ID` int(11) NOT NULL COMMENT 'ID grupo admin x função admin',
+ `USUA_ID` int(11) NOT NULL COMMENT 'ID doo usuário',
+ `GAFA_IN_STATUS` VARCHAR(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `GAFA_DT_CADASTRO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `GAFA_DT_UPDATE` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_GAFAU_ID PRIMARY KEY (GAFAU_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+
 ALTER TABLE `FUNDO_PARTICIPACAO_GLOBAL` 
     ADD CONSTRAINT FK_FPGL_USUA
     FOREIGN KEY (USUA_ID)
@@ -77,6 +157,29 @@ ALTER TABLE `FUNDO_PARTICIPACAO_GLOBAL`
     ADD CONSTRAINT FK_FPGL_PLUF
     FOREIGN KEY (PLUF_ID)
     REFERENCES PLANO_USUARIO_FATURA(PLUF_ID) ON DELETE CASCADE;
+
+
+/* CONSTRAINTS DE SEGLOG */
+
+ALTER TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM` 
+    ADD CONSTRAINT FK_GAFA_GRAD
+    FOREIGN KEY (GRAD_ID)
+    REFERENCES SEGLOG_GRUPO_ADMINISTRACAO(GRAD_ID) ON DELETE CASCADE;
+    
+ALTER TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM` 
+    ADD CONSTRAINT FK_GAFA_FUAD
+    FOREIGN KEY (FUAD_ID)
+    REFERENCES SEGLOG_FUNCOES_ADMINISTRATIVAS(FUAD_ID) ON DELETE CASCADE;
+
+ALTER TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO`
+    ADD CONSTRAINT FK_GAFAU_USUA
+    FOREIGN KEY (USUA_ID)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
+
+ALTER TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO`
+    ADD CONSTRAINT FK_GAFAU_GAFA
+    FOREIGN KEY (GAFA_ID)
+    REFERENCES SEGLOG_GRUPO_ADM_FUNCAO_ADM(GAFA_ID) ON DELETE CASCADE;
 
 /* ALTER TABLES NECESSÁRIOS */
 
