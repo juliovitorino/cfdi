@@ -1,0 +1,14 @@
+....###....########.########.##....##..######.....###.....#######.
+...##.##......##....##.......###...##.##....##...##.##...##.....##
+..##...##.....##....##.......####..##.##........##...##..##.....##
+.##.....##....##....######...##.##.##.##.......##.....##.##.....##
+.#########....##....##.......##..####.##.......#########.##.....##
+.##.....##....##....##.......##...###.##....##.##.....##.##.....##
+.##.....##....##....########.##....##..######..##.....##..#######.
+
+Todos os códigos gerados nesta pasta são para dar apoio ao processo da seglog.
+
+Logo não use para incluir, deletar ou atualizar nada porque tudo é feito com base em VIEW MATERIALIZADA.
+
+Então, somente comandos de pesquisa estão habilitados para o perfeito funcionamento.
+

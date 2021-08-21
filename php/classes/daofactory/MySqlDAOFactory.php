@@ -11,6 +11,7 @@ require_once '../funcoesadministrativas/MySqlKinghostFuncoesAdministrativasDAO.p
 require_once '../grupoadministracao/MySqlKinghostGrupoAdministracaoDAO.php';
 require_once '../grupoadminfuncoesadmin/MySqlKinghostGrupoAdminFuncoesAdminDAO.php';
 require_once '../grupoadminfuncoesadminusuario/MySqlKinghostGrupoAdminFuncoesAdminUsuarioDAO.php';
+require_once '../seglog/MySqlKinghostSeglogDAO.php';
 
 require_once '../mkdlista/MySqlKinghostMkdListaDAO.php';
 require_once '../filaqrcodependenteproduzir/MySqlKinghostFilaQRCodePendenteProduzirDAO.php';
@@ -110,6 +111,15 @@ class MySqlDAOFactory extends DAOFactory
         return new MySqlKinghostGrupoAdminFuncoesAdminUsuarioDAO($daofactory);
     }
 
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostSeglogDAO
+	 */
+	public function getSeglogDAO($daofactory)
+	{
+		return new MySqlKinghostSeglogDAO($daofactory);
+	}
+	 
 	/**
 	 * Retorna uma instância de acesso a dados
 	* @return MySqlUsuarioDAO
