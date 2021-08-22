@@ -38,7 +38,6 @@ require_once '../usuariocampanhasorteio/UsuarioCampanhaSorteioBusinessImpl.php';
 require_once '../fundoparticipacaoglobal/FundoParticipacaoGlobalBusinessImpl.php';
 require_once '../usuariosplanos/PlanoUsuarioBusinessImpl.php';
 
-
 /**
  * CampanhaQrCodeService - Implementação dos servicos
  */
@@ -270,6 +269,48 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 					$ucsbo = new UsuarioCampanhaSorteioBusinessImpl();
 					$retorno = $ucsbo->inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto);
 
+				}
+
+				//-------------------------------------------------------------------------------------
+				// Verifica se essa campanha permite que o dono da campanha seja remunerado
+				// para que ele incentive fique sempre com o Junta10 na cabeça
+				//-------------------------------------------------------------------------------------
+				if(
+					($campdto->permiteBonificarCarimboDonoCampanha) && 
+					(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_GERAL_INCENTIVAR_DONO_CAMPANHA_CARIMBAR) == ConstantesVariavel::ATIVADO) 
+				)
+				{
+					$vlrIncentivo =  floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_INCENTIVAR_DONO_CAMPANHA_CARIMBAR));
+					$vlrLimite =  floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_LIMITE_TETO_INCENTIVAR_DONO_CAMPANHA_CARIMBAR));
+					$usuaid_debito = VariavelCache::getInstance()->getVariavel(ConstantesVariavel::USUA_ID_DEBITO_INCENTIVAR_DONO_CAMPANHA_CARIMBAR);
+
+					// se o saldo em cashback do dono da campanha ultrapassou o limite teto, ignora a remuneração
+					$csisaldo = new CampanhaCashbackCCBusinessImpl();
+					$saldodto = $csisaldo->getSaldoCashbackCC($daofactory, $campdto->id_usuario);
+					if($saldodto != NULL && $saldodto->vlsldGeral < $vlrLimite)
+					{
+						$caccbo = new CampanhaCashbackCCBusinessImpl();
+						$descricao_bonificacao = MensagemCache::getInstance()->getMensagemParametrizada(ConstantesMensagem::MSG_CASHBACK_INCENTIVAR_DONO_CAMPANHA_CARIMBAR, [
+							ConstantesVariavel::P1 => Util::getMoeda($vlrIncentivo),
+							ConstantesVariavel::P2 => $campdto->nome,
+						]);
+						$retcredito = $caccbo->CreditarCashbackCC($daofactory, $campdto->id_usuario, $usuaid_debito, $vlrIncentivo, $descricao_bonificacao);
+
+						// notifica o usuário dono da campanha
+						UsuarioNotificacaoHelper::criarUsuarioNotificacaoPorBusiness($daofactory
+							, $campdto->id_usuario
+							, $descricao_bonificacao
+							,"money.png");
+
+						// notifica o admin
+						UsuarioNotificacaoHelper::criarNotificacaoAdmin($daofactory
+							, ConstantesMensagem::MSG_CASHBACK_INCENTIVAR_DONO_CAMPANHA_CARIMBAR
+							, [
+								ConstantesVariavel::P1 => Util::getMoeda($vlrIncentivo),
+								ConstantesVariavel::P2 => $campdto->nome,
+							]
+						);
+					}
 				}
 
 				//-------------------------------------------------------------------------------------

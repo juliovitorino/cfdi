@@ -11,6 +11,18 @@
 ----------------------------------------------------------------------------------
 => Conferir o arquivo "variaveis-ajustar-import.txt"
 
+-- *****  É OBRIGATORIO CRIAR UM REGISTRO USCA PARA CADA DONO DE CAMPANHA NESSA NOVA VERSÃO *****
+INSERT INTO USUARIO_CASHBACK ( 
+  `USUA_ID`,
+  `USCA_VL_RESGATE`,
+  `USCA_VL_PERC_CASHBACK`,
+  `USCA_IN_PERM_RESGATE_PIX`)
+SELECT DISTINCT USUA_ID,100,1,'S'
+FROM CAMPANHA
+WHERE CAMP_IN_STATUS = 'A'
+ORDER BY USUA_ID;
+--********** NÃO ESQUEÇA DE APAGAR AS LINHAS DUPLICADAS DOS USUA_ID 1000 (JUNTA10) E 1 (JULIO) ****
+
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CHAVE_GERAL_PERMITE_REMUNERAR_PROMOTOR','Chave Geral para permitir remunerar um promotor de usuarios que criam campanha' ,'ON');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('VALOR_REMUNERAR_PROMOTOR','Valor a remunerar um promotor de usuarios que criam campanha' ,'2.55');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('USUA_ID_DEBITAR_REMUNERAR_PROMOTOR','USUA_ID que vai remunerar um promotor de usuarios que criam campanha' ,'1');
@@ -20,6 +32,10 @@ INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONT
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('USUA_ID_DOMINADOR_SALDO_FPGL','Usuário dominador do Tipo movimento SALDO' ,'1');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CHAVE_GERAL_FUNDO_PARTICIPACAO_GLOBAL_FPGL','Chave Geral para uso do Fundo de Participação Global' ,'ON');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('VALOR_FUNDO_PARTICIPACAO_GLOBAL_FPGL','Valor padrão de retirada do Fundo de Participação Global' ,'0.50');
+INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CHAVE_GERAL_INCENTIVAR_DONO_CAMPANHA_CARIMBAR','Chave Geral para permitir remunerar incentivo de dono de campanha' ,'OFF');
+INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('VALOR_INCENTIVAR_DONO_CAMPANHA_CARIMBAR','Valor padrão para remunerar incentivo de dono de campanha' ,'0.50');
+INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('VALOR_LIMITE_TETO_INCENTIVAR_DONO_CAMPANHA_CARIMBAR','Valor limite teto remunerar incentivo de dono de campanha' ,'100');
+INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('USUA_ID_DEBITO_INCENTIVAR_DONO_CAMPANHA_CARIMBAR','USUA_ID debitar da configuração do cashback (USCA) incentivo de dono de campanha' ,'1');
 
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0192','Crédito de bonificação por seu indicado acbar de criar uma campanha');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0193','Olá *=p1=*, você acaba de receber um CRÉDITO de *=p2=* no seu cashback porque o usuário *=p3=* acabou de criar uma campanha no Junta10 ');
@@ -30,6 +46,8 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0197
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0198','Olá *=p1=*, você acaba de ser bonificado pelo nosso FPGL com um crédito de *=p2=* no seu cashback');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0199','Já existe lançamento em FPGL para USUA_ID = *=p1=* / PLUF_ID = *=p2=*');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0200','Plano atual do USUA_ID *=p1=* é gratuito. FPGL não permitido.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0201','Parabéns, você acaba de ganhar *=p1=* de crédito no seu cashback por incentivar seus clientes a participarem da campanha *=p2=*');
+
 
 
 -- Atualização estrutural de tabelas e campos
