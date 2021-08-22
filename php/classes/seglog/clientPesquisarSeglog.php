@@ -9,8 +9,8 @@ $date = new DateTime();
 $ts = $date->getTimestamp();
 
 $csi = new SeglogServiceImpl();
-$funcao = "ADICIONAR-FUNDO-PARTICIPACAO-GLOBAL";
-//$funcao = "ADICIONAR-PLANO";
+$funcao = "PROMOVER-RESGATE-PIX-EM-ANALISE-FINANCEIRO";
+$funcao = "funcao-inexistente";
 $usuaid = 1000;
 
 // Imprime a 1a pagina
