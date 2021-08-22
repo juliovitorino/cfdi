@@ -118,6 +118,8 @@ CREATE INDEX IX_FPGL_USUA_PLUF_ID
 /******************************************************************/
 /* SEGLOG_FUNCOES_ADMINISTRATIVAS                                 */
 /******************************************************************/
+/* MNEMONICO = FUAD                                                /
+/*-----------------------------------------------------------------/
 /* Valores para USUA_IN_STATUS                                     /
 /* A = Ativo                                                       /
 /* I = Inativado                                                   /
@@ -136,6 +138,8 @@ AUTO_INCREMENT = 1000;
 /******************************************************************/
 /* SEGLOG_GRUPO_ADMINISTRACAO                                     */
 /******************************************************************/
+/* MNEMONICO = GRAD                                                /
+/*-----------------------------------------------------------------/
 /* Valores para USUA_IN_STATUS                                     /
 /* A = Ativo                                                       /
 /* I = Inativado                                                   /
@@ -154,6 +158,8 @@ AUTO_INCREMENT = 1000;
 /******************************************************************/
 /* SEGLOG_GRUPO_ADM_FUNCAO_ADM                                    */
 /******************************************************************/
+/* MNEMONICO = GAFA                                                /
+/*-----------------------------------------------------------------/
 /* Valores para USUA_IN_STATUS                                     /
 /* A = Ativo                                                       /
 /* I = Inativado                                                   /
@@ -176,23 +182,26 @@ DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 AUTO_INCREMENT = 1000;
 
 /******************************************************************/
-/* SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO                            */
+/* SEGLOG_GRUPO_USUARIO                                           */
 /******************************************************************/
+/* MNEMONICO = GRUS                                                /
+/*-----------------------------------------------------------------/
 /* Valores para USUA_IN_STATUS                                     /
 /* A = Ativo                                                       /
 /* I = Inativado                                                   /
 /******************************************************************/
-CREATE TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO` (
- `GAFAU_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID grupo admin x função admin x usuário',
- `GAFA_ID` int(11) NOT NULL COMMENT 'ID grupo admin x função admin',
- `USUA_ID` int(11) NOT NULL COMMENT 'ID doo usuário',
- `GAFAU_IN_STATUS` VARCHAR(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
- `GAFAU_DT_CADASTRO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
- `GAFAU_DT_UPDATE` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
- CONSTRAINT PK_GAFAU_ID PRIMARY KEY (GAFAU_ID)
+CREATE TABLE `SEGLOG_GRUPO_USUARIO` (
+ `GRUS_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID grupo admin x usuário',
+ `GRAD_ID` int(11) NOT NULL COMMENT 'ID grupo administração',
+ `USUA_ID` int(11) NOT NULL COMMENT 'ID do usuário',
+ `GRUS_IN_STATUS` VARCHAR(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `GRUS_DT_CADASTRO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `GRUS_DT_UPDATE` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_GRUS_ID PRIMARY KEY (GRUS_ID)
 ) ENGINE=InnoDB 
 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 AUTO_INCREMENT = 1000;
+
 
 
 ALTER TABLE `FUNDO_PARTICIPACAO_GLOBAL` 
@@ -211,6 +220,7 @@ ALTER TABLE `FUNDO_PARTICIPACAO_GLOBAL`
     REFERENCES PLANO_USUARIO_FATURA(PLUF_ID) ON DELETE CASCADE;
 
 
+
 /* CONSTRAINTS DE SEGLOG */
 
 ALTER TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM` 
@@ -223,15 +233,16 @@ ALTER TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM`
     FOREIGN KEY (FUAD_ID)
     REFERENCES SEGLOG_FUNCOES_ADMINISTRATIVAS(FUAD_ID) ON DELETE CASCADE;
 
-ALTER TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO`
-    ADD CONSTRAINT FK_GAFAU_USUA
+ALTER TABLE `SEGLOG_GRUPO_USUARIO`
+    ADD CONSTRAINT FK_GRUS_USUA
     FOREIGN KEY (USUA_ID)
     REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
 
-ALTER TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO`
-    ADD CONSTRAINT FK_GAFAU_GAFA
-    FOREIGN KEY (GAFA_ID)
-    REFERENCES SEGLOG_GRUPO_ADM_FUNCAO_ADM(GAFA_ID) ON DELETE CASCADE;
+ALTER TABLE `SEGLOG_GRUPO_USUARIO`
+    ADD CONSTRAINT FK_GRUS_GRAD
+    FOREIGN KEY (GRAD_ID)
+    REFERENCES SEGLOG_GRUPO_ADMINISTRACAO(GRAD_ID) ON DELETE CASCADE;
+
 
 /* 
 
@@ -291,18 +302,17 @@ ADD COLUMN CAMP_IN_PERM_BONIF_DONO_CAMP varchar(1)  NOT NULL DEFAULT 'S' COMMENT
 /* -- SEGLOG -- */
 CREATE VIEW VW_SEGLOG
 AS
-SELECT GAFAU.GAFAU_ID AS SELOG_ID
-, GAFAU.GAFA_ID as GAFA_ID
-, GAFAU.USUA_ID as USUA_ID
+SELECT GAFA.GAFA_ID AS SELOG_ID
+, GRUS.USUA_ID as USUA_ID
 , FUAD.FUAD_NM_DESCRICAO AS SEGLOG_DESCRICAO
 , GAFA.GAFA_IN_CRUD_CRIAR AS SEGLOG_IN_CRUD_CRIAR
 , GAFA.GAFA_IN_CRUD_RECUPERAR AS SEGLOG_IN_CRUD_RECUPERAR
 , GAFA.GAFA_IN_CRUD_ATUALIZAR AS SEGLOG_IN_CRUD_ATUALIZAR
 , GAFA.GAFA_IN_CRUD_EXCLUIR AS SEGLOG_IN_CRUD_EXCLUIR
-, GAFAU.GAFAU_IN_STATUS as SEGLOG_IN_STATUS
-, GAFAU.GAFAU_DT_CADASTRO as SEGLOG_DT_CADASTRO
-, GAFAU.GAFAU_DT_UPDATE SEGLOG_DT_UPDATE
-FROM SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO GAFAU
-INNER JOIN SEGLOG_GRUPO_ADM_FUNCAO_ADM GAFA ON GAFAU.GAFA_ID = GAFA.GAFA_ID
-INNER JOIN SEGLOG_FUNCOES_ADMINISTRATIVAS FUAD ON GAFA.FUAD_ID = FUAD.FUAD_ID;
-
+, GAFA.GAFA_IN_STATUS as SEGLOG_IN_STATUS
+, GAFA.GAFA_DT_CADASTRO as SEGLOG_DT_CADASTRO
+, GAFA.GAFA_DT_UPDATE SEGLOG_DT_UPDATE
+FROM SEGLOG_GRUPO_ADM_FUNCAO_ADM GAFA 
+INNER JOIN SEGLOG_FUNCOES_ADMINISTRATIVAS FUAD ON FUAD.FUAD_ID = GAFA.FUAD_ID
+INNER JOIN SEGLOG_GRUPO_ADMINISTRACAO GRAD ON GRAD.GRAD_ID = GAFA.GRAD_ID
+INNER JOIN SEGLOG_GRUPO_USUARIO GRUS ON GRUS.GRAD_ID = GRAD.GRAD_ID

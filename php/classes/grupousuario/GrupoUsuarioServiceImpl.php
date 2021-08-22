@@ -1,8 +1,8 @@
 <?php
 
 //importar dependencias
-require_once 'GrupoAdminFuncoesAdminUsuarioService.php';
-require_once 'GrupoAdminFuncoesAdminUsuarioBusinessImpl.php';
+require_once 'GrupoUsuarioService.php';
+require_once 'GrupoUsuarioBusinessImpl.php';
 require_once '../variavel/ConstantesVariavel.php';
 require_once '../variavel/VariavelCache.php';
 require_once '../mensagem/ConstantesMensagem.php';
@@ -13,8 +13,8 @@ require_once '../daofactory/DAOFactory.php';
 
 /**
 *
-* GrupoAdminFuncoesAdminUsuarioServiceImpl - Implementação dos servicos para Classe de negócio com métodos para apoiar a integridade de informações sobre controle de grupos de administradores x funções administrativas  x Usuario gerenciado pela plataforma
-* Camada de Serviços GrupoAdminFuncoesAdminUsuario - camada responsável pela lógica de negócios de GrupoAdminFuncoesAdminUsuario do sistema. 
+* GrupoUsuarioServiceImpl - Implementação dos servicos para Classe de negócio com métodos para apoiar a integridade de informações sobre dados da seglog gerenciado pela plataforma
+* Camada de Serviços GrupoUsuario - camada responsável pela lógica de negócios de GrupoUsuario do sistema. 
 * Não é uma camada visível para outros dispositivos, como as camadas de apresentação e aplicação. 
 *
 * Por exemplo: quando estamos prestes a sacar dinheiro em um caixa eletrônico, 
@@ -33,17 +33,17 @@ require_once '../daofactory/DAOFactory.php';
 *
 * 
 * @author Julio Cesar Vitorino
-* @since 20/08/2021 19:25:25
+* @since 22/08/2021 17:02:50
 *
 */
-class GrupoAdminFuncoesAdminUsuarioServiceImpl implements GrupoAdminFuncoesAdminUsuarioService
+class GrupoUsuarioServiceImpl implements GrupoUsuarioService
 {
     
     function __construct() {    }
 
 /**
 *
-* listarTudo() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminUsuarioBusinessImpl de forma geral
+* listarTudo() - Usado para invocar a classe de negócio GrupoUsuarioBusinessImpl de forma geral
 * para listar todos os registros sem critérios de paginação dos dados.
 *
 * Use este método com MUITA moderação.
@@ -55,15 +55,15 @@ class GrupoAdminFuncoesAdminUsuarioServiceImpl implements GrupoAdminFuncoesAdmin
 
 /**
 *
-* PesquisarMaxPKAtivoIdPorStatus() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminUsuarioBusinessImpl de forma geral
+* PesquisarMaxPKAtivoIdPorStatus() - Usado para invocar a classe de negócio GrupoUsuarioBusinessImpl de forma geral
 * a buscar a MAIOR PK pra um dado status.
 *
 * @param status
-* @return GrupoAdminFuncoesAdminUsuarioDTO
+* @return GrupoUsuarioDTO
 *
 */
 
-public function pesquisarMaxPKAtivoIdgrupoadmfuncoesadmPorStatus($idGrupoAdmFuncoesAdm,$status)
+public function pesquisarMaxPKAtivoIdgradPorStatus($idgrad,$status)
 {
     $daofactory = NULL;
     $retorno = NULL;
@@ -72,8 +72,8 @@ public function pesquisarMaxPKAtivoIdgrupoadmfuncoesadmPorStatus($idGrupoAdmFunc
         $daofactory->open();
         $daofactory->beginTransaction();
         
-       $bo = new GrupoAdminFuncoesAdminUsuarioBusinessImpl();
-       $retorno = $bo->pesquisarMaxPKAtivoIdgrupoadmfuncoesadmPorStatus($daofactory, $idGrupoAdmFuncoesAdm,$status);
+       $bo = new GrupoUsuarioBusinessImpl();
+       $retorno = $bo->pesquisarMaxPKAtivoIdgradPorStatus($daofactory, $idgrad,$status);
        if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
             // Trocar a constante abaixo COMANDO_REALIZADO_COM_SUCESSO que é a mensagem padrão 
             // por algo que faça mais sentido para o usuário no frontend
@@ -100,11 +100,11 @@ public function pesquisarMaxPKAtivoIdgrupoadmfuncoesadmPorStatus($idGrupoAdmFunc
 
 /**
 *
-* atualizar() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminUsuarioBusinessImpl de forma geral
+* atualizar() - Usado para invocar a classe de negócio GrupoUsuarioBusinessImpl de forma geral
 * para gerenciar as regras de negócio do sistema.
 *
-* @param GrupoAdminFuncoesAdminUsuarioDTO contendo dados para enviar para atualização
-* @return uma instância de GrupoAdminFuncoesAdminUsuarioDTO com resultdo da operação
+* @param GrupoUsuarioDTO contendo dados para enviar para atualização
+* @return uma instância de GrupoUsuarioDTO com resultdo da operação
 *
 */
 
@@ -117,7 +117,7 @@ public function pesquisarMaxPKAtivoIdgrupoadmfuncoesadmPorStatus($idGrupoAdmFunc
             $daofactory->open();
             $daofactory->beginTransaction();
             
-           $bo = new GrupoAdminFuncoesAdminUsuarioBusinessImpl();
+           $bo = new GrupoUsuarioBusinessImpl();
            $retorno = $bo->atualizar($daofactory, $dto);
            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
                // Trocar a constante abaixo COMANDO_REALIZADO_COM_SUCESSO que é a mensagem padrão 
@@ -146,17 +146,17 @@ public function pesquisarMaxPKAtivoIdgrupoadmfuncoesadmPorStatus($idGrupoAdmFunc
 
 /**
 *
-* atualizarStatusGrupoAdminFuncoesAdminUsuario() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminUsuarioBusinessImpl de forma geral
+* atualizarStatusGrupoUsuario() - Usado para invocar a classe de negócio GrupoUsuarioBusinessImpl de forma geral
 * para gerenciar as atualizações do campo STATUS de acordo as regras de negócio do sistema.
 *
 * @param $id
 * @param $status
-* @return uma instância de GrupoAdminFuncoesAdminUsuarioDTO com resultdo da operação
+* @return uma instância de GrupoUsuarioDTO com resultdo da operação
 *
 */
 
 
-    public function autalizarStatusGrupoAdminFuncoesAdminUsuario($id, $status)
+    public function autalizarStatusGrupoUsuario($id, $status)
     {
         $daofactory = NULL;
         $retorno = NULL;
@@ -166,7 +166,7 @@ public function pesquisarMaxPKAtivoIdgrupoadmfuncoesadmPorStatus($idGrupoAdmFunc
             $daofactory->beginTransaction();
             
 
-           $bo = new GrupoAdminFuncoesAdminUsuarioBusinessImpl();
+           $bo = new GrupoUsuarioBusinessImpl();
            $retorno = $bo->atualizarStatus($daofactory, $id, $status);
 
            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
@@ -196,12 +196,12 @@ public function pesquisarMaxPKAtivoIdgrupoadmfuncoesadmPorStatus($idGrupoAdmFunc
 
 /**
 *
-* apagar() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminUsuarioBusinessImpl de forma geral
+* apagar() - Usado para invocar a classe de negócio GrupoUsuarioBusinessImpl de forma geral
 * para gerenciar a exclusão de registro de acordo as regras de negócio do sistema.
 *
-* @param $dto - Instância de GrupoAdminFuncoesAdminUsuarioDTO
+* @param $dto - Instância de GrupoUsuarioDTO
 *
-* @return uma instância de GrupoAdminFuncoesAdminUsuarioDTO com resultdo da operação
+* @return uma instância de GrupoUsuarioDTO com resultdo da operação
 *
 */
 
@@ -216,7 +216,7 @@ public function apagar($dto)
         $daofactory->beginTransaction();
         
 
-       $bo = new GrupoAdminFuncoesAdminUsuarioBusinessImpl();
+       $bo = new GrupoUsuarioBusinessImpl();
        $retorno = $bo->deletar($daofactory, $dto);
 
        if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
@@ -245,12 +245,12 @@ public function apagar($dto)
 
 /**
 *
-* cadastrar() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminUsuarioBusinessImpl de forma geral
+* cadastrar() - Usado para invocar a classe de negócio GrupoUsuarioBusinessImpl de forma geral
 * para gerenciar a criação de registro de acordo as regras de negócio do sistema.
 *
-* @param $dto - Instância de GrupoAdminFuncoesAdminUsuarioDTO
+* @param $dto - Instância de GrupoUsuarioDTO
 *
-* @return uma instância de GrupoAdminFuncoesAdminUsuarioDTO com resultdo da operação
+* @return uma instância de GrupoUsuarioDTO com resultdo da operação
 *
 */
 
@@ -265,8 +265,8 @@ public function apagar($dto)
             $daofactory->beginTransaction();
             
 
-           $bo = new GrupoAdminFuncoesAdminUsuarioBusinessImpl();
-           $retorno = $bo->inserirGrupoAdminFuncoesAdminUsuario($daofactory, $dto);
+           $bo = new GrupoUsuarioBusinessImpl();
+           $retorno = $bo->inserirGrupoUsuario($daofactory, $dto);
 
            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
                // Trocar a constante abaixo COMANDO_REALIZADO_COM_SUCESSO que é a mensagem padrão 
@@ -300,7 +300,7 @@ public function apagar($dto)
 *
 * @param $pag
 * @param $qtde
-* @return List<GrupoAdminFuncoesAdminUsuarioDTO>[]
+* @return List<GrupoUsuarioDTO>[]
 *
 *
 * Procure dar preferência no uso deste método para listagem de dados
@@ -316,8 +316,8 @@ public function apagar($dto)
             $daofactory->open();
             $daofactory->beginTransaction();
             
-            // listar paginado GrupoAdminFuncoesAdminUsuario
-           $bo = new GrupoAdminFuncoesAdminUsuarioBusinessImpl();
+            // listar paginado GrupoUsuario
+           $bo = new GrupoUsuarioBusinessImpl();
            $retorno = $bo->listarPagina($daofactory, $pag, $qtde);
             $daofactory->commit();
             
@@ -338,10 +338,10 @@ public function apagar($dto)
 /**
 *
 * pesquisarPorID() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
-* realizar uma busca diretamente pela PK (Primary Key) da tabela SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO campo GAFAU_ID
+* realizar uma busca diretamente pela PK (Primary Key) da tabela SEGLOG_GRUPO_USUARIO campo GRUS_ID
 *
 * @param $id
-* @return GrupoAdminFuncoesAdminUsuarioDTO
+* @return GrupoUsuarioDTO
 *
 * 
 */
@@ -355,8 +355,8 @@ public function apagar($dto)
             $daofactory->open();
             $daofactory->beginTransaction();
             
-            // pesquisar pela PK da tabela GrupoAdminFuncoesAdminUsuario
-           $bo = new GrupoAdminFuncoesAdminUsuarioBusinessImpl();
+            // pesquisar pela PK da tabela GrupoUsuario
+           $bo = new GrupoUsuarioBusinessImpl();
            $retorno = $bo->carregarPorID($daofactory, $id);
            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
                 // Trocar a constante abaixo COMANDO_REALIZADO_COM_SUCESSO que é a mensagem padrão 
@@ -384,7 +384,7 @@ public function apagar($dto)
 
 /**
 *
-* listarGrupoAdminFuncoesAdminUsuarioPorStatus() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* listarGrupoUsuarioPorStatus() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
 * realizar lista paginada de registros com uma instância de PaginacaoDTO
 *
 * @param $status
@@ -395,7 +395,7 @@ public function apagar($dto)
 * @return $PaginacaoDTO
 */
 
-   public function listarGrupoAdminFuncoesAdminUsuarioPorStatus($status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0) 
+   public function listarGrupoUsuarioPorStatus($status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0) 
    {
        $daofactory = NULL;
        $retorno = NULL;
@@ -408,9 +408,9 @@ public function apagar($dto)
            if($qtde == 0){
                $qtde = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT);
            }
-           // listar paginado GrupoAdminFuncoesAdminUsuario
-           $bo = new GrupoAdminFuncoesAdminUsuarioBusinessImpl();
-           $retorno = $bo->listarGrupoAdminFuncoesAdminUsuarioPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);
+           // listar paginado GrupoUsuario
+           $bo = new GrupoUsuarioBusinessImpl();
+           $retorno = $bo->listarGrupoUsuarioPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);
            $daofactory->commit();
        } catch (Exception $e) {
            // rollback na transação
@@ -428,16 +428,16 @@ public function apagar($dto)
 
 /**
 *
-* pesquisarPorIdgrupoadmfuncoesadm() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminUsuarioBusinessImpl de forma geral
-* realizar uma busca de ID grupo admin x função admin diretamente na tabela SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO campo GAFA_ID
+* pesquisarPorIdgrad() - Usado para invocar a classe de negócio GrupoUsuarioBusinessImpl de forma geral
+* realizar uma busca de ID grupo administração diretamente na tabela SEGLOG_GRUPO_USUARIO campo GRAD_ID
 *
-* @param $idGrupoAdmFuncoesAdm
-* @return GrupoAdminFuncoesAdminUsuarioDTO
+* @param $idgrad
+* @return GrupoUsuarioDTO
 *
 * 
 */
 
-    public function pesquisarPorIdgrupoadmfuncoesadm($idGrupoAdmFuncoesAdm)
+    public function pesquisarPorIdgrad($idgrad)
     {
         $daofactory = NULL;
         $retorno = NULL;
@@ -446,9 +446,9 @@ public function apagar($dto)
             $daofactory->open();
             $daofactory->beginTransaction();
             
-            // pesquisar pelo atributo GrupoAdminFuncoesAdminUsuario.idGrupoAdmFuncoesAdm no campo GAFA_ID da tabela SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO
-           $bo = new GrupoAdminFuncoesAdminUsuarioBusinessImpl();
-           $retorno = $bo->carregarPorIdgrupoadmfuncoesadm($daofactory, $idGrupoAdmFuncoesAdm);
+            // pesquisar pelo atributo GrupoUsuario.idgrad no campo GRAD_ID da tabela SEGLOG_GRUPO_USUARIO
+           $bo = new GrupoUsuarioBusinessImpl();
+           $retorno = $bo->carregarPorIdgrad($daofactory, $idgrad);
            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
                 // Trocar a constante abaixo COMANDO_REALIZADO_COM_SUCESSO que é a mensagem padrão 
                 // por algo que faça mais sentido para o usuário no frontend  
@@ -475,11 +475,11 @@ public function apagar($dto)
 
 /**
 *
-* pesquisarPorId_Usuario() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminUsuarioBusinessImpl de forma geral
-* realizar uma busca de ID doo usuário diretamente na tabela SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO campo USUA_ID
+* pesquisarPorId_Usuario() - Usado para invocar a classe de negócio GrupoUsuarioBusinessImpl de forma geral
+* realizar uma busca de ID do usuário diretamente na tabela SEGLOG_GRUPO_USUARIO campo USUA_ID
 *
 * @param $id_usuario
-* @return GrupoAdminFuncoesAdminUsuarioDTO
+* @return GrupoUsuarioDTO
 *
 * 
 */
@@ -493,8 +493,8 @@ public function apagar($dto)
             $daofactory->open();
             $daofactory->beginTransaction();
             
-            // pesquisar pelo atributo GrupoAdminFuncoesAdminUsuario.id_usuario no campo USUA_ID da tabela SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO
-           $bo = new GrupoAdminFuncoesAdminUsuarioBusinessImpl();
+            // pesquisar pelo atributo GrupoUsuario.id_usuario no campo USUA_ID da tabela SEGLOG_GRUPO_USUARIO
+           $bo = new GrupoUsuarioBusinessImpl();
            $retorno = $bo->carregarPorId_Usuario($daofactory, $id_usuario);
            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
                 $daofactory->commit();
@@ -518,16 +518,16 @@ public function apagar($dto)
 
 /**
 *
-* atualizarIdgrupoadmfuncoesadmPorPK() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminUsuarioBusinessImpl de forma geral
-* realizar uma atualização de ID grupo admin x função admin diretamente na tabela SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO campo GAFA_ID
+* atualizarIdgradPorPK() - Usado para invocar a classe de negócio GrupoUsuarioBusinessImpl de forma geral
+* realizar uma atualização de ID grupo administração diretamente na tabela SEGLOG_GRUPO_USUARIO campo GRAD_ID
 * @param $id
-* @param $idGrupoAdmFuncoesAdm
-* @return GrupoAdminFuncoesAdminUsuarioDTO
+* @param $idgrad
+* @return GrupoUsuarioDTO
 *
 * 
 */
 
-    public function atualizarIdgrupoadmfuncoesadmPorPK($idGrupoAdmFuncoesAdm,$id)
+    public function atualizarIdgradPorPK($idgrad,$id)
     {
         $daofactory = NULL;
         $retorno = NULL;
@@ -536,9 +536,9 @@ public function apagar($dto)
             $daofactory->open();
             $daofactory->beginTransaction();
             
-            // atualizar registro por meio do método GrupoAdminFuncoesAdminUsuarioBusinessImpl::atualizarIdgrupoadmfuncoesadmPorPK($idGrupoAdmFuncoesAdm,$id)
-           $bo = new GrupoAdminFuncoesAdminUsuarioBusinessImpl();
-           $retorno = $bo->atualizarIdgrupoadmfuncoesadmPorPK($daofactory,$idGrupoAdmFuncoesAdm,$id);
+            // atualizar registro por meio do método GrupoUsuarioBusinessImpl::atualizarIdgradPorPK($idgrad,$id)
+           $bo = new GrupoUsuarioBusinessImpl();
+           $retorno = $bo->atualizarIdgradPorPK($daofactory,$idgrad,$id);
 
            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
                 $daofactory->commit();
@@ -563,11 +563,11 @@ public function apagar($dto)
 
 /**
 *
-* atualizarId_UsuarioPorPK() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminUsuarioBusinessImpl de forma geral
-* realizar uma atualização de ID doo usuário diretamente na tabela SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO campo USUA_ID
+* atualizarId_UsuarioPorPK() - Usado para invocar a classe de negócio GrupoUsuarioBusinessImpl de forma geral
+* realizar uma atualização de ID do usuário diretamente na tabela SEGLOG_GRUPO_USUARIO campo USUA_ID
 * @param $id
 * @param $id_usuario
-* @return GrupoAdminFuncoesAdminUsuarioDTO
+* @return GrupoUsuarioDTO
 *
 * 
 */
@@ -581,8 +581,8 @@ public function apagar($dto)
             $daofactory->open();
             $daofactory->beginTransaction();
             
-            // atualizar registro por meio do método GrupoAdminFuncoesAdminUsuarioBusinessImpl::atualizarId_UsuarioPorPK($id_usuario,$id)
-           $bo = new GrupoAdminFuncoesAdminUsuarioBusinessImpl();
+            // atualizar registro por meio do método GrupoUsuarioBusinessImpl::atualizarId_UsuarioPorPK($id_usuario,$id)
+           $bo = new GrupoUsuarioBusinessImpl();
            $retorno = $bo->atualizarId_UsuarioPorPK($daofactory,$id_usuario,$id);
 
            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
@@ -605,9 +605,10 @@ public function apagar($dto)
 
         return $retorno;
     }
+
 /**
 *
-* listarGrupoAdminFuncoesAdminUsuarioPorUsuaIdStatus() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* listarGrupoUsuarioPorUsuaIdStatus() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
 * realizar lista paginada de registros tendo como referência os registros do usuário logado com uma instância de PaginacaoDTO
 *
 * @param $usuaid
@@ -619,7 +620,7 @@ public function apagar($dto)
 * @return $PaginacaoDTO
 */
 
-   public function listarGrupoAdminFuncoesAdminUsuarioPorUsuaIdStatus($usuaid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0) 
+   public function listarGrupoUsuarioPorUsuaIdStatus($usuaid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0) 
    {
        $daofactory = NULL;
        $retorno = NULL;
@@ -632,9 +633,9 @@ public function apagar($dto)
            if($qtde == 0){
                $qtde = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT);
            }
-           // listar paginado GrupoAdminFuncoesAdminUsuario
-           $bo = new GrupoAdminFuncoesAdminUsuarioBusinessImpl();
-           $retorno = $bo->listarGrupoAdminFuncoesAdminUsuarioPorUsuaIdStatus($daofactory, $usuaid, $status, $pag, $qtde, $coluna, $ordem);
+           // listar paginado GrupoUsuario
+           $bo = new GrupoUsuarioBusinessImpl();
+           $retorno = $bo->listarGrupoUsuarioPorUsuaIdStatus($daofactory, $usuaid, $status, $pag, $qtde, $coluna, $ordem);
            $daofactory->commit();
        } catch (Exception $e) {
            // rollback na transação
@@ -654,5 +655,4 @@ public function apagar($dto)
 }
 
 ?>
-
 

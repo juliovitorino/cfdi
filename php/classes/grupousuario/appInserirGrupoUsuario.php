@@ -1,26 +1,26 @@
 <?php
 
-// URL http://elitefinanceira.com/cfdi/php/classes/gateway/appInserirGrupoAdminFuncoesAdminUsuario.php
-// URL http://localhost/cfdi/php/classes/gateway/appInserirGrupoAdminFuncoesAdminUsuario.php
+// URL http://elitefinanceira.com/cfdi/php/classes/gateway/appInserirGrupoUsuario.php
+// URL http://localhost/cfdi/php/classes/gateway/appInserirGrupoUsuario.php
 
 
  /*
 Faça um Find/Replace em $_POST por $_GET e use os parametros na URL para simular um GET na HttpRequest
 ?tokenid=tk
 &id=tr
-&idGrupoAdmFuncoesAdm=tr
+&idgrad=tr
 &id_usuario=tr
 &status=tr
 &dataCadastro=tr
 &dataAtualizacao=tr
 
  */
-// URL http://localhost/cfdi/php/classes/gateway/appInserirGrupoAdminFuncoesAdminUsuario.php
+// URL http://localhost/cfdi/php/classes/gateway/appInserirGrupoUsuario.php
 
 /**
 *
-* appInserirGrupoAdminFuncoesAdminUsuario - Controlador para permitir acesso ao backend no método cadastrar
-* da classe GrupoAdminFuncoesAdminUsuarioServiceImpl.php
+* appInserirGrupoUsuario - Controlador para permitir acesso ao backend no método cadastrar
+* da classe GrupoUsuarioServiceImpl.php
 * É uma camada visível para outros dispositivos e requisições
 *
 *======================================================================================
@@ -30,27 +30,27 @@ Faça um Find/Replace em $_POST por $_GET e use os parametros na URL para simula
 *
 * 
 * @autor Julio Cesar Vitorino
-* @since 20/08/2021 19:25:25
+* @since 22/08/2021 17:02:50
 *
 */
 
-require_once '../grupoadminfuncoesadminusuario/GrupoAdminFuncoesAdminUsuarioServiceImpl.php';
-require_once '../grupoadminfuncoesadminusuario/GrupoAdminFuncoesAdminUsuarioDTO.php';
+require_once '../grupousuario/GrupoUsuarioServiceImpl.php';
+require_once '../grupousuario/GrupoUsuarioDTO.php';
 require_once '../util/util.php';
 
 include_once '../../inc/validarTokenApp.php';
 
-$dto = new GrupoAdminFuncoesAdminUsuarioDTO();
+$dto = new GrupoUsuarioDTO();
 
 $dto->id = $_POST['id'];
-$dto->idGrupoAdmFuncoesAdm = $_POST['idGrupoAdmFuncoesAdm'];
+$dto->idgrad = $_POST['idgrad'];
 $dto->id_usuario = $_POST['id_usuario'];
 $dto->status = $_POST['status'];
 $dto->dataCadastro = $_POST['dataCadastro'];
 $dto->dataAtualizacao = $_POST['dataAtualizacao'];
 
 
-$csi = new GrupoAdminFuncoesAdminUsuarioServiceImpl();
+$csi = new GrupoUsuarioServiceImpl();
 
 // Cadastra o registro populado no DTO
 $retorno = $csi->cadastrar($dto);

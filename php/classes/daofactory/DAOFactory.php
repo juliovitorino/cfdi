@@ -48,7 +48,7 @@ abstract class DAOFactory
 	public abstract function getFuncoesAdministrativasDAO($daofactory);
 	public abstract function getGrupoAdministracaoDAO($daofactory);
 	public abstract function getGrupoAdminFuncoesAdminDAO($daofactory);
-	public abstract function getGrupoAdminFuncoesAdminUsuarioDAO($daofactory);
+	public abstract function getGrupoUsuarioDAO($daofactory);
 	public abstract function getSeglogDAO($daofactory);
 
 	public abstract function getUsuarioDAO($daofactory);

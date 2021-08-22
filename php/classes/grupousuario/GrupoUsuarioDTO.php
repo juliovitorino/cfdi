@@ -2,27 +2,23 @@
 // importar dependencias
 require_once '../dto/DTOPadraoEntidade.php';
 /**
-* GrupoAdminFuncoesAdminUsuarioDTO - Data Transfer Object
+* GrupoUsuarioDTO - Data Transfer Object
 *
 * @author Julio Cesar Vitorino 
-* @since 20/08/2021 19:25:25
+* @since 22/08/2021 17:02:50
 * @copyright(c), Julio Vitorino <julio.vitorino@gmail.com>
 */
-class GrupoAdminFuncoesAdminUsuarioDTO extends DTOPadraoEntidade implements JsonSerializable
+class GrupoUsuarioDTO extends DTOPadraoEntidade implements JsonSerializable
 {
-    public $id;
-    public $idGrupoAdmFuncoesAdm;
+    public $idgrad;
     public $id_usuario;
-    public $status;
-    public $dataCadastro;
-    public $dataAtualizacao;
 
     public function jsonSerialize()
     {
         return 
         [
             'id' => $this->id,
-            'idGrupoAdmFuncoesAdm' => $this->idGrupoAdmFuncoesAdm,
+            'idgrad' => $this->idgrad,
             'id_usuario' => $this->id_usuario,
             'status' => $this->status,
             'dataCadastro' => $this->dataCadastro,
@@ -32,8 +28,6 @@ class GrupoAdminFuncoesAdminUsuarioDTO extends DTOPadraoEntidade implements Json
             'msgcodeString' => $this->msgcodeString
         ];
     }   
-
-
 }
 ?>
 

@@ -10,7 +10,7 @@
 require_once '../funcoesadministrativas/MySqlKinghostFuncoesAdministrativasDAO.php';
 require_once '../grupoadministracao/MySqlKinghostGrupoAdministracaoDAO.php';
 require_once '../grupoadminfuncoesadmin/MySqlKinghostGrupoAdminFuncoesAdminDAO.php';
-require_once '../grupoadminfuncoesadminusuario/MySqlKinghostGrupoAdminFuncoesAdminUsuarioDAO.php';
+require_once '../grupousuario/MySqlKinghostGrupoUsuarioDAO.php';
 require_once '../seglog/MySqlKinghostSeglogDAO.php';
 
 require_once '../mkdlista/MySqlKinghostMkdListaDAO.php';
@@ -104,11 +104,11 @@ class MySqlDAOFactory extends DAOFactory
 
     /**
      * Retorna uma instância de acesso a dados
-     * @return MySqlKinghostGrupoAdminFuncoesAdminUsuarioDAO
+     * @return MySqlKinghostGrupoUsuarioDAO
      */
-    public function getGrupoAdminFuncoesAdminUsuarioDAO($daofactory)
+    public function getGrupoUsuarioDAO($daofactory)
     {
-        return new MySqlKinghostGrupoAdminFuncoesAdminUsuarioDAO($daofactory);
+        return new MySqlKinghostGrupoUsuarioDAO($daofactory);
     }
 
 	/**

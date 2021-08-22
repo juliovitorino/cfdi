@@ -13,10 +13,12 @@
 
  Siga este checklist antes de colocar a aplicação em produção
 
+em DSV
  ( ) Faça em export do banco de dados de produção conforme arquivo "exportar-importar-db.txt"
  ( ) Rode o script drop-all.sql para criar as linhas de comando para limpar o banco de dados em DSV
  ( ) execute o script de remoção de TODAS AS TABELAS DO DSV 
  ( ) importe o banco de produção para DSV 
  ( ) rode o patch necessário para atualizar o banco de DSV
+
  
- 
+ em HMG 
