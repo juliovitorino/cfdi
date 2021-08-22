@@ -33,7 +33,6 @@ class DmlSqlSeglog extends DmlSql
 
     // colunas da tabela
     const SELOG_ID = 'SELOG_ID';
-    const GAFA_ID = 'GAFA_ID';
     const USUA_ID = 'USUA_ID';
     const SEGLOG_DESCRICAO = 'SEGLOG_DESCRICAO';
     const SEGLOG_IN_CRUD_CRIAR = 'SEGLOG_IN_CRUD_CRIAR';
@@ -47,7 +46,6 @@ class DmlSqlSeglog extends DmlSql
     // Comandos DML
     const INS = 'INSERT INTO `' . self::TABELA . '` ('
 
-        . ' `' . self::GAFA_ID . '`, '
         . ' `' . self::USUA_ID . '`, '
         . ' `' . self::SEGLOG_DESCRICAO . '`, '
         . ' `' . self::SEGLOG_IN_CRUD_CRIAR . '`, '
@@ -60,7 +58,6 @@ class DmlSqlSeglog extends DmlSql
     'WHERE ' . ' `' . self::SELOG_ID . '` = ? ' ;
 
     const UPD_PK = 'UPDATE `' . self::TABELA . '` set '
-    . ' `' . self::GAFA_ID . '` = ?, '
     . ' `' . self::USUA_ID . '` = ?, '
     . ' `' . self::SEGLOG_DESCRICAO . '` = ?, '
     . ' `' . self::SEGLOG_IN_CRUD_CRIAR . '` = ?, '
@@ -77,7 +74,6 @@ class DmlSqlSeglog extends DmlSql
 
     const SELECT = 'SELECT ' 
         . ' `' . self::SELOG_ID . '`, ' 
-        . ' `' . self::GAFA_ID . '`, ' 
         . ' `' . self::USUA_ID . '`, ' 
         . ' `' . self::SEGLOG_DESCRICAO . '`, ' 
         . ' `' . self::SEGLOG_IN_CRUD_CRIAR . '`, ' 
@@ -92,7 +88,6 @@ class DmlSqlSeglog extends DmlSql
     const SQL_COUNT = 'SELECT COUNT(*) AS contador '
     . ' FROM `'.self::TABELA.'` ';
 
-    const UPD_VW_SEGLOG_GAFA_ID_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::GAFA_ID . '` = ? ' . 'WHERE ' . ' `' . self::SELOG_ID . '` = ? ' ;
     const UPD_VW_SEGLOG_USUA_ID_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::USUA_ID . '` = ? ' . 'WHERE ' . ' `' . self::SELOG_ID . '` = ? ' ;
     const UPD_VW_SEGLOG_SEGLOG_DESCRICAO_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::SEGLOG_DESCRICAO . '` = ? ' . 'WHERE ' . ' `' . self::SELOG_ID . '` = ? ' ;
     const UPD_VW_SEGLOG_SEGLOG_IN_CRUD_CRIAR_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::SEGLOG_IN_CRUD_CRIAR . '` = ? ' . 'WHERE ' . ' `' . self::SELOG_ID . '` = ? ' ;

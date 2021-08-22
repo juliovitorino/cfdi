@@ -28,7 +28,6 @@ interface GrupoAdminFuncoesAdminDAO extends DAO
 
     public function loadIdgrupoadministracao($idGrupoAdministracao);
     public function loadIdfuncoesadministrativas($idFuncoesAdministrativas);
-    public function loadDescricao($descricao);
     public function loadIncrudcriar($incrudCriar);
     public function loadIncrudrecuperar($incrudRecuperar);
     public function loadIncrudatualizar($incrudAtualizar);
@@ -39,7 +38,6 @@ interface GrupoAdminFuncoesAdminDAO extends DAO
 
     public function updateIdgrupoadministracao($id, $idGrupoAdministracao);
     public function updateIdfuncoesadministrativas($id, $idFuncoesAdministrativas);
-    public function updateDescricao($id, $descricao);
     public function updateIncrudcriar($id, $incrudCriar);
     public function updateIncrudrecuperar($id, $incrudRecuperar);
     public function updateIncrudatualizar($id, $incrudAtualizar);

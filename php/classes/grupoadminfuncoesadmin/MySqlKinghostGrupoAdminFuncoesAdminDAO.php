@@ -393,7 +393,6 @@ class MySqlKinghostGrupoAdminFuncoesAdminDAO implements GrupoAdminFuncoesAdminDA
         $retorno->id = $resultset[DmlSqlGrupoAdminFuncoesAdmin::GAFA_ID] == NULL ? NULL : $resultset[DmlSqlGrupoAdminFuncoesAdmin::GAFA_ID];
         $retorno->idGrupoAdministracao = $resultset[DmlSqlGrupoAdminFuncoesAdmin::GRAD_ID] == NULL ? NULL : $resultset[DmlSqlGrupoAdminFuncoesAdmin::GRAD_ID];
         $retorno->idFuncoesAdministrativas = $resultset[DmlSqlGrupoAdminFuncoesAdmin::FUAD_ID] == NULL ? NULL : $resultset[DmlSqlGrupoAdminFuncoesAdmin::FUAD_ID];
-        $retorno->descricao = $resultset[DmlSqlGrupoAdminFuncoesAdmin::GAFA_NM_DESCRICAO] == NULL ? NULL : $resultset[DmlSqlGrupoAdminFuncoesAdmin::GAFA_NM_DESCRICAO];
         $retorno->incrudCriar = $resultset[DmlSqlGrupoAdminFuncoesAdmin::GAFA_IN_CRUD_CRIAR] == NULL ? NULL : $resultset[DmlSqlGrupoAdminFuncoesAdmin::GAFA_IN_CRUD_CRIAR];
         $retorno->incrudRecuperar = $resultset[DmlSqlGrupoAdminFuncoesAdmin::GAFA_IN_CRUD_RECUPERAR] == NULL ? NULL : $resultset[DmlSqlGrupoAdminFuncoesAdmin::GAFA_IN_CRUD_RECUPERAR];
         $retorno->incrudAtualizar = $resultset[DmlSqlGrupoAdminFuncoesAdmin::GAFA_IN_CRUD_ATUALIZAR] == NULL ? NULL : $resultset[DmlSqlGrupoAdminFuncoesAdmin::GAFA_IN_CRUD_ATUALIZAR];
@@ -441,27 +440,6 @@ class MySqlKinghostGrupoAdminFuncoesAdminDAO implements GrupoAdminFuncoesAdminDA
         $stmt->bind_param(DmlSql::INTEGER_TYPE 
                             . DmlSql::INTEGER_TYPE
                             ,$idFuncoesAdministrativas
-                            ,$id);
-        if ($stmt->execute())
-        {
-            $retorno = true;
-        }
-
-        return $retorno;
-    }
-
-    /**
-    * updateDescricao() - implementação da assinatura em GrupoAdminFuncoesAdminDAO
-    */
-    public function updateDescricao($id, $descricao)
-    {   
-        $retorno = false;
-        // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
-        $conexao = $this->daofactory->getSession();
-        $stmt = $conexao->prepare(DmlSqlGrupoAdminFuncoesAdmin::UPD_SEGLOG_GRUPO_ADM_FUNCAO_ADM_GAFA_NM_DESCRICAO_PK);
-        $stmt->bind_param(DmlSql::STRING_TYPE 
-                            . DmlSql::STRING_TYPE
-                            ,$descricao
                             ,$id);
         if ($stmt->execute())
         {
@@ -581,22 +559,6 @@ class MySqlKinghostGrupoAdminFuncoesAdminDAO implements GrupoAdminFuncoesAdminDA
         // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
         $conexao = $this->daofactory->getSession();
         $res = $conexao->query(DmlSqlGrupoAdminFuncoesAdmin::SELECT . ' WHERE ' . DmlSqlGrupoAdminFuncoesAdmin::FUAD_ID . '=' . $idFuncoesAdministrativas );
-        if ($res){
-            $retorno = $this->getDTO($res->fetch_assoc());
-        }
-        return $retorno;
-    }
-
-    /**
-    * loadDescricao() - implementação da assinatura em GrupoAdminFuncoesAdminDAO
-    */
-
-    public function loadDescricao($descricao)
-    {   
-        $retorno = NULL;
-        // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
-        $conexao = $this->daofactory->getSession();
-        $res = $conexao->query(DmlSqlGrupoAdminFuncoesAdmin::SELECT . ' WHERE ' . DmlSqlGrupoAdminFuncoesAdmin::GAFA_NM_DESCRICAO . '=' . $descricao );
         if ($res){
             $retorno = $this->getDTO($res->fetch_assoc());
         }

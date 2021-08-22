@@ -518,49 +518,6 @@ public function apagar($dto)
 
 /**
 *
-* pesquisarPorDescricao() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminBusinessImpl de forma geral
-* realizar uma busca de Descricao do grupo admin x função admin diretamente na tabela SEGLOG_GRUPO_ADM_FUNCAO_ADM campo GAFA_NM_DESCRICAO
-*
-* @param $descricao
-* @return GrupoAdminFuncoesAdminDTO
-*
-* 
-*/
-
-    public function pesquisarPorDescricao($descricao)
-    {
-        $daofactory = NULL;
-        $retorno = NULL;
-        try {
-            $daofactory = DAOFactory::getDAOFactory();
-            $daofactory->open();
-            $daofactory->beginTransaction();
-            
-            // pesquisar pelo atributo GrupoAdminFuncoesAdmin.descricao no campo GAFA_NM_DESCRICAO da tabela SEGLOG_GRUPO_ADM_FUNCAO_ADM
-           $bo = new GrupoAdminFuncoesAdminBusinessImpl();
-           $retorno = $bo->carregarPorDescricao($daofactory, $descricao);
-           if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
-                $daofactory->commit();
-           } else {
-                $daofactory->rollback();
-           }
-            
-        } catch (Exception $e) {
-            // rollback na transação
-
-        } finally {
-            try {
-                $daofactory->close();
-            } catch (Exception $e) {
-                // faz algo
-            }
-        }
-
-        return $retorno;
-    }
-
-/**
-*
 * pesquisarPorIncrudcriar() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminBusinessImpl de forma geral
 * realizar uma busca de Permissão CRUD Criar diretamente na tabela SEGLOG_GRUPO_ADM_FUNCAO_ADM campo GAFA_IN_CRUD_CRIAR
 *
@@ -799,51 +756,6 @@ public function apagar($dto)
             // atualizar registro por meio do método GrupoAdminFuncoesAdminBusinessImpl::atualizarIdfuncoesadministrativasPorPK($idFuncoesAdministrativas,$id)
            $bo = new GrupoAdminFuncoesAdminBusinessImpl();
            $retorno = $bo->atualizarIdfuncoesadministrativasPorPK($daofactory,$idFuncoesAdministrativas,$id);
-
-           if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
-                $daofactory->commit();
-            } else {
-                $daofactory->rollback();
-            }
-            
-        } catch (Exception $e) {
-            // rollback na transação
-            $daofactory->rollback();
-
-        } finally {
-            try {
-                $daofactory->close();
-            } catch (Exception $e) {
-                // faz algo
-            }
-        }
-
-        return $retorno;
-    }
-
-/**
-*
-* atualizarDescricaoPorPK() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminBusinessImpl de forma geral
-* realizar uma atualização de Descricao do grupo admin x função admin diretamente na tabela SEGLOG_GRUPO_ADM_FUNCAO_ADM campo GAFA_NM_DESCRICAO
-* @param $id
-* @param $descricao
-* @return GrupoAdminFuncoesAdminDTO
-*
-* 
-*/
-
-    public function atualizarDescricaoPorPK($descricao,$id)
-    {
-        $daofactory = NULL;
-        $retorno = NULL;
-        try {
-            $daofactory = DAOFactory::getDAOFactory();
-            $daofactory->open();
-            $daofactory->beginTransaction();
-            
-            // atualizar registro por meio do método GrupoAdminFuncoesAdminBusinessImpl::atualizarDescricaoPorPK($descricao,$id)
-           $bo = new GrupoAdminFuncoesAdminBusinessImpl();
-           $retorno = $bo->atualizarDescricaoPorPK($daofactory,$descricao,$id);
 
            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
                 $daofactory->commit();

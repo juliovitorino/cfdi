@@ -411,33 +411,6 @@ public function inserir($daofactory, $dto)
         return $retorno;
     }
 
-/**
-*
-* atualizarDescricaoPorPK() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminBusinessImpl de forma geral
-* realizar uma atualização de Descricao do grupo admin x função admin diretamente na tabela SEGLOG_GRUPO_ADM_FUNCAO_ADM campo GAFA_NM_DESCRICAO
-* @param $daofactory
-* @param $id
-* @param $descricao
-* @return GrupoAdminFuncoesAdminDTO
-*
-* 
-*/
-    public function atualizarDescricaoPorPK($daofactory,$descricao,$id)
-    {
-        $dao = $daofactory->getGrupoAdminFuncoesAdminDAO($daofactory);
-
-        // resposta padrão
-        $retorno = new DTOPadrao();
-
-        if($dao->updateDescricao($id, $descricao)){   
-            $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
-        }       
-
-        // Obtem o texto da mensagem em razão do código de retorno
-        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
-
-        return $retorno;
-    }
 
 /**
 *
@@ -584,22 +557,6 @@ public function inserir($daofactory, $dto)
         return $dao->loadIdfuncoesadministrativas($idFuncoesAdministrativas);
     }
 
-/**
-*
-* pesquisarPorDescricao() - Usado para invocar a classe de negócio GrupoAdminFuncoesAdminBusinessImpl de forma geral
-* realizar uma busca de Descricao do grupo admin x função admin diretamente na tabela SEGLOG_GRUPO_ADM_FUNCAO_ADM campo GAFA_NM_DESCRICAO
-*
-* @param $descricao
-* @return GrupoAdminFuncoesAdminDTO
-*
-* 
-*/
-    public function pesquisarPorDescricao($daofactory,$descricao)
-
-    { 
-        $dao = $daofactory->getGrupoAdminFuncoesAdminDAO($daofactory);
-        return $dao->loadDescricao($descricao);
-    }
 
 /**
 *

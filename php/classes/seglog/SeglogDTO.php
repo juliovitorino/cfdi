@@ -11,7 +11,6 @@ require_once '../dto/DTOPadraoEntidade.php';
 class SeglogDTO extends DTOPadraoEntidade implements JsonSerializable
 {
     public $id;
-    public $idgafa;
     public $id_usuario;
     public $funcao;
     public $incrudCriar;
@@ -27,7 +26,6 @@ class SeglogDTO extends DTOPadraoEntidade implements JsonSerializable
         return 
         [
             'id' => $this->id,
-            'idgafa' => $this->idgafa,
             'id_usuario' => $this->id_usuario,
             'funcao' => $this->funcao,
             'incrudCriar' => $this->incrudCriar,

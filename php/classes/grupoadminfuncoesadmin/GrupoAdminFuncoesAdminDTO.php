@@ -12,7 +12,6 @@ class GrupoAdminFuncoesAdminDTO extends DTOPadraoEntidade implements JsonSeriali
 {
     public $idGrupoAdministracao;
     public $idFuncoesAdministrativas;
-    public $descricao;
     public $incrudCriar;
     public $incrudRecuperar;
     public $incrudAtualizar;
@@ -25,7 +24,6 @@ class GrupoAdminFuncoesAdminDTO extends DTOPadraoEntidade implements JsonSeriali
             'id' => $this->id,
             'idGrupoAdministracao' => $this->idGrupoAdministracao,
             'idFuncoesAdministrativas' => $this->idFuncoesAdministrativas,
-            'descricao' => $this->descricao,
             'incrudCriar' => $this->incrudCriar,
             'incrudRecuperar' => $this->incrudRecuperar,
             'incrudAtualizar' => $this->incrudAtualizar,

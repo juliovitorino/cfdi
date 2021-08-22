@@ -13,7 +13,7 @@ $status = ConstantesVariavel::STATUS_ATIVO;
 $usuaid = 1000;
 
 // Imprime a 1a pagina
-$retorno = $csi->listarSeglogPorUsuaIdStatus($usuaid,$status,1,2);
+$retorno = $csi->listarSeglogPorUsuaIdStatus($usuaid,$status,1,50);
 echo json_encode($retorno);
 
 // Imprime a 2a pagina

@@ -399,7 +399,6 @@ class MySqlKinghostSeglogDAO implements SeglogDAO
         //echo var_dump($resultset); // ótimo pra debugar
         $retorno = new SeglogDTO();
         $retorno->id = $resultset[DmlSqlSeglog::SELOG_ID] == NULL ? NULL : $resultset[DmlSqlSeglog::SELOG_ID];
-        $retorno->idgafa = $resultset[DmlSqlSeglog::GAFA_ID] == NULL ? NULL : $resultset[DmlSqlSeglog::GAFA_ID];
         $retorno->id_usuario = $resultset[DmlSqlSeglog::USUA_ID] == NULL ? NULL : $resultset[DmlSqlSeglog::USUA_ID];
         $retorno->funcao = $resultset[DmlSqlSeglog::SEGLOG_DESCRICAO] == NULL ? NULL : $resultset[DmlSqlSeglog::SEGLOG_DESCRICAO];
         $retorno->incrudCriar = $resultset[DmlSqlSeglog::SEGLOG_IN_CRUD_CRIAR] == NULL ? NULL : $resultset[DmlSqlSeglog::SEGLOG_IN_CRUD_CRIAR];
