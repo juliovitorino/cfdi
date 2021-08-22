@@ -1,10 +1,14 @@
-....###....########.########.##....##..######.....###.....#######.
-...##.##......##....##.......###...##.##....##...##.##...##.....##
-..##...##.....##....##.......####..##.##........##...##..##.....##
-.##.....##....##....######...##.##.##.##.......##.....##.##.....##
-.#########....##....##.......##..####.##.......#########.##.....##
-.##.....##....##....##.......##...###.##....##.##.....##.##.....##
-.##.....##....##....########.##....##..######..##.....##..#######.
+/*
+
+   ###    ######## ######## ##    ##  ######     ###     #######  
+  ## ##      ##    ##       ###   ## ##    ##   ## ##   ##     ## 
+ ##   ##     ##    ##       ####  ## ##        ##   ##  ##     ## 
+##     ##    ##    ######   ## ## ## ##       ##     ## ##     ## 
+#########    ##    ##       ##  #### ##       ######### ##     ## 
+##     ##    ##    ##       ##   ### ##    ## ##     ## ##     ## 
+##     ##    ##    ######## ##    ##  ######  ##     ##  ####### 
+ 
+ */
 
 ----------------------------------------------------------------------------------
 -- NÃO EESQUECER DE AJUSTAR A TABELA VARIAVEIS
@@ -23,6 +27,15 @@ WHERE CAMP_IN_STATUS = 'A'
 ORDER BY USUA_ID;
 --********** NÃO ESQUEÇA DE APAGAR AS LINHAS DUPLICADAS DOS USUA_ID 1000 (JUNTA10) E 1 (JULIO) ****
 
+/*
+##     ##    ###    ########  ####    ###    ##     ## ######## ##       
+##     ##   ## ##   ##     ##  ##    ## ##   ##     ## ##       ##       
+##     ##  ##   ##  ##     ##  ##   ##   ##  ##     ## ##       ##       
+##     ## ##     ## ########   ##  ##     ## ##     ## ######   ##       
+ ##   ##  ######### ##   ##    ##  #########  ##   ##  ##       ##       
+  ## ##   ##     ## ##    ##   ##  ##     ##   ## ##   ##       ##       
+   ###    ##     ## ##     ## #### ##     ##    ###    ######## ######## 
+   */
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('CHAVE_GERAL_PERMITE_REMUNERAR_PROMOTOR','Chave Geral para permitir remunerar um promotor de usuarios que criam campanha' ,'ON');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('VALOR_REMUNERAR_PROMOTOR','Valor a remunerar um promotor de usuarios que criam campanha' ,'2.55');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('USUA_ID_DEBITAR_REMUNERAR_PROMOTOR','USUA_ID que vai remunerar um promotor de usuarios que criam campanha' ,'1');
@@ -37,6 +50,16 @@ INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONT
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('VALOR_LIMITE_TETO_INCENTIVAR_DONO_CAMPANHA_CARIMBAR','Valor limite teto remunerar incentivo de dono de campanha' ,'100');
 INSERT INTO VARIAVEL (`VARI_NM_VARIAVEL`,`VARI_TX_DESCRICAO`,`VARI_TX_VALOR_CONTEUDO`) VALUES ('USUA_ID_DEBITO_INCENTIVAR_DONO_CAMPANHA_CARIMBAR','USUA_ID debitar da configuração do cashback (USCA) incentivo de dono de campanha' ,'1');
 
+/*
+
+##     ##  ######   ######   
+###   ### ##    ## ##    ##  
+#### #### ##       ##        
+## ### ##  ######  ##   #### 
+##     ##       ## ##    ##  
+##     ## ##    ## ##    ##  
+##     ##  ######   ######   
+*/
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0192','Crédito de bonificação por seu indicado acbar de criar uma campanha');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0193','Olá *=p1=*, você acaba de receber um CRÉDITO de *=p2=* no seu cashback porque o usuário *=p3=* acabou de criar uma campanha no Junta10 ');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0194','Crédito de bonificação por instalar o aplicativo Junta10. Parabéns!');
@@ -49,6 +72,17 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0200
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0201','Parabéns, você acaba de ganhar *=p1=* de crédito no seu cashback por incentivar seus clientes a participarem da campanha *=p2=*');
 
 
+/*
+
+########  ########  ##       
+##     ## ##     ## ##       
+##     ## ##     ## ##       
+##     ## ##     ## ##       
+##     ## ##     ## ##       
+##     ## ##     ## ##       
+########  ########  ######## 
+
+*/
 
 -- Atualização estrutural de tabelas e campos
 /*************************************************************************/
@@ -199,7 +233,27 @@ ALTER TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO`
     FOREIGN KEY (GAFA_ID)
     REFERENCES SEGLOG_GRUPO_ADM_FUNCAO_ADM(GAFA_ID) ON DELETE CASCADE;
 
-/* ALTER TABLES NECESSÁRIOS */
+/* 
+
+
+   ###    ##       ######## ######## ########  
+  ## ##   ##          ##    ##       ##     ## 
+ ##   ##  ##          ##    ##       ##     ## 
+##     ## ##          ##    ######   ########  
+######### ##          ##    ##       ##   ##   
+##     ## ##          ##    ##       ##    ##  
+##     ## ########    ##    ######## ##     ## 
+
+
+########    ###    ########  ##       ######## 
+   ##      ## ##   ##     ## ##       ##       
+   ##     ##   ##  ##     ## ##       ##       
+   ##    ##     ## ########  ##       ######   
+   ##    ######### ##     ## ##       ##       
+   ##    ##     ## ##     ## ##       ##       
+   ##    ##     ## ########  ######## ######## 
+
+ */
 
 ALTER TABLE USUARIO_CASHBACK 
 MODIFY COLUMN USCA_IN_PERM_RESGATE_PIX VARCHAR(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'S' COMMENT 'Permite solicitar resgate via PIX';
@@ -208,9 +262,31 @@ ALTER TABLE CAMPANHA
 ADD COLUMN CAMP_IN_PERM_BONIF_DONO_CAMP varchar(1)  NOT NULL DEFAULT 'S' COMMENT 'Permite bonificar financeiramento donos de campanha';
 
 
-/* UPDATES NECESSÁRIOS */
+/*
 
-/* VIEWS */
+##     ## ########  ########     ###    ######## ########  ######  
+##     ## ##     ## ##     ##   ## ##      ##    ##       ##    ## 
+##     ## ##     ## ##     ##  ##   ##     ##    ##       ##       
+##     ## ########  ##     ## ##     ##    ##    ######    ######  
+##     ## ##        ##     ## #########    ##    ##             ## 
+##     ## ##        ##     ## ##     ##    ##    ##       ##    ## 
+ #######  ##        ########  ##     ##    ##    ########  ######  
+
+ */
+
+
+
+
+/*
+
+##     ## #### ######## ##      ## 
+##     ##  ##  ##       ##  ##  ## 
+##     ##  ##  ##       ##  ##  ## 
+##     ##  ##  ######   ##  ##  ## 
+ ##   ##   ##  ##       ##  ##  ## 
+  ## ##    ##  ##       ##  ##  ## 
+   ###    #### ########  ###  ###  
+*/
 
 /* -- SEGLOG -- */
 CREATE VIEW VW_SEGLOG
