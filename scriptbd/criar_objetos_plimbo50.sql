@@ -16,6 +16,16 @@
 /******************************************************************/
 /* OBJETOS DE BANCO DE DADOS                                       /
 /******************************************************************/
+/*
+.########....###....########..########.##..........###.....######.
+....##......##.##...##.....##.##.......##.........##.##...##....##
+....##.....##...##..##.....##.##.......##........##...##..##......
+....##....##.....##.########..######...##.......##.....##..######.
+....##....#########.##.....##.##.......##.......#########.......##
+....##....##.....##.##.....##.##.......##.......##.....##.##....##
+....##....##.....##.########..########.########.##.....##..######.
+*/
+
 --
 -- TABELAS DE USO COMUM EM QUALQUER SISTEMA
 --
@@ -772,6 +782,7 @@ CREATE TABLE CAMPANHA
     `CAMP_IN_PERM_CSJ10` VARCHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Permite participar de uma campanha sorteio do J10',
     `CAMP_IN_PERM_MOVER_CART` varchar(1)  NOT NULL DEFAULT 'S' COMMENT 'Permite mover cartão outro usuário',
     `CAMP_IN_PERM_BONIF_J10` varchar(1)  NOT NULL DEFAULT 'S' COMMENT 'Permite bonificar financeiramento no J10',
+    `CAMP_IN_PERM_BONIF_DONO_CAMP` varchar(1)  NOT NULL DEFAULT 'S' COMMENT 'Permite bonificar financeiramento donos de campanha',
     `CAMP_NU_LIKE` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador de Curtir',
     `CAMP_NU_CONT_STAR_1` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Péssima',
     `CAMP_NU_CONT_STAR_2` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Ruim',
@@ -1601,8 +1612,15 @@ AUTO_INCREMENT = 1000;
 
 CREATE INDEX IX_FPGL_USUA_PLUF_ID
         ON FUNDO_PARTICIPACAO_GLOBAL(USUA_ID, PLUF_ID);
-
-/* VIEWS */
+/*--------------------------------------------------------------------------------------
+.##.....##.####.########.##......##..######.
+.##.....##..##..##.......##..##..##.##....##
+.##.....##..##..##.......##..##..##.##......
+.##.....##..##..######...##..##..##..######.
+..##...##...##..##.......##..##..##.......##
+...##.##....##..##.......##..##..##.##....##
+....###....####.########..###..###...######.
+/*--------------------------------------------------------------------------------------*/
 
 /* -- SEGLOG -- */
 CREATE VIEW VW_SEGLOG
@@ -1625,6 +1643,16 @@ INNER JOIN SEGLOG_FUNCOES_ADMINISTRATIVAS FUAD ON GAFA.FUAD_ID = FUAD.FUAD_ID;
 /* ------------------------*/
 -- CONSTRAINTS FOREIGN KEY
 /* ------------------------*/
+
+/*
+.########.##....##..######.
+.##.......##...##..##....##
+.##.......##..##...##......
+.######...#####.....######.
+.##.......##..##.........##
+.##.......##...##..##....##
+.##.......##....##..######.
+*/
 
 -- PLANOS X USUARIO X PLANO_USUARIO
 ALTER TABLE PLANO_USUARIO
@@ -2007,5 +2035,14 @@ ALTER TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM_USUARIO`
     REFERENCES SEGLOG_GRUPO_ADM_FUNCAO_ADM(GAFA_ID) ON DELETE CASCADE;
 
 /* AJUSTES DE CAMPOS TIMESTAMP */
+/*
+....###..........##.##.....##..######..########.########..######.
+...##.##.........##.##.....##.##....##....##....##.......##....##
+..##...##........##.##.....##.##..........##....##.......##......
+.##.....##.......##.##.....##..######.....##....######....######.
+.#########.##....##.##.....##.......##....##....##.............##
+.##.....##.##....##.##.....##.##....##....##....##.......##....##
+.##.....##..######...#######...######.....##....########..######.
+*/
 ALTER TABLE `CAMPANHA` CHANGE `CAMP_DT_INICIO` `CAMP_DT_INICIO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de início';
 
