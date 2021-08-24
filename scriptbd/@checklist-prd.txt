@@ -14,7 +14,7 @@
  Siga este checklist antes de colocar a aplicação em produção
 
  ( ) Modificar os arquivos build.gradle para atualizar a versão para Play Store
- ( ) Modificar a propriedade ambienteAtivo para -> PRD <- no arquivo global-startup.json
+ ( ) *** APONTAR O APP PARA PRODUCAO => Modificar a propriedade ambienteAtivo para -> PRD <- no arquivo global-startup.json
  ( ) Modificar a propriedade versão no array PRD para a mesma versão do build.gradle no arquivo global-startup.json
 
 em DSV
