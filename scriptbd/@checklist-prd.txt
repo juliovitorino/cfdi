@@ -26,3 +26,4 @@ em DSV
 
  
  em HMG 
+ ( ) Conferir o arquivo "variaveis-ajustar-import.txt"
