@@ -13,6 +13,10 @@
 
  Siga este checklist antes de colocar a aplicação em produção
 
+ ( ) Modificar os arquivos build.gradle para atualizar a versão para Play Store
+ ( ) Modificar a propriedade ambienteAtivo para -> PRD <- no arquivo global-startup.json
+ ( ) Modificar a propriedade versão no array PRD para a mesma versão do build.gradle no arquivo global-startup.json
+
 em DSV
  ( ) Faça em export do banco de dados de produção conforme arquivo "exportar-importar-db.txt"
  ( ) Rode o script drop-all.sql para criar as linhas de comando para limpar o banco de dados em DSV
