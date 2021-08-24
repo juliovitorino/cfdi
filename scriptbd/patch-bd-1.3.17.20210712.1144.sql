@@ -284,14 +284,6 @@ ADD COLUMN CAMP_IN_PERM_BONIF_DONO_CAMP varchar(1)  NOT NULL DEFAULT 'S' COMMENT
 
  */
  
-
- INSERT INTO VERSAO ( 
-	`VERS_TX_VERSAO`,
-	`VERS_TX_FRONTEND`,
-	`VERS_TX_BACKEND`,
-	`VERS_TX_BD`
-) VALUES ('1.4.7.5.20210824.0720','1.4.7.5.20210824.0720','1.4.7.5.20210824.0720','1.4.7.5.20210824.0720'); 
-
 /*
 
 ##     ## #### ######## ##      ## 
@@ -320,3 +312,22 @@ FROM SEGLOG_GRUPO_ADM_FUNCAO_ADM GAFA
 INNER JOIN SEGLOG_FUNCOES_ADMINISTRATIVAS FUAD ON FUAD.FUAD_ID = GAFA.FUAD_ID
 INNER JOIN SEGLOG_GRUPO_ADMINISTRACAO GRAD ON GRAD.GRAD_ID = GAFA.GRAD_ID
 INNER JOIN SEGLOG_GRUPO_USUARIO GRUS ON GRUS.GRAD_ID = GRAD.GRAD_ID
+
+/*
+
+##     ## ######## ########   ######     ###     #######  
+##     ## ##       ##     ## ##    ##   ## ##   ##     ## 
+##     ## ##       ##     ## ##        ##   ##  ##     ## 
+##     ## ######   ########   ######  ##     ## ##     ## 
+ ##   ##  ##       ##   ##         ## ######### ##     ## 
+  ## ##   ##       ##    ##  ##    ## ##     ## ##     ## 
+   ###    ######## ##     ##  ######  ##     ##  #######  
+*/
+
+
+ INSERT INTO VERSAO ( 
+	`VERS_TX_VERSAO`,
+	`VERS_TX_FRONTEND`,
+	`VERS_TX_BACKEND`,
+	`VERS_TX_BD`
+) VALUES ('1.4.7.5.20210824.0720','1.4.7.5.20210824.0720','1.4.7.5.20210824.0720','1.4.7.5.20210824.0720'); 
