@@ -15,7 +15,7 @@
 ----------------------------------------------------------------------------------
 => Conferir o arquivo "variaveis-ajustar-import.txt"
 
--- *****  É OBRIGATORIO CRIAR UM REGISTRO USCA PARA CADA DONO DE CAMPANHA NESSA NOVA VERSÃO *****
+/*-- *****  É OBRIGATORIO CRIAR UM REGISTRO USCA PARA CADA DONO DE CAMPANHA NESSA NOVA VERSÃO ******/
 INSERT INTO USUARIO_CASHBACK ( 
   `USUA_ID`,
   `USCA_VL_RESGATE`,
@@ -25,7 +25,7 @@ SELECT DISTINCT USUA_ID,100,1,'S'
 FROM CAMPANHA
 WHERE CAMP_IN_STATUS = 'A'
 ORDER BY USUA_ID;
---********** NÃO ESQUEÇA DE APAGAR AS LINHAS DUPLICADAS DOS USUA_ID 1000 (JUNTA10) E 1 (JULIO) ****
+/*--********** NÃO ESQUEÇA DE APAGAR AS LINHAS DUPLICADAS DOS USUA_ID 1000 (JUNTA10) E 1 (JULIO) *****/
 
 /*
 ##     ##    ###    ########  ####    ###    ##     ## ######## ##       
@@ -284,11 +284,12 @@ ADD COLUMN CAMP_IN_PERM_BONIF_DONO_CAMP varchar(1)  NOT NULL DEFAULT 'S' COMMENT
 
  */
  
-INSERT INTO `VERSAO` () 
+
+ INSERT INTO VERSAO ( 
 	`VERS_TX_VERSAO`,
 	`VERS_TX_FRONTEND`,
 	`VERS_TX_BACKEND`,
-	`VERS_TX_BD`,
+	`VERS_TX_BD`
 ) VALUES ('1.4.7.5.20210824.0720','1.4.7.5.20210824.0720','1.4.7.5.20210824.0720','1.4.7.5.20210824.0720'); 
 
 /*
