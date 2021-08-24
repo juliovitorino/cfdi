@@ -283,9 +283,13 @@ ADD COLUMN CAMP_IN_PERM_BONIF_DONO_CAMP varchar(1)  NOT NULL DEFAULT 'S' COMMENT
  #######  ##        ########  ##     ##    ##    ########  ######  
 
  */
-
-
-
+ 
+INSERT INTO `VERSAO` () 
+	`VERS_TX_VERSAO`,
+	`VERS_TX_FRONTEND`,
+	`VERS_TX_BACKEND`,
+	`VERS_TX_BD`,
+) VALUES ('1.4.7.5.20210824.0720','1.4.7.5.20210824.0720','1.4.7.5.20210824.0720','1.4.7.5.20210824.0720'); 
 
 /*
 
