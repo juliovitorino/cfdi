@@ -1,6 +1,5 @@
 
 -------------------------------------------------------------------------------
-
  ######  ##     ## ########  ######  ##    ## ##       ####  ######  ######## 
 ##    ## ##     ## ##       ##    ## ##   ##  ##        ##  ##    ##    ##    
 ##       ##     ## ##       ##       ##  ##   ##        ##  ##          ##    
@@ -30,3 +29,31 @@ em DSV
  
  em HMG 
  ( ) Conferir o arquivo "variaveis-ajustar-import.txt"
+
+
+########  ########   #######  ########  ##     ##  ######     ###     #######  
+##     ## ##     ## ##     ## ##     ## ##     ## ##    ##   ## ##   ##     ## 
+##     ## ##     ## ##     ## ##     ## ##     ## ##        ##   ##  ##     ## 
+########  ########  ##     ## ##     ## ##     ## ##       ##     ## ##     ## 
+##        ##   ##   ##     ## ##     ## ##     ## ##       ######### ##     ## 
+##        ##    ##  ##     ## ##     ## ##     ## ##    ## ##     ## ##     ## 
+##        ##     ##  #######  ########   #######   ######  ##     ##  #######  
+
+Checklist para liberar plataforma em ambiente de produção
+
+ ( X ) Aguardar aprovação do App na Apple AppStore
+ ( X ) Aguardar aprovação do App no Google PlayStore
+ ( X ) Fazer BACKUP do banco de dados de produção conforme arquivo "exportar-importar-db.txt"
+ ( X ) Fazer backup da pasta /producao/cfdi no provedor para cfdi-[numeri-da-versao-atual] pelo putty
+       comando => #cp -R cfdi/ cfdi.bkp.v[numero-da-versao]-[data]  
+ ( X ) remover todas as pastas dentro de producao/cfi/php/classes/ via putty 
+       comando => # rm -Rf *
+ ( X ) Rodar script de patch de banco de dados via MySQL manager conectado no banco de dados de produção
+ ( X ) Copiar backend testado e aprovado para pasta servidor remoto /producao/cfdi/classes
+       SEM A PASTA gateway
+ ( X ) Copiar a pasta gateway backend testado e aprovado para pasta servidor remoto /producao/cfdi/classes
+
+ ( X ) Liberar release aprovada na AppStore via aplicativo no iPhone
+ ( X ) Liberar release aprovada na PlayStore via play Console
+
+ 

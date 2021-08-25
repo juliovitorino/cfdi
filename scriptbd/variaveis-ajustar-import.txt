@@ -1,7 +1,7 @@
 Segue abaixo a lista de VARIAVEIS que precisam de ajuste quando restauram BD produção em DSV ou HMG
 
 
-*** AMBIENTE HOMOOLOGAÇÃO => HMG
+*** AMBIENTE HOMOLOGAÇÃO => HMG
 
 AMBIENTE_ATIVO = HMG
 URL_IMG_CAMPANHA = http://elitefinanceira.com/cfdi/repositorio/*=p1=*/*=p3=*
