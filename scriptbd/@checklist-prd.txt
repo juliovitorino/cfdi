@@ -52,8 +52,10 @@ Checklist para liberar plataforma em ambiente de produção
  ( X ) Copiar backend testado e aprovado para pasta servidor remoto /producao/cfdi/classes
        SEM A PASTA gateway
  ( X ) Copiar a pasta gateway backend testado e aprovado para pasta servidor remoto /producao/cfdi/classes
-
  ( X ) Liberar release aprovada na AppStore via aplicativo no iPhone
  ( X ) Liberar release aprovada na PlayStore via play Console
+ ( ) Fazer o merge para o branch master a partir de 'dsv' dentro do git hub
+ ( ) Atualizar branch master local
+ ( ) Fazer a geração da tag local e subir para o repositório
 
  
