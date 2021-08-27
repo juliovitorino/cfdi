@@ -16,6 +16,16 @@
 /******************************************************************/
 /* OBJETOS DE BANCO DE DADOS                                       /
 /******************************************************************/
+/*
+.########....###....########..########.##..........###.....######.
+....##......##.##...##.....##.##.......##.........##.##...##....##
+....##.....##...##..##.....##.##.......##........##...##..##......
+....##....##.....##.########..######...##.......##.....##..######.
+....##....#########.##.....##.##.......##.......#########.......##
+....##....##.....##.##.....##.##.......##.......##.....##.##....##
+....##....##.....##.########..########.########.##.....##..######.
+*/
+
 --
 -- TABELAS DE USO COMUM EM QUALQUER SISTEMA
 --
@@ -62,6 +72,92 @@ CREATE  UNIQUE INDEX UN_TX_CODIGO_ATIVACAO
 
 CREATE INDEX IX_USUA_ID_USERFCBK
         ON USUARIO(USUA_ID_USERFCBK);
+
+/******************************************************************/
+/* SEGLOG_FUNCOES_ADMINISTRATIVAS                                 */
+/******************************************************************/
+/* MNEMONICO = FUAD                                                /
+/*-----------------------------------------------------------------/
+/* Valores para USUA_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* I = Inativado                                                   /
+/******************************************************************/
+CREATE TABLE `SEGLOG_FUNCOES_ADMINISTRATIVAS` (
+ `FUAD_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID funções administrativas',
+ `FUAD_NM_DESCRICAO` VARCHAR(100) NOT NULL COMMENT 'Descricao da função administrativa',
+ `FUAD_IN_STATUS` VARCHAR(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `FUAD_DT_CADASTRO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `FUAD_DT_UPDATE` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_FUAD_ID PRIMARY KEY (FUAD_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+/******************************************************************/
+/* SEGLOG_GRUPO_ADMINISTRACAO                                     */
+/******************************************************************/
+/* MNEMONICO = GRAD                                                /
+/*-----------------------------------------------------------------/
+/* Valores para USUA_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* I = Inativado                                                   /
+/******************************************************************/
+CREATE TABLE `SEGLOG_GRUPO_ADMINISTRACAO` (
+ `GRAD_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID grupo administração',
+ `GRAD_NM_DESCRICAO` VARCHAR(100) NOT NULL COMMENT 'Descricao do grupo administração',
+ `GRAD_IN_STATUS` VARCHAR(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `GRAD_DT_CADASTRO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `GRAD_DT_UPDATE` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_GRAD_ID PRIMARY KEY (GRAD_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+/******************************************************************/
+/* SEGLOG_GRUPO_ADM_FUNCAO_ADM                                    */
+/******************************************************************/
+/* MNEMONICO = GAFA                                                /
+/*-----------------------------------------------------------------/
+/* Valores para USUA_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* I = Inativado                                                   /
+/******************************************************************/
+CREATE TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM` (
+ `GAFA_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID grupo admin x função admin',
+ `GRAD_ID` int(11) NOT NULL COMMENT 'ID grupo administração',
+ `FUAD_ID` int(11) NOT NULL COMMENT 'ID funções administrativas',
+ `GAFA_IN_CRUD_CRIAR` VARCHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Permissão CRUD Criar',
+ `GAFA_IN_CRUD_RECUPERAR` VARCHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Permissão CRUD Recuperar',
+ `GAFA_IN_CRUD_ATUALIZAR` VARCHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Permissão CRUD Atualizar',
+ `GAFA_IN_CRUD_EXCLUIR` VARCHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Permissão CRUD Excluir',
+ `GAFA_IN_STATUS` VARCHAR(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `GAFA_DT_CADASTRO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `GAFA_DT_UPDATE` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_GAFA_ID PRIMARY KEY (GAFA_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+/******************************************************************/
+/* SEGLOG_GRUPO_USUARIO                                           */
+/******************************************************************/
+/* MNEMONICO = GRUS                                                /
+/*-----------------------------------------------------------------/
+/* Valores para USUA_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* I = Inativado                                                   /
+/******************************************************************/
+CREATE TABLE `SEGLOG_GRUPO_USUARIO` (
+ `GRUS_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID grupo admin x usuário',
+ `GRAD_ID` int(11) NOT NULL COMMENT 'ID grupo administração',
+ `USUA_ID` int(11) NOT NULL COMMENT 'ID do usuário',
+ `GRUS_IN_STATUS` VARCHAR(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `GRUS_DT_CADASTRO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `GRUS_DT_UPDATE` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_GRUS_ID PRIMARY KEY (GRUS_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
 
 /******************************************************************/
 /* USUARIO COMPLEMENTO                                            */
@@ -129,6 +225,7 @@ AUTO_INCREMENT = 1000;
 /* 2 - PERM_CRIAR_PROMOCAO_PLANO                                   /
 /* 3 - PERM_ADICIONAR_CARTOES_CAMPANHA                             /
 /* 4 - PERM_ADICIONAR_SORTEIO_CAMPANHA                             /
+/* 5 - PERM_ACESSO_FUNDO_PARTICIPACAO_GLOBAL                       /
 /*                                                                 /
 /******************************************************************/
 /* Valores para PLAN_IN_STATUS                                     /
@@ -692,6 +789,7 @@ CREATE TABLE CAMPANHA
     `CAMP_IN_PERM_CSJ10` VARCHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Permite participar de uma campanha sorteio do J10',
     `CAMP_IN_PERM_MOVER_CART` varchar(1)  NOT NULL DEFAULT 'S' COMMENT 'Permite mover cartão outro usuário',
     `CAMP_IN_PERM_BONIF_J10` varchar(1)  NOT NULL DEFAULT 'S' COMMENT 'Permite bonificar financeiramento no J10',
+    `CAMP_IN_PERM_BONIF_DONO_CAMP` varchar(1)  NOT NULL DEFAULT 'S' COMMENT 'Permite bonificar financeiramento donos de campanha',
     `CAMP_NU_LIKE` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador de Curtir',
     `CAMP_NU_CONT_STAR_1` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Péssima',
     `CAMP_NU_CONT_STAR_2` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Ruim',
@@ -1246,7 +1344,7 @@ CREATE TABLE `USUARIO_CASHBACK` (
  `USCA_VL_RESGATE` DECIMAL(10,2) NOT NULL DEFAULT 0 COMMENT 'Resgatar a partir de',
  `USCA_VL_PERC_CASHBACK` DECIMAL(6,2) NOT NULL DEFAULT 0 COMMENT 'Percentual',
  `USCA_IN_PERM_TRANSF_MEMJ10` varchar(1) NOT NULL DEFAULT 'S' COMMENT 'Permite transferir saldo entre membros J10',
- `USCA_IN_PERM_RESGATE_PIX` varchar(1) NOT NULL DEFAULT 'N' COMMENT 'Permite solicitar resgate via PIX',
+ `USCA_IN_PERM_RESGATE_PIX` varchar(1) NOT NULL DEFAULT 'S' COMMENT 'Permite solicitar resgate via PIX',
  `USCA_TX_OBS` varchar(2000) DEFAULT NULL COMMENT 'Observação',
  `USCA_NU_CONT_STAR_1` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Péssima',
  `USCA_NU_CONT_STAR_2` int(11) NOT NULL DEFAULT 0 COMMENT 'Contador Avaliação Ruim',
@@ -1493,7 +1591,75 @@ AUTO_INCREMENT = 1000;
 CREATE UNIQUE INDEX UIX_FIPO_USUA_ID
         ON REGISTRO_INDICACAO(USUA_ID_PROMOTOR, USUA_ID_INDICADO);
 
+/*************************************************************************/
+/* FUNDO_PARTICIPACAO_GLOBAL                                             */
+/*************************************************************************/
+/* Valores para _IN_STATUS                                                /
+/* A = ATIVO                                                              /
+/* I = INATIVO                                                            /
+/*************************************************************************/
+/* Valores para _IN_TIPO                                                  /
+/* C=CREDITO | D=DEBITO | S=SALDO                                        */
+/*************************************************************************/
+CREATE TABLE `FUNDO_PARTICIPACAO_GLOBAL` (
+ `FPGL_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID da Conta Corrente Cashback',
+ `USUA_ID` int(11) NOT NULL COMMENT 'ID do usuário participante',
+ `USUA_ID_BONIFICADO` int(11) NULL COMMENT 'ID do usuário bonificado',
+ `PLUF_ID` int(11) NULL COMMENT 'ID do plano fatura do usuário',
+ `FPGL_IN_TIPO` varchar(1) NOT NULL DEFAULT 'C' COMMENT 'Tipo do movimento', 
+ `FPGL_VL_TRANSACAO` DECIMAL(10,2) NOT NULL DEFAULT 0 COMMENT 'Valor do crédito ou débito',
+ `FPGL_TX_DESCRICAO` varchar(500) NOT NULL COMMENT 'descrição',
+ `FPGL_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `FPGL_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `FPGL_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_FPGL_ID PRIMARY KEY (FPGL_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+CREATE INDEX IX_FPGL_USUA_PLUF_ID
+        ON FUNDO_PARTICIPACAO_GLOBAL(USUA_ID, PLUF_ID);
+/*--------------------------------------------------------------------------------------
+.##.....##.####.########.##......##..######.
+.##.....##..##..##.......##..##..##.##....##
+.##.....##..##..##.......##..##..##.##......
+.##.....##..##..######...##..##..##..######.
+..##...##...##..##.......##..##..##.......##
+...##.##....##..##.......##..##..##.##....##
+....###....####.########..###..###...######.
+/*--------------------------------------------------------------------------------------*/
+
+/* -- SEGLOG -- */
+CREATE VIEW VW_SEGLOG
+AS
+SELECT GAFA.GAFA_ID AS SELOG_ID
+, GRUS.USUA_ID as USUA_ID
+, FUAD.FUAD_NM_DESCRICAO AS SEGLOG_DESCRICAO
+, GAFA.GAFA_IN_CRUD_CRIAR AS SEGLOG_IN_CRUD_CRIAR
+, GAFA.GAFA_IN_CRUD_RECUPERAR AS SEGLOG_IN_CRUD_RECUPERAR
+, GAFA.GAFA_IN_CRUD_ATUALIZAR AS SEGLOG_IN_CRUD_ATUALIZAR
+, GAFA.GAFA_IN_CRUD_EXCLUIR AS SEGLOG_IN_CRUD_EXCLUIR
+, GAFA.GAFA_IN_STATUS as SEGLOG_IN_STATUS
+, GAFA.GAFA_DT_CADASTRO as SEGLOG_DT_CADASTRO
+, GAFA.GAFA_DT_UPDATE SEGLOG_DT_UPDATE
+FROM SEGLOG_GRUPO_ADM_FUNCAO_ADM GAFA 
+INNER JOIN SEGLOG_FUNCOES_ADMINISTRATIVAS FUAD ON FUAD.FUAD_ID = GAFA.FUAD_ID
+INNER JOIN SEGLOG_GRUPO_ADMINISTRACAO GRAD ON GRAD.GRAD_ID = GAFA.GRAD_ID
+INNER JOIN SEGLOG_GRUPO_USUARIO GRUS ON GRUS.GRAD_ID = GRAD.GRAD_ID
+
+/* ------------------------*/
 -- CONSTRAINTS FOREIGN KEY
+/* ------------------------*/
+
+/*
+.########.##....##..######.
+.##.......##...##..##....##
+.##.......##..##...##......
+.######...#####.....######.
+.##.......##..##.........##
+.##.......##...##..##....##
+.##.......##....##..######.
+*/
 
 -- PLANOS X USUARIO X PLANO_USUARIO
 ALTER TABLE PLANO_USUARIO
@@ -1836,6 +2002,55 @@ ALTER TABLE CAMPANHA_CASHBACK_RESGATE_PIX
     FOREIGN KEY (USUA_ID)
     REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
 
+/* FUNDO DE PARTICIPACAO GLOBAL */
+
+ALTER TABLE `FUNDO_PARTICIPACAO_GLOBAL` 
+    ADD CONSTRAINT FK_FPGL_USUA
+    FOREIGN KEY (USUA_ID)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
+    
+ALTER TABLE `FUNDO_PARTICIPACAO_GLOBAL` 
+    ADD CONSTRAINT FK_FPGL_USUA_BON
+    FOREIGN KEY (USUA_ID_BONIFICADO)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
+    
+ALTER TABLE `FUNDO_PARTICIPACAO_GLOBAL` 
+    ADD CONSTRAINT FK_FPGL_PLUF
+    FOREIGN KEY (PLUF_ID)
+    REFERENCES PLANO_USUARIO_FATURA(PLUF_ID) ON DELETE CASCADE;
+
+/* CONSTRAINTS DE SEGLOG */
+
+ALTER TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM` 
+    ADD CONSTRAINT FK_GAFA_GRAD
+    FOREIGN KEY (GRAD_ID)
+    REFERENCES SEGLOG_GRUPO_ADMINISTRACAO(GRAD_ID) ON DELETE CASCADE;
+    
+ALTER TABLE `SEGLOG_GRUPO_ADM_FUNCAO_ADM` 
+    ADD CONSTRAINT FK_GAFA_FUAD
+    FOREIGN KEY (FUAD_ID)
+    REFERENCES SEGLOG_FUNCOES_ADMINISTRATIVAS(FUAD_ID) ON DELETE CASCADE;
+
+ALTER TABLE `SEGLOG_GRUPO_USUARIO`
+    ADD CONSTRAINT FK_GRUS_USUA
+    FOREIGN KEY (USUA_ID)
+    REFERENCES USUARIO(USUA_ID) ON DELETE CASCADE;
+
+ALTER TABLE `SEGLOG_GRUPO_USUARIO`
+    ADD CONSTRAINT FK_GRUS_GRAD
+    FOREIGN KEY (GRAD_ID)
+    REFERENCES SEGLOG_GRUPO_ADMINISTRACAO(GRAD_ID) ON DELETE CASCADE;
+
+
 /* AJUSTES DE CAMPOS TIMESTAMP */
+/*
+....###..........##.##.....##..######..########.########..######.
+...##.##.........##.##.....##.##....##....##....##.......##....##
+..##...##........##.##.....##.##..........##....##.......##......
+.##.....##.......##.##.....##..######.....##....######....######.
+.#########.##....##.##.....##.......##....##....##.............##
+.##.....##.##....##.##.....##.##....##....##....##.......##....##
+.##.....##..######...#######...######.....##....########..######.
+*/
 ALTER TABLE `CAMPANHA` CHANGE `CAMP_DT_INICIO` `CAMP_DT_INICIO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de início';
 

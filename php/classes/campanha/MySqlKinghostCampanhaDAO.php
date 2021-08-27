@@ -588,6 +588,7 @@ class MySqlKinghostCampanhaDAO implements CampanhaDAO
 		$retorno->permiteCampanhaSorteioJ10 = $resultset[DmlSqlCampanha::CAMP_IN_PERM_CSJ10] == ConstantesVariavel::STATUS_PERMITIDO;
 		$retorno->permiteMoverCartaoEntreUsuario = $resultset[DmlSqlCampanha::CAMP_IN_PERM_MOVER_CART] == ConstantesVariavel::STATUS_PERMITIDO;
 		$retorno->permiteBonificarCarimboJ10 = $resultset[DmlSqlCampanha::CAMP_IN_PERM_BONIF_J10] == ConstantesVariavel::STATUS_PERMITIDO;
+		$retorno->permiteBonificarCarimboDonoCampanha = $resultset[DmlSqlCampanha::CAMP_IN_PERM_BONIF_DONO_CAMP] == ConstantesVariavel::STATUS_PERMITIDO;
 		$retorno->minimoDelay = $resultset[DmlSqlCampanha::CAMP_NU_MIN_DELAY];
 		$retorno->QrCodeAtivo = $resultset[DmlSqlCampanha::CAMP_TX_QRCODE_ATIVO];
 		$retorno->fraseEfeito = $resultset[DmlSqlCampanha::CAMP_TX_FRASE_EFEITO];

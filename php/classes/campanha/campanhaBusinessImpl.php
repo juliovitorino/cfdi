@@ -33,6 +33,14 @@ require_once '../permissao/PermissaoHelper.php';
 require_once '../cartaopedido/CartaoPedidoBusinessImpl.php';
 require_once '../cartaopedido/CartaoPedidoDTO.php';
 require_once '../plano/ConstantesPlano.php';
+require_once '../registroindicacao/RegistroIndicacaoBusinessImpl.php';
+require_once '../campanhacashbackcc/CampanhaCashbackCCBusinessImpl.php';
+require_once '../usuarionotificacao/UsuarioNotificacaoHelper.php';
+require_once '../usuarios/UsuarioHelper.php';
+require_once '../fundoparticipacaoglobal/FundoParticipacaoGlobalBusinessImpl.php';
+require_once '../usuariocashback/UsuarioCashbackBusinessImpl.php';
+require_once '../usuariocashback/UsuarioCashbackDTO.php';
+
 
 /**
  * CampanhaBusinessImpl - Implementação da classe de negocio
@@ -1032,7 +1040,172 @@ var_dump($carimbodto);*/
 				$maxid,
 				ConstantesEstatisticaFuncao::FUNCAO_CRIAR_CAMPANHA
 			);
+
+			// Insere uma USCA caso não exista
+			$uscabo = new UsuarioCashbackBusinessImpl();
+			$uscadto = $uscabo->PesquisarMaxPKAtivoId_UsuarioPorStatus($daofactory, $dto->id_usuario, ConstantesVariavel::STATUS_ATIVO);
+			if(is_null($uscadto))
+			{
+				$uscadto = new UsuarioCashbackDTO();
+				$uscadto->id_usuario = $dto->id_usuario;
+				$uscadto->vlMinimoResgate = 100;
+				$uscadto->percentual = 1;
+				$uscadto->obs = "inserido via junta10";
+				$uscabo->inserir($daofactory, $uscadto);
+			}
+
 		}
+
+		//----------------------------------------------------------
+		// Premiar o promotor que indicou esse usuário com FPGL
+		//----------------------------------------------------------
+
+		// falta testar se o plano do usuario é gratuito
+		/* aproveita pra marcar a gratuidade do plano com base no plano mais recente */
+/*		
+		$pubi = new PlanoUsuarioBusinessImpl();
+		$plus = $pubi->carregarPlanoUsuarioPorStatus($daofactory, $dto->id_usuario, ConstantesVariavel::STATUS_ATIVO);
+
+		// Por padrão é considerado sempre negado o plano gratuito
+		$isGratuito = ConstantesVariavel::PLANO_GRATIS_NAO;
+		
+		// Trouxe as informações do plano do usuario. Então, temos a necessidade de verificar se o plano ativo
+		// é o plano gratuito
+		if ($plus != NULL && $plus->id != NULL && $plus->usuarioid == $dto->id_usuario) {
+			if($plus->planoid == (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::PLANO_GRATUITO_CODIGO)) {
+				$isGratuito = ConstantesVariavel::PLANO_GRATIS_SIM;				
+			}
+		}
+*/
+		$pubifpgl = new PlanoUsuarioBusinessImpl();
+		if(
+			(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_GERAL_PERMITE_REMUNERAR_PROMOTOR) == ConstantesVariavel::ATIVADO) &&
+			( ! $pubifpgl->isPlanoGratuito($daofactory, $dto->id_usuario) )
+			//( $isGratuito == ConstantesVariavel::PLANO_GRATIS_NAO )
+		)
+		{
+			$vllancar = floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_REMUNERAR_PROMOTOR));
+			$usuaid_debitar = $dto->id_usuario;
+			//$usuaid_debitar = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::USUA_ID_DEBITAR_REMUNERAR_PROMOTOR);
+			$descricao = MensagemCache::getInstance()->getMensagem(ConstantesMensagem::REMUNERACAO_PROMOTOR);
+
+			// localiza a pessoa que indicou este dono de campanha
+			$reinbo = new RegistroIndicacaoBusinessImpl();
+			$reindto = $reinbo->pesquisarPorIdusuarioindicado($daofactory, $dto->id_usuario);
+			if(! is_null($reindto))
+			{
+				/* pode apagar
+				$cacaccbo = new CampanhaCashbackCCBusinessImpl();
+				$retcc = $cacaccbo->lancarMovimentoCashbackCC($daofactory, $reindto->idUsuarioPromotor, $usuaid_debitar, $vllancar, $descricao, ConstantesVariavel::CREDITO);
+				*/
+
+				// Busca dados para popular mensagens
+				$usuarioPromotor = UsuarioHelper::getUsuarioBusinessNoKeys($daofactory, $reindto->idUsuarioPromotor);
+				$usuarioIndicado = UsuarioHelper::getUsuarioBusinessNoKeys($daofactory, $dto->id_usuario);
+
+				//------------------------------------------------------------------------------------------------
+				// Lançar movimento sobre o Fundo de Participação Global e o conta corrente do usuário bonificado
+				//------------------------------------------------------------------------------------------------
+				$fpglbo = new FundoParticipacaoGlobalBusinessImpl();
+				$fpglbo->lancarMovimentoFundoParticipacaoGlobal($daofactory
+					, $usuaid_debitar
+					, $usuarioPromotor->id
+					, floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_FUNDO_PARTICIPACAO_GLOBAL_FPGL))
+					, MensagemCache::getInstance()->getMensagemParametrizada(ConstantesMensagem::AVISO_CREDITO_FUNDO_PARTICIPACAO_GLOBAL,[
+						ConstantesVariavel::P1 => $usuarioPromotor->apelido,
+						ConstantesVariavel::P2 => Util::getMoeda(floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_FUNDO_PARTICIPACAO_GLOBAL_FPGL))),
+					])
+				);
+
+
+/*
+				//-------------------------------------------------------
+				// Verifica a Chave Geral do Fundo de Participação Global
+				//-------------------------------------------------------
+				if(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_GERAL_FUNDO_PARTICIPACAO_GLOBAL_FPGL) == ConstantesVariavel::ATIVADO)
+				{
+					$okfpgl = true;
+
+					//------------------------------------------
+					// Aplica regras de negócio para FPGL e CACC
+					//------------------------------------------
+
+					// Somente planos pagos
+					$plusfpglbo = new PlanoUsuarioBusinessImpl();
+					if($plusfpglbo->isPlanoGratuito($daofactory, $usuaid_debitar))
+					{
+						$okfpgl = false;
+					}
+
+					//---> colocar verificacao da permissao do plano porque nem todo plano pago permite retiradda do FPGL
+					$permdto = PermissaoHelper::verificarPermissao($daofactory, $usuaid_debitar, ConstantesPlano::PERM_ACESSO_FUNDO_PARTICIPACAO_GLOBAL);
+					if ($permdto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+						$okfpgl = false;
+					}
+
+					// dono da campanha tem que ter registro na USCA
+					$uscafpglbo = new UsuarioCashbackBusinessImpl();
+					$uscafpgldto = $uscafpglbo->PesquisarMaxPKAtivoId_UsuarioPorStatus($daofactory, $usuaid_debitar, ConstantesVariavel::STATUS_ATIVO);
+					if(is_null($uscafpgldto))
+					{
+						$okfpgl = false;
+					}
+
+					if($okfpgl)
+					{
+						// Tudo Ok. Pode realizar o pagamento ao cliente que carimbou
+						$dtofpgl = new FundoParticipacaoGlobalDTO();
+	
+						$dtofpgl->idUsuarioParticipante = $usuaid_debitar;
+						$dtofpgl->idUsuarioBonificado = $usuariodto->id;
+						$dtofpgl->valorTransacao = floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_FUNDO_PARTICIPACAO_GLOBAL_FPGL)) * -1;
+						$dtofpgl->descricao = MensagemCache::getInstance()->getMensagemParametrizada(ConstantesMensagem::AVISO_CREDITO_FUNDO_PARTICIPACAO_GLOBAL,[
+							ConstantesVariavel::P1 => $usuariodto->apelido,
+							ConstantesVariavel::P2 => Util::getMoeda($dtofpgl->valorTransacao * -1),
+						]);
+
+						$fpglbo = new FundoParticipacaoGlobalBusinessImpl();
+						$retfpgl = $fpglbo->inserirCreditoBonificacao($daofactory, $dtofpgl);
+	
+						// Pode inserir o registro de crédito o cashback_cc?
+						if($retfpgl->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO)
+						{
+							$caccfpglbo = new CampanhaCashbackCCBusinessImpl();
+							$retfpgl = $caccfpglbo->lancarMovimentoCashbackCC($daofactory, $reindto->idUsuarioPromotor, $usuaid_debitar, $dtofpgl->valorTransacao * -1, $dtofpgl->descricao, ConstantesVariavel::CREDITO);
+
+						}
+					}	
+				}
+
+*/
+				
+				$msgRemunerarPromotor = MensagemCache::getInstance()->getMensagemParametrizada(ConstantesMensagem::NOTIFICACAO_REMUNERACAO_PROMOTOR,
+					[
+						ConstantesVariavel::P1 => $usuarioPromotor->apelido,
+						ConstantesVariavel::P2 => Util::getMoeda($vllancar), 
+						ConstantesVariavel::P3 => $usuarioIndicado->apelido,
+					]
+				);
+
+				// Notifica o usuario
+				UsuarioNotificacaoHelper::criarUsuarioNotificacaoPorBusiness($daofactory, $reindto->idUsuarioPromotor, $msgRemunerarPromotor);	
+
+				// Envia uma notificação ao ADMIN
+				UsuarioNotificacaoHelper::criarNotificacaoAdmin(
+					$daofactory
+					, ConstantesMensagem::NOTIFICACAO_REMUNERACAO_PROMOTOR
+					, [
+						ConstantesVariavel::P1 => $usuarioPromotor->apelido,
+						ConstantesVariavel::P2 => Util::getMoeda($vllancar), 
+						ConstantesVariavel::P3 => $usuarioIndicado->apelido,
+					]
+				);
+
+	
+			}
+		}
+
+
 
 		if ($ok) {
 			$retorno = new DTOPadrao();

@@ -3,11 +3,6 @@ mysql -h localhost -u cfd -p
 
 connect cfd;
 
-select concat('ALTER TABLE ',TABLE_NAME,' DROP FOREIGN KEY ', CONSTRAINT_NAME, ';')
-from information_schema.KEY_COLUMN_USAGE
-WHERE TABLE_SCHEMA = 'cfd'
-AND CONSTRAINT_NAME LIKE 'FK_%';
-
 /* EXECUTE A SQL ABAIXO */
 select concat('ALTER TABLE ',upper(TABLE_NAME),' DROP FOREIGN KEY ', upper(CONSTRAINT_NAME), ';')
 from information_schema.KEY_COLUMN_USAGE

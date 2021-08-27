@@ -85,7 +85,7 @@ public static function criarUsuarioNotificacaoPorBusiness($daofactory, $idusuari
 *
 */
 
-public static function criarNotificacaoAdmin($daofactory, $msgOrigem, $parametros, $icone)
+public static function criarNotificacaoAdmin($daofactory, $msgOrigem, $parametros, $icone="notify-03.png")
 {
     // Envia uma notificação ao ADMIN se chave estiver ligada
     if (VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_NOTIFICACAO_ADMIN_NOVO_USUARIO) == ConstantesVariavel::ATIVADO){

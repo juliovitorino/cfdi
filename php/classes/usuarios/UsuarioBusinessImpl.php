@@ -41,6 +41,7 @@ require_once '../daofactory/DAOFactory.php';
 require_once '../estatisticafuncao/EstatisticaFuncaoDTO.php';
 require_once '../estatisticafuncao/ConstantesEstatisticaFuncao.php';
 require_once '../estatisticafuncao/EstatisticaFuncaoHelper.php';
+require_once '../campanhacashbackcc/CampanhaCashbackCCBusinessImpl.php';
 
 class UsuarioBusinessImpl implements UsuarioBusiness
 {
@@ -308,6 +309,42 @@ class UsuarioBusinessImpl implements UsuarioBusiness
 			]);
 			UsuarioNotificacaoHelper::criarUsuarioNotificacaoPorBusiness($daofactory, $usuaid_admin, $msg, "notify-03.png");
 		}
+
+		// Verifica a chave de remuneração de novo usuário na plataforma Junta10
+
+		if(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_GERAL_PERMITE_REMUNERAR_NOVO_USUARIO) == ConstantesVariavel::ATIVADO)
+		{
+			$vllancar = floatval(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::VALOR_REMUNERAR_NOVO_USUARIO));
+			$usuaid_debitar = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::USUA_ID_DEBITAR_REMUNERAR_NOVO_USUARIO);
+			$descricao = MensagemCache::getInstance()->getMensagem(ConstantesMensagem::REMUNERACAO_NOVO_USUARIO);
+
+			$cacaccbo = new CampanhaCashbackCCBusinessImpl();
+			$retcc = $cacaccbo->lancarMovimentoCashbackCC($daofactory, $dto->id, $usuaid_debitar, $vllancar, $descricao, ConstantesVariavel::CREDITO);
+
+			$msgRemunerarNovoUsuario = MensagemCache::getInstance()->getMensagemParametrizada(ConstantesMensagem::NOTIFICACAO_REMUNERACAO_NOVO_USUARIO,
+				[
+					ConstantesVariavel::P1 => $dto->apelido,
+					ConstantesVariavel::P2 => Util::getMoeda($vllancar), 
+				]
+			);
+
+			// Notifica o usuario
+			UsuarioNotificacaoHelper::criarUsuarioNotificacaoPorBusiness($daofactory, $dto->id, $msgRemunerarNovoUsuario, "money.png");	
+
+			// Envia uma notificação ao ADMIN
+			UsuarioNotificacaoHelper::criarNotificacaoAdmin(
+				$daofactory
+				, ConstantesMensagem::NOTIFICACAO_REMUNERACAO_NOVO_USUARIO
+				, [
+					ConstantesVariavel::P1 => $dto->apelido,
+					ConstantesVariavel::P2 => Util::getMoeda($vllancar), 
+				]
+				, "money.png"
+			);
+
+		}
+
+
 
 		// Prepara objeto de retorno
 		if ($seguefluxo){

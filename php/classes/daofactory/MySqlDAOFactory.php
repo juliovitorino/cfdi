@@ -7,6 +7,12 @@
  * @since 25/07/2018
  */
 
+require_once '../funcoesadministrativas/MySqlKinghostFuncoesAdministrativasDAO.php';
+require_once '../grupoadministracao/MySqlKinghostGrupoAdministracaoDAO.php';
+require_once '../grupoadminfuncoesadmin/MySqlKinghostGrupoAdminFuncoesAdminDAO.php';
+require_once '../grupousuario/MySqlKinghostGrupoUsuarioDAO.php';
+require_once '../seglog/MySqlKinghostSeglogDAO.php';
+
 require_once '../mkdlista/MySqlKinghostMkdListaDAO.php';
 require_once '../filaqrcodependenteproduzir/MySqlKinghostFilaQRCodePendenteProduzirDAO.php';
 require_once '../usuarioversao/MySqlKinghostUsuarioVersaoDAO.php';
@@ -48,6 +54,7 @@ require_once '../usuariocampanhasorteioticket/MySqlKinghostUsuarioCampanhaSortei
 require_once '../registroindicacao/MySqlKinghostRegistroIndicacaoDAO.php';
 require_once '../cartaomoverhistorico/MySqlKinghostCartaoMoverHistoricoDAO.php';
 require_once '../campanhacashbackresgatepix/MySqlKinghostCampanhaCashbackResgatePixDAO.php';
+require_once '../fundoparticipacaoglobal/MySqlKinghostFundoParticipacaoGlobalDAO.php';
 
 
 class MySqlDAOFactory extends DAOFactory
@@ -68,6 +75,51 @@ class MySqlDAOFactory extends DAOFactory
 	return 1;
 	}
 
+	/**
+	 * Retorna uma instância de acesso a dados
+	* @return MySqlKinghostFuncoesAdministrativasDAO
+	*/
+	public function getFuncoesAdministrativasDAO($daofactory)
+	{
+		return new MySqlKinghostFuncoesAdministrativasDAO($daofactory);
+	}
+  
+	/**
+	* Retorna uma instância de acesso a dados
+	* @return MySqlKinghostGrupoAdministracaoDAO
+	*/
+	public function getGrupoAdministracaoDAO($daofactory)
+	{
+	return new MySqlKinghostGrupoAdministracaoDAO($daofactory);
+	}
+
+	/**
+     * Retorna uma instância de acesso a dados
+     * @return MySqlKinghostGrupoAdminFuncoesAdminDAO
+     */
+    public function getGrupoAdminFuncoesAdminDAO($daofactory)
+    {
+        return new MySqlKinghostGrupoAdminFuncoesAdminDAO($daofactory);
+    }
+
+    /**
+     * Retorna uma instância de acesso a dados
+     * @return MySqlKinghostGrupoUsuarioDAO
+     */
+    public function getGrupoUsuarioDAO($daofactory)
+    {
+        return new MySqlKinghostGrupoUsuarioDAO($daofactory);
+    }
+
+	/**
+	 * Retorna uma instância de acesso a dados
+	 * @return MySqlKinghostSeglogDAO
+	 */
+	public function getSeglogDAO($daofactory)
+	{
+		return new MySqlKinghostSeglogDAO($daofactory);
+	}
+	 
 	/**
 	 * Retorna uma instância de acesso a dados
 	* @return MySqlUsuarioDAO
@@ -447,7 +499,16 @@ class MySqlDAOFactory extends DAOFactory
         return new MySqlKinghostCampanhaCashbackResgatePixDAO($daofactory);
     }
 
-
+	/**
+ 	 * Retorna uma instância de acesso a dados
+ 	 * @return MySqlKinghostFundoParticipacaoGlobalDAO
+ 	 */
+    public function getFundoParticipacaoGlobalDAO($daofactory)
+    {
+        return new MySqlKinghostFundoParticipacaoGlobalDAO($daofactory);
+    }
+	 
+	 
 	 
 }
 ?>

@@ -28,6 +28,23 @@ class PlanoUsuarioBusinessImpl implements PlanoUsuarioBusiness
 	public function atualizar($daofactory, $dto) {}
 	public function listarTudo($daofactory)	{}
 	public function listarPagina($daofactory, $pag, $qtde)	{	}
+
+	public function isPlanoGratuito($daofactory, $usuarioid)
+	{
+		// Por padrão é considerado sempre negado o plano gratuito
+		$isGratuito = false;
+		$plus = $this->carregarPlanoUsuarioPorStatus($daofactory, $usuarioid, ConstantesVariavel::STATUS_ATIVO);
+		
+		// Trouxe as informações do plano do usuario. Então, temos a necessidade de verificar se o plano ativo
+		// é o plano gratuito
+		if ($plus != NULL && $plus->id != NULL && $plus->usuarioid == $usuarioid) {
+			if($plus->planoid == (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::PLANO_GRATUITO_CODIGO)) {
+				$isGratuito = true;				
+			}
+		}
+
+		return $isGratuito;
+	}
 	
 	public function verificarPermissaoPlano($daofactory, $usuarioid, $funcionalidade)
 	{

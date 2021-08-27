@@ -45,6 +45,12 @@ abstract class DAOFactory
 	
 	// Abstrações para serem implementadas nas fabricas
 	public abstract function getNextSequence($daofactory,$sequence);
+	public abstract function getFuncoesAdministrativasDAO($daofactory);
+	public abstract function getGrupoAdministracaoDAO($daofactory);
+	public abstract function getGrupoAdminFuncoesAdminDAO($daofactory);
+	public abstract function getGrupoUsuarioDAO($daofactory);
+	public abstract function getSeglogDAO($daofactory);
+
 	public abstract function getUsuarioDAO($daofactory);
 	public abstract function getSessaoDAO($daofactory);
 	public abstract function getEstatisticaFuncaoDAO($daofactory);
@@ -87,6 +93,7 @@ abstract class DAOFactory
 	public abstract function getRegistroIndicacaoDAO($daofactory);
 	public abstract function getCartaoMoverHistoricoDAO($daofactory);
 	public abstract function getCampanhaCashbackResgatePixDAO($daofactory);
+	public abstract function getFundoParticipacaoGlobalDAO($daofactory);
 
 
 	public function getSession() {
