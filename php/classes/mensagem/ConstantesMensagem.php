@@ -207,6 +207,7 @@ class ConstantesMensagem
 	const FPFL_JA_EXISTE_PARTICIPANTE_FATURA = 'MSG-0199';
 	const PLANO_GRATUITO_NAO_PERMITE_FPGL = 'MSG-0200';
 	const MSG_CASHBACK_INCENTIVAR_DONO_CAMPANHA_CARIMBAR = 'MSG-0201';
+	const CONTATO_REGISTRADO_COM_SUCESSO = 'MSG-0202';
 
 	// tags dentro das mensagens
 	const MSGTAG_DATA_ATIVACAO = '*=data-ativacao=*';
