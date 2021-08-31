@@ -50,6 +50,7 @@ abstract class DAOFactory
 	public abstract function getGrupoAdminFuncoesAdminDAO($daofactory);
 	public abstract function getGrupoUsuarioDAO($daofactory);
 	public abstract function getSeglogDAO($daofactory);
+	public abstract function getContatoDAO($daofactory);
 
 	public abstract function getUsuarioDAO($daofactory);
 	public abstract function getSessaoDAO($daofactory);
