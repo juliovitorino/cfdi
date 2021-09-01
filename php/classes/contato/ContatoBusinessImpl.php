@@ -287,6 +287,16 @@ public function inserir($daofactory, $dto)
         return $retorno;
     }
 
+    // Envia notificação ao Admin
+    ContatoHelper::criarNotificacaoAdmin($daofactory
+        , ConstantesMensagem::NOTIFICACAO_CONTATO_USUARIO
+        , [
+            ConstantesVariavel::P1 => $dto->nome,
+            ConstantesVariavel::P2 => $dto->email,
+            ConstantesVariavel::P3 => $dto->origem,
+        ]
+        , "money.png");
+
     return $retorno;
 }
 

@@ -229,6 +229,7 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0199
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0200','Plano atual do USUA_ID *=p1=* é gratuito. FPGL não permitido.');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0201','Parabéns, você acaba de ganhar *=p1=* de crédito no seu cashback por incentivar seus clientes a participarem da campanha *=p2=*');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0202','Obrigado por entrar em contato. Responderemos a sua solictação o mais breve possível.');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0203','Atenção ADMIN! O visitante *=p1=* acaba de preencher seu emal *=p2=* através do canal de origem *=p3=*');
 
 
 -- variaveis
