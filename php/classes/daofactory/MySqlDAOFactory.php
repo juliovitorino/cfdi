@@ -13,6 +13,7 @@ require_once '../grupoadminfuncoesadmin/MySqlKinghostGrupoAdminFuncoesAdminDAO.p
 require_once '../grupousuario/MySqlKinghostGrupoUsuarioDAO.php';
 require_once '../seglog/MySqlKinghostSeglogDAO.php';
 require_once '../contato/MySqlKinghostContatoDAO.php';
+require_once '../filaemail/MySqlKinghostFilaEmailDAO.php';
 
 require_once '../mkdlista/MySqlKinghostMkdListaDAO.php';
 require_once '../filaqrcodependenteproduzir/MySqlKinghostFilaQRCodePendenteProduzirDAO.php';
@@ -83,6 +84,15 @@ class MySqlDAOFactory extends DAOFactory
     public function getContatoDAO($daofactory)
     {
         return new MySqlKinghostContatoDAO($daofactory);
+    }
+	
+    /**
+     * Retorna uma instância de acesso a dados
+     * @return MySqlKinghostFilaEmailDAO
+     */
+    public function getFilaEmailDAO($daofactory)
+    {
+        return new MySqlKinghostFilaEmailDAO($daofactory);
     }
 
 	/**

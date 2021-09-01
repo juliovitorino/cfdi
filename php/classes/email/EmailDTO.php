@@ -15,5 +15,19 @@ class EmailDTO
 	public $template;
 	public $lsttags;
 
+	public function jsonSerialize()
+    {
+        return 
+            [
+                'destinario' => $this->destinario,
+                'emaildestinatario' => $this->emaildestinatario,
+                'assunto' => $this->assunto,
+                'template' => $this->template,
+                'lsttags' => $this->lsttags,
+            ];
+    }   
+
+
+
 }
 ?>

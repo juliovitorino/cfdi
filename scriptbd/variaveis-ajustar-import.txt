@@ -10,3 +10,12 @@ URL_IMG_SEM_CAMPANHA = http://elitefinanceira.com/cfdi/img/*=p1=*
 URL_REPOSITORIO_USUARIO = http://elitefinanceira.com/cfdi/repositorio/*=p1=*
 HOME_REPOSITORIO_USUARIO = /home/elite759/public_html/cfdi/repositorio/*=p1=*
 HOME_UPLOAD_TRANSICAO = /home/elite759/public_html/cfdi/upload
+
+
+AMBIENTE_ATIVO = DSV
+URL_IMG_CAMPANHA = http://junta10.dsv:8080/cfdi/repositorio/*=p1=*/*=p3=*
+URL_IMG_RECOMPENSA = http://junta10.dsv:8080/cfdi/repositorio/*=p1=*/*=p3=*.jpg
+URL_IMG_SEM_CAMPANHA = http://junta10.dsv:8080/cfdi/img/*=p1=*
+URL_REPOSITORIO_USUARIO = http://junta10.dsv:8080/cfdi/repositorio/*=p1=*
+HOME_REPOSITORIO_USUARIO = /home/elite759/public_html/cfdi/repositorio/*=p1=*
+HOME_UPLOAD_TRANSICAO = /home/elite759/public_html/cfdi/upload
