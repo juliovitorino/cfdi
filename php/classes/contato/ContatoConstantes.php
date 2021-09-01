@@ -54,6 +54,10 @@ class ContatoConstantes
    const DESC_DATACADASTRO = 'Data de Cadastro';
    const DESC_DATAATUALIZACAO = 'Data de Atualização';
 
+   /* definição para origem dos contatos */
+   const ORIGEM_FALE_CONOSCO = 'FC';
+   const ORIGEM_LANDING_PAGE = 'LP';
+
 }
 
 

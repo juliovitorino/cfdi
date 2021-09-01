@@ -359,8 +359,10 @@ class MySqlKinghostContatoDAO implements ContatoDAO
         $stmt->bind_param(DmlSql::STRING_TYPE 
                             . DmlSql::STRING_TYPE 
                             . DmlSql::STRING_TYPE 
+                            . DmlSql::STRING_TYPE 
                             ,$dto->nome
                             ,$dto->email
+                            ,$dto->origem
                             ,$dto->mensagem
         );
         if ($stmt->execute())
@@ -385,6 +387,7 @@ class MySqlKinghostContatoDAO implements ContatoDAO
         $retorno->id = $resultset[DmlSqlContato::CONT_ID] == NULL ? NULL : $resultset[DmlSqlContato::CONT_ID];
         $retorno->nome = $resultset[DmlSqlContato::CONT_NM_NOME] == NULL ? NULL : $resultset[DmlSqlContato::CONT_NM_NOME];
         $retorno->email = $resultset[DmlSqlContato::CONT_TX_EMAIL] == NULL ? NULL : $resultset[DmlSqlContato::CONT_TX_EMAIL];
+        $retorno->origem = $resultset[DmlSqlContato::CONT_IN_ORIGEM] == NULL ? NULL : $resultset[DmlSqlContato::CONT_IN_ORIGEM];
         $retorno->mensagem = $resultset[DmlSqlContato::CONT_TX_MENSAGEM] == NULL ? NULL : $resultset[DmlSqlContato::CONT_TX_MENSAGEM];
         $retorno->status = $resultset[DmlSqlContato::CONT_IN_STATUS] == NULL ? NULL : $resultset[DmlSqlContato::CONT_IN_STATUS];
         $retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlContato::CONT_DT_CADASTRO]);

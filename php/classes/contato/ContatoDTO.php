@@ -12,6 +12,7 @@ class ContatoDTO extends DTOPadraoEntidade implements JsonSerializable
 {
     public $nome;
     public $email;
+    public $origem;
     public $mensagem;
 
     public function jsonSerialize()
@@ -21,6 +22,7 @@ class ContatoDTO extends DTOPadraoEntidade implements JsonSerializable
             'id' => $this->id,
             'nome' => $this->nome,
             'email' => $this->email,
+            'origem' => $this->origem,
             'mensagem' => $this->mensagem,
             'status' => $this->status,
             'dataCadastro' => $this->dataCadastro,

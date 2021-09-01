@@ -35,6 +35,7 @@ class DmlSqlContato extends DmlSql
     const CONT_ID = 'CONT_ID';
     const CONT_NM_NOME = 'CONT_NM_NOME';
     const CONT_TX_EMAIL = 'CONT_TX_EMAIL';
+    const CONT_IN_ORIGEM = 'CONT_IN_ORIGEM';
     const CONT_TX_MENSAGEM = 'CONT_TX_MENSAGEM';
     const CONT_IN_STATUS = 'CONT_IN_STATUS';
     const CONT_DT_CADASTRO = 'CONT_DT_CADASTRO';
@@ -44,8 +45,9 @@ class DmlSqlContato extends DmlSql
     const INS = 'INSERT INTO `' . self::TABELA . '` ('
         . ' `' . self::CONT_NM_NOME . '`, '
         . ' `' . self::CONT_TX_EMAIL . '`, '
+        . ' `' . self::CONT_IN_ORIGEM . '`, '
         . ' `' . self::CONT_TX_MENSAGEM . '` '
-        . ') VALUES (?,?,?)';
+        . ') VALUES (?,?,?,?)';
 
     const DEL_PK = 'DELETE from `' . self::TABELA . '` ' .
     'WHERE ' . ' `' . self::CONT_ID . '` = ? ' ;
@@ -53,6 +55,7 @@ class DmlSqlContato extends DmlSql
     const UPD_PK = 'UPDATE `' . self::TABELA . '` set '
     . ' `' . self::CONT_NM_NOME . '` = ?, '
     . ' `' . self::CONT_TX_EMAIL . '` = ?, '
+    . ' `' . self::CONT_IN_ORIGEM . '` = ?, '
     . ' `' . self::CONT_TX_MENSAGEM . '` = ? '
     . 'WHERE ' . ' `' . self::CONT_ID . '` = ? ' ;
 
@@ -66,6 +69,7 @@ class DmlSqlContato extends DmlSql
         . ' `' . self::CONT_ID . '`, ' 
         . ' `' . self::CONT_NM_NOME . '`, ' 
         . ' `' . self::CONT_TX_EMAIL . '`, ' 
+        . ' `' . self::CONT_IN_ORIGEM . '`, ' 
         . ' `' . self::CONT_TX_MENSAGEM . '`, ' 
         . ' `' . self::CONT_IN_STATUS . '`, ' 
         . ' `' . self::CONT_DT_CADASTRO . '`, ' 

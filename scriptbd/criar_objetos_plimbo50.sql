@@ -37,10 +37,15 @@
 /* R = Respondido                                                  /
 /* I = Inativado                                                   /
 /******************************************************************/
+/* Valores para CONT_IN_TIPO                                       /
+/* FC = Contato realizado pela seção Fale Conosco do Site          /
+/* LP = Contato realizado pela Pagina de Captura                   /
+/******************************************************************/
 CREATE TABLE `CONTATO` (
  `CONT_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID contato',
  `CONT_NM_NOME` VARCHAR(100) NOT NULL COMMENT 'Nome do usuário',
  `CONT_TX_EMAIL` VARCHAR(200) NOT NULL COMMENT 'Email do usuário',
+ `CONT_IN_ORIGEM` VARCHAR(2) NOT NULL DEFAULT 'FC' COMMENT 'Fonte da origem do contato realizado',
  `CONT_TX_MENSAGEM` VARCHAR(2000) NOT NULL COMMENT 'Mensagem postada pelo usuário',
  `CONT_IN_STATUS` VARCHAR(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
  `CONT_DT_CADASTRO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
