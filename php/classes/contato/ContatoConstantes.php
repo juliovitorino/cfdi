@@ -58,6 +58,10 @@ class ContatoConstantes
    const ORIGEM_FALE_CONOSCO = 'FC';
    const ORIGEM_LANDING_PAGE = 'LP';
 
+   /* definição para email da classe ORIGEM_FALE_CONOSCO = FC  */
+   const TITULO_ASSUNTO_EMAIL = 'Seu email foi recebido pelo Junta10';
+   const TEMPLATE = 'primeira-resposta-contato-fc.html';
+
 }
 
 

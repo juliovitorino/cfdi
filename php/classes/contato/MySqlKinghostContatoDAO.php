@@ -144,6 +144,66 @@ class MySqlKinghostContatoDAO implements ContatoDAO
     }
 
 /**
+* countContatoPorOrigemStatus() - contar a quantidade de registros
+* sob o contexto da classe Contato com base no status específico. 
+*
+* Atenção em @see $sql na tabela CONTATO 
+*
+* @see listPagina()
+*
+* @param $origem
+* @param $status
+*
+* @return PaginacaoDTO
+*/ 
+
+public function countContatoPorOrigemStatus($origem, $status)
+{   
+    $retorno = 0;
+    // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+    $conexao = $this->daofactory->getSession();
+    $sql = DmlSqlContato::SQL_COUNT 
+    . ' WHERE ' . DmlSqlContato::CONT_IN_ORIGEM . " = '$origem'"
+    . ' AND ' . DmlSqlContato::CONT_IN_STATUS . " = '$status'";
+    $res = $conexao->query($sql);
+    if ($res){
+        $tmp = $res->fetch_assoc();
+        $retorno = $tmp['contador'];
+    }
+    return $retorno;
+
+}
+
+
+/**
+* listContatoPorStatus() - Listar um conjunto de registro previamente paginado
+* sob o contexto da classe Contato com base no status específico.
+*
+* Atenção em @see $sql na tabela CONTATO 
+*
+* @see listPagina()
+*
+*
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+
+public function listContatoPorOrigemStatus($origem, $status, $pag, $qtde, $coluna, $ordem)
+{
+    $sql = DmlSqlContato::SELECT 
+    . ' WHERE ' . DmlSqlContato::CONT_IN_ORIGEM . " = '$origem'"
+    . ' AND  '  . DmlSqlContato::CONT_IN_STATUS . " = '$status'"
+    . ' ORDER BY ' . $coluna . ($ordem == 0 ? " ASC": " DESC");
+    return $this->listPagina($sql, $pag, $qtde);
+}
+
+
+/**
 * countContatoPorStatus() - contar a quantidade de registros
 * sob o contexto da classe Contato com base no status específico. 
 *

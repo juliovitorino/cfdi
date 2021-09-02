@@ -55,6 +55,49 @@ class ContatoServiceImpl implements ContatoService
 
 /**
 *
+* enviarRegistroContatoFilaEmail() - Enviar emails ATIVOS para Fila de Email.
+*
+* @return DTOPadrao
+*
+*/
+
+public function enviarRegistroContatoFilaEmail($origem)
+{
+    $daofactory = NULL;
+    $retorno = NULL;
+    try {
+        $daofactory = DAOFactory::getDAOFactory();
+        $daofactory->open();
+        $daofactory->beginTransaction();
+        
+       $bo = new ContatoBusinessImpl();
+       $retorno = $bo->enviarRegistroContatoFilaEmail($daofactory, $origem);
+       if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+            // Trocar a constante abaixo COMANDO_REALIZADO_COM_SUCESSO que é a mensagem padrão 
+            // por algo que faça mais sentido para o usuário no frontend
+            $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            $daofactory->commit();
+        } else {
+            $daofactory->rollback();
+        }
+        
+    } catch (Exception $e) {
+        // rollback na transação
+        $daofactory->rollback();
+    } finally {
+        try {
+            $daofactory->close();
+        } catch (Exception $e) {
+            // faz algo
+        }
+    }
+
+    return $retorno;
+}
+
+/**
+*
 * PesquisarMaxPKAtivoIdPorStatus() - Usado para invocar a classe de negócio ContatoBusinessImpl de forma geral
 * a buscar a MAIOR PK pra um dado status.
 *
