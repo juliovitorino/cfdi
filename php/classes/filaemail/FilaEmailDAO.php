@@ -21,6 +21,8 @@ interface FilaEmailDAO extends DAO
     public function listFilaEmailStatus($status);
     public function countFilaEmailPorStatus($status);
     public function listFilaEmailPorStatus($status, $pag, $qtde, $coluna, $ordem);
+    public function countFilaEmailPorFilaStatus($fila, $status);
+    public function listFilaEmailPorFilaStatus($fila, $status, $pag, $qtde, $coluna, $ordem);
     public function countFilaEmailPorUsuaIdStatus($usuaid, $status);
     public function listFilaEmailPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
 

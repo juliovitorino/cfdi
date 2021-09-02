@@ -86,7 +86,7 @@ class ContatoBusinessImpl implements ContatoBusiness
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 
         $paginacao = $this->listarContatoPorOrigemStatus($daofactory, $origem, ConstantesVariavel::STATUS_ATIVO);
-       //echo json_encode($paginacao);
+//echo json_encode($paginacao);
         if(count($paginacao->lst) > 0) 
         {
             foreach ($paginacao->lst as $key => $value) {
@@ -97,11 +97,11 @@ class ContatoBusinessImpl implements ContatoBusiness
                 $fiemdto->prioridade = FilaEmailConstantes::PRIOR_NORMAL;
                 $fiemdto->nrMaxTentativas = 1;
                 $fiemdto->dataPrevisaoEnvio = Util::getNow();
-                $fiemdto->email->destinario =  $value->nome;
+                $fiemdto->email->destinatario =  $value->nome;
                 $fiemdto->email->emaildestinatario = $value->email;
                 $fiemdto->email->assunto = ContatoConstantes::TITULO_ASSUNTO_EMAIL;
                 $fiemdto->email->template = ContatoConstantes::TEMPLATE;
-
+//echo json_encode($fiemdto);
                 $fiembo = new FilaEmailBusinessImpl();
                 $retorno = $fiembo->inserirFilaEmail($daofactory, $fiemdto);
 

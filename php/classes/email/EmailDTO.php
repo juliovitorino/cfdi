@@ -9,7 +9,7 @@ require_once '../dto/DTOPadrao.php';
 class EmailDTO
 {
 	
-	public $destinario;
+	public $destinatario;
 	public $emaildestinatario;
 	public $assunto;
 	public $template;
@@ -19,7 +19,7 @@ class EmailDTO
     {
         return 
             [
-                'destinario' => $this->destinario,
+                'destinatario' => $this->destinatario,
                 'emaildestinatario' => $this->emaildestinatario,
                 'assunto' => $this->assunto,
                 'template' => $this->template,

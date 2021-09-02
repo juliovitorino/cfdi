@@ -10,7 +10,7 @@
 
  interface ITarefa {
 
-    public function executar();
+    public function executar($contexto);
      
  }
 

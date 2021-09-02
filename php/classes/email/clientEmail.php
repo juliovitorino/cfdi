@@ -22,14 +22,14 @@ $ts = $date->getTimestamp();
 
 // prepara parametrizacao
 $email = new EmailDTO();
-$email->destinario = "Julio Vitorino";
+$email->destinatario = "Julio Vitorino";
 $email->emaildestinatario = "julio.vitorino@gmail.com";
 $email->assunto = "assunto teste " . $ts;
 //$email->template = 'C:/Users/Julio/Programas/wamp64/www/gc/emails/ativar-nova-conta.html';
 $email->template = getcwd() . VariavelCache::getInstance()->getVariavel(ConstantesVariavel::PATH_RELATIVO_TEMPLATES_EMAIL) 
 					. EmailTemplateHub::NOVA_CONTA_CANIVETE;
 $email->lsttags = [	
-						TagHub::NOME_NOVO_CLIENTE => $email->destinario,
+						TagHub::NOME_NOVO_CLIENTE => $email->destinatario,
 						TagHub::LINK_ATIVACAO_NOVO_CLIENTE => $url
 					];
 var_dump($email);

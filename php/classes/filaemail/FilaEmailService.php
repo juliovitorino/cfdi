@@ -36,6 +36,7 @@ interface FilaEmailService extends AppService
 
     public function autalizarStatusFilaEmail($id, $status);
     public function listarFilaEmailPorStatus($status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
+    public function listarFilaEmailPorFilaStatus($fila, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
     public function listarFilaEmailPorUsuaIdStatus($usuaid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
     public function cancelar($dto);
     public function pesquisarMaxPKAtivoNomefilaPorStatus($nomeFila,$status);

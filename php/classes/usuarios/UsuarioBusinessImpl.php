@@ -479,13 +479,13 @@ class UsuarioBusinessImpl implements UsuarioBusiness
 
 		// prepara parametrizacao
 		$email = new EmailDTO();
-		$email->destinario = $dto->apelido;
+		$email->destinatario = $dto->apelido;
 		$email->emaildestinatario = $dto->email;
 		$email->assunto = VariavelCache::getInstance()->getVariavel(ConstantesVariavel::EMAIL_TITULO_PADRAO_NOVA_CONTA);
 		$email->template = getcwd() . VariavelCache::getInstance()->getVariavel(ConstantesVariavel::PATH_RELATIVO_TEMPLATES_EMAIL) 
 							. EmailTemplateHub::NOVA_CONTA_CANIVETE;
 		$email->lsttags = [	
-								TagHub::NOME_NOVO_CLIENTE => $email->destinario,
+								TagHub::NOME_NOVO_CLIENTE => $email->destinatario,
 								TagHub::LINK_ATIVACAO_NOVO_CLIENTE => $url,
 								TagHub::TAG_CONTATO_EMAIL_CANIVETE => VariavelCache::getInstance()->getVariavel(ConstantesVariavel::EMAIL_CONTATO_PADRAO_SMTP)
 							];

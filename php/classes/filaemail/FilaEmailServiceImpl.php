@@ -428,6 +428,50 @@ public function apagar($dto)
 
 /**
 *
+* listarFilaEmailPorFilaStatus() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* realizar lista paginada de registros com uma instância de PaginacaoDTO
+*
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+* @return $PaginacaoDTO
+*/
+
+   public function listarFilaEmailPorFilaStatus($fila, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0)
+   {
+       $daofactory = NULL;
+       $retorno = NULL;
+       try {
+           $daofactory = DAOFactory::getDAOFactory();
+           $daofactory->open();
+           $daofactory->beginTransaction();
+
+           //Se qtde por página é indefinido (=0) busca valor default do variavel
+           if($qtde == 0){
+               $qtde = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT);
+           }
+           // listar paginado FilaEmail
+           $bo = new FilaEmailBusinessImpl();
+           $retorno = $bo->listarFilaEmailPorFilaStatus($daofactory, $fila, $status, $pag, $qtde, $coluna, $ordem);
+           $daofactory->commit();
+       } catch (Exception $e) {
+           // rollback na transação
+        
+       } finally {
+           try {
+               $daofactory->close();
+           } catch (Exception $e) {
+               // faz algo
+           }
+       }
+
+       return $retorno;
+   }
+
+/**
+*
 * pesquisarPorNomefila() - Usado para invocar a classe de negócio FilaEmailBusinessImpl de forma geral
 * realizar uma busca de Nome da fila diretamente na tabela FILA_EMAIL campo FIEM_NM_FILA
 *

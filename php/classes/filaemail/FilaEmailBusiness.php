@@ -30,6 +30,7 @@ interface FilaEmailBusiness extends BusinessObject
 {
     public function atualizarStatus($daofactory, $id, $status);
     public function listarFilaEmailPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);
+    public function listarFilaEmailPorFilaStatus($daofactory, $fila, $status, $pag, $qtde, $coluna, $ordem);
     public function validarTamanhoCampo($campo, $tamanho, $coment);
     public function listarFilaEmailPorUsuaIdStatus($daofactory, $usuaid, $status, $pag, $qtde, $coluna, $ordem);
     public function inserirFilaEmail($daofactory, $dto);

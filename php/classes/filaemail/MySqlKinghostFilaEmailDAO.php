@@ -218,6 +218,70 @@ class MySqlKinghostFilaEmailDAO implements FilaEmailDAO
         return $this->listPagina($sql, $pag, $qtde);
     }
 
+
+/**
+* countFilaEmailPorFilaStatus() - contar a quantidade de registros
+* sob o contexto da classe FilaEmail com base no status específico. 
+*
+* Atenção em @see $sql na tabela FILA_EMAIL 
+*
+* @see listPagina()
+*
+*
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+
+    public function countFilaEmailPorFilaStatus($fila, $status)
+    {   
+        $retorno = 0;
+        // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+        $conexao = $this->daofactory->getSession();
+        $sql = DmlSqlFilaEmail::SQL_COUNT 
+        . ' WHERE ' . DmlSqlFilaEmail::FIEM_NM_FILA . " = '$fila'"
+        . ' AND ' . DmlSqlFilaEmail::FIEM_IN_STATUS . " = '$status'";
+
+        $res = $conexao->query($sql);
+        if ($res){
+            $tmp = $res->fetch_assoc();
+            $retorno = $tmp['contador'];
+        }
+        return $retorno;
+
+    }
+
+/**
+* listFilaEmailPorFilaStatus() - Listar um conjunto de registro previamente paginado
+* sob o contexto da classe FilaEmail com base no status específico.
+*
+* Atenção em @see $sql na tabela FILA_EMAIL 
+*
+* @see listPagina()
+*
+*
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+
+    public function listFilaEmailPorFilaStatus($fila, $status, $pag, $qtde, $coluna, $ordem)
+    {
+        $sql = DmlSqlFilaEmail::SELECT 
+        . ' WHERE ' . DmlSqlFilaEmail::FIEM_NM_FILA . " = '$fila'"
+        . ' AND ' . DmlSqlFilaEmail::FIEM_IN_STATUS . " = '$status'"
+        . ' ORDER BY ' . $coluna . ($ordem == 0 ? " ASC": " DESC");
+        return $this->listPagina($sql, $pag, $qtde);
+    }
+
 /**
 * countFilaEmailPorUsuaIdStatus() - contar a quantidade de registros
 * sob o contexto da classe FilaEmail com base no usuário específico. Esse usuário
@@ -371,7 +435,10 @@ class MySqlKinghostFilaEmailDAO implements FilaEmailDAO
         // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
         $conexao = $this->daofactory->getSession();
         $stmt = $conexao->prepare(DmlSqlFilaEmail::INS);
+//var_dump(DmlSqlFilaEmail::INS);    
+//echo json_encode($dto);    
         $stmt->bind_param(DmlSql::STRING_TYPE 
+                            . DmlSql::STRING_TYPE 
                             . DmlSql::STRING_TYPE 
                             . DmlSql::STRING_TYPE 
                             . DmlSql::STRING_TYPE 
@@ -381,6 +448,7 @@ class MySqlKinghostFilaEmailDAO implements FilaEmailDAO
                             . DmlSql::STRING_TYPE 
                             ,$dto->nomeFila
                             ,$dto->emailDe
+                            ,$dto->email->destinatario
                             ,$dto->email->emaildestinatario
                             ,$dto->email->assunto
                             ,$dto->prioridade
@@ -411,6 +479,7 @@ class MySqlKinghostFilaEmailDAO implements FilaEmailDAO
         $retorno->id = $resultset[DmlSqlFilaEmail::FIEM_ID] == NULL ? NULL : $resultset[DmlSqlFilaEmail::FIEM_ID];
         $retorno->nomeFila = $resultset[DmlSqlFilaEmail::FIEM_NM_FILA] == NULL ? NULL : $resultset[DmlSqlFilaEmail::FIEM_NM_FILA];
         $retorno->emailDe = $resultset[DmlSqlFilaEmail::FIEM_TX_EMAIL_DE] == NULL ? NULL : $resultset[DmlSqlFilaEmail::FIEM_TX_EMAIL_DE];
+        $retorno->email->destinatario = $resultset[DmlSqlFilaEmail::FIEM_NM_DESTINATARIO] == NULL ? NULL : $resultset[DmlSqlFilaEmail::FIEM_NM_DESTINATARIO];
         $retorno->email->emaildestinatario = $resultset[DmlSqlFilaEmail::FIEM_TX_EMAIL_PARA] == NULL ? NULL : $resultset[DmlSqlFilaEmail::FIEM_TX_EMAIL_PARA];
         $retorno->email->assunto = $resultset[DmlSqlFilaEmail::FIEM_TX_ASSUNTO] == NULL ? NULL : $resultset[DmlSqlFilaEmail::FIEM_TX_ASSUNTO];
         $retorno->prioridade = $resultset[DmlSqlFilaEmail::FIEM_IN_PRIOR] == NULL ? NULL : $resultset[DmlSqlFilaEmail::FIEM_IN_PRIOR];
@@ -627,9 +696,8 @@ class MySqlKinghostFilaEmailDAO implements FilaEmailDAO
         // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
         $conexao = $this->daofactory->getSession();
         $stmt = $conexao->prepare(DmlSqlFilaEmail::UPD_FILA_EMAIL_FIEM_DT_REAL_ENVIO_PK);
+        //var_dump(DmlSqlFilaEmail::UPD_FILA_EMAIL_FIEM_DT_REAL_ENVIO_PK);
         $stmt->bind_param(DmlSql::STRING_TYPE 
-                            . DmlSql::STRING_TYPE
-                            ,$dataRealEnvio
                             ,$id);
         if ($stmt->execute())
         {

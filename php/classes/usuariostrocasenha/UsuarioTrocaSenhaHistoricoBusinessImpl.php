@@ -147,7 +147,7 @@ class UsuarioTrocaSenhaHistoricoBusinessImpl implements UsuarioTrocaSenhaHistori
 
 			// envia email de segurança com o link para a página de troca de senha
 			$emaildto = new EmailDTO();
-			$emaildto->destinario = $usuariodto->apelido;
+			$emaildto->destinatario = $usuariodto->apelido;
 			$emaildto->emaildestinatario = $email;
 			$emaildto->assunto =  MensagemCache::getInstance()->getMensagem(ConstantesMensagem::ASSUNTO_TROCA_DE_SENNHA);
 			$emaildto->template = getcwd() 
