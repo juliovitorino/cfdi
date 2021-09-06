@@ -93,6 +93,41 @@ class UsuarioServiceImpl implements UsuarioService
 		return $retorno;
 	}
 
+
+	public function pesquisarPerfilCompleto($id)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new UsuarioBusinessImpl();
+ 			$retorno = $bo->pesquisarPerfilCompleto($daofactory, $id);
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
 	public function cadastrarNovaConta($dto, $planoid)
 	{
 

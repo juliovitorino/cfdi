@@ -13,6 +13,7 @@ require_once 'ProjetoDorDTO.php';
 require_once 'ProjetoBonusDTO.php';
 require_once 'ProjetoBeneficioDTO.php';
 require_once 'ProjetoDetalheDTO.php';
+require_once 'PerfilDTO.php';
 
 require_once '../usuariocashback/UsuarioCashbackBusinessImpl.php';
 require_once '../usuariocashback/UsuarioCashbackDTO.php';
@@ -355,6 +356,24 @@ class UsuarioBusinessImpl implements UsuarioBusiness
 		// Retorna resultado da operação
 		return $retorno;
 
+	}
+
+	public function pesquisarPerfilCompleto($daofactory, $id)
+	{
+		// devolve resultado ao serviço
+		$retorno = new PerfilDTO();
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+		// carrega as informações base do usuário
+		$retorno->usuario = $this->carregarUsuarioPorID($daofactory, $id);
+
+		// carrega as informações do plano vigente do usuário
+		$plusbo = new PlanoUsuarioBusinessImpl();
+		$retorno->usuarioPlanoAtivo = $plusbo->carregarPlanoUsuarioPorStatus($daofactory, $id, ConstantesVariavel::STATUS_ATIVO);
+		
+		// Retorno do Perfil
+		return $retorno;
 	}
 
 
