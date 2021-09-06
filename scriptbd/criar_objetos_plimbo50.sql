@@ -1567,12 +1567,12 @@ AUTO_INCREMENT = 1000;
 /* I = INATIVO                                                            /
 /*************************************************************************/
 CREATE TABLE `USUARIO_TIPO_EMPREENDIMENTO` (
- `USTE_ID` int(11) NOT NULL AUTO_INCREMENT,
- `USUA_ID` int(11) NOT NULL,
- `TIEM_ID` int(11) NOT NULL,
- `USTE_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A',
- `USTE_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
- `USTE_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ `USTE_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID do usuário tipo empreendimento',
+ `USUA_ID` int(11) NOT NULL COMMENT 'ID do usuário',
+ `TIEM_ID` int(11) NOT NULL COMMENT 'ID do tipo do empreendimento',
+ `USTE_IN_STATUS` varchar(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `USTE_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `USTE_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
  CONSTRAINT PK_USTE_ID PRIMARY KEY (USTE_ID)
 ) ENGINE=InnoDB 
 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci

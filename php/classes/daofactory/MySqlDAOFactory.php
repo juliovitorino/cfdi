@@ -43,6 +43,7 @@ require_once '../campanhacashbackcc/MySqlKinghostCampanhaCashbackCCDAO.php';
 require_once '../usuariocomplemento/MySqlKinghostUsuarioComplementoDAO.php';
 require_once '../usuariopublicidade/MySqlKinghostUsuarioPublicidadeDAO.php';
 require_once '../usuarionotificacao/MySqlKinghostUsuarioNotificacaoDAO.php';
+require_once '../usuariotipoempreendimento/MySqlKinghostUsuarioTipoEmpreendimentoDAO.php';
 require_once '../selocuringa/MySqlKinghostSeloCuringaDAO.php';
 require_once '../usuariocashback/MySqlKinghostUsuarioCashbackDAO.php';
 require_once '../usuarioautorizador/MySqlKinghostUsuarioAutorizadorDAO.php';
@@ -284,7 +285,7 @@ class MySqlDAOFactory extends DAOFactory
 	*/
 	public function getUsuarioTipoEmpreendimentoDAO($daofactory)
 	{
-	return new MySqlKinghostUsuarioTipoEmpreendimentoDAO($daofactory);
+		return new MySqlKinghostUsuarioTipoEmpreendimentoDAO($daofactory);
 	}
 	/**
 	 * Retorna uma instância de acesso a dados

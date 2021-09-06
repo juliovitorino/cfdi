@@ -354,6 +354,8 @@ class MySqlKinghostTipoEmpreendimentoDAO implements TipoEmpreendimentoDAO
         // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
         $conexao = $this->daofactory->getSession();
         $stmt = $conexao->prepare(DmlSqlTipoEmpreendimento::INS);
+var_dump(DmlSqlTipoEmpreendimento::INS);
+var_dump($dto);        
         $stmt->bind_param(DmlSql::STRING_TYPE 
                             . DmlSql::STRING_TYPE 
                             ,$dto->descricao
