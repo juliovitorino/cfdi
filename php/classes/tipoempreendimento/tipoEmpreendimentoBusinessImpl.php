@@ -1,8 +1,9 @@
 <?php 
 
 // importar dependencias
-require_once 'tipoEmpreendimentoBusiness.php';
-
+require_once 'TipoEmpreendimentoBusiness.php';
+require_once 'TipoEmpreendimentoConstantes.php';
+require_once 'TipoEmpreendimentoHelper.php';
 require_once '../dto/DTOPadrao.php';
 require_once '../dto/DTOPaginacao.php';
 
@@ -27,7 +28,7 @@ require_once '../variavel/VariavelCache.php';
 *
 * 
 * @autor Julio Cesar Vitorino
-* @since 23/08/2019 09:14:23
+* @since 06/09/2021 08:28:01
 *
 */
 
@@ -51,6 +52,19 @@ class TipoEmpreendimentoBusinessImpl implements TipoEmpreendimentoBusiness
 * @return List<TipoEmpreendimentoDTO>[]
 */ 
     public function listarTudo($daofactory) {   }
+
+/**
+* pesquisarMaxPKAtivoDescricaoPorStatus() - Carrega apenas um registro com base no descricao  e status para buscar a MAIOR PK
+* @param $daofactory
+* @param $status
+* @return TipoEmpreendimentoDTO
+*/ 
+    public function pesquisarMaxPKAtivoDescricaoPorStatus($daofactory, $descricao,$status)
+    { 
+        $dao = $daofactory->getTipoEmpreendimentoDAO($daofactory);
+        $maxid = $dao->loadMaxDescricaoPK($descricao,$status);
+        return $this->carregarPorID($daofactory, $maxid);
+    }
 
 /**
 * atualizar() - atualiza apenas um registro com base no dto TipoEmpreendimentoDTO->id
@@ -168,6 +182,38 @@ class TipoEmpreendimentoBusinessImpl implements TipoEmpreendimentoBusiness
     }
 
 /**
+* inserirTipoEmpreendimento() - inserir um registro com base no TipoEmpreendimentoDTO. Alguns atributos dentro do DTO
+* serão ignorados caso estejam populados.
+*
+* Atributos da classe FundoParticipacaoGlobalDTO sumariamente IGNORADOS por este método MESMO que estejam preenchidos:
+* id
+* status
+* dataCadastro
+* dataAtualizacao
+*
+* @param $daofactory
+*
+* @return DTOPadrao
+*/ 
+public function inserirTipoEmpreendimento($daofactory, $dto)
+{ 
+    $retorno = new DTOPadrao();
+    $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+    $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+    // Regras de Negócio
+    // ...
+    
+
+    //--- Tudo ok com regras de negócio. Pode inserir o registro 
+    // Prepara registro  de bonificação
+
+
+    return $this->inserir($daofactory, $dto);
+}
+
+
+/**
 * inserir() - inserir um registro com base no TipoEmpreendimentoDTO. Alguns atributos dentro do DTO
 * serão ignorados caso estejam populados.
 *
@@ -187,23 +233,42 @@ public function inserir($daofactory, $dto)
     $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
     $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 
-    // Efetua validações no campo $dto->descricao com tamanho 200
-    $ok = $this->validarTamanhoCampo($dto->descricao, 200, 'Descrição tipo de empreendimento');
+    // Efetua validações no campo $dto->id com tamanho TipoEmpreendimentoConstantes::LEN_ID
+    $ok = $this->validarTamanhoCampo($dto->id, TipoEmpreendimentoConstantes::LEN_ID, TipoEmpreendimentoConstantes::DESC_ID);
     if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
         return $ok;
     }
 
-    // Efetua validações no campo $dto->urlimg com tamanho 2000
-    $ok = $this->validarTamanhoCampo($dto->urlimg, 2000, 'URL das imagem tipo de empreendimento');
+    // Efetua validações no campo $dto->descricao com tamanho TipoEmpreendimentoConstantes::LEN_DESCRICAO
+    $ok = $this->validarTamanhoCampo($dto->descricao, TipoEmpreendimentoConstantes::LEN_DESCRICAO, TipoEmpreendimentoConstantes::DESC_DESCRICAO);
     if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
         return $ok;
     }
 
-    // Efetua validações no campo $dto->status com tamanho 1
-    $ok = $this->validarTamanhoCampo($dto->status, 1, 'Status');
+    // Efetua validações no campo $dto->urlimg com tamanho TipoEmpreendimentoConstantes::LEN_URLIMG
+    $ok = $this->validarTamanhoCampo($dto->urlimg, TipoEmpreendimentoConstantes::LEN_URLIMG, TipoEmpreendimentoConstantes::DESC_URLIMG);
     if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
         return $ok;
     }
+
+    // Efetua validações no campo $dto->status com tamanho TipoEmpreendimentoConstantes::LEN_STATUS
+    $ok = $this->validarTamanhoCampo($dto->status, TipoEmpreendimentoConstantes::LEN_STATUS, TipoEmpreendimentoConstantes::DESC_STATUS);
+    if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
+        return $ok;
+    }
+
+    // Efetua validações no campo $dto->dataCadastro com tamanho TipoEmpreendimentoConstantes::LEN_DATACADASTRO
+    $ok = $this->validarTamanhoCampo($dto->dataCadastro, TipoEmpreendimentoConstantes::LEN_DATACADASTRO, TipoEmpreendimentoConstantes::DESC_DATACADASTRO);
+    if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
+        return $ok;
+    }
+
+    // Efetua validações no campo $dto->dataAtualizacao com tamanho TipoEmpreendimentoConstantes::LEN_DATAATUALIZACAO
+    $ok = $this->validarTamanhoCampo($dto->dataAtualizacao, TipoEmpreendimentoConstantes::LEN_DATAATUALIZACAO, TipoEmpreendimentoConstantes::DESC_DATAATUALIZACAO);
+    if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
+        return $ok;
+    }
+
 
     $dto->status = ConstantesVariavel::STATUS_ATIVO;
     $dao = $daofactory->getTipoEmpreendimentoDAO($daofactory);
@@ -212,6 +277,7 @@ public function inserir($daofactory, $dto)
         $retorno = new DTOPadrao();
         $retorno->msgcode = ConstantesMensagem::ERRO_CRUD_INSERIR_REGISTRO;
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
     }
 
     return $retorno;
@@ -231,7 +297,7 @@ public function inserir($daofactory, $dto)
 * @return $PaginacaoDTO
 */
 
-    public function listarTipoEmpreendimentoPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem)
+    public function listarTipoEmpreendimentoPorStatus($daofactory, $status,  $pag=1, $qtde=0, $coluna=1, $ordem=0)
     {   
         $retorno = new DTOPaginacao();
         $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
@@ -250,6 +316,138 @@ public function inserir($daofactory, $dto)
             return $retorno;
         }
         $retorno->lst = $dao->listTipoEmpreendimentoPorStatus($status, $pag, $qtde, $coluna, $ordem);
+
+        return $retorno;
+    }
+
+
+
+
+
+
+/**
+*
+* atualizarDescricaoPorPK() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* realizar uma atualização de Descrição tipo de empreendimento diretamente na tabela TIPO_EMPREENDIMENTO campo TIEM_TX_DESCRICAO
+* @param $daofactory
+* @param $id
+* @param $descricao
+* @return TipoEmpreendimentoDTO
+*
+* 
+*/
+    public function atualizarDescricaoPorPK($daofactory,$descricao,$id)
+    {
+        $dao = $daofactory->getTipoEmpreendimentoDAO($daofactory);
+
+        // resposta padrão
+        $retorno = new DTOPadrao();
+
+        if($dao->updateDescricao($id, $descricao)){   
+            $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+        }       
+
+        // Obtem o texto da mensagem em razão do código de retorno
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+        return $retorno;
+    }
+
+/**
+*
+* atualizarUrlimgPorPK() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* realizar uma atualização de URL da imagem tipo de empreendimento diretamente na tabela TIPO_EMPREENDIMENTO campo TIEM_TX_IMG
+* @param $daofactory
+* @param $id
+* @param $urlimg
+* @return TipoEmpreendimentoDTO
+*
+* 
+*/
+    public function atualizarUrlimgPorPK($daofactory,$urlimg,$id)
+    {
+        $dao = $daofactory->getTipoEmpreendimentoDAO($daofactory);
+
+        // resposta padrão
+        $retorno = new DTOPadrao();
+
+        if($dao->updateUrlimg($id, $urlimg)){   
+            $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+        }       
+
+        // Obtem o texto da mensagem em razão do código de retorno
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+        return $retorno;
+    }
+
+/**
+*
+* pesquisarPorDescricao() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* realizar uma busca de Descrição tipo de empreendimento diretamente na tabela TIPO_EMPREENDIMENTO campo TIEM_TX_DESCRICAO
+*
+* @param $descricao
+* @return TipoEmpreendimentoDTO
+*
+* 
+*/
+    public function pesquisarPorDescricao($daofactory,$descricao)
+    { 
+        $dao = $daofactory->getTipoEmpreendimentoDAO($daofactory);
+        return $dao->loadDescricao($descricao);
+    }
+
+/**
+*
+* pesquisarPorUrlimg() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* realizar uma busca de URL da imagem tipo de empreendimento diretamente na tabela TIPO_EMPREENDIMENTO campo TIEM_TX_IMG
+*
+* @param $urlimg
+* @return TipoEmpreendimentoDTO
+*
+* 
+*/
+    public function pesquisarPorUrlimg($daofactory,$urlimg)
+
+    { 
+        $dao = $daofactory->getTipoEmpreendimentoDAO($daofactory);
+        return $dao->loadUrlimg($urlimg);
+    }
+
+/**
+*
+* listarTipoEmpreendimentoUsuaIdPorStatus() - Usado para invocar a interface de acesso aos dados (DAO) TipoEmpreendimentoDAO de forma geral
+* realizar lista paginada de registros dos registros do usuário logado com uma instância de PaginacaoDTO
+*
+* @param $daofactory
+* @param $usuaid
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+* @return $PaginacaoDTO
+*/
+
+    public function listarTipoEmpreendimentoPorUsuaIdStatus($daofactory, $usuaid, $status,  $pag=1, $qtde=0, $coluna=1, $ordem=0)
+    {   
+        $retorno = new DTOPaginacao();
+        $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+        $dao = $daofactory->getTipoEmpreendimentoDAO($daofactory);
+        $retorno->pagina = $pag;
+        $retorno->itensPorPagina = ($qtde == 0 
+        ? (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT)
+        : $qtde);
+        $retorno->totalPaginas = ceil($dao->countTipoEmpreendimentoPorUsuaIdStatus($usuaid, $status) / $retorno->itensPorPagina);
+
+        if($pag > $retorno->totalPaginas) {
+            $retorno->msgcode = ConstantesMensagem::NAO_EXISTEM_MAIS_PAGINAS_APRESENTAR;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+        }
+        $retorno->lst = $dao->listTipoEmpreendimentoPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
 
         return $retorno;
     }
@@ -282,6 +480,7 @@ public function inserir($daofactory, $dto)
        }
        return $retorno;
    }
+
 
 }
 ?>

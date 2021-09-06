@@ -18,7 +18,7 @@
 *
 * 
 * @autor Julio Cesar Vitorino
-* @since 23/08/2019 09:32:03
+* @since 06/09/2021 08:28:01
 *
 */
 
@@ -29,8 +29,18 @@ require_once '../interfaces/BusinessObject.php';
 interface TipoEmpreendimentoBusiness extends BusinessObject
 {
     public function atualizarStatus($daofactory, $id, $status);
-    public function listarTipoEmpreendimentoPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);
-    public function validarTamanhoCampo($campo, $tamanho, $coment) ;
+    public function listarTipoEmpreendimentoPorStatus($daofactory, $status,  $pag=1, $qtde=0, $coluna=1, $ordem=0);
+    public function validarTamanhoCampo($campo, $tamanho, $coment);
+    public function listarTipoEmpreendimentoPorUsuaIdStatus($daofactory, $usuaid, $status,  $pag=1, $qtde=0, $coluna=1, $ordem=0);
+    public function inserirTipoEmpreendimento($daofactory, $dto);
+    public function pesquisarMaxPKAtivoDescricaoPorStatus($daofactory, $descricao, $status);
+
+    public function pesquisarPorDescricao($daofactory, $descricao);
+    public function pesquisarPorUrlimg($daofactory, $urlimg);
+
+    public function atualizarDescricaoPorPK($daofactory,$descricao,$id);
+    public function atualizarUrlimgPorPK($daofactory,$urlimg,$id);
+
 }
 
 ?>

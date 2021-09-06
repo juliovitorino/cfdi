@@ -1,8 +1,8 @@
 <?php
 
 //importar dependencias
-require_once 'tipoEmpreendimentoService.php';
-require_once 'tipoEmpreendimentoBusinessImpl.php';
+require_once 'TipoEmpreendimentoService.php';
+require_once 'TipoEmpreendimentoBusinessImpl.php';
 require_once '../variavel/ConstantesVariavel.php';
 require_once '../variavel/VariavelCache.php';
 require_once '../mensagem/ConstantesMensagem.php';
@@ -13,9 +13,7 @@ require_once '../daofactory/DAOFactory.php';
 
 /**
 *
-* TipoEmpreendimentoServiceImpl  - Implementação dos servicos para Classe de negócio com métodos para 
-* apoiar a integridade de informações sobre tipos de empreendimento usados pela plataforma
-*
+* TipoEmpreendimentoServiceImpl - Implementação dos servicos para Classe de negócio com métodos para apoiar a integridade de informações sobre tipo de empreendimento gerenciado pela plataforma
 * Camada de Serviços TipoEmpreendimento - camada responsável pela lógica de negócios de TipoEmpreendimento do sistema. 
 * Não é uma camada visível para outros dispositivos, como as camadas de apresentação e aplicação. 
 *
@@ -35,7 +33,7 @@ require_once '../daofactory/DAOFactory.php';
 *
 * 
 * @author Julio Cesar Vitorino
-* @since 23/08/2019 07:31:20
+* @since 06/09/2021 08:28:01
 *
 */
 class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
@@ -53,8 +51,52 @@ class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
 
     public function listarTudo() {  }
     public function pesquisar($dto){ }
-    public function apagar($dto) { }
     public function cancelar($dto) { }
+
+/**
+*
+* PesquisarMaxPKAtivoIdPorStatus() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* a buscar a MAIOR PK pra um dado status.
+*
+* @param status
+* @return TipoEmpreendimentoDTO
+*
+*/
+
+public function pesquisarMaxPKAtivoDescricaoPorStatus($descricao,$status)
+{
+    $daofactory = NULL;
+    $retorno = NULL;
+    try {
+        $daofactory = DAOFactory::getDAOFactory();
+        $daofactory->open();
+        $daofactory->beginTransaction();
+        
+       $bo = new TipoEmpreendimentoBusinessImpl();
+       $retorno = $bo->pesquisarMaxPKAtivoDescricaoPorStatus($daofactory, $descricao,$status);
+       if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+            // Trocar a constante abaixo COMANDO_REALIZADO_COM_SUCESSO que é a mensagem padrão 
+            // por algo que faça mais sentido para o usuário no frontend
+            $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            $daofactory->commit();
+        } else {
+            $daofactory->rollback();
+        }
+        
+    } catch (Exception $e) {
+        // rollback na transação
+        $daofactory->rollback();
+    } finally {
+        try {
+            $daofactory->close();
+        } catch (Exception $e) {
+            // faz algo
+        }
+    }
+
+    return $retorno;
+}
 
 /**
 *
@@ -75,9 +117,13 @@ class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
             $daofactory->open();
             $daofactory->beginTransaction();
             
-           $bo = new idBusinessImpl();
+           $bo = new TipoEmpreendimentoBusinessImpl();
            $retorno = $bo->atualizar($daofactory, $dto);
            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+               // Trocar a constante abaixo COMANDO_REALIZADO_COM_SUCESSO que é a mensagem padrão 
+               // por algo que faça mais sentido para o usuário no frontend
+               $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+               $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
                 $daofactory->commit();
             } else {
                 $daofactory->rollback();
@@ -108,6 +154,8 @@ class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
 * @return uma instância de TipoEmpreendimentoDTO com resultdo da operação
 *
 */
+
+
     public function autalizarStatusTipoEmpreendimento($id, $status)
     {
         $daofactory = NULL;
@@ -122,6 +170,10 @@ class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
            $retorno = $bo->atualizarStatus($daofactory, $id, $status);
 
            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
+               // Trocar a constante abaixo COMANDO_REALIZADO_COM_SUCESSO que é a mensagem padrão 
+               // por algo que faça mais sentido para o usuário no frontend
+               $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+               $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
                 $daofactory->commit();
             } else {
                 $daofactory->rollback();
@@ -142,6 +194,54 @@ class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
         return $retorno;
     }
 
+/**
+*
+* apagar() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* para gerenciar a exclusão de registro de acordo as regras de negócio do sistema.
+*
+* @param $dto - Instância de TipoEmpreendimentoDTO
+*
+* @return uma instância de TipoEmpreendimentoDTO com resultdo da operação
+*
+*/
+
+
+public function apagar($dto)
+{
+    $daofactory = NULL;
+    $retorno = NULL;
+    try {
+        $daofactory = DAOFactory::getDAOFactory();
+        $daofactory->open();
+        $daofactory->beginTransaction();
+        
+
+       $bo = new TipoEmpreendimentoBusinessImpl();
+       $retorno = $bo->deletar($daofactory, $dto);
+
+       if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+            $retorno->msgcode = ConstantesMensagem::REGISTRO_FOI_REMOVIDO_COM_SUCESSO;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+            $daofactory->commit();
+        } else {
+            $daofactory->rollback();
+        }
+        
+    } catch (Exception $e) {
+        // rollback na transação
+        $daofactory->rollback();
+
+    } finally {
+        try {
+            $daofactory->close();
+        } catch (Exception $e) {
+            // faz algo
+        }
+    }
+
+    return $retorno;
+}
 
 /**
 *
@@ -153,6 +253,8 @@ class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
 * @return uma instância de TipoEmpreendimentoDTO com resultdo da operação
 *
 */
+
+
     public function cadastrar($dto)
     {
         $daofactory = NULL;
@@ -164,9 +266,13 @@ class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
             
 
            $bo = new TipoEmpreendimentoBusinessImpl();
-           $retorno = $bo->inserir($daofactory, $dto);
+           $retorno = $bo->inserirTipoEmpreendimento($daofactory, $dto);
 
            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+               // Trocar a constante abaixo COMANDO_REALIZADO_COM_SUCESSO que é a mensagem padrão 
+               // por algo que faça mais sentido para o usuário no frontend
+               $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+               $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
                 $daofactory->commit();
             } else {
                 $daofactory->rollback();
@@ -186,6 +292,7 @@ class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
 
         return $retorno;
     }
+
 /**
 *
 * listarPagina() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
@@ -193,11 +300,13 @@ class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
 *
 * @param $pag
 * @param $qtde
-* @return List<${classebase}DTO>[]
+* @return List<TipoEmpreendimentoDTO>[]
 *
 *
 * Procure dar preferência no uso deste método para listagem de dados
 */
+
+
     public function listarPagina($pag, $qtde)
     {
         $daofactory = NULL;
@@ -234,8 +343,9 @@ class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
 * @param $id
 * @return TipoEmpreendimentoDTO
 *
-*
+* 
 */
+
     public function pesquisarPorID($id)
     {
         $daofactory = NULL;
@@ -249,6 +359,10 @@ class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
            $bo = new TipoEmpreendimentoBusinessImpl();
            $retorno = $bo->carregarPorID($daofactory, $id);
            if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
+                // Trocar a constante abaixo COMANDO_REALIZADO_COM_SUCESSO que é a mensagem padrão 
+                // por algo que faça mais sentido para o usuário no frontend
+                $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+                $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
                 $daofactory->commit();
            } else {
                 $daofactory->rollback();
@@ -267,6 +381,7 @@ class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
 
         return $retorno;
     }
+
 /**
 *
 * listarTipoEmpreendimentoPorStatus() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
@@ -280,7 +395,7 @@ class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
 * @return $PaginacaoDTO
 */
 
-   public function listarTipoEmpreendimentoPorStatus($status, $pag=1, $qtde=0, $coluna=1, $ordem=0) 
+   public function listarTipoEmpreendimentoPorStatus($status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0) 
    {
        $daofactory = NULL;
        $retorno = NULL;
@@ -311,6 +426,233 @@ class TipoEmpreendimentoServiceImpl implements TipoEmpreendimentoService
        return $retorno;
    }
 
+/**
+*
+* pesquisarPorDescricao() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* realizar uma busca de Descrição tipo de empreendimento diretamente na tabela TIPO_EMPREENDIMENTO campo TIEM_TX_DESCRICAO
+*
+* @param $descricao
+* @return TipoEmpreendimentoDTO
+*
+* 
+*/
+
+    public function pesquisarPorDescricao($descricao)
+    {
+        $daofactory = NULL;
+        $retorno = NULL;
+        try {
+            $daofactory = DAOFactory::getDAOFactory();
+            $daofactory->open();
+            $daofactory->beginTransaction();
+            
+            // pesquisar pelo atributo TipoEmpreendimento.descricao no campo TIEM_TX_DESCRICAO da tabela TIPO_EMPREENDIMENTO
+           $bo = new TipoEmpreendimentoBusinessImpl();
+           $retorno = $bo->carregarPorDescricao($daofactory, $descricao);
+           if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
+                // Trocar a constante abaixo COMANDO_REALIZADO_COM_SUCESSO que é a mensagem padrão 
+                // por algo que faça mais sentido para o usuário no frontend  
+                $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+                $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+                $daofactory->commit();
+           } else {
+                $daofactory->rollback();
+           }
+            
+        } catch (Exception $e) {
+            // rollback na transação
+
+        } finally {
+            try {
+                $daofactory->close();
+            } catch (Exception $e) {
+                // faz algo
+            }
+        }
+
+        return $retorno;
+    }
+
+/**
+*
+* pesquisarPorUrlimg() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* realizar uma busca de URL da imagem tipo de empreendimento diretamente na tabela TIPO_EMPREENDIMENTO campo TIEM_TX_IMG
+*
+* @param $urlimg
+* @return TipoEmpreendimentoDTO
+*
+* 
+*/
+
+    public function pesquisarPorUrlimg($urlimg)
+    {
+        $daofactory = NULL;
+        $retorno = NULL;
+        try {
+            $daofactory = DAOFactory::getDAOFactory();
+            $daofactory->open();
+            $daofactory->beginTransaction();
+            
+            // pesquisar pelo atributo TipoEmpreendimento.urlimg no campo TIEM_TX_IMG da tabela TIPO_EMPREENDIMENTO
+           $bo = new TipoEmpreendimentoBusinessImpl();
+           $retorno = $bo->carregarPorUrlimg($daofactory, $urlimg);
+           if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
+                $daofactory->commit();
+           } else {
+                $daofactory->rollback();
+           }
+            
+        } catch (Exception $e) {
+            // rollback na transação
+
+        } finally {
+            try {
+                $daofactory->close();
+            } catch (Exception $e) {
+                // faz algo
+            }
+        }
+
+        return $retorno;
+    }
+
+/**
+*
+* atualizarDescricaoPorPK() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* realizar uma atualização de Descrição tipo de empreendimento diretamente na tabela TIPO_EMPREENDIMENTO campo TIEM_TX_DESCRICAO
+* @param $id
+* @param $descricao
+* @return TipoEmpreendimentoDTO
+*
+* 
+*/
+
+    public function atualizarDescricaoPorPK($descricao,$id)
+    {
+        $daofactory = NULL;
+        $retorno = NULL;
+        try {
+            $daofactory = DAOFactory::getDAOFactory();
+            $daofactory->open();
+            $daofactory->beginTransaction();
+            
+            // atualizar registro por meio do método TipoEmpreendimentoBusinessImpl::atualizarDescricaoPorPK($descricao,$id)
+           $bo = new TipoEmpreendimentoBusinessImpl();
+           $retorno = $bo->atualizarDescricaoPorPK($daofactory,$descricao,$id);
+
+           if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
+                $daofactory->commit();
+            } else {
+                $daofactory->rollback();
+            }
+            
+        } catch (Exception $e) {
+            // rollback na transação
+            $daofactory->rollback();
+
+        } finally {
+            try {
+                $daofactory->close();
+            } catch (Exception $e) {
+                // faz algo
+            }
+        }
+
+        return $retorno;
+    }
+
+/**
+*
+* atualizarUrlimgPorPK() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* realizar uma atualização de URL da imagem tipo de empreendimento diretamente na tabela TIPO_EMPREENDIMENTO campo TIEM_TX_IMG
+* @param $id
+* @param $urlimg
+* @return TipoEmpreendimentoDTO
+*
+* 
+*/
+
+    public function atualizarUrlimgPorPK($urlimg,$id)
+    {
+        $daofactory = NULL;
+        $retorno = NULL;
+        try {
+            $daofactory = DAOFactory::getDAOFactory();
+            $daofactory->open();
+            $daofactory->beginTransaction();
+            
+            // atualizar registro por meio do método TipoEmpreendimentoBusinessImpl::atualizarUrlimgPorPK($urlimg,$id)
+           $bo = new TipoEmpreendimentoBusinessImpl();
+           $retorno = $bo->atualizarUrlimgPorPK($daofactory,$urlimg,$id);
+
+           if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
+                $daofactory->commit();
+            } else {
+                $daofactory->rollback();
+            }
+            
+        } catch (Exception $e) {
+            // rollback na transação
+            $daofactory->rollback();
+
+        } finally {
+            try {
+                $daofactory->close();
+            } catch (Exception $e) {
+                // faz algo
+            }
+        }
+
+        return $retorno;
+    }
+
+/**
+*
+* listarTipoEmpreendimentoPorUsuaIdStatus() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* realizar lista paginada de registros tendo como referência os registros do usuário logado com uma instância de PaginacaoDTO
+*
+* @param $usuaid
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+* @return $PaginacaoDTO
+*/
+
+   public function listarTipoEmpreendimentoPorUsuaIdStatus($usuaid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0) 
+   {
+       $daofactory = NULL;
+       $retorno = NULL;
+       try {
+           $daofactory = DAOFactory::getDAOFactory();
+           $daofactory->open();
+           $daofactory->beginTransaction();
+
+           //Se qtde por página é indefinido (=0) busca valor default do variavel
+           if($qtde == 0){
+               $qtde = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT);
+           }
+           // listar paginado TipoEmpreendimento
+           $bo = new TipoEmpreendimentoBusinessImpl();
+           $retorno = $bo->listarTipoEmpreendimentoPorUsuaIdStatus($daofactory, $usuaid, $status, $pag, $qtde, $coluna, $ordem);
+           $daofactory->commit();
+       } catch (Exception $e) {
+           // rollback na transação
+        
+       } finally {
+           try {
+               $daofactory->close();
+           } catch (Exception $e) {
+               // faz algo
+           }
+       }
+
+       return $retorno;
+   }
+
+
 }
 
 ?>
+

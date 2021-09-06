@@ -11,7 +11,7 @@ require_once '../interfaces/DAO.php';
 * Changelog:
 * 
 * @autor Julio Cesar Vitorino
-* @since 23/08/2019 09:14:23
+* @since 06/09/2021 08:28:01
 *
 */
 
@@ -21,6 +21,19 @@ interface TipoEmpreendimentoDAO extends DAO
     public function listTipoEmpreendimentoStatus($status);
     public function countTipoEmpreendimentoPorStatus($status);
     public function listTipoEmpreendimentoPorStatus($status, $pag, $qtde, $coluna, $ordem);
+    public function countTipoEmpreendimentoPorUsuaIdStatus($usuaid, $status);
+    public function listTipoEmpreendimentoPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+
+    public function loadMaxDescricaoPK($descricao,$status);
+
+    public function loadDescricao($descricao);
+    public function loadUrlimg($urlimg);
+    public function loadStatus($status);
+    public function loadDatacadastro($dataCadastro);
+    public function loadDataatualizacao($dataAtualizacao);
+
+    public function updateDescricao($id, $descricao);
+    public function updateUrlimg($id, $urlimg);
 
 }
 ?>

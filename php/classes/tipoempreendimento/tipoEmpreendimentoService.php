@@ -1,8 +1,7 @@
 <?php
 /**
 *
-* TipoEmpreendimentoService - Interfaces dos servicos para Classe de negócio com métodos para apoiar 
-* a integridade de informações sobre tipos de empreendimento usados pela plataforma
+* TipoEmpreendimentoService - Interfaces dos servicos para Classe de negócio com métodos para apoiar a integridade de informações sobre tipo de empreendimento gerenciado pela plataforma
 * Interface de Serviços TipoEmpreendimento - camada responsável pela lógica de negócios de TipoEmpreendimento do sistema. 
 * Não é uma camada visível para outros dispositivos, como as camadas de apresentação e aplicação. 
 *
@@ -22,7 +21,7 @@
 *
 * 
 * @autor Julio Cesar Vitorino
-* @since 23/08/2019 07:31:20
+* @since 06/09/2021 08:28:01
 *
 */
 
@@ -32,9 +31,18 @@ require_once '../interfaces/AppService.php';
 
 interface TipoEmpreendimentoService extends AppService
 {
+
     public function autalizarStatusTipoEmpreendimento($id, $status);
-    public function listarTipoEmpreendimentoPorStatus($status, $pag=1, $qtde=0, $coluna=1, $ordem=0);
+    public function listarTipoEmpreendimentoPorStatus($status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
+    public function listarTipoEmpreendimentoPorUsuaIdStatus($usuaid, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
     public function cancelar($dto);
+    public function pesquisarMaxPKAtivoDescricaoPorStatus($descricao,$status);
+
+    public function pesquisarPorDescricao($descricao);
+    public function pesquisarPorUrlimg($urlimg);
+
+    public function atualizarDescricaoPorPK($descricao,$id);
+    public function atualizarUrlimgPorPK($urlimg,$id);
 }
 
 

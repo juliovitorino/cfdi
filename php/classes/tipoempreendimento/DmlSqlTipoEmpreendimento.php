@@ -21,7 +21,7 @@ require_once '../daofactory/DmlSql.php';
 *
 * 
 * @autor Julio Cesar Vitorino
-* @since 23/08/2019 09:14:23
+* @since 06/09/2021 08:28:01
 *
 */
 
@@ -42,7 +42,7 @@ class DmlSqlTipoEmpreendimento extends DmlSql
     // Comandos DML
     const INS = 'INSERT INTO `' . self::TABELA . '` ('
         . ' `' . self::TIEM_TX_DESCRICAO . '`, '
-        . ' `' . self::TIEM_TX_IMG . '`, '
+        . ' `' . self::TIEM_TX_IMG . '` '
         . ') VALUES (?,?)';
 
     const DEL_PK = 'DELETE from `' . self::TABELA . '` ' .
@@ -57,6 +57,9 @@ class DmlSqlTipoEmpreendimento extends DmlSql
     . ' `' . self::TIEM_IN_STATUS . '` = ? '
     . 'WHERE ' . ' `' . self::TIEM_ID . '` = ? ' ;
 
+    const SELECT_MAX_PK = 'SELECT MAX(TIEM_ID) AS maxid FROM `'.self::TABELA.'` ';
+
+
     const SELECT = 'SELECT ' 
         . ' `' . self::TIEM_ID . '`, ' 
         . ' `' . self::TIEM_TX_DESCRICAO . '`, ' 
@@ -69,18 +72,14 @@ class DmlSqlTipoEmpreendimento extends DmlSql
     const SQL_COUNT = 'SELECT COUNT(*) AS contador '
     . ' FROM `'.self::TABELA.'` ';
 
+    const UPD_TIPO_EMPREENDIMENTO_TIEM_TX_DESCRICAO_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::TIEM_TX_DESCRICAO . '` = ? ' . 'WHERE ' . ' `' . self::TIEM_ID . '` = ? ' ;
+    const UPD_TIPO_EMPREENDIMENTO_TIEM_TX_IMG_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::TIEM_TX_IMG . '` = ? ' . 'WHERE ' . ' `' . self::TIEM_ID . '` = ? ' ;
+    const UPD_TIPO_EMPREENDIMENTO_TIEM_IN_STATUS_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::TIEM_IN_STATUS . '` = ? ' . 'WHERE ' . ' `' . self::TIEM_ID . '` = ? ' ;
+    const UPD_TIPO_EMPREENDIMENTO_TIEM_DT_CADASTRO_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::TIEM_DT_CADASTRO . '` = ? ' . 'WHERE ' . ' `' . self::TIEM_ID . '` = ? ' ;
+    const UPD_TIPO_EMPREENDIMENTO_TIEM_DT_UPDATE_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::TIEM_DT_UPDATE . '` = ? ' . 'WHERE ' . ' `' . self::TIEM_ID . '` = ? ' ;
+
+
+
 }
-
-
-
-
-
-
-
-
 ?>
-
-
-
-
 
