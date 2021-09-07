@@ -110,6 +110,20 @@ AUTO_INCREMENT = 1000;
 
  */
 
+/*
+#### ##    ##  ######  ######## ########  ########  ######  
+ ##  ###   ## ##    ## ##       ##     ##    ##    ##    ## 
+ ##  ####  ## ##       ##       ##     ##    ##    ##       
+ ##  ## ## ##  ######  ######   ########     ##     ######  
+ ##  ##  ####       ## ##       ##   ##      ##          ## 
+ ##  ##   ### ##    ## ##       ##    ##     ##    ##    ## 
+#### ##    ##  ######  ######## ##     ##    ##     ######  
+*/
+
+/* consertar a tabela USUARIO_COMPLEMENTO em relação ao status atual */
+insert into `USUARIO_COMPLEMENTO` (USUA_ID)
+select USUA_ID
+from `USUARIO`
 
 /*
 
