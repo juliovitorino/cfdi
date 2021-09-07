@@ -17,6 +17,8 @@ require_once 'SessaoBusinessImpl.php';
 
 require_once '../usuarios/UsuarioBusinessImpl.php';
 require_once '../usuarios/UsuarioDTO.php';
+require_once '../usuariocomplemento/UsuarioComplementoBusinessImpl.php';
+require_once '../usuariocomplemento/UsuarioComplementoDTO.php';
 
 class SessaoServiceImpl implements SessaoService
 {
@@ -50,6 +52,12 @@ class SessaoServiceImpl implements SessaoService
 				$dto->pwd = MensagemCache::getInstance()->getMensagem(ConstantesMensagem::AUTENTICACAO_AUTORIZADA_FACEBOOK);
 				$retorno = $ubi->inserirNovaContaFacebook($daofactory,$dto);
 				$retorno = $sbi->validarRegrasAutenticacaoFacebook($daofactory, $idfcbk, $nome, $email, $versao);
+		
+				// Insere um registro 1:1 na usuário complemento
+				$uscobo = new UsuarioComplementoBusinessImpl();
+				$uscodto = new UsuarioComplementoDTO();
+				$uscodto->idUsuario = $retorno->usuariodto->id;
+				$uscobo->inserirUsuarioComplemento($daofactory, $uscodto);
 			}
 
 			// Atualiza foto do perfil da rede social se diferente da atual
