@@ -17,9 +17,9 @@ require_once 'PerfilDTO.php';
 
 require_once '../usuariocashback/UsuarioCashbackBusinessImpl.php';
 require_once '../usuariocashback/UsuarioCashbackDTO.php';
-
 require_once '../usuariosplanos/PlanoUsuarioBusinessImpl.php';
 require_once '../usuariosplanosfatura/PlanoUsuarioFaturaBusinessImpl.php';
+require_once '../usuariocomplemento/usuarioComplementoBusinessImpl.php';
 
 require_once '../dto/DTOPadrao.php';
 
@@ -371,6 +371,9 @@ class UsuarioBusinessImpl implements UsuarioBusiness
 		// carrega as informações do plano vigente do usuário
 		$plusbo = new PlanoUsuarioBusinessImpl();
 		$retorno->usuarioPlanoAtivo = $plusbo->carregarPlanoUsuarioPorStatus($daofactory, $id, ConstantesVariavel::STATUS_ATIVO);
+
+		$uscobo = new UsuarioComplementoBusinessImpl();
+		$retorno->usuarioComplemento = $uscobo->pesquisarMaxPKAtivoIdusuarioPorStatus($daofactory, $id, ConstantesVariavel::STATUS_ATIVO);
 		
 		// Retorno do Perfil
 		return $retorno;

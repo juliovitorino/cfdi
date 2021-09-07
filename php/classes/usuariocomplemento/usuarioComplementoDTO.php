@@ -1,70 +1,63 @@
 <?php
-
 // importar dependencias
 require_once '../dto/DTOPadraoEntidade.php';
-
 /**
 * UsuarioComplementoDTO - Data Transfer Object
 *
-* @author Julio Vitorino <julio.vitorino@gmail.com>
-* @copyright 2019-2019 The JCV Group
+* @author Julio Cesar Vitorino 
+* @since 07/09/2021 10:21:34
+* @copyright(c), Julio Vitorino <julio.vitorino@gmail.com>
 */
 class UsuarioComplementoDTO extends DTOPadraoEntidade implements JsonSerializable
 {
-    public $id;
-    public $id_usuario;
+    public $idUsuario;
+    public $ddd;
+    public $telefone;
     public $nomeReceitaFederal;
-    public $website;
-    public $facebook;
-    public $instagram;
-    public $pinterest;
-    public $skype;
-    public $twitter;
-    public $facetime;
-    public $img1;
-    public $img2;
-    public $img3;
-    public $descricaoLivre;
-    public $status;
-    public $dataCadastro;
-    public $dataAtualizacao;
+    public $nomeResponsavel;
+    public $urlsite;
+    public $urlFacebook;
+    public $urlInstagram;
+    public $urlPinterest;
+    public $urlSkype;
+    public $urlTwitter;
+    public $urlFacetime;
+    public $urlResponsavel;
+    public $urlFoto2;
+    public $urlFoto3;
+    public $descLivre;
 
     public function jsonSerialize()
     {
         return 
         [
             'id' => $this->id,
-            'id_usuario' => $this->id_usuario,
+            'idUsuario' => $this->idUsuario,
+            'ddd' => $this->ddd,
+            'telefone' => $this->telefone,
             'nomeReceitaFederal' => $this->nomeReceitaFederal,
-            'website' => $this->website,
-            'facebook' => $this->facebook,
-            'instagram' => $this->instagram,
-            'pinterest' => $this->pinterest,
-            'skype' => $this->skype,
-            'twitter' => $this->twitter,
-            'facetime' => $this->facetime,
-            'img1' => $this->img1,
-            'img2' => $this->img2,
-            'img3' => $this->img3,
-            'descricaoLivre' => $this->descricaoLivre,
+            'nomeResponsavel' => $this->nomeResponsavel,
+            'urlsite' => $this->urlsite,
+            'urlFacebook' => $this->urlFacebook,
+            'urlInstagram' => $this->urlInstagram,
+            'urlPinterest' => $this->urlPinterest,
+            'urlSkype' => $this->urlSkype,
+            'urlTwitter' => $this->urlTwitter,
+            'urlFacetime' => $this->urlFacetime,
+            'urlResponsavel' => $this->urlResponsavel,
+            'urlFoto2' => $this->urlFoto2,
+            'urlFoto3' => $this->urlFoto3,
+            'descLivre' => $this->descLivre,
             'status' => $this->status,
-            'statusdesc' => $this->statusdesc,
             'dataCadastro' => $this->dataCadastro,
             'dataAtualizacao' => $this->dataAtualizacao,
+            'statusdesc' => $this->statusdesc,
             'msgcode' => $this->msgcode,
             'msgcodeString' => $this->msgcodeString
         ];
     }   
+
+
 }
 ?>
-
-
-
-
-
-
-
-
-
-
 
