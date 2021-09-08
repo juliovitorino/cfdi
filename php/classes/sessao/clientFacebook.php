@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+// http://junta10.dsv:8080/cfdi/php/classes/sessao/clientFacebook.php
 // Importa dependências
 require_once '../sessao/SessaoServiceImpl.php';
 require_once '../util/util.php';
