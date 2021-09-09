@@ -56,6 +56,25 @@ DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 AUTO_INCREMENT = 1000;
 
 /******************************************************************/
+/* RECURSO                                                        */
+/******************************************************************/
+/* Valores para RECU_IN_STATUS                                     /
+/* A = Ativo                                                       /
+/* I = Inativado                                                   /
+/******************************************************************/
+CREATE TABLE `RECURSO` (
+ `RECU_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID recurso',
+ `RECU_TX_DESCRICAO` VARCHAR(100) NOT NULL COMMENT 'Descrição',
+ `RECU_IN_STATUS` VARCHAR(1) NOT NULL DEFAULT 'A' COMMENT 'Status',
+ `RECU_DT_CADASTRO` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+ `RECU_DT_UPDATE` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+ CONSTRAINT PK_RECU_ID PRIMARY KEY (RECU_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+
+/******************************************************************/
 /* FILA_EMAIL                                                     */
 /******************************************************************/
 /* Valores para FIEM_IN_STATUS                                     /

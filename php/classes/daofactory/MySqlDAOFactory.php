@@ -14,6 +14,7 @@ require_once '../grupousuario/MySqlKinghostGrupoUsuarioDAO.php';
 require_once '../seglog/MySqlKinghostSeglogDAO.php';
 require_once '../contato/MySqlKinghostContatoDAO.php';
 require_once '../filaemail/MySqlKinghostFilaEmailDAO.php';
+require_once '../recurso/MySqlKinghostRecursoDAO.php';
 
 require_once '../mkdlista/MySqlKinghostMkdListaDAO.php';
 require_once '../filaqrcodependenteproduzir/MySqlKinghostFilaQRCodePendenteProduzirDAO.php';
@@ -76,6 +77,14 @@ class MySqlDAOFactory extends DAOFactory
 	public function getNextSequence($daofactory, $sequence) 
 	{
 	return 1;
+	}
+	/**
+	* Retorna uma instância de acesso a dados
+	* @return MySqlKinghostRecursoDAO
+	*/
+	public function getRecursoDAO($daofactory)
+	{
+		return new MySqlKinghostRecursoDAO($daofactory);
 	}
 	
     /**

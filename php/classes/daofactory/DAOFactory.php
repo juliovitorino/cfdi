@@ -52,6 +52,7 @@ abstract class DAOFactory
 	public abstract function getSeglogDAO($daofactory);
 	public abstract function getContatoDAO($daofactory);
 	public abstract function getFilaEmailDAO($daofactory);
+	public abstract function getRecursoDAO($daofactory);
 
 	public abstract function getUsuarioDAO($daofactory);
 	public abstract function getSessaoDAO($daofactory);
