@@ -16,6 +16,7 @@ class PlanoDTO extends DTOPadraoEntidade implements JsonSerializable
     public $valor;
     public $valorMoeda;
     public $tipo;
+    public $lstrecursos = [];
 
     public function jsonSerialize()
     {
@@ -28,6 +29,7 @@ class PlanoDTO extends DTOPadraoEntidade implements JsonSerializable
             'valor' => $this->valor,
             'valorMoeda' => $this->valorMoeda,
             'tipo' => $this->tipo,
+            'lstrecursos' => $this->lstrecursos,
             'status' => $this->status,
             'dataCadastro' => $this->dataCadastro,
             'dataAtualizacao' => $this->dataAtualizacao,

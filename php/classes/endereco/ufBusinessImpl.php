@@ -126,7 +126,7 @@ public function listarUfPorStatus($daofactory, $status, $pag, $qtde, $coluna, $o
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listUfPorStatus($status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listUfPorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }

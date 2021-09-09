@@ -53,13 +53,15 @@ abstract class DAOFactory
 	public abstract function getContatoDAO($daofactory);
 	public abstract function getFilaEmailDAO($daofactory);
 	public abstract function getRecursoDAO($daofactory);
+	public abstract function getPlanoDAO($daofactory);
+	public abstract function getPlanoRecursoDAO($daofactory);
+
 
 	public abstract function getUsuarioDAO($daofactory);
 	public abstract function getSessaoDAO($daofactory);
 	public abstract function getEstatisticaFuncaoDAO($daofactory);
 	public abstract function getMensagemDAO($daofactory);
 	public abstract function getVariavelDAO($daofactory);
-	public abstract function getPlanoDAO($daofactory);
 	public abstract function getPlanoUsuarioDAO($daofactory);
 	public abstract function getPlanoUsuarioFaturaDAO($daofactory);
 	public abstract function getUsuarioTrocaSenhaHistoricoDAO($daofactory);

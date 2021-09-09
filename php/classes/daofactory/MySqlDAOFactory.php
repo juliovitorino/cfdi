@@ -15,6 +15,8 @@ require_once '../seglog/MySqlKinghostSeglogDAO.php';
 require_once '../contato/MySqlKinghostContatoDAO.php';
 require_once '../filaemail/MySqlKinghostFilaEmailDAO.php';
 require_once '../recurso/MySqlKinghostRecursoDAO.php';
+require_once '../plano/MySqlKinghostPlanoDAO.php';
+require_once '../planorecurso/MySqlKinghostPlanoRecursoDAO.php';
 
 require_once '../mkdlista/MySqlKinghostMkdListaDAO.php';
 require_once '../filaqrcodependenteproduzir/MySqlKinghostFilaQRCodePendenteProduzirDAO.php';
@@ -27,7 +29,6 @@ require_once '../variavel/MySqlKinghostVariavelDAO.php';
 require_once '../mensagem/MySqlKinghostMensagemDAO.php';
 require_once '../estatisticafuncao/MySqlKinghostEstatisticaFuncaoDAO.php';
 require_once '../sessao/MySqlKinghostSessaoDAO.php';
-require_once '../plano/MySqlKinghostPlanoDAO.php';
 require_once '../usuariosplanos/MySqlKinghostPlanoUsuarioDAO.php';
 require_once '../usuariosplanosfatura/MySqlKinghostPlanoUsuarioFaturaDAO.php';
 require_once '../usuariostrocasenha/MySqlKinghostUsuarioTrocaSenhaHistoricoDAO.php';
@@ -86,7 +87,15 @@ class MySqlDAOFactory extends DAOFactory
 	{
 		return new MySqlKinghostRecursoDAO($daofactory);
 	}
-	
+	/**
+	 * Retorna uma instância de acesso a dados
+	* @return MySqlKinghostPlanoRecursoDAO
+	*/
+	public function getPlanoRecursoDAO($daofactory)
+	{
+		return new MySqlKinghostPlanoRecursoDAO($daofactory);
+	}
+
     /**
      * Retorna uma instância de acesso a dados
      * @return MySqlKinghostContatoDAO

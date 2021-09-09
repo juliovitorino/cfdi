@@ -105,6 +105,22 @@ CREATE TABLE `RECURSO` (
 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 AUTO_INCREMENT = 1000;
 
+/******************************************************************/
+/* PLANO X RECURSO                                                 /
+/******************************************************************/
+CREATE TABLE `PLANO_RECURSO` (
+    `PLRE_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID plano x recurso',
+    `PLAN_ID` int(11) NOT NULL COMMENT 'ID do plano',
+    `RECU_ID` int(11) NOT NULL COMMENT 'ID recurso',
+    `PLRE_IN_STATUS` varchar(1)  NOT NULL DEFAULT 'A' COMMENT 'Status',
+    `PLRE_DT_CADASTRO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de cadastro',
+    `PLRE_DT_UPDATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
+    CONSTRAINT PK_PLRE_ID PRIMARY KEY (PLRE_ID)
+) ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+AUTO_INCREMENT = 1000;
+
+CREATE UNIQUE INDEX UIX_PLRE_USUA_RECU ON PLANO_RECURSO(PLAN_ID, RECU_ID);
 /* 
 
 
@@ -126,6 +142,17 @@ AUTO_INCREMENT = 1000;
    ##    ##     ## ########  ######## ######## 
 
  */
+
+/* CONSTRAINTS PLANO_RECURSO X PLANO X RECURSO */
+ALTER TABLE `PLANO_RECURSO` 
+    ADD CONSTRAINT FK_PLRE_PLAN
+    FOREIGN KEY (PLAN_ID)
+    REFERENCES PLANOS(PLAN_ID) ON DELETE CASCADE;
+
+ALTER TABLE `PLANO_RECURSO` 
+    ADD CONSTRAINT FK_PLRE_RECU
+    FOREIGN KEY (RECU_ID)
+    REFERENCES RECURSO(RECU_ID) ON DELETE CASCADE;
 
 /*
 #### ##    ##  ######  ######## ########  ########  ######  

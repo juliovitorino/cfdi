@@ -309,7 +309,7 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listGrupoAdministracaoPorStatus($status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listGrupoAdministracaoPorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }
@@ -395,7 +395,7 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listGrupoAdministracaoPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listGrupoAdministracaoPorUsuaIdStatus($usuaid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }

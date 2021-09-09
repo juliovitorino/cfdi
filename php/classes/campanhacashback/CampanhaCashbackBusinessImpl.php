@@ -367,7 +367,7 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listCampanhaCashbackPorStatus($status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listCampanhaCashbackPorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }
@@ -740,7 +740,7 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listCampanhaCashbackPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listCampanhaCashbackPorUsuaIdStatus($usuaid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }

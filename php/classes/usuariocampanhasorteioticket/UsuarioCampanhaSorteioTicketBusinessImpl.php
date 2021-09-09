@@ -282,7 +282,7 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listUsuarioCampanhaSorteioTicketPorStatus($status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listUsuarioCampanhaSorteioTicketPorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }
@@ -415,7 +415,7 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listUsuarioCampanhaSorteioTicketPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listUsuarioCampanhaSorteioTicketPorUsuaIdStatus($usuaid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }
@@ -453,7 +453,7 @@ public function listarUsuarioCampanhaSorteioTicketPorUscsIdStatus($daofactory, $
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
         return $retorno;
     }
-    $retorno->lst = $dao->listUsuarioCampanhaSorteioTicketPorUscsIdStatus($uscsid, $status, $pag, $qtde, $coluna, $ordem);
+    $retorno->lst = $dao->listUsuarioCampanhaSorteioTicketPorUscsIdStatus($uscsid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
     return $retorno;
 }

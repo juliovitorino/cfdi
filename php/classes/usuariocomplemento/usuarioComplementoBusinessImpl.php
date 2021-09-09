@@ -399,7 +399,7 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listUsuarioComplementoPorStatus($status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listUsuarioComplementoPorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }
@@ -1162,7 +1162,7 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listUsuarioComplementoPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listUsuarioComplementoPorUsuaIdStatus($usuaid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }

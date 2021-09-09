@@ -409,7 +409,7 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listUsuarioCampanhaSorteioPorStatus($status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listUsuarioCampanhaSorteioPorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }
@@ -543,7 +543,7 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listUsuarioCampanhaSorteioPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listUsuarioCampanhaSorteioPorUsuaIdStatus($usuaid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         // Recarregar DTO completo campanha Sorteio e Campanha
         if(count($retorno->lst) > 0)

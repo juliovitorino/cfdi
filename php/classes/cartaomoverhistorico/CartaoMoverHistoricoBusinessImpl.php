@@ -290,7 +290,7 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listCartaoMoverHistoricoPorStatus($status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listCartaoMoverHistoricoPorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }
@@ -468,7 +468,7 @@ public function listarCartaoMoverHistoricoPorCartIdStatus($daofactory, $cartid, 
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
         return $retorno;
     }
-    $retorno->lst = $dao->listCartaoMoverHistoricoPorCartIdStatus($cartid, $status, $pag, $qtde, $coluna, $ordem);
+    $retorno->lst = $dao->listCartaoMoverHistoricoPorCartIdStatus($cartid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
     // Carrega as informações acidionais dentro de objetos completos de cartao, doador e receptor
     if(count($retorno->lst) > 0)
     {
@@ -519,7 +519,7 @@ public function listarCartaoMoverHistoricoPorCartIdStatus($daofactory, $cartid, 
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listCartaoMoverHistoricoPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listCartaoMoverHistoricoPorUsuaIdStatus($usuaid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }

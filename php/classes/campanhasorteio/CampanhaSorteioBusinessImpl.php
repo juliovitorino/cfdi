@@ -829,7 +829,7 @@ public function inserir($daofactory, $dto)
                $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
                return $retorno;
         }
-        $retorno->lst = $dao->listCampanhaSorteioPorStatus($status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listCampanhaSorteioPorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
           return $retorno;
      }
@@ -1188,7 +1188,7 @@ public function inserir($daofactory, $dto)
                $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
                return $retorno;
         }
-        $retorno->lst = $dao->listCampanhaSorteioPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listCampanhaSorteioPorUsuaIdStatus($usuaid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
           return $retorno;
      }
@@ -1226,7 +1226,7 @@ public function listarCampanhaSorteioPorCampIdStatus($daofactory, $campid, $stat
            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
            return $retorno;
     }
-    $retorno->lst = $dao->listCampanhaSorteioPorCampIdStatus($campid, $status, $pag, $qtde, $coluna, $ordem);
+    $retorno->lst = $dao->listCampanhaSorteioPorCampIdStatus($campid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
       return $retorno;
  }

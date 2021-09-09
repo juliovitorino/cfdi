@@ -9,6 +9,7 @@ require_once '../dto/DTOPaginacao.php';
 
 require_once '../variavel/ConstantesVariavel.php';
 require_once '../variavel/VariavelCache.php';
+require_once '../planorecurso/PlanoRecursoBusinessImpl.php';
 
 /**
 *
@@ -221,7 +222,20 @@ public function carregar($daofactory, $dto)
     public function carregarPorID($daofactory, $id)
     { 
         $dao = $daofactory->getPlanoDAO($daofactory);
-        return $dao->loadPK($id);
+        $dto = $dao->loadPK($id);
+
+        // Carrega os recursos do plano
+        if( ! is_null($dto) )
+        {
+            $plrebo = new PlanoRecursoBusinessImpl(); 
+            $lstrecurso = $plrebo->listarPlanoRecursoPorIdplanoStatus($daofactory, $id, ConstantesVariavel::STATUS_ATIVO);
+            if( ! is_null( $lstrecurso ) && count($lstrecurso->lst) > 0) {
+                foreach ($lstrecurso->lst as $key => $value) {
+                    array_push($dto->lstrecursos, $value); 
+                }
+            }
+        }
+        return $dto; 
     }
 
 /**
@@ -400,7 +414,7 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listPlanoPorStatus($status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listPlanoPorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }
@@ -655,7 +669,7 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listPlanoPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listPlanoPorUsuaIdStatus($usuaid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }

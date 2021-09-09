@@ -1,9 +1,9 @@
 <?php 
 
 // importar dependencias
-require_once 'GrupoUsuarioBusiness.php';
-require_once 'GrupoUsuarioConstantes.php';
-require_once 'GrupoUsuarioHelper.php';
+require_once 'PlanoRecursoBusiness.php';
+require_once 'PlanoRecursoConstantes.php';
+require_once 'PlanoRecursoHelper.php';
 require_once '../dto/DTOPadrao.php';
 require_once '../dto/DTOPaginacao.php';
 
@@ -12,8 +12,8 @@ require_once '../variavel/VariavelCache.php';
 
 /**
 *
-* GrupoUsuarioBusinessImpl - Classe de implementação dos métodos de negócio para a interface GrupoUsuarioBusiness
-* Camada de negócio GrupoUsuario - camada responsável pela lógica de negócios de GrupoUsuario do sistema. 
+* PlanoRecursoBusinessImpl - Classe de implementação dos métodos de negócio para a interface PlanoRecursoBusiness
+* Camada de negócio PlanoRecurso - camada responsável pela lógica de negócios de PlanoRecurso do sistema. 
 * Não é uma camada visível para outros dispositivos, como as camadas de apresentação e aplicação. 
 *
 *
@@ -28,18 +28,17 @@ require_once '../variavel/VariavelCache.php';
 *
 * 
 * @autor Julio Cesar Vitorino
-* @since 22/08/2021 17:02:50
+* @since 09/09/2021 12:12:30
 *
 */
 
-
-class GrupoUsuarioBusinessImpl implements GrupoUsuarioBusiness
+class PlanoRecursoBusinessImpl implements PlanoRecursoBusiness
 {
     
     function __construct()  {   }
 
 /**
-* carregar() - Carrega apenas um registro com base no campo id = (SEGLOG_GRUPO_USUARIO::GRUS_ID)
+* carregar() - Carrega apenas um registro com base no campo id = (PLANO_RECURSO::PLRE_ID)
 * @param $daofactory
 * @param $dto
 * @return $dto
@@ -47,27 +46,27 @@ class GrupoUsuarioBusinessImpl implements GrupoUsuarioBusiness
     public function carregar($daofactory, $dto) {   }
 
 /**
-* listarTudo() - Lista todos os registros provenientes de SEGLOG_GRUPO_USUARIO sem critério de paginação
+* listarTudo() - Lista todos os registros provenientes de PLANO_RECURSO sem critério de paginação
 * @param $daofactory
-* @return List<GrupoUsuarioDTO>[]
+* @return List<PlanoRecursoDTO>[]
 */ 
     public function listarTudo($daofactory) {   }
 
 /**
-* pesquisarMaxPKAtivoIdgradPorStatus() - Carrega apenas um registro com base no idgrad  e status para buscar a MAIOR PK
+* pesquisarMaxPKAtivoIdplanoPorStatus() - Carrega apenas um registro com base no idplano  e status para buscar a MAIOR PK
 * @param $daofactory
 * @param $status
-* @return GrupoUsuarioDTO
+* @return PlanoRecursoDTO
 */ 
-    public function pesquisarMaxPKAtivoIdgradPorStatus($daofactory, $idgrad,$status)
+    public function pesquisarMaxPKAtivoIdplanoPorStatus($daofactory, $idplano,$status)
     { 
-        $dao = $daofactory->getGrupoUsuarioDAO($daofactory);
-        $maxid = $dao->loadMaxIdgradPK($idgrad,$status);
+        $dao = $daofactory->getPlanoRecursoDAO($daofactory);
+        $maxid = $dao->loadMaxIdplanoPK($idplano,$status);
         return $this->carregarPorID($daofactory, $maxid);
     }
 
 /**
-* atualizar() - atualiza apenas um registro com base no dto GrupoUsuarioDTO->id
+* atualizar() - atualiza apenas um registro com base no dto PlanoRecursoDTO->id
 * @param $daofactory
 *
 * @return $dto
@@ -83,7 +82,7 @@ class GrupoUsuarioBusinessImpl implements GrupoUsuarioBusiness
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 
 
-        $dao = $daofactory->getGrupoUsuarioDAO($daofactory);
+        $dao = $daofactory->getPlanoRecursoDAO($daofactory);
         if(!$dao->update($dto)){
            $retorno->msgcode = ConstantesMensagem::ERRO_CRUD_ATUALIZAR_REGISTRO;
            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
@@ -95,7 +94,7 @@ class GrupoUsuarioBusinessImpl implements GrupoUsuarioBusiness
     }
 
 /**
-* deletar() - excluir fisicamente um registro com base no dto GrupoUsuarioDTO->id
+* deletar() - excluir fisicamente um registro com base no dto PlanoRecursoDTO->id
 * @param $daofactory
 *
 * @return $dto
@@ -109,7 +108,7 @@ class GrupoUsuarioBusinessImpl implements GrupoUsuarioBusiness
         $retorno = new DTOPadrao();
         $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
-        $dao = $daofactory->getGrupoUsuarioDAO($daofactory);
+        $dao = $daofactory->getPlanoRecursoDAO($daofactory);
 
         if(!$dao->delete($dto)){
            $retorno->msgcode = ConstantesMensagem::ERRO_CRUD_EXCLUIR_REGISTRO;
@@ -125,45 +124,45 @@ class GrupoUsuarioBusinessImpl implements GrupoUsuarioBusiness
 * @param $pag
 * @param $qtde
 *
-* @return List<GrupoUsuarioDTO>[]
+* @return List<PlanoRecursoDTO>[]
 * @deprecated
 */ 
 
     public function listarPagina($daofactory, $pag, $qtde)  
     {   
-        $dao = $daofactory->getGrupoUsuarioDAO($daofactory);
+        $dao = $daofactory->getPlanoRecursoDAO($daofactory);
         return $dao->listPagina($pag, $qtde);
     }
 
 /**
 * carregarPorID() - Carrega APENAS um registro usando a id como item de busca
-* na tabela SEGLOG_GRUPO_USUARIO usando a Primary Key GRUS_ID
+* na tabela PLANO_RECURSO usando a Primary Key PLRE_ID
 *
 * @param $daofactory
 * @param $id
 * @param $qtde
 *
-* @return GrupoUsuarioDTO
+* @return PlanoRecursoDTO
 */ 
     public function carregarPorID($daofactory, $id)
     { 
-        $dao = $daofactory->getGrupoUsuarioDAO($daofactory);
+        $dao = $daofactory->getPlanoRecursoDAO($daofactory);
         return $dao->loadPK($id);
     }
 
 /**
 * atualizarStatus() - atualizar o campo de STATUS utilizando a id como item de busca
-* na tabela SEGLOG_GRUPO_USUARIO usando a Primary Key GRUS_ID
+* na tabela PLANO_RECURSO usando a Primary Key PLRE_ID
 *
 * @param $daofactory
 * @param $id
 * @param $status
 *
-* @return GrupoUsuarioDTO
+* @return PlanoRecursoDTO
 */ 
     public function atualizarStatus($daofactory, $id, $status)
     {
-        $dao = $daofactory->getGrupoUsuarioDAO($daofactory);
+        $dao = $daofactory->getPlanoRecursoDAO($daofactory);
 
         // resposta padrão
         $retorno = new DTOPadrao();
@@ -182,7 +181,7 @@ class GrupoUsuarioBusinessImpl implements GrupoUsuarioBusiness
     }
 
 /**
-* inserirGrupoUsuario() - inserir um registro com base no GrupoUsuarioDTO. Alguns atributos dentro do DTO
+* inserirPlanoRecurso() - inserir um registro com base no PlanoRecursoDTO. Alguns atributos dentro do DTO
 * serão ignorados caso estejam populados.
 *
 * Atributos da classe FundoParticipacaoGlobalDTO sumariamente IGNORADOS por este método MESMO que estejam preenchidos:
@@ -195,7 +194,7 @@ class GrupoUsuarioBusinessImpl implements GrupoUsuarioBusiness
 *
 * @return DTOPadrao
 */ 
-public function inserirGrupoUsuario($daofactory, $dto)
+public function inserirPlanoRecurso($daofactory, $dto)
 { 
     $retorno = new DTOPadrao();
     $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
@@ -214,10 +213,10 @@ public function inserirGrupoUsuario($daofactory, $dto)
 
 
 /**
-* inserir() - inserir um registro com base no GrupoUsuarioDTO. Alguns atributos dentro do DTO
+* inserir() - inserir um registro com base no PlanoRecursoDTO. Alguns atributos dentro do DTO
 * serão ignorados caso estejam populados.
 *
-* Atributos da classe GrupoUsuarioDTO sumariamente IGNORADOS por este método MESMO que estejam preenchidos:
+* Atributos da classe PlanoRecursoDTO sumariamente IGNORADOS por este método MESMO que estejam preenchidos:
 * id
 * status
 * dataCadastro
@@ -233,45 +232,45 @@ public function inserir($daofactory, $dto)
     $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
     $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 
-    // Efetua validações no campo $dto->id com tamanho GrupoUsuarioConstantes::LEN_ID
-    $ok = $this->validarTamanhoCampo($dto->id, GrupoUsuarioConstantes::LEN_ID, GrupoUsuarioConstantes::DESC_ID);
+    // Efetua validações no campo $dto->id com tamanho PlanoRecursoConstantes::LEN_ID
+    $ok = $this->validarTamanhoCampo($dto->id, PlanoRecursoConstantes::LEN_ID, PlanoRecursoConstantes::DESC_ID);
     if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
         return $ok;
     }
 
-    // Efetua validações no campo $dto->idgrad com tamanho GrupoUsuarioConstantes::LEN_IDGRAD
-    $ok = $this->validarTamanhoCampo($dto->idgrad, GrupoUsuarioConstantes::LEN_IDGRAD, GrupoUsuarioConstantes::DESC_IDGRAD);
+    // Efetua validações no campo $dto->idplano com tamanho PlanoRecursoConstantes::LEN_IDPLANO
+    $ok = $this->validarTamanhoCampo($dto->idplano, PlanoRecursoConstantes::LEN_IDPLANO, PlanoRecursoConstantes::DESC_IDPLANO);
     if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
         return $ok;
     }
 
-    // Efetua validações no campo $dto->id_usuario com tamanho GrupoUsuarioConstantes::LEN_ID_USUARIO
-    $ok = $this->validarTamanhoCampo($dto->id_usuario, GrupoUsuarioConstantes::LEN_ID_USUARIO, GrupoUsuarioConstantes::DESC_ID_USUARIO);
+    // Efetua validações no campo $dto->idrecurso com tamanho PlanoRecursoConstantes::LEN_IDRECURSO
+    $ok = $this->validarTamanhoCampo($dto->idrecurso, PlanoRecursoConstantes::LEN_IDRECURSO, PlanoRecursoConstantes::DESC_IDRECURSO);
     if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
         return $ok;
     }
 
-    // Efetua validações no campo $dto->status com tamanho GrupoUsuarioConstantes::LEN_STATUS
-    $ok = $this->validarTamanhoCampo($dto->status, GrupoUsuarioConstantes::LEN_STATUS, GrupoUsuarioConstantes::DESC_STATUS);
+    // Efetua validações no campo $dto->status com tamanho PlanoRecursoConstantes::LEN_STATUS
+    $ok = $this->validarTamanhoCampo($dto->status, PlanoRecursoConstantes::LEN_STATUS, PlanoRecursoConstantes::DESC_STATUS);
     if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
         return $ok;
     }
 
-    // Efetua validações no campo $dto->dataCadastro com tamanho GrupoUsuarioConstantes::LEN_DATACADASTRO
-    $ok = $this->validarTamanhoCampo($dto->dataCadastro, GrupoUsuarioConstantes::LEN_DATACADASTRO, GrupoUsuarioConstantes::DESC_DATACADASTRO);
+    // Efetua validações no campo $dto->dataCadastro com tamanho PlanoRecursoConstantes::LEN_DATACADASTRO
+    $ok = $this->validarTamanhoCampo($dto->dataCadastro, PlanoRecursoConstantes::LEN_DATACADASTRO, PlanoRecursoConstantes::DESC_DATACADASTRO);
     if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
         return $ok;
     }
 
-    // Efetua validações no campo $dto->dataAtualizacao com tamanho GrupoUsuarioConstantes::LEN_DATAATUALIZACAO
-    $ok = $this->validarTamanhoCampo($dto->dataAtualizacao, GrupoUsuarioConstantes::LEN_DATAATUALIZACAO, GrupoUsuarioConstantes::DESC_DATAATUALIZACAO);
+    // Efetua validações no campo $dto->dataAtualizacao com tamanho PlanoRecursoConstantes::LEN_DATAATUALIZACAO
+    $ok = $this->validarTamanhoCampo($dto->dataAtualizacao, PlanoRecursoConstantes::LEN_DATAATUALIZACAO, PlanoRecursoConstantes::DESC_DATAATUALIZACAO);
     if($ok->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO){
         return $ok;
     }
 
 
     $dto->status = ConstantesVariavel::STATUS_ATIVO;
-    $dao = $daofactory->getGrupoUsuarioDAO($daofactory);
+    $dao = $daofactory->getPlanoRecursoDAO($daofactory);
 
     if (!$dao->insert($dto)) {
         $retorno = new DTOPadrao();
@@ -285,7 +284,7 @@ public function inserir($daofactory, $dto)
 
 /**
 *
-* listarGrupoUsuarioPorStatus() - Usado para invocar a interface de acesso aos dados (DAO) GrupoUsuarioDAO de forma geral
+* listarPlanoRecursoPorStatus() - Usado para invocar a interface de acesso aos dados (DAO) PlanoRecursoDAO de forma geral
 * realizar lista paginada de registros com uma instância de PaginacaoDTO
 *
 * @param $daofactory
@@ -297,25 +296,25 @@ public function inserir($daofactory, $dto)
 * @return $PaginacaoDTO
 */
 
-    public function listarGrupoUsuarioPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem)
+    public function listarPlanoRecursoPorStatus($daofactory, $status,  $pag=1, $qtde=0, $coluna=1, $ordem=0)
     {   
         $retorno = new DTOPaginacao();
         $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 
-        $dao = $daofactory->getGrupoUsuarioDAO($daofactory);
+        $dao = $daofactory->getPlanoRecursoDAO($daofactory);
         $retorno->pagina = $pag;
         $retorno->itensPorPagina = ($qtde == 0 
         ? (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT)
         : $qtde);
-        $retorno->totalPaginas = ceil($dao->countGrupoUsuarioPorStatus($status) / $retorno->itensPorPagina);
+        $retorno->totalPaginas = ceil($dao->countPlanoRecursoPorStatus($status) / $retorno->itensPorPagina);
 
         if($pag > $retorno->totalPaginas) {
             $retorno->msgcode = ConstantesMensagem::NAO_EXISTEM_MAIS_PAGINAS_APRESENTAR;
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listGrupoUsuarioPorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
+        $retorno->lst = $dao->listPlanoRecursoPorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }
@@ -327,23 +326,23 @@ public function inserir($daofactory, $dto)
 
 /**
 *
-* atualizarIdgradPorPK() - Usado para invocar a classe de negócio GrupoUsuarioBusinessImpl de forma geral
-* realizar uma atualização de ID grupo administração diretamente na tabela SEGLOG_GRUPO_USUARIO campo GRAD_ID
+* atualizarIdplanoPorPK() - Usado para invocar a classe de negócio PlanoRecursoBusinessImpl de forma geral
+* realizar uma atualização de ID do plano diretamente na tabela PLANO_RECURSO campo PLAN_ID
 * @param $daofactory
 * @param $id
-* @param $idgrad
-* @return GrupoUsuarioDTO
+* @param $idplano
+* @return PlanoRecursoDTO
 *
 * 
 */
-    public function atualizarIdgradPorPK($daofactory,$idgrad,$id)
+    public function atualizarIdplanoPorPK($daofactory,$idplano,$id)
     {
-        $dao = $daofactory->getGrupoUsuarioDAO($daofactory);
+        $dao = $daofactory->getPlanoRecursoDAO($daofactory);
 
         // resposta padrão
         $retorno = new DTOPadrao();
 
-        if($dao->updateIdgrad($id, $idgrad)){   
+        if($dao->updateIdplano($id, $idplano)){   
             $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
         }       
 
@@ -355,23 +354,23 @@ public function inserir($daofactory, $dto)
 
 /**
 *
-* atualizarId_UsuarioPorPK() - Usado para invocar a classe de negócio GrupoUsuarioBusinessImpl de forma geral
-* realizar uma atualização de ID do usuário diretamente na tabela SEGLOG_GRUPO_USUARIO campo USUA_ID
+* atualizarIdrecursoPorPK() - Usado para invocar a classe de negócio PlanoRecursoBusinessImpl de forma geral
+* realizar uma atualização de ID recurso diretamente na tabela PLANO_RECURSO campo RECU_ID
 * @param $daofactory
 * @param $id
-* @param $id_usuario
-* @return GrupoUsuarioDTO
+* @param $idrecurso
+* @return PlanoRecursoDTO
 *
 * 
 */
-    public function atualizarId_UsuarioPorPK($daofactory,$id_usuario,$id)
+    public function atualizarIdrecursoPorPK($daofactory,$idrecurso,$id)
     {
-        $dao = $daofactory->getGrupoUsuarioDAO($daofactory);
+        $dao = $daofactory->getPlanoRecursoDAO($daofactory);
 
         // resposta padrão
         $retorno = new DTOPadrao();
 
-        if($dao->updateId_Usuario($id, $id_usuario)){   
+        if($dao->updateIdrecurso($id, $idrecurso)){   
             $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
         }       
 
@@ -381,43 +380,42 @@ public function inserir($daofactory, $dto)
         return $retorno;
     }
 
-
 /**
 *
-* pesquisarPorIdgrad() - Usado para invocar a classe de negócio GrupoUsuarioBusinessImpl de forma geral
-* realizar uma busca de ID grupo administração diretamente na tabela SEGLOG_GRUPO_USUARIO campo GRAD_ID
+* pesquisarPorIdplano() - Usado para invocar a classe de negócio PlanoRecursoBusinessImpl de forma geral
+* realizar uma busca de ID do plano diretamente na tabela PLANO_RECURSO campo PLAN_ID
 *
-* @param $idgrad
-* @return GrupoUsuarioDTO
+* @param $idplano
+* @return PlanoRecursoDTO
 *
 * 
 */
-    public function pesquisarPorIdgrad($daofactory,$idgrad)
+    public function pesquisarPorIdplano($daofactory,$idplano)
     { 
-        $dao = $daofactory->getGrupoUsuarioDAO($daofactory);
-        return $dao->loadIdgrad($idgrad);
+        $dao = $daofactory->getPlanoRecursoDAO($daofactory);
+        return $dao->loadIdplano($idplano);
     }
 
 /**
 *
-* pesquisarPorId_Usuario() - Usado para invocar a classe de negócio GrupoUsuarioBusinessImpl de forma geral
-* realizar uma busca de ID do usuário diretamente na tabela SEGLOG_GRUPO_USUARIO campo USUA_ID
+* pesquisarPorIdrecurso() - Usado para invocar a classe de negócio PlanoRecursoBusinessImpl de forma geral
+* realizar uma busca de ID recurso diretamente na tabela PLANO_RECURSO campo RECU_ID
 *
-* @param $id_usuario
-* @return GrupoUsuarioDTO
+* @param $idrecurso
+* @return PlanoRecursoDTO
 *
 * 
 */
-    public function pesquisarPorId_Usuario($daofactory,$id_usuario)
+    public function pesquisarPorIdrecurso($daofactory,$idrecurso)
 
     { 
-        $dao = $daofactory->getGrupoUsuarioDAO($daofactory);
-        return $dao->loadId_Usuario($id_usuario);
+        $dao = $daofactory->getPlanoRecursoDAO($daofactory);
+        return $dao->loadIdrecurso($idrecurso);
     }
 
 /**
 *
-* listarGrupoUsuarioUsuaIdPorStatus() - Usado para invocar a interface de acesso aos dados (DAO) GrupoUsuarioDAO de forma geral
+* listarPlanoRecursoUsuaIdPorStatus() - Usado para invocar a interface de acesso aos dados (DAO) PlanoRecursoDAO de forma geral
 * realizar lista paginada de registros dos registros do usuário logado com uma instância de PaginacaoDTO
 *
 * @param $daofactory
@@ -430,33 +428,70 @@ public function inserir($daofactory, $dto)
 * @return $PaginacaoDTO
 */
 
-    public function listarGrupoUsuarioPorUsuaIdStatus($daofactory, $usuaid, $status, $pag, $qtde, $coluna, $ordem)
+    public function listarPlanoRecursoPorUsuaIdStatus($daofactory, $usuaid, $status,  $pag=1, $qtde=0, $coluna=1, $ordem=0)
     {   
         $retorno = new DTOPaginacao();
         $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 
-        $dao = $daofactory->getGrupoUsuarioDAO($daofactory);
+        $dao = $daofactory->getPlanoRecursoDAO($daofactory);
         $retorno->pagina = $pag;
         $retorno->itensPorPagina = ($qtde == 0 
         ? (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT)
         : $qtde);
-        $retorno->totalPaginas = ceil($dao->countGrupoUsuarioPorUsuaIdStatus($usuaid, $status) / $retorno->itensPorPagina);
+        $retorno->totalPaginas = ceil($dao->countPlanoRecursoPorUsuaIdStatus($usuaid, $status) / $retorno->itensPorPagina);
 
         if($pag > $retorno->totalPaginas) {
             $retorno->msgcode = ConstantesMensagem::NAO_EXISTEM_MAIS_PAGINAS_APRESENTAR;
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listGrupoUsuarioPorUsuaIdStatus($usuaid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
+        $retorno->lst = $dao->listPlanoRecursoPorUsuaIdStatus($usuaid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
+        return $retorno;
+    }
+
+/**
+*
+* listarPlanoRecursoPorIdplanoStatus() - Usado para invocar a interface de acesso aos dados (DAO) PlanoRecursoDAO de forma geral
+* realizar lista paginada de registros dos registros do usuário logado com uma instância de PaginacaoDTO
+*
+* @param $daofactory
+* @param $usuaid
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+* @return $PaginacaoDTO
+*/
+
+    public function listarPlanoRecursoPorIdplanoStatus($daofactory, $idplano, $status,  $pag=1, $qtde=0, $coluna=1, $ordem=0)
+    {  
+        $retorno = new DTOPaginacao();
+        $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+        $dao = $daofactory->getPlanoRecursoDAO($daofactory);
+        $retorno->pagina = $pag;
+        $retorno->itensPorPagina = ($qtde == 0 
+        ? (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT)
+        : $qtde);
+        $retorno->totalPaginas = ceil($dao->countPlanoRecursoPorIdplanoStatus($idplano, $status) / $retorno->itensPorPagina);
+
+        if($pag > $retorno->totalPaginas) {
+            $retorno->msgcode = ConstantesMensagem::NAO_EXISTEM_MAIS_PAGINAS_APRESENTAR;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+        }
+        $retorno->lst = $dao->listPlanoRecursoPorIdplanoStatus($idplano, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
         return $retorno;
     }
 
 /**
 * validarTamanhoCampo()
 *
-* Validador de tamanho de campos GrupoUsuarioDTO
+* Validador de tamanho de campos PlanoRecursoDTO
 *
 * @param $campo
 * @param $tamanho

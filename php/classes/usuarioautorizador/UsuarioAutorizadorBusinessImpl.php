@@ -530,7 +530,7 @@ public function listarUsuarioCarimbador($daofactory, $usuaid, $status="A", $pag=
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listUsuarioAutorizadorPorStatus($status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listUsuarioAutorizadorPorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }
@@ -889,7 +889,7 @@ public function listarUsuarioCarimbador($daofactory, $usuaid, $status="A", $pag=
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listUsuarioAutorizadorPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listUsuarioAutorizadorPorUsuaIdStatus($usuaid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }
@@ -977,7 +977,7 @@ public function listarUsuarioAutorizadorPorUsuaIdAutorizadorCampId($daofactory, 
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listUsuarioAutorizadorPorUsuaIdAutorizadorStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listUsuarioAutorizadorPorUsuaIdAutorizadorStatus($usuaid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         if($retorno->lst != NULL && count($retorno->lst) > 0){
             $idx = 0;
