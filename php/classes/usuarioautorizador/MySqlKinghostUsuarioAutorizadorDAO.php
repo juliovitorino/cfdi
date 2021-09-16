@@ -54,6 +54,38 @@ class MySqlKinghostUsuarioAutorizadorDAO implements UsuarioAutorizadorDAO
     }
 
 /**
+* countUsuarioAutorizadorIdCampPorStatus() - contar a quantidade de registros
+* sob o contexto da classe UsuarioAutorizador com base no usuário específico. Esse usuário
+* é o usuário logado na sessão ou no próprio dispositivo móvel e de acordo com a 
+* query em @see $sql na tabela USUARIO_AUTORIZADOR 
+*
+* @see listPagina()
+*
+* @param $campid
+* @param $status
+*/ 
+
+public function countUsuarioAutorizadorIdCampPorStatus($campid, $status)
+{   
+    $retorno = 0;
+    // prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+    $conexao = $this->daofactory->getSession();
+    $sql=DmlSqlUsuarioAutorizador::SQL_COUNT  
+    . ' WHERE ' . DmlSqlUsuarioAutorizador::CAMP_ID . " = $campid "
+    . ' AND ' . DmlSqlUsuarioAutorizador::USAU_IN_AUTORIZACAO . " = '00' "
+    . ' AND ' . DmlSqlUsuarioAutorizador::USAU_IN_STATUS . " = '$status'";
+
+    $res = $conexao->query($sql);
+    if ($res){
+        $tmp = $res->fetch_assoc();
+        $retorno = $tmp['contador'];
+    }
+    return $retorno;
+
+}
+
+
+/**
 * countUsuarioCarimbador() - contar a quantidade de registros
 * sob o contexto da classe UsuarioAutorizador com base no usuário específico. Esse usuário
 * é o usuário logado na sessão ou no próprio dispositivo móvel e de acordo com a 

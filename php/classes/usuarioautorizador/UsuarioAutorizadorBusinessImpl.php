@@ -13,6 +13,8 @@ require_once '../campanha/campanhaBusinessImpl.php';
 require_once '../campanha/CampanhaHelper.php';
 
 require_once '../usuarios/UsuarioHelper.php';
+require_once '../permissao/PermissaoHelper.php';
+require_once '../dto/DTOContagem.php';
 
 /**********************************************************
 ===========================================================
@@ -114,6 +116,28 @@ public function habilitarUsuarioAutorizador($daofactory, $dto, $ishabilitar)
         $dto->msgcodeString = MensagemCache::getInstance()->getMensagem($dto->msgcode);
         return $dto;
     }
+
+    // Tem permissão para habilitar outros autorizadores terceiros
+    $permdto = PermissaoHelper::verificarPermissao($daofactory, $campdto->id_usuario, ConstantesPlano::PERM_AUTORIZACAO_TERCEIROS);
+    if ($permdto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+        $dto->msgcode = ConstantesMensagem::PLANO_NAO_PERMITE_AUTORIZADORES;
+        $dto->msgcodeString = MensagemCache::getInstance()->getMensagem($dto->msgcode);
+        return $dto;
+    } else {
+        // Ok, tem a permissão para habilitar. Se a quantidade de autorizadores ativos já estiver completa, falha.
+        $contadordto = $this->contarUsuarioAutorizadorIdCampPorStatus($daofactory, $dto->id_campanha, ConstantesVariavel::STATUS_ATIVO);
+        $qtdepermitida = (int) $permdto->qtdepermitida;
+        if ($contadordto->contador >= $qtdepermitida)
+        {
+            $dto->msgcode = ConstantesMensagem::PLANO_NAO_PERMITE_QTDE_AUTORIZADORES;
+            $dto->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($dto->msgcode, [
+                ConstantesVariavel::P1 => $qtdepermitida,
+            ]);
+            return $dto;
+        }
+
+    }
+
 
 
     // Realiza o comando de habilitação no banco de dados
@@ -940,6 +964,28 @@ public function listarUsuarioAutorizadorPorUsuaIdAutorizadorCampId($daofactory, 
 
     return $retorno;
 }
+
+/**
+*
+* contarUsuarioAutorizadorIdCampPorStatus() - Usado para invocar a interface de acesso aos dados (DAO) UsuarioAutorizadorDAO de forma geral
+* realizar uma contagem dos registrosO
+*
+* @param $daofactory
+* @param $campid
+* @param $status
+*/
+
+    public function contarUsuarioAutorizadorIdCampPorStatus($daofactory, $campid, $status)
+    {
+        $retorno = new DTOContagem();
+        $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+        $dao = $daofactory->getUsuarioAutorizadorDAO($daofactory);
+        $retorno->contador = $dao->countUsuarioAutorizadorIdCampPorStatus($campid, $status);
+        
+        return $retorno;
+    }
 
 
 
