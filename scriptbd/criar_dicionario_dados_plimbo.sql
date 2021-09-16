@@ -233,6 +233,7 @@ INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0203
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0204','O plano contratado não permite cartões com *=p1=* selos. Faça a migração para um plano adequado');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0205','O plano contratado não permite autorizadores terceiros. Faça a migração para um plano adequado');
 INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0206','O plano contratado permite máximo de *=p1=* autorizadores terceiros. Faça a migração para um plano adequado');
+INSERT INTO `MENSAGEM` (`MENS_TX_MSGCODE`, `MENS_TX_MENSAGEM`) VALUES ('MSG-0207','O plano contratado não tem permissão criar autorizadores terceiros. Faça a migração para um plano adequado');
 
 
 -- variaveis

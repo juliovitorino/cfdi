@@ -1,5 +1,5 @@
 <?php 
-// URL http://localhost/cfdi/php/classes/usuarioautorizador/clientUsuarioAutorizadorInserir.php
+// URL http://elitefinanceira.com/cfdi/php/classes/usuarioautorizador/clientUsuarioAutorizadorInserir.php
 
 require_once 'UsuarioAutorizadorServiceImpl.php';
 require_once 'UsuarioAutorizadorDTO.php';
@@ -10,8 +10,8 @@ $ts = $date->getTimestamp();
 
 $dto = new UsuarioAutorizadorDTO();
 
-$dto->id_usuario = 2893;
-$dto->id_autorizador = 15;
+$dto->id_usuario = 1002;
+$dto->id_autorizador = 1000;
 $dto->id_campanha = 1000;
 $dto->tipo = 'T';
 $dto->permissao = '00';

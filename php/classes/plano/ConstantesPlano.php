@@ -38,6 +38,7 @@ class ConstantesPlano
 	const PERM_CAMPANHA_15_SELOS = 9;
 	const PERM_CAMPANHA_20_SELOS = 10;
 	const PERM_AUTORIZACAO_TERCEIROS = 11;
+	const PERM_AUTORIZACAO_TERCEIROS_CRIAR = 12;
 
 	const lstfuncionalidade = 	[
 		self::PERM_CRIAR_CAMPANHA => ConstantesEstatisticaFuncao::FUNCAO_CRIAR_CAMPANHA,
@@ -52,6 +53,7 @@ class ConstantesPlano
 		self::PERM_CAMPANHA_15_SELOS => ConstantesEstatisticaFuncao::PERM_CAMPANHA_15_SELOS,
 		self::PERM_CAMPANHA_20_SELOS => ConstantesEstatisticaFuncao::PERM_CAMPANHA_20_SELOS,
 		self::PERM_AUTORIZACAO_TERCEIROS => ConstantesEstatisticaFuncao::PERM_AUTORIZACAO_TERCEIROS,
+		self::PERM_AUTORIZACAO_TERCEIROS_CRIAR => ConstantesEstatisticaFuncao::PERM_AUTORIZACAO_TERCEIROS_CRIAR,
 	];
 
 }

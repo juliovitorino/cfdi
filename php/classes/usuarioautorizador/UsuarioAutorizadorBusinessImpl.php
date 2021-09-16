@@ -15,6 +15,7 @@ require_once '../campanha/CampanhaHelper.php';
 require_once '../usuarios/UsuarioHelper.php';
 require_once '../permissao/PermissaoHelper.php';
 require_once '../dto/DTOContagem.php';
+require_once '../plano/ConstantesPlano.php';
 
 /**********************************************************
 ===========================================================
@@ -229,12 +230,20 @@ public function PesquisarMaxPKAtivoId_UsuarioCarimbadorPorStatus($daofactory, $i
             return $retorno;
         }
 
+        // Verifica a permissão de acordo com o plano do usuário
+        $permdto = PermissaoHelper::verificarPermissao($daofactory, $dto->id_autorizador, ConstantesPlano::PERM_AUTORIZACAO_TERCEIROS_CRIAR);
+        if ($permdto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+            $retorno->msgcode = ConstantesMensagem::PLANO_SEM_AUTORIZACAO_CRIAR_AUTORIZADOR_EXTERNO;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+        }        
+/*
         if(! UsuarioHelper::isUsuarioParceiro($daofactory, $dto->id_autorizador)) {
             $retorno->msgcode = ConstantesMensagem::PERMITIDO_SO_USUARIO_PARCEIRO;
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
          }
-
+*/
         // executa a operação
         $dao = $daofactory->getUsuarioAutorizadorDAO($daofactory);
         if(!$dao->update($dto)){
@@ -425,12 +434,23 @@ public function inserir($daofactory, $dto)
             ]);
             return $campdto;
         } else {
+
+            // Verifica a permissão de acordo com o plano do usuário
+            $permdto = PermissaoHelper::verificarPermissao($daofactory, $dto->id_autorizador, ConstantesPlano::PERM_AUTORIZACAO_TERCEIROS_CRIAR);
+            if ($permdto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+                $campdto->msgcode = ConstantesMensagem::PLANO_SEM_AUTORIZACAO_CRIAR_AUTORIZADOR_EXTERNO;
+                $campdto->msgcodeString = MensagemCache::getInstance()->getMensagem($campdto->msgcode);
+                return $campdto;
+            }
+
+            /*
             $usuadto = UsuarioHelper::getUsuarioBusinessNoKeys($daofactory, $dto->id_autorizador);
             if($usuadto->tipoConta == ConstantesVariavel::CONTA_USUARIO_COMUM){
                 $usuadto->msgcode = ConstantesMensagem::PERMITIDO_SO_USUARIO_PARCEIRO ;
                 $usuadto->msgcodeString = MensagemCache::getInstance()->getMensagem($usuadto->msgcode);
                 return $usuadto;
             }
+            */
 
         }
     }

@@ -212,6 +212,7 @@ class ConstantesMensagem
 	const PLANO_NAO_PERMITE_QTDE_SELOS = 'MSG-0204';
 	const PLANO_NAO_PERMITE_AUTORIZADORES = 'MSG-0205';
 	const PLANO_NAO_PERMITE_QTDE_AUTORIZADORES = 'MSG-0206';
+	const PLANO_SEM_AUTORIZACAO_CRIAR_AUTORIZADOR_EXTERNO = 'MSG-0207';
 
 	// tags dentro das mensagens
 	const MSGTAG_DATA_ATIVACAO = '*=data-ativacao=*';

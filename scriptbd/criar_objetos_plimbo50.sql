@@ -292,6 +292,7 @@ AUTO_INCREMENT = 1000;
 /* 9 - PERM_CAMPANHA_15_SELOS                                      /
 /* 10 - PERM_CAMPANHA_20_SELOS                                     /
 /* 11 - PERM_AUTORIZACAO_TERCEIROS                                 /
+/* 12 - PERM_AUTORIZACAO_TERCEIROS_CRIAR                           /
 /*                                                                 /
 /******************************************************************/
 /* Valores para PLAN_IN_STATUS                                     /
