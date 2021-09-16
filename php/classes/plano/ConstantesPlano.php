@@ -32,6 +32,11 @@ class ConstantesPlano
 	const PERM_ADICIONAR_CARTOES_CAMPANHA = 3;
 	const PERM_ADICIONAR_SORTEIO_CAMPANHA = 4;
 	const PERM_ACESSO_FUNDO_PARTICIPACAO_GLOBAL = 5;
+	const PERM_CAMPANHA_5_SELOS = 6;
+	const PERM_CAMPANHA_10_SELOS = 7;
+	const PERM_CAMPANHA_12_SELOS = 8;
+	const PERM_CAMPANHA_15_SELOS = 9;
+	const PERM_CAMPANHA_20_SELOS = 10;
 
 	const lstfuncionalidade = 	[
 		self::PERM_CRIAR_CAMPANHA => ConstantesEstatisticaFuncao::FUNCAO_CRIAR_CAMPANHA,
@@ -40,6 +45,11 @@ class ConstantesPlano
 		self::PERM_ADICIONAR_CARTOES_CAMPANHA => ConstantesEstatisticaFuncao::FUNCAO_ADICIONAR_CARTOES_CAMPANHA,
 		self::PERM_ADICIONAR_SORTEIO_CAMPANHA => ConstantesEstatisticaFuncao::PERM_ADICIONAR_SORTEIO_CAMPANHA,
 		self::PERM_ACESSO_FUNDO_PARTICIPACAO_GLOBAL => ConstantesEstatisticaFuncao::PERM_ACESSO_FUNDO_PARTICIPACAO_GLOBAL,
+		self::PERM_CAMPANHA_5_SELOS => ConstantesEstatisticaFuncao::PERM_CAMPANHA_5_SELOS,
+		self::PERM_CAMPANHA_10_SELOS => ConstantesEstatisticaFuncao::PERM_CAMPANHA_10_SELOS,
+		self::PERM_CAMPANHA_12_SELOS => ConstantesEstatisticaFuncao::PERM_CAMPANHA_12_SELOS,
+		self::PERM_CAMPANHA_15_SELOS => ConstantesEstatisticaFuncao::PERM_CAMPANHA_15_SELOS,
+		self::PERM_CAMPANHA_20_SELOS => ConstantesEstatisticaFuncao::PERM_CAMPANHA_20_SELOS,
 	];
 
 }

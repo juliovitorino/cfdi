@@ -1,5 +1,5 @@
 <?php  
-// URL http://localhost/cfdi/php/classes/campanha/clientInserirFlash.php
+// URL http://junta10.dsv:8080/cfdi/php/classes/campanha/clientInserirFlash.php
 
 require_once 'campanhaServiceImpl.php';
 require_once 'campanhaDTO.php';
@@ -36,7 +36,7 @@ $ts = $date->getTimestamp();
 
 $dto = new campanhaDTO();
 
-$dto->id_usuario = 1000; //rand(1,21);
+$dto->id_usuario = 1002; //rand(1,21);
 $dto->nome = $campanhas[rand(0,count($campanhas)-1)];
 $dto->recompensa = 'Ganhe ' . rand(10,50) . '% de desconto na compra com após completar a cartela';
 $dto->msgAgradecimento = 'Obrigado pela Preferência';

@@ -286,6 +286,11 @@ AUTO_INCREMENT = 1000;
 /* 3 - PERM_ADICIONAR_CARTOES_CAMPANHA                             /
 /* 4 - PERM_ADICIONAR_SORTEIO_CAMPANHA                             /
 /* 5 - PERM_ACESSO_FUNDO_PARTICIPACAO_GLOBAL                       /
+/* 6 - PERM_CAMPANHA_5_SELOS                                       /
+/* 7 - PERM_CAMPANHA_10_SELOS                                      /
+/* 8 - PERM_CAMPANHA_12_SELOS                                      /
+/* 9 - PERM_CAMPANHA_15_SELOS                                      /
+/* 10 - PERM_CAMPANHA_20_SELOS                                     /
 /*                                                                 /
 /******************************************************************/
 /* Valores para PLAN_IN_STATUS                                     /
