@@ -15,5 +15,8 @@ interface CampanhaQrCodeDAO extends DAO
     public function updateUsuarioGeradorQRCode($caqrid, $idusuario);
     public function loadQRCode($qrcode);
 
+    public function countCampanhaQrCodeIdCampanhaPorStatus($idcampanha, $status);
+    public function listCampanhaQrCodeIdCampanhaPorStatus($idcampanha, $status, $pag, $qtde, $coluna, $ordem);
+
 }
 ?>

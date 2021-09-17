@@ -426,5 +426,43 @@ class CampanhaQrCodeBusinessImpl implements CampanhaQrCodeBusiness
 	}
 
 
+/**
+*
+* listarCampanhaQrCodeIdCampanhaPorStatus() - Usado para invocar a interface de acesso aos dados (DAO) CampanhaQrCodeDAO de forma geral
+* realizar lista paginada de registros com uma instância de PaginacaoDTO
+*
+* @param $daofactory
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+* @return $PaginacaoDTO
+*/
+
+	public function listarCampanhaQrCodeIdCampanhaPorStatus($daofactory, $idcampanha, $status, $pag, $qtde, $coluna, $ordem)
+	{   
+		$retorno = new DTOPaginacao();
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+		$dao = $daofactory->getCampanhaQrCodeDAO($daofactory);
+		$retorno->pagina = $pag;
+		$retorno->itensPorPagina = ($qtde == 0 
+		? (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT)
+		: $qtde);
+		$retorno->totalPaginas = ceil($dao->countCampanhaQrCodeIdCampanhaPorStatus($idcampanha, $status) / $retorno->itensPorPagina);
+
+		if($pag > $retorno->totalPaginas) {
+			$retorno->msgcode = ConstantesMensagem::NAO_EXISTEM_MAIS_PAGINAS_APRESENTAR;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+			return $retorno;
+		}
+		$retorno->lst = $dao->listCampanhaQrCodeIdCampanhaPorStatus($idcampanha, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
+
+		return $retorno;
+	}
+
+
 }
 ?>

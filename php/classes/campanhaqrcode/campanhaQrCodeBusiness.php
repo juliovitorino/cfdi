@@ -21,6 +21,9 @@ interface CampanhaQrCodeBusiness extends BusinessObject
 	public function criarCarimbosCampanhaPendentesProduzir($daofactory, $idcampanha, $id_usuario);
 	public function adicionarMaisCarimbosCampanha($daofactory, $capeid);	
 
+	public function listarCampanhaQrCodeIdCampanhaPorStatus($daofactory, $idcampanha, $status, $pag, $qtde, $coluna, $ordem);
+
+
 }
 
 ?>

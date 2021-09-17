@@ -262,5 +262,68 @@ class MySqlKinghostCampanhaQrCodeDAO implements CampanhaQrCodeDAO
 		return $retorno;
 	}
 
+/**
+* countCampanhaQrCodeIdCampanhaPorStatus() - contar a quantidade de registros
+* sob o contexto da classe CampanhaQrCode com base no status específico. 
+*
+* Atenção em @see $sql na tabela CAMPANHA_QRCODES 
+*
+* @see listPagina()
+*
+*
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+
+	public function  countCampanhaQrCodeIdCampanhaPorStatus($idcampanha, $status)
+	{   
+		$retorno = 0;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlCampanhaQrCode::SQL_COUNT 
+		. ' WHERE ' . DmlSqlCampanhaQrCode::CAMP_ID . " = $idcampanha "
+		. ' AND ' . DmlSqlCampanhaQrCode::CAQR_IN_STATUS . " = '$status'"
+		);
+		if ($res){
+			$tmp = $res->fetch_assoc();
+			$retorno = $tmp['contador'];
+		}
+		return $retorno;
+
+	}
+
+/**
+* listCampanhaQrCodeIdCampanhaPorStatus() - Listar um conjunto de registro previamente paginado
+* sob o contexto da classe CampanhaQrCode com base no status específico.
+*
+* Atenção em @see $sql na tabela CAMPANHA_QRCODES 
+*
+* @see listPagina()
+*
+*
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+*
+* @return PaginacaoDTO
+*/ 
+
+	public function listCampanhaQrCodeIdCampanhaPorStatus($idcampanha, $status, $pag, $qtde, $coluna, $ordem)
+	{
+		$sql = DmlSqlCampanhaQrCode::SELECT 
+		. ' WHERE ' . DmlSqlCampanhaQrCode::CAMP_ID . " = $idcampanha "
+		. ' AND ' . DmlSqlCampanhaQrCode::CAQR_IN_STATUS . " = '$status'"
+		. ' ORDER BY ' . $coluna . ($ordem == 0 ? " ASC": " DESC");
+		return $this->listPagina($sql, $pag, $qtde);
+	}
+
+
 }
 ?>

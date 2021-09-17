@@ -67,6 +67,21 @@ class DmlSqlCampanhaQrCode extends DmlSql
 		. ' `' . self::CAQR_DT_UPDATE . '` '
 		. ' FROM `'.self::TABELA.'` ';
 
+		
+	const SQL_COUNT = 'SELECT COUNT(*) AS contador '
+	. ' FROM `'.self::TABELA.'` ';
+
+	const UPD_CAMPANHA_QRCODES_CAQR_ID_PARENT_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::CAQR_ID_PARENT . '` = ? ' . 'WHERE ' . ' `' . self::CAQR_ID . '` = ? ' ;
+	const UPD_CAMPANHA_QRCODES_CAMP_ID_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::CAMP_ID . '` = ? ' . 'WHERE ' . ' `' . self::CAQR_ID . '` = ? ' ;
+	const UPD_CAMPANHA_QRCODES_CAQR_TX_QRCODE_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::CAQR_TX_QRCODE . '` = ? ' . 'WHERE ' . ' `' . self::CAQR_ID . '` = ? ' ;
+	const UPD_CAMPANHA_QRCODES_CAQR_NU_ORDER_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::CAQR_NU_ORDER . '` = ? ' . 'WHERE ' . ' `' . self::CAQR_ID . '` = ? ' ;
+	const UPD_CAMPANHA_QRCODES_CAQR_TX_TICKET_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::CAQR_TX_TICKET . '` = ? ' . 'WHERE ' . ' `' . self::CAQR_ID . '` = ? ' ;
+	const UPD_CAMPANHA_QRCODES_USUA_ID_GERADOR_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::USUA_ID_GERADOR . '` = ? ' . 'WHERE ' . ' `' . self::CAQR_ID . '` = ? ' ;
+	const UPD_CAMPANHA_QRCODES_CAQR_IN_STATUS_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::CAQR_IN_STATUS . '` = ? ' . 'WHERE ' . ' `' . self::CAQR_ID . '` = ? ' ;
+	const UPD_CAMPANHA_QRCODES_CAQR_DT_CADASTRO_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::CAQR_DT_CADASTRO . '` = ? ' . 'WHERE ' . ' `' . self::CAQR_ID . '` = ? ' ;
+	const UPD_CAMPANHA_QRCODES_CAQR_DT_UPDATE_PK = 'UPDATE `' . self::TABELA . '` set ' . ' `' . self::CAQR_DT_UPDATE . '` = ? ' . 'WHERE ' . ' `' . self::CAQR_ID . '` = ? ' ;
+
+	
 
 }
 ?>
