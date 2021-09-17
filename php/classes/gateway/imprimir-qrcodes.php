@@ -1,6 +1,6 @@
 <?php
 
-//http://junta10.dsv:8080/cfdi/php/classes/campanhaqrcode/imprimir-qrcodes.php?tokenid=94ff924c950e30271f2005c3018009e7f5f44d8d&cmpid=1
+//http://junta10.dsv:8080/cfdi/php/classes/gateway/imprimir-qrcodes.php?tokenid=94ff924c950e30271f2005c3018009e7f5f44d8d&cmpid=1
 
 
 // Obtem o token de sessao (pode ser dispositivo ou outro hardware qualquer)
@@ -97,9 +97,6 @@ div{
 </style>
 </head>
 <body>
-
-<h3>Imprima os carimbos, corte e distribua aos clientes que consumirem seus produtos</h3>
-<h3>Peça ao cliente para baixar e instalar o junta10 e capturar o QR Code</h3>
 
 <table>
 
