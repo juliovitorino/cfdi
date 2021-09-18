@@ -77,6 +77,24 @@ class CampanhaQrCodeBusinessImpl implements CampanhaQrCodeBusiness
 	}
 
 
+	public function carregarQRCodeLivreImpressao($daofactory, $qrc)
+	{ 
+		$dao = $daofactory->getCampanhaQrCodeDAO($daofactory);
+		$retorno = $dao->loadQRCodeImpressaoPorStatus($qrc, ConstantesVariavel::STATUS_ATIVO);
+
+		if ($retorno != null && $retorno->id != null) {
+			$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		} else {
+			$retorno = new DTOPadrao();
+			$retorno->msgcode = ConstantesMensagem::TICKET_INVALIDO;
+			$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+		}
+
+		return $retorno;
+	}
+
+
 	public function carregarTicketLivre($daofactory, $ticket)
 	{ 
 		$ok = false;
@@ -401,9 +419,13 @@ class CampanhaQrCodeBusinessImpl implements CampanhaQrCodeBusiness
 		// Monta a regra do QRCode de cada carimbo da respectiva campanha
 		$date = new DateTime();
 		$ts = $date->getTimestamp();
+		$carimbotmp = sha1($dto->id_campanha . $ts . Util::getCodigo(2048));
 
 		$dto->id = sha1($dto->id_campanha . $ts . Util::getCodigo(2048));
-		$dto->qrcodecarimbo = sha1($dto->id_campanha . $ts . Util::getCodigo(2048));
+
+		//coloca os identificadores de qrcode de captura pelo celular e impressão
+		$dto->qrcodecarimbo = '01' . $carimbotmp;
+		$dto->qrcodecarimboImpressao = '02' . $carimbotmp;
 		$dto->ticket = Util::geraCpf(); //Gera um cpf fake como codigo;
 		$dto->status = ConstantesVariavel::STATUS_ATIVO;
 

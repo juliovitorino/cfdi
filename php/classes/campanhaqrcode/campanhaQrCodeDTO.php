@@ -21,6 +21,7 @@ class CampanhaQrCodeDTO extends DTOPadraoEntidade implements JsonSerializable
 {
 	public $id_campanha;
 	public $qrcodecarimbo;
+	public $qrcodecarimboImpressao;
     public $ticket;
     public $parent;
     public $order;
@@ -33,6 +34,7 @@ class CampanhaQrCodeDTO extends DTOPadraoEntidade implements JsonSerializable
             'id'   => $this->id,
             'id_campanha' => $this->id_campanha,
             'qrcodecarimbo' => $this->qrcodecarimbo,
+            'qrcodecarimboImpressao' => $this->qrcodecarimboImpressao,
             'ticket' => $this->ticket,
             'parent' => $this->parent,
             'order' => $this->order,

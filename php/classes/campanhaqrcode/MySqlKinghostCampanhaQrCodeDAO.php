@@ -77,7 +77,24 @@ class MySqlKinghostCampanhaQrCodeDAO implements CampanhaQrCodeDAO
 		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
 		$conexao = $this->daofactory->getSession();
 		$res = $conexao->query(DmlSqlCampanhaQrCode::SELECT . ' WHERE ' . DmlSqlCampanhaQrCode::CAQR_TX_QRCODE . "= '" . $qrc
-		. "' AND " . DmlSqlCampanhaQrCode::CAQR_IN_STATUS . "= '" . $status . "'"  );
+		. "' AND " . DmlSqlCampanhaQrCode::CAQR_IN_STATUS . "= '$status'"  );
+		if ($res){
+			$retorno = $this->getDTO($res->fetch_assoc());
+		}
+		return $retorno;
+
+	}
+
+
+	public function loadQRCodeImpressaoPorStatus($qrc, $status)
+	{	
+		$retorno = NULL;
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$sql = DmlSqlCampanhaQrCode::SELECT 
+		. ' WHERE ' . DmlSqlCampanhaQrCode::CAQR_TX_QRCODEP . "= '" . $qrc
+		. "' AND " . DmlSqlCampanhaQrCode::CAQR_IN_STATUS . "= '$status'" ;
+		$res = $conexao->query($sql);
 		if ($res){
 			$retorno = $this->getDTO($res->fetch_assoc());
 		}
@@ -217,11 +234,13 @@ class MySqlKinghostCampanhaQrCodeDAO implements CampanhaQrCodeDAO
 							. DmlSql::STRING_TYPE 
 							. DmlSql::STRING_TYPE 
 							. DmlSql::STRING_TYPE 
+							. DmlSql::STRING_TYPE 
 							. DmlSql::INTEGER_TYPE 
 							. DmlSql::INTEGER_TYPE 
 							,$dto->id
 							,$dto->id_campanha
 							,$dto->qrcodecarimbo
+							,$dto->qrcodecarimboImpressao
 							,$dto->ticket
 							,$dto->status
 							,$dto->parent
@@ -244,6 +263,7 @@ class MySqlKinghostCampanhaQrCodeDAO implements CampanhaQrCodeDAO
 		if(is_null($resultset)) {
 			return NULL;
 		}
+		/*
 		$retorno = new CampanhaQrCodeDTO();
 		$retorno->id = $resultset[DmlSqlCampanhaQrCode::CAQR_ID];
 		$retorno->id_campanha = $resultset[DmlSqlCampanhaQrCode::CAMP_ID];
@@ -258,7 +278,24 @@ class MySqlKinghostCampanhaQrCodeDAO implements CampanhaQrCodeDAO
 		$retorno->dataAtualizacao = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlCampanhaQrCode::CAQR_DT_UPDATE]);
 		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
 		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
-		
+		*/
+        $retorno = new CampanhaQrCodeDTO();
+        $retorno->id = $resultset[DmlSqlCampanhaQrCode::CAQR_ID] == NULL ? NULL : $resultset[DmlSqlCampanhaQrCode::CAQR_ID];
+        $retorno->parent = $resultset[DmlSqlCampanhaQrCode::CAQR_ID_PARENT] == NULL ? NULL : $resultset[DmlSqlCampanhaQrCode::CAQR_ID_PARENT];
+        $retorno->id_campanha = $resultset[DmlSqlCampanhaQrCode::CAMP_ID] == NULL ? NULL : $resultset[DmlSqlCampanhaQrCode::CAMP_ID];
+        $retorno->qrcodecarimbo = $resultset[DmlSqlCampanhaQrCode::CAQR_TX_QRCODE] == NULL ? NULL : $resultset[DmlSqlCampanhaQrCode::CAQR_TX_QRCODE];
+        $retorno->qrcodecarimboImpressao = $resultset[DmlSqlCampanhaQrCode::CAQR_TX_QRCODEP] == NULL ? NULL : $resultset[DmlSqlCampanhaQrCode::CAQR_TX_QRCODEP];
+        $retorno->order = $resultset[DmlSqlCampanhaQrCode::CAQR_NU_ORDER] == NULL ? NULL : $resultset[DmlSqlCampanhaQrCode::CAQR_NU_ORDER];
+        $retorno->ticket = $resultset[DmlSqlCampanhaQrCode::CAQR_TX_TICKET] == NULL ? NULL : $resultset[DmlSqlCampanhaQrCode::CAQR_TX_TICKET];
+        $retorno->idusuarioGerador = $resultset[DmlSqlCampanhaQrCode::USUA_ID_GERADOR] == NULL ? NULL : $resultset[DmlSqlCampanhaQrCode::USUA_ID_GERADOR];
+        $retorno->status = $resultset[DmlSqlCampanhaQrCode::CAQR_IN_STATUS] == NULL ? NULL : $resultset[DmlSqlCampanhaQrCode::CAQR_IN_STATUS];
+        $retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlCampanhaQrCode::CAQR_DT_CADASTRO]);
+        $retorno->dataAtualizacao = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlCampanhaQrCode::CAQR_DT_UPDATE]);
+        $retorno->statusdesc = VariavelCache::getInstance()->getStatusDesc($retorno->status);
+        $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+        return $retorno;
+
 		return $retorno;
 	}
 

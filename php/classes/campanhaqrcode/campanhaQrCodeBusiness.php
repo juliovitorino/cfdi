@@ -15,6 +15,7 @@ interface CampanhaQrCodeBusiness extends BusinessObject
 	public function atualizarStatusPorCarimbo($daofactory, $carimboqr, $status);
 	public function carregarTicketLivre($daofactory, $ticket);
 	public function carregarQRCodeLivre($daofactory, $qrc);
+	public function carregarQRCodeLivreImpressao($daofactory, $qrc);
 	public function carregarCaqrIdLivre($daofactory,$idcampanha);
 	public function atualizarUsuarioGerador($daofactory,$caqrid,$idusuario);
 	public function criarCarimbosCampanha($daofactory, $idcampanha, $id_usuario);

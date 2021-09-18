@@ -51,7 +51,7 @@ if(count($qrcodepaginas->lst) == 0)
 $qrcodes = array();
 $tickets = array();
 foreach ($qrcodepaginas->lst as $key => $value) {
-  array_push($qrcodes, $value->qrcodecarimbo);
+  array_push($qrcodes, $value->qrcodecarimboImpressao);
   array_push($tickets, $value->ticket);
 }
 

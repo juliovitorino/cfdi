@@ -6,6 +6,7 @@
 
 // URL http://elitefinanceira.com/cfdi/php/classes/gateway/appFacebookAutenticacao.php?fcbkid=cb1&email=julio.vitorino@gmail.com&nome=julioCV&fotourl=minhafoto.png
 // URL http://localhost/cfdi/php/classes/gateway/appFacebookAutenticacao.php?fcbkid=cb1&email=julio.vitorino@gmail.com&nome=julioCV&fotourl=minhafoto.png
+// URL http://junta10.dsv:8080/cfdi/php/classes/gateway/appFacebookAutenticacao.php?fcbkid=cb1&email=julio.vitorino@gmail.com&nome=julioCV&fotourl=minhafoto.png
 
 
 

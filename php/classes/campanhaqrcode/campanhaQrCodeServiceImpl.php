@@ -53,9 +53,18 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 
 	public function validarQRCode($idfiel, $qrc)
 	{
-		$vt = $this->carregarQRCodeLivre($qrc);
-		if ($vt->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
-			return $vt;
+		// Identifica o tipo do QRCode 
+		if(substr($qrc,0,2) == "01") // QRCode gerado pelo celular
+		{
+			$vt = $this->carregarQRCodeLivre($qrc);
+			if ($vt->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				return $vt;
+			}
+		} else if(substr($qrc,0,2) == "02")	{ // QRCode via papel impresso
+			$vt = $this->carregarQRCodeLivreImpressao($qrc);
+			if ($vt->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				return $vt;
+			}
 		}
 
 		return $this->validarTicket($idfiel, $vt->ticket);
@@ -611,6 +620,41 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 			// Finalizar o ticket fornecido pelo parceiro
  			$bo = new CampanhaQrCodeBusinessImpl();
 			$retorno = $bo->carregarQRCodeLivre($daofactory, $qrc);
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+	public function carregarQRCodeLivreImpressao($qrc)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// Finalizar o ticket fornecido pelo parceiro
+ 			$bo = new CampanhaQrCodeBusinessImpl();
+			$retorno = $bo->carregarQRCodeLivreImpressao($daofactory, $qrc);
 
  			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
 				$daofactory->commit();
