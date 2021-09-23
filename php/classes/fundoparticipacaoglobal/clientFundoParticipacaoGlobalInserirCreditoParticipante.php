@@ -1,5 +1,6 @@
 <?php 
 // URL http://junta10.dsv:8080/cfdi/php/classes/fundoparticipacaoglobal/clientFundoParticipacaoGlobalInserirCreditoParticipante.php
+// URL http://elitefinanceira.com/cfdi/php/classes/fundoparticipacaoglobal/clientFundoParticipacaoGlobalInserirCreditoParticipante.php?tokenid=sd&idpart=1&idpluf=23434&vlr=47
 
 require_once 'FundoParticipacaoGlobalServiceImpl.php';
 require_once 'FundoParticipacaoGlobalDTO.php';
@@ -10,11 +11,9 @@ $ts = $date->getTimestamp();
 
 $dto = new FundoParticipacaoGlobalDTO();
 
-$dto->idUsuarioParticipante = 1000; // usua_id plano pago
-//$dto->idUsuarioParticipante = 1003; // usua_id plano graatuito
-$dto->idPlanoFatura = 1156;
-$dto->valorTransacao = floatval(Util::getCodigoNumerico(3) . "." . Util::getCodigoNumerico(2)); // Valor válido acima de zero
-//$dto->valorTransacao = floatval(Util::getCodigoNumerico(2) . "." . Util::getCodigoNumerico(2)) * -1; // Valor imcompativel
+$dto->idUsuarioParticipante = (int) $_GET['idpart']; // usua_id plano pago
+$dto->idPlanoFatura = (int) $_GET['idpluf'];
+$dto->valorTransacao = floatval($_GET['vlr']); //floatval(Util::getCodigoNumerico(3) . "." . Util::getCodigoNumerico(2)); // Valor válido acima de zero
 $dto->descricao = Util::getLoremIpsum()  . Util::getCodigo(10);
 
 var_dump($dto);
