@@ -1,8 +1,8 @@
 <?php
 
 //importar dependencias
-require_once 'UsuarioComplementoService.php';
-require_once 'UsuarioComplementoBusinessImpl.php';
+require_once 'usuarioComplementoService.php';
+require_once 'usuarioComplementoBusinessImpl.php';
 require_once '../variavel/ConstantesVariavel.php';
 require_once '../variavel/VariavelCache.php';
 require_once '../mensagem/ConstantesMensagem.php';

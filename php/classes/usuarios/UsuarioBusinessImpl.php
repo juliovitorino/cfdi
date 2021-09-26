@@ -19,7 +19,7 @@ require_once '../usuariocashback/UsuarioCashbackBusinessImpl.php';
 require_once '../usuariocashback/UsuarioCashbackDTO.php';
 require_once '../usuariosplanos/PlanoUsuarioBusinessImpl.php';
 require_once '../usuariosplanosfatura/PlanoUsuarioFaturaBusinessImpl.php';
-require_once '../usuariocomplemento/UsuarioComplementoBusinessImpl.php';
+require_once '../usuariocomplemento/usuarioComplementoBusinessImpl.php';
 
 require_once '../dto/DTOPadrao.php';
 

@@ -1,8 +1,8 @@
 <?php 
 // URL http://junta10.dsv:8080/cfdi/php/classes/usuariocomplemento/clientUsuarioComplementoInserir.php
 
-require_once 'UsuarioComplementoServiceImpl.php';
-require_once 'UsuarioComplementoDTO.php';
+require_once 'usuarioComplementoServiceImpl.php';
+require_once 'usuarioComplementoDTO.php';
 require_once '../util/util.php';
 
 $date = new DateTime();

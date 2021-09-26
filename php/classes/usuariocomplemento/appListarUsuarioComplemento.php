@@ -5,7 +5,7 @@
 // URL http://localhost/cfdi/php/classes/gateway/appListarUsuarioComplemento.php?tokenid=cb1&pag=1
 
 // Importar dependencias
-require_once '../usuariocomplemento/UsuarioComplementoServiceImpl.php';
+require_once '../usuariocomplemento/usuarioComplementoServiceImpl.php';
 
 // Obtem o token de sessao (pode ser dispositivo ou outro hardware qualquer)
 $token = $_GET['tokenid'];

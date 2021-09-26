@@ -34,7 +34,7 @@ Faça um Find/Replace em $_POST por $_GET e use os parametros na URL para simula
 /**
 *
 * appInserirUsuarioComplemento - Controlador para permitir acesso ao backend no método cadastrar
-* da classe UsuarioComplementoServiceImpl.php
+* da classe usuarioComplementoServiceImpl.php
 * É uma camada visível para outros dispositivos e requisições
 *
 *======================================================================================
@@ -48,8 +48,8 @@ Faça um Find/Replace em $_POST por $_GET e use os parametros na URL para simula
 *
 */
 
-require_once '../usuariocomplemento/UsuarioComplementoServiceImpl.php';
-require_once '../usuariocomplemento/UsuarioComplementoDTO.php';
+require_once '../usuariocomplemento/usuarioComplementoServiceImpl.php';
+require_once '../usuariocomplemento/usuarioComplementoDTO.php';
 require_once '../util/util.php';
 
 // Obtem o token de sessao (pode ser dispositivo ou outro hardware qualquer)

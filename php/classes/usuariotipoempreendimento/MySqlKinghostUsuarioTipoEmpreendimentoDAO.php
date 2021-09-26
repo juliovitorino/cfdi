@@ -17,8 +17,8 @@
 * @since 23/08/2019 10:06:20
 *
 */
-require_once 'UsuarioTipoEmpreendimentoDTO.php';
-require_once 'UsuarioTipoEmpreendimentoDAO.php';
+require_once 'usuarioTipoEmpreendimentoDTO.php';
+require_once 'usuarioTipoEmpreendimentoDAO.php';
 require_once 'DmlSqlUsuarioTipoEmpreendimento.php';
 
 require_once '../mensagem/ConstantesMensagem.php';

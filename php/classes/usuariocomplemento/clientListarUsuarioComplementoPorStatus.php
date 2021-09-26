@@ -2,7 +2,7 @@
 
 // URL http://localhost/cfdi/php/classes/usuariocomplemento/clientListarUsuarioComplementoPorStatus.php
 
-require_once 'UsuarioComplementoServiceImpl.php';
+require_once 'usuarioComplementoServiceImpl.php';
 require_once '../variavel/ConstantesVariavel.php';
 
 $date = new DateTime();

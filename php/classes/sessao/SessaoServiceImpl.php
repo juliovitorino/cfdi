@@ -17,8 +17,8 @@ require_once 'SessaoBusinessImpl.php';
 
 require_once '../usuarios/UsuarioBusinessImpl.php';
 require_once '../usuarios/UsuarioDTO.php';
-require_once '../usuariocomplemento/UsuarioComplementoBusinessImpl.php';
-require_once '../usuariocomplemento/UsuarioComplementoDTO.php';
+require_once '../usuariocomplemento/usuarioComplementoBusinessImpl.php';
+require_once '../usuariocomplemento/usuarioComplementoDTO.php';
 
 class SessaoServiceImpl implements SessaoService
 {

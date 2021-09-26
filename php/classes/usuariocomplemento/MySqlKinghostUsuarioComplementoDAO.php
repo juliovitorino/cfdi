@@ -17,8 +17,8 @@
 * @since 23/08/2019 10:06:20
 *
 */
-require_once 'UsuarioComplementoDTO.php';
-require_once 'UsuarioComplementoDAO.php';
+require_once 'usuarioComplementoDTO.php';
+require_once 'usuarioComplementoDAO.php';
 require_once 'DmlSqlUsuarioComplemento.php';
 
 require_once '../mensagem/ConstantesMensagem.php';

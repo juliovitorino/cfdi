@@ -1,7 +1,7 @@
 <?php 
 
 // importar dependencias
-require_once 'UsuarioComplementoBusiness.php';
+require_once 'usuarioComplementoBusiness.php';
 require_once 'UsuarioComplementoConstantes.php';
 require_once 'UsuarioComplementoHelper.php';
 require_once '../dto/DTOPadrao.php';

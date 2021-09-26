@@ -15,8 +15,8 @@
 *
 */
 
-require_once '../usuariocomplemento/UsuarioComplementoServiceImpl.php';
-require_once '../usuariocomplemento/UsuarioComplementoDTO.php';
+require_once '../usuariocomplemento/usuarioComplementoServiceImpl.php';
+require_once '../usuariocomplemento/usuarioComplementoDTO.php';
 require_once '../util/util.php';
 
 // Obtem o token de sessao (pode ser dispositivo ou outro hardware qualquer)
