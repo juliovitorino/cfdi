@@ -1,5 +1,5 @@
 <?php  
-// URL http://localhost/cfdi/php/classes/campanha/clientInserirFlash.php
+// URL http://junta10.dsv:8080/cfdi/php/classes/campanha/clientInserirFlash.php
 
 require_once 'campanhaServiceImpl.php';
 require_once 'campanhaDTO.php';

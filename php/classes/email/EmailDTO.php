@@ -9,11 +9,25 @@ require_once '../dto/DTOPadrao.php';
 class EmailDTO
 {
 	
-	public $destinario;
+	public $destinatario;
 	public $emaildestinatario;
 	public $assunto;
 	public $template;
 	public $lsttags;
+
+	public function jsonSerialize()
+    {
+        return 
+            [
+                'destinatario' => $this->destinatario,
+                'emaildestinatario' => $this->emaildestinatario,
+                'assunto' => $this->assunto,
+                'template' => $this->template,
+                'lsttags' => $this->lsttags,
+            ];
+    }   
+
+
 
 }
 ?>

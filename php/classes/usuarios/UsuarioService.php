@@ -11,6 +11,7 @@ interface UsuarioService extends AppService{
 	public function cadastrarNovaContaFacebook($dto);
 	public function pesquisarPorIdFacebook($id);
 	public function getToken($dto);
+	public function pesquisarPerfilCompleto($id);
 
 }
 

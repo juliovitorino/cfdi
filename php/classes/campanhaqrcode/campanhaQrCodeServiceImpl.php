@@ -53,9 +53,18 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 
 	public function validarQRCode($idfiel, $qrc)
 	{
-		$vt = $this->carregarQRCodeLivre($qrc);
-		if ($vt->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
-			return $vt;
+		// Identifica o tipo do QRCode 
+		if(substr($qrc,0,2) == "01") // QRCode gerado pelo celular
+		{
+			$vt = $this->carregarQRCodeLivre($qrc);
+			if ($vt->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				return $vt;
+			}
+		} else if(substr($qrc,0,2) == "02")	{ // QRCode via papel impresso
+			$vt = $this->carregarQRCodeLivreImpressao($qrc);
+			if ($vt->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				return $vt;
+			}
 		}
 
 		return $this->validarTicket($idfiel, $vt->ticket);
@@ -634,6 +643,41 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 	}
 
 
+	public function carregarQRCodeLivreImpressao($qrc)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// Finalizar o ticket fornecido pelo parceiro
+ 			$bo = new CampanhaQrCodeBusinessImpl();
+			$retorno = $bo->carregarQRCodeLivreImpressao($daofactory, $qrc);
+
+ 			if ($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+				$daofactory->commit();
+			} else {
+				$daofactory->rollback();
+			}
+			
+		} catch (Exception $e) {
+			// rollback na transação
+			$daofactory->rollback();
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
 	public function carregarTicketLivre($ticket)
 	{
 		$daofactory = NULL;
@@ -856,6 +900,51 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 		} catch (Exception $e) {
 			// rollback na transação
 
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
+
+/**
+*
+* listarCampanhaQrCodeIdCampanhaPorStatus() - Usado para invocar a classe de negócio TipoEmpreendimentoBusinessImpl de forma geral
+* realizar lista paginada de registros com uma instância de PaginacaoDTO
+*
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+* @return $PaginacaoDTO
+*/
+
+	public function listarCampanhaQrCodeIdCampanhaPorStatus($idcampanha, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0) 
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+
+			//Se qtde por página é indefinido (=0) busca valor default do variavel
+			if($qtde == 0){
+				$qtde = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT);
+			}
+			// listar paginado CampanhaQrCode
+			$bo = new CampanhaQrCodeBusinessImpl();
+			$retorno = $bo->listarCampanhaQrCodeIdCampanhaPorStatus($daofactory, $idcampanha, $status, $pag, $qtde, $coluna, $ordem);
+			$daofactory->commit();
+		} catch (Exception $e) {
+			// rollback na transação
+		
 		} finally {
 			try {
 				$daofactory->close();

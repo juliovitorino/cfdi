@@ -16,6 +16,9 @@ interface CampanhaQrCodeService extends AppService{
     public function carregarQRCodeLivre($qrc);
     public function validarTicket($idfiel, $ticket);
     public function validarQRCode($idfiel, $qrc);
+
+    public function listarCampanhaQrCodeIdCampanhaPorStatus($idcampanha, $status='A', $pag=1, $qtde=0, $coluna=1, $ordem=0);
+
 }
 
 

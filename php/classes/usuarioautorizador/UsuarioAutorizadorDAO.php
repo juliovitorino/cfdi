@@ -46,7 +46,8 @@ interface UsuarioAutorizadorDAO extends DAO
     public function listUsuarioAutorizadorPorUsuaIdAutorizadorCampId($usuaid, $campid, $status, $pag, $qtde, $coluna, $ordem);
     public function listUsuarioCarimbador($usuaid,$status, $pag, $qtde, $coluna, $ordem);
     public function countUsuarioCarimbador($usuaid,$status);
-
+    
+    public function countUsuarioAutorizadorIdCampPorStatus($campid, $status);
 
 
     public function loadMaxId_UsuarioPK($id_usuario,$status);

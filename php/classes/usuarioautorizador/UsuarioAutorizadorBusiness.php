@@ -53,6 +53,8 @@ interface UsuarioAutorizadorBusiness extends BusinessObject
     public function listarUsuarioCarimbador($daofactory, $usuaid, $status="A", $pag=1, $qtde=50, $coluna=1, $ordem=0);
     public function habilitarUsuarioAutorizador($daofactory, $dto, $ishabilitar);
 
+    public function contarUsuarioAutorizadorIdCampPorStatus($daofactory, $campid, $status);
+
     public function PesquisarMaxPKAtivoId_UsuarioPorStatus($daofactory, $id_usuario, $status);
     public function PesquisarMaxPKAtivoId_UsuarioAutorizadorPorStatus($daofactory, $id_usuario, $id_campanha, $status);
     public function PesquisarMaxPKAtivoId_UsuarioCarimbadorPorStatus($daofactory, $id_usuario, $id_campanha, $status);

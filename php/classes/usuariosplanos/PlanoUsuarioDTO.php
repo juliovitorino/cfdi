@@ -1,13 +1,13 @@
 <?php
 
 // importar dependências
-require_once '../dto/DTOPadrao.php';
+require_once '../dto/DTOPadraoEntidade.php';
 
 /**
  * PlanoDTO - Data Transfer Object
  */
 
-class PlanoUsuarioDTO extends DTOPadrao implements JsonSerializable
+class PlanoUsuarioDTO extends DTOPadraoEntidade implements JsonSerializable
 {
 	public $id;
 	public $idparent;
@@ -17,6 +17,7 @@ class PlanoUsuarioDTO extends DTOPadrao implements JsonSerializable
 	public $permissao;
 	public $lstpermissao = [];
 	public $valor;
+	public $valorMoeda;
 	public $status;
 	public $dataCadastro;
 	public $dataAtualizacao;
@@ -33,7 +34,9 @@ class PlanoUsuarioDTO extends DTOPadrao implements JsonSerializable
             'permissao'   => $this->permissao,
             'lstpermissao'   => $this->lstpermissao,
             'valor'   => $this->valor,
+            'valorMoeda'   => $this->valorMoeda,
             'status'   => $this->status,
+            'statusdesc' => $this->statusdesc,
             'dataCadastro'   => $this->dataCadastro,
             'dataAtualizacao'   => $this->dataAtualizacao
         ];

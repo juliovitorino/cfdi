@@ -114,11 +114,11 @@ public function listarCidadePorStatus($daofactory, $status, $pag, $qtde, $coluna
         $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 
-$dao = $daofactory->getCidadeDAO($daofactory);
-        $retorno->pagina = $pag;
-$retorno->itensPorPagina = ($qtde == 0 
-? (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT)
-: $qtde);
+        $dao = $daofactory->getCidadeDAO($daofactory);
+                $retorno->pagina = $pag;
+        $retorno->itensPorPagina = ($qtde == 0 
+        ? (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT)
+        : $qtde);
         $retorno->totalPaginas = ceil($dao->countCidadePorStatus($status) / $retorno->itensPorPagina);
 
         if($pag > $retorno->totalPaginas) {
@@ -126,7 +126,7 @@ $retorno->itensPorPagina = ($qtde == 0
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listCidadePorStatus($status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listCidadePorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }

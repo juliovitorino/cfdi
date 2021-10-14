@@ -15,11 +15,15 @@ interface CampanhaQrCodeBusiness extends BusinessObject
 	public function atualizarStatusPorCarimbo($daofactory, $carimboqr, $status);
 	public function carregarTicketLivre($daofactory, $ticket);
 	public function carregarQRCodeLivre($daofactory, $qrc);
+	public function carregarQRCodeLivreImpressao($daofactory, $qrc);
 	public function carregarCaqrIdLivre($daofactory,$idcampanha);
 	public function atualizarUsuarioGerador($daofactory,$caqrid,$idusuario);
 	public function criarCarimbosCampanha($daofactory, $idcampanha, $id_usuario);
 	public function criarCarimbosCampanhaPendentesProduzir($daofactory, $idcampanha, $id_usuario);
 	public function adicionarMaisCarimbosCampanha($daofactory, $capeid);	
+
+	public function listarCampanhaQrCodeIdCampanhaPorStatus($daofactory, $idcampanha, $status, $pag, $qtde, $coluna, $ordem);
+
 
 }
 

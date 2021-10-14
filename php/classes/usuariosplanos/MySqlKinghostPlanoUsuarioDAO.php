@@ -138,9 +138,11 @@ class MySqlKinghostPlanoUsuarioDAO implements PlanoUsuarioDAO
 		$retorno->nome = $resultset[DmlSqlPlanoUsuario::PLUS_NM_PLANO];
 		$retorno->permissao = $resultset[DmlSqlPlanoUsuario::PLUS_TX_PERMISSAO];
 		$retorno->valor = $resultset[DmlSqlPlanoUsuario::PLUS_VL_PLANO];
+		$retorno->valorMoeda = $resultset[DmlSqlPlanoUsuario::PLUS_VL_PLANO] == NULL ? Util::getMoeda(0.00) : Util::getMoeda((double) $resultset[DmlSqlPlanoUsuario::PLUS_VL_PLANO]);
 		$retorno->status = $resultset[DmlSqlPlanoUsuario::PLUS_IN_STATUS];
 		$retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlPlanoUsuario::PLUS_DT_CADASTRO]);
 		$retorno->dataAtualizacao = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlPlanoUsuario::PLUS_DT_UPDATE]);
+		$retorno->statusdesc = VariavelCache::getInstance()->getStatusDesc($retorno->status);
 		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
 		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
 		

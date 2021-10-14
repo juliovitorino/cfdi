@@ -1,6 +1,7 @@
 <?php  
 // URL exemplo 
 // http://elitefinanceira.com/cfdi/php/classes/campanhaqrcode/clientValidarQrcode.php?qrc=xxx&token=4a1d5be0aa1c02c68ba7d3349dbbda8dddd28773
+// http://junta10.dsv:8080/cfdi/php/classes/campanhaqrcode/clientValidarQrcode.php?qrc=xxx&token=4a1d5be0aa1c02c68ba7d3349dbbda8dddd28773
 
 require_once 'campanhaQrCodeServiceImpl.php';
 

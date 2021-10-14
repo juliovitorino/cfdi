@@ -312,7 +312,6 @@ class CampanhaBusinessImpl implements CampanhaBusiness
 		}
 		// Verifica a situação atual da campanha antes de atualizar
 		$dtocheck = $this->carregarPorID($daofactory, $dto->id);
-
 		if($dtocheck->id != null){
 			if(!$dtocheck->permiteAlterarMaximoSelos && $dtocheck->maximoSelos != $dto->maximoSelos)
 			{
@@ -324,6 +323,9 @@ class CampanhaBusinessImpl implements CampanhaBusiness
 				return $dtocheck;
 			}
 
+
+			/* DEPRECATED 16.09.2021
+
 			// Usuário COMUM é negado a troca de quantidade de selos
 			if(
 				$usuadto->tipoConta == ConstantesVariavel::CONTA_USUARIO_COMUM && 
@@ -334,6 +336,7 @@ class CampanhaBusinessImpl implements CampanhaBusiness
 				$dtocheck->msgcodeString = MensagemCache::getInstance()->getMensagem($dtocheck->msgcode);
 				return $dtocheck;
 			}
+			*/
 
 			// Verifica se permite alteração de selos, porém a conta do usuário NÃO PODE ser gratuita
 			if($dtocheck->permiteAlterarMaximoSelos){
@@ -352,6 +355,40 @@ class CampanhaBusinessImpl implements CampanhaBusiness
 
 				}
 	
+			}
+
+			// Verificar permissão se o plano no usuário permite a qtde de selos solicitada
+			$selospermitidos = [5,10,12,15,20];
+			$permconstSelos = [
+				ConstantesPlano::PERM_CAMPANHA_5_SELOS,
+				ConstantesPlano::PERM_CAMPANHA_10_SELOS,
+				ConstantesPlano::PERM_CAMPANHA_12_SELOS,
+				ConstantesPlano::PERM_CAMPANHA_15_SELOS,
+				ConstantesPlano::PERM_CAMPANHA_20_SELOS,
+			];
+
+			for($i = 0; $i < count($selospermitidos); $i++)
+			{
+				if($dto->maximoSelos == $selospermitidos[$i])
+				{
+					$permdto = PermissaoHelper::verificarPermissao($daofactory, $usuadto->id, $permconstSelos[$i] );
+					if ($permdto->msgcode != ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO) {
+						$dtocheck->msgcode = ConstantesMensagem::PLANO_NAO_PERMITE_QTDE_SELOS;
+						$dtocheck->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($dtocheck->msgcode, [
+							ConstantesVariavel::P1 =>  $selospermitidos[$i],
+						]);
+						return $dtocheck;
+					}
+				} 
+			}
+
+			// Após verificar a permissão, verifica se o número de selos é diferente dos permitidos
+			if(! array_keys($selospermitidos, $dto->maximoSelos)) {
+				$dtocheck->msgcode = ConstantesMensagem::PLANO_NAO_PERMITE_QTDE_SELOS;
+				$dtocheck->msgcodeString = MensagemCache::getInstance()->getMensagemParametrizada($dtocheck->msgcode, [
+					ConstantesVariavel::P1 => $dto->maximoSelos,
+				]);
+				return $dtocheck;
 			}
 
 			if($dtocheck->status == ConstantesVariavel::STATUS_ATIVO && $dtocheck->dataInicio != $dto->dataInicio){

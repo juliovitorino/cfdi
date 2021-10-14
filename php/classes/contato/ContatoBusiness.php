@@ -29,6 +29,7 @@ interface ContatoBusiness extends BusinessObject
 {
     public function atualizarStatus($daofactory, $id, $status);
     public function listarContatoPorStatus($daofactory, $status, $pag, $qtde, $coluna, $ordem);
+    public function listarContatoPorOrigemStatus($daofactory, $origem, $status, $pag=1, $qtde=50, $coluna=1, $ordem=0);
     public function validarTamanhoCampo($campo, $tamanho, $coment);
     public function listarContatoPorUsuaIdStatus($daofactory, $usuaid, $status, $pag, $qtde, $coluna, $ordem);
     public function inserirContato($daofactory, $dto);
@@ -41,6 +42,9 @@ interface ContatoBusiness extends BusinessObject
     public function atualizarNomePorPK($daofactory,$nome,$id);
     public function atualizarEmailPorPK($daofactory,$email,$id);
     public function atualizarMensagemPorPK($daofactory,$mensagem,$id);
+
+    public function enviarRegistroContatoFilaEmail($daofactory, $origem);
+
 
 }
 

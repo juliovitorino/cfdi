@@ -19,8 +19,14 @@ interface ContatoDAO extends DAO
 {
     public function updateStatus($id, $status);
     public function listContatoStatus($status);
+    
+    //public function listContatoPorOrigemStatus($origem, $status);
+    public function countContatoPorOrigemStatus($origem, $status);
+    public function listContatoPorOrigemStatus($origem, $status, $pag, $qtde, $coluna, $ordem);
+
     public function countContatoPorStatus($status);
     public function listContatoPorStatus($status, $pag, $qtde, $coluna, $ordem);
+
     public function countContatoPorUsuaIdStatus($usuaid, $status);
     public function listContatoPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
 

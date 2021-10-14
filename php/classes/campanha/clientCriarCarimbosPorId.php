@@ -1,11 +1,11 @@
 <?php  
 
-//http://localhost/cfdi/php/classes/campanha/clientCriarCarimbosPorId.php
+//http://junta10.dsv:8080/cfdi/php/classes/campanha/clientCriarCarimbosPorId.php
 
 require_once './campanhaServiceImpl.php';
 
-$id_usuario = 22;
-$id_campanha = 22;
+$id_usuario = 1000;
+$id_campanha = 1047;
 
 
 $csi = new CampanhaServiceImpl();

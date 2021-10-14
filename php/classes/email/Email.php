@@ -64,7 +64,7 @@ class Email
 			$mail->addAddress($v->getVariavel(ConstantesVariavel::EMAIL_VALIDO_FAKE_TESTE), 
 								$v->getVariavel(ConstantesVariavel::EMAIL_NOME_VALIDO_FAKE_TESTE));
 		} else {
-			$mail->addAddress($this->email->emaildto->emaildestinatario, $this->email->emaildto->destinario);
+			$mail->addAddress($this->email->emaildto->emaildestinatario, $this->email->emaildto->destinatario);
 		}
 
 		//$mail->addAddress('ellen@example.com');               // Name is optional

@@ -349,7 +349,7 @@ private function enviarEmailNovaConta($daofactory, $dto)
 
     // prepara parametrizacao
     $email = new EmailDTO();
-    $email->destinario = $dto->nome;
+    $email->destinatario = $dto->nome;
     $email->emaildestinatario = $dto->email;
     $email->assunto = Util::getTrocaConteudoParametrizada(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::EMAIL_TITULO_CONFIRMAR_NOVO_LEAD),[
         ConstantesVariavel::P1 => $dto->nome == NULL ? "" : $dto->nome,
@@ -357,7 +357,7 @@ private function enviarEmailNovaConta($daofactory, $dto)
     $email->template = getcwd() . VariavelCache::getInstance()->getVariavel(ConstantesVariavel::PATH_RELATIVO_TEMPLATES_EMAIL) 
                         . EmailTemplateHub::CONFIRMAR_INSCRICAO_LISTA;
     $email->lsttags = [	
-                            TagHub::NOME_NOVO_CLIENTE => $email->destinario,
+                            TagHub::NOME_NOVO_CLIENTE => $email->destinatario,
                             TagHub::LINK_ATIVACAO_NOVO_CLIENTE => $url,
                             TagHub::TAG_CONTATO_EMAIL_CANIVETE => VariavelCache::getInstance()->getVariavel(ConstantesVariavel::EMAIL_CONTATO_PADRAO_SMTP)
                         ];
@@ -404,7 +404,7 @@ private function enviarEmailNovaConta($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listMkdListaPorStatus($status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listMkdListaPorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }
@@ -758,7 +758,7 @@ private function enviarEmailNovaConta($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listMkdListaPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listMkdListaPorUsuaIdStatus($usuaid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }

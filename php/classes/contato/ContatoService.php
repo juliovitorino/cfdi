@@ -46,6 +46,8 @@ interface ContatoService extends AppService
     public function atualizarEmailPorPK($email,$id);
     public function atualizarMensagemPorPK($mensagem,$id);
 
+    public function enviarRegistroContatoFilaEmail($origem);
+
 }
 
 

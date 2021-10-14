@@ -29,6 +29,7 @@ interface UsuarioBusiness extends BusinessObject
 	public function buscarTodosBeneficios($daofactory, $idProjeto);
 	public function buscarTodasTecnicas($daofactory, $idProjeto);
 	public function atualizarFotoPerfilRedeSocial($daofactory, $email, $urlfoto);
+	public function pesquisarPerfilCompleto($daofactory, $id);
 
 }
 

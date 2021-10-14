@@ -9,6 +9,10 @@ require_once '../dto/DTOPaginacao.php';
 
 require_once '../variavel/ConstantesVariavel.php';
 require_once '../variavel/VariavelCache.php';
+require_once '../filaemail/FilaEmailDTO.php';
+require_once '../filaemail/FilaEmailBusinessImpl.php';
+require_once '../filaemail/FilaEmailConstantes.php';
+require_once '../email/EmailDTO.php';
 
 /**
 *
@@ -64,6 +68,53 @@ class ContatoBusinessImpl implements ContatoBusiness
         $dao = $daofactory->getContatoDAO($daofactory);
         $maxid = $dao->loadMaxNomePK($nome,$status);
         return $this->carregarPorID($daofactory, $maxid);
+    }
+
+       
+/**
+* enviarRegistroContatoFilaEmail() - 
+* @param $daofactory
+*
+* @return $dto
+*/ 
+
+    public function enviarRegistroContatoFilaEmail($daofactory, $origem)
+    {   
+        // retorno default
+        $retorno = new DTOPadrao();
+        $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+        $paginacao = $this->listarContatoPorOrigemStatus($daofactory, $origem, ConstantesVariavel::STATUS_ATIVO);
+//echo json_encode($paginacao);
+        if(count($paginacao->lst) > 0) 
+        {
+            foreach ($paginacao->lst as $key => $value) {
+                $fiemdto = new FilaEmailDTO();
+                $fiemdto->email = new EmailDTO();
+                $fiemdto->nomeFila = FilaEmailConstantes::FIEM_CONTATO_PELO_FALE_CONOSCO_SITE;
+                $fiemdto->emailDe = VariavelCache::getInstance()->getVariavel(ConstantesVariavel::EMAIL_CONTATO_PADRAO_SMTP);
+                $fiemdto->prioridade = FilaEmailConstantes::PRIOR_NORMAL;
+                $fiemdto->nrMaxTentativas = 1;
+                $fiemdto->dataPrevisaoEnvio = Util::getNow();
+                $fiemdto->email->destinatario =  $value->nome;
+                $fiemdto->email->emaildestinatario = $value->email;
+                $fiemdto->email->assunto = ContatoConstantes::TITULO_ASSUNTO_EMAIL;
+                $fiemdto->email->template = ContatoConstantes::TEMPLATE;
+//echo json_encode($fiemdto);
+                $fiembo = new FilaEmailBusinessImpl();
+                $retorno = $fiembo->inserirFilaEmail($daofactory, $fiemdto);
+
+                if($retorno->msgcode == ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO )
+                {
+                    $this->atualizarStatus($daofactory, $value->id, ConstantesVariavel::STATUS_ENVIADO);
+                }
+            }
+        }
+
+        // retorna situação
+        return $retorno;
+
     }
 
 /**
@@ -287,6 +338,16 @@ public function inserir($daofactory, $dto)
         return $retorno;
     }
 
+    // Envia notificação ao Admin
+    ContatoHelper::criarNotificacaoAdmin($daofactory
+        , ConstantesMensagem::NOTIFICACAO_CONTATO_USUARIO
+        , [
+            ConstantesVariavel::P1 => $dto->nome,
+            ConstantesVariavel::P2 => $dto->email,
+            ConstantesVariavel::P3 => $dto->origem,
+        ]
+        , "money.png");
+
     return $retorno;
 }
 
@@ -322,7 +383,46 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listContatoPorStatus($status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listContatoPorStatus($status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
+
+        return $retorno;
+    }
+
+
+
+/**
+*
+* listarContatoPorOrigemStatus() - Usado para invocar a interface de acesso aos dados (DAO) ContatoDAO de forma geral
+* realizar lista paginada de registros com uma instância de PaginacaoDTO
+*
+* @param $daofactory
+* @param $status
+* @param $pag
+* @param $qtde
+* @param $coluna
+* @param $ordem
+* @return $PaginacaoDTO
+*/
+
+    public function listarContatoPorOrigemStatus($daofactory, $origem, $status, $pag=1, $qtde=50, $coluna=1, $ordem=0)
+    {   
+        $retorno = new DTOPaginacao();
+        $retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+        $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+        $dao = $daofactory->getContatoDAO($daofactory);
+        $retorno->pagina = $pag;
+        $retorno->itensPorPagina = ($qtde == 0 
+        ? (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::MAXIMO_LINHAS_POR_PAGINA_DEFAULT)
+        : $qtde);
+        $retorno->totalPaginas = ceil($dao->countContatoPorOrigemStatus($origem, $status) / $retorno->itensPorPagina);
+
+        if($pag > $retorno->totalPaginas) {
+            $retorno->msgcode = ConstantesMensagem::NAO_EXISTEM_MAIS_PAGINAS_APRESENTAR;
+            $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+            return $retorno;
+        }
+        $retorno->lst = $dao->listContatoPorOrigemStatus($origem, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }
@@ -498,7 +598,7 @@ public function inserir($daofactory, $dto)
             $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
             return $retorno;
         }
-        $retorno->lst = $dao->listContatoPorUsuaIdStatus($usuaid, $status, $pag, $qtde, $coluna, $ordem);
+        $retorno->lst = $dao->listContatoPorUsuaIdStatus($usuaid, $status, $pag, $retorno->itensPorPagina, $coluna, $ordem);
 
         return $retorno;
     }

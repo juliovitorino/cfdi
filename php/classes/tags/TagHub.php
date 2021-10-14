@@ -10,6 +10,7 @@ class TagHub
 	const LINK_ATIVACAO_NOVO_CLIENTE = '*=link-ativacao-novo-cliente=*';
 	const TAG_TOKEN = '*=token=*';
 	const TAG_CONTATO_EMAIL_CANIVETE = '*=contato-email-canivete=*';
+	const TAG_NOME = '*=nome=*';
 
 
 }

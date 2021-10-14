@@ -13,12 +13,13 @@ require_once 'ProjetoDorDTO.php';
 require_once 'ProjetoBonusDTO.php';
 require_once 'ProjetoBeneficioDTO.php';
 require_once 'ProjetoDetalheDTO.php';
+require_once 'PerfilDTO.php';
 
 require_once '../usuariocashback/UsuarioCashbackBusinessImpl.php';
 require_once '../usuariocashback/UsuarioCashbackDTO.php';
-
 require_once '../usuariosplanos/PlanoUsuarioBusinessImpl.php';
 require_once '../usuariosplanosfatura/PlanoUsuarioFaturaBusinessImpl.php';
+require_once '../usuariocomplemento/usuarioComplementoBusinessImpl.php';
 
 require_once '../dto/DTOPadrao.php';
 
@@ -357,6 +358,27 @@ class UsuarioBusinessImpl implements UsuarioBusiness
 
 	}
 
+	public function pesquisarPerfilCompleto($daofactory, $id)
+	{
+		// devolve resultado ao serviço
+		$retorno = new PerfilDTO();
+		$retorno->msgcode = ConstantesMensagem::COMANDO_REALIZADO_COM_SUCESSO;
+		$retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);
+
+		// carrega as informações base do usuário
+		$retorno->usuario = $this->carregarUsuarioPorID($daofactory, $id);
+
+		// carrega as informações do plano vigente do usuário
+		$plusbo = new PlanoUsuarioBusinessImpl();
+		$retorno->usuarioPlanoAtivo = $plusbo->carregarPlanoUsuarioPorStatus($daofactory, $id, ConstantesVariavel::STATUS_ATIVO);
+
+		$uscobo = new UsuarioComplementoBusinessImpl();
+		$retorno->usuarioComplemento = $uscobo->pesquisarMaxPKAtivoIdusuarioPorStatus($daofactory, $id, ConstantesVariavel::STATUS_ATIVO);
+		
+		// Retorno do Perfil
+		return $retorno;
+	}
+
 
 	private function ativarPlanoFinanceiroUsuarioGratuito($daofactory, $dto, $planoid)
 	{
@@ -479,13 +501,13 @@ class UsuarioBusinessImpl implements UsuarioBusiness
 
 		// prepara parametrizacao
 		$email = new EmailDTO();
-		$email->destinario = $dto->apelido;
+		$email->destinatario = $dto->apelido;
 		$email->emaildestinatario = $dto->email;
 		$email->assunto = VariavelCache::getInstance()->getVariavel(ConstantesVariavel::EMAIL_TITULO_PADRAO_NOVA_CONTA);
 		$email->template = getcwd() . VariavelCache::getInstance()->getVariavel(ConstantesVariavel::PATH_RELATIVO_TEMPLATES_EMAIL) 
 							. EmailTemplateHub::NOVA_CONTA_CANIVETE;
 		$email->lsttags = [	
-								TagHub::NOME_NOVO_CLIENTE => $email->destinario,
+								TagHub::NOME_NOVO_CLIENTE => $email->destinatario,
 								TagHub::LINK_ATIVACAO_NOVO_CLIENTE => $url,
 								TagHub::TAG_CONTATO_EMAIL_CANIVETE => VariavelCache::getInstance()->getVariavel(ConstantesVariavel::EMAIL_CONTATO_PADRAO_SMTP)
 							];
