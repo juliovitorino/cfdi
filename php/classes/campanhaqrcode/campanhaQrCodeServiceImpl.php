@@ -258,15 +258,16 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 				}
 
 				//-------------------------------------------------------------------------------------
-				// Verifica se essa campanha permite participação paralela em uma campanha de sorteio
+				// Quando usuário ganha um novo carimbo consumindo produto ou serviço no parceiro J10,
+				// verifica se essa campanha permite participação paralela em uma campanha de sorteio
 				// do Junta10 além da que ela mesma está promovendo
 				//-------------------------------------------------------------------------------------
 				$casocheckj10 = (int) VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CODIGO_CAMPANHA_SORTEIO_J10_PARALELA);
-			
 				if(
-					($campdto->permiteCampanhaSorteioJ10) && 
-					(VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_PERMITIR_CAMPANHA_SORTEIO_J10_PARALELA) == ConstantesVariavel::ATIVADO) &&
-					($casocheckj10 != $casodto->id)
+					($campdto->permiteCampanhaSorteioJ10)  
+					&& (VariavelCache::getInstance()->getVariavel(ConstantesVariavel::CHAVE_PERMITIR_CAMPANHA_SORTEIO_J10_PARALELA) == ConstantesVariavel::ATIVADO)
+					// && (!is_null(casodto))
+					// && ($casocheckj10 != $casodto->id)
 				)
 				{
 					$uscsdto = new UsuarioCampanhaSorteioDTO();
@@ -276,7 +277,7 @@ class CampanhaQrCodeServiceImpl implements CampanhaQrCodeService
 					//$uscsdto->ticket = (int) Util::getCodigoNumerico(5); /* deprecated */
 
 					$ucsbo = new UsuarioCampanhaSorteioBusinessImpl();
-					$retorno = $ucsbo->inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto);
+					$retorno = $ucsbo->inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto, true);
 
 				}
 
