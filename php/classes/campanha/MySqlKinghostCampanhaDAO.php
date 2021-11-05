@@ -609,6 +609,8 @@ class MySqlKinghostCampanhaDAO implements CampanhaDAO
 		$retorno->ratingCalculado = (double) $resultset[DmlSqlCampanha::CAMP_NU_RATING];
 		$retorno->permissaoCuringa = $resultset[DmlSqlCampanha::CAMP_IN_CURINGA];
 		$retorno->permissaoCashback = $resultset[DmlSqlCampanha::CAMP_IN_CASHBACK];
+		$retorno->latitude = floatval($resultset[DmlSqlCampanha::CAMP_NU_LATITUDE]);
+		$retorno->longitude = floatval($resultset[DmlSqlCampanha::CAMP_NU_LONGITUDE]);
 		$retorno->status = $resultset[DmlSqlCampanha::CAMP_IN_STATUS];
 		$retorno->statusdesc = VariavelCache::getInstance()->getStatusDesc($retorno->status);
 		$retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlCampanha::CAMP_DT_CADASTRO]);

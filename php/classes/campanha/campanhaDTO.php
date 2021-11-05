@@ -57,6 +57,8 @@ class CampanhaDTO extends DTOPadraoEntidade implements JsonSerializable
     public $ratingCalculado;
     public $permissaoCuringa;
     public $permissaoCashback;
+    public $latitude;
+    public $longitude;
 
     public function jsonSerialize()
     {
@@ -96,6 +98,8 @@ class CampanhaDTO extends DTOPadraoEntidade implements JsonSerializable
             'ratingCalculado' => $this->ratingCalculado,
             'permissaoCuringa' => $this->permissaoCuringa,
             'permissaoCashback' => $this->permissaoCashback,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
             'status' => $this->status,
 			'dataCadastro' => $this->dataCadastro,
 			'dataAtualizacao' => $this->dataAtualizacao,

@@ -51,6 +51,8 @@ class DmlSqlCampanha extends DmlSql
 	const CAMP_IN_PERM_MOVER_CART = 'CAMP_IN_PERM_MOVER_CART';
 	const CAMP_IN_PERM_BONIF_J10 = 'CAMP_IN_PERM_BONIF_J10';
 	const CAMP_IN_PERM_BONIF_DONO_CAMP = 'CAMP_IN_PERM_BONIF_DONO_CAMP';
+	const CAMP_NU_LATITUDE = 'CAMP_NU_LATITUDE';
+	const CAMP_NU_LONGITUDE = 'CAMP_NU_LONGITUDE';
 
 	// Comandos DML
 	const INS = 'INSERT INTO `' . self::TABELA . '` ('
@@ -228,6 +230,8 @@ class DmlSqlCampanha extends DmlSql
 		. ' `' . self::CAMP_NU_RATING . '`, ' 
 		. ' `' . self::CAMP_IN_CURINGA . '`, ' 
 		. ' `' . self::CAMP_IN_CASHBACK . '`, ' 
+		. ' `' . self::CAMP_NU_LATITUDE . '`, ' 
+		. ' `' . self::CAMP_NU_LONGITUDE . '`, ' 
 		. ' `' . self::CAMP_IN_STATUS . '`, '
 		. ' `' . self::CAMP_DT_CADASTRO . '`, '
 		. ' `' . self::CAMP_DT_UPDATE . '` '
