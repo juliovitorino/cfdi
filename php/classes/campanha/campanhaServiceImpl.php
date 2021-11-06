@@ -758,6 +758,35 @@ class CampanhaServiceImpl implements CampanhaService
 		return $retorno;
 	}
 
+
+	public function listarCampanhasGMapsPorStatus($status)
+	{
+		$daofactory = NULL;
+		$retorno = NULL;
+		try {
+			$daofactory = DAOFactory::getDAOFactory();
+			$daofactory->open();
+			$daofactory->beginTransaction();
+			
+			// excluir assinante da campanha
+ 			$bo = new CampanhaBusinessImpl();
+ 			$retorno = $bo->listarCampanhasGMapsPorStatus($daofactory, $status);
+			$daofactory->commit();
+			
+		} catch (Exception $e) {
+			// rollback na transação
+
+		} finally {
+			try {
+				$daofactory->close();
+			} catch (Exception $e) {
+				// faz algo
+			}
+		}
+
+		return $retorno;
+	}
+
 	public function listarCampanhasParticipantes($id_campanha, $id_usuario, $pag)
 	{
 		$daofactory = NULL;

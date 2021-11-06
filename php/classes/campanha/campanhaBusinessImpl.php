@@ -19,6 +19,7 @@ TODO O SISTEMA PODE ENTRAR EM COLAPSO.
 
 // importar dependencias
 require_once 'campanhaBusiness.php';
+require_once 'campanhaGeoLocalizacaoDTO.php';
 require_once 'carimboDTO.php';
 require_once '../dto/DTOPadrao.php';
 require_once '../dto/DTOPaginacao.php';
@@ -447,6 +448,32 @@ class CampanhaBusinessImpl implements CampanhaBusiness
 	{	
 		$dao = $daofactory->getCampanhaDAO($daofactory);
 		return $dao->listCampanhasStatus($status);
+	}
+
+	public function listarCampanhasGMapsPorStatus($daofactory, $status)
+	{	
+		$dao = $daofactory->getCampanhaDAO($daofactory);
+		$lstret = $dao->listCampanhasGMapsStatus($status);
+
+		// Enxuga para um DTO mais leve
+		$lst = array();
+		if(!is_null($lstret) && count($lstret) > 0) {
+
+			foreach ($lstret as $key => $value) {
+				$dtogmap = new CampanhaGeoLocalizacaoDTO();
+				$dtogmap->id = $value->id;
+				$dtogmap->nome = $value->nome;
+				$dtogmap->dataInicio = $value->dataInicio;
+				$dtogmap->dataTermino = $value->dataTermino;
+				$dtogmap->latitude = $value->latitude;
+				$dtogmap->longitude = $value->longitude;
+				$dtogmap->img = $value->img;
+				$dtogmap->id_usuario = $value->id_usuario;
+				$dtogmap->usuario = UsuarioHelper::getUsuarioBusinessNoKeys($daofactory, $value->id_usuario);
+				array_push($lst, $dtogmap);
+			}
+		} 
+		return $lst;
 	}
 
 	public function listarCampanhasUsuarioStatus($daofactory,$id_usuario, $status)

@@ -119,6 +119,27 @@ class MySqlKinghostCampanhaDAO implements CampanhaDAO
 		return $retorno;
 	}
 
+
+	public function listCampanhasGMapsStatus($status)
+	{
+		$retorno = array();
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlCampanha::SELECT 
+		. 'WHERE ' . ' `' 
+		. DmlSqlCampanha::CAMP_IN_STATUS . "` = '" . $status . "' "
+		. ' AND `' . DmlSqlCampanha::CAMP_NU_LATITUDE . "` <> 0 "
+		. ' AND `' . DmlSqlCampanha::CAMP_NU_LONGITUDE . "` <> 0 ");
+
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
 	public function listCampanhasUsuarioStatus($id_usuario, $status)	
 	{
 		$retorno = array();

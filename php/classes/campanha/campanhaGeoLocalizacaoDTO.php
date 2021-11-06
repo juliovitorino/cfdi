@@ -25,6 +25,8 @@ class CampanhaGeoLocalizacaoDTO extends DTOPadraoEntidade implements JsonSeriali
     public $latitude;
     public $longitude;
     public $img;
+    public $id_usuario;
+    public $usuario;
 
     public function jsonSerialize()
     {
@@ -37,6 +39,8 @@ class CampanhaGeoLocalizacaoDTO extends DTOPadraoEntidade implements JsonSeriali
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'img' => $this->img,
+            'id_usuario' => $this->id_usuario,
+            'usuario' => $this->usuario == NULL ? NULL : $this->usuario->jsonSerialize(),
             'status' => $this->status,
 			'dataCadastro' => $this->dataCadastro,
 			'dataAtualizacao' => $this->dataAtualizacao,
