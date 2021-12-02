@@ -30,7 +30,7 @@ return
    'campanhaSorteio' => $this->campanhaSorteio == NULL ? NULL : $this->campanhaSorteio->jsonSerialize(),
    'campanha' => $this->campanha == NULL ? NULL : $this->campanha->jsonSerialize(),
    'usuario' => $this->usuario == NULL ? NULL : $this->usuario->jsonSerialize(),
-   'ticket' => $ticket,
+   'ticket' => $this->ticket,
    'status' => $this->status,
    'dataCadastro' => $this->dataCadastro,
    'dataAtualizacao' => $this->dataAtualizacao,

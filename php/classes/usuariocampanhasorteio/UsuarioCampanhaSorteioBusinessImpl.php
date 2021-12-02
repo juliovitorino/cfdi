@@ -251,8 +251,7 @@ public function inserirUsuarioParticipanteCampanhaSorteio($daofactory, $uscsdto,
         $retorno->msgcodeString = MensagemCache::getInstance()->getMensagem($retorno->msgcode);   
         return $retorno;
     }
-
-
+    
     // Se a campanha sorteio não esiver ativa apenas ignora. Não existe inserir.
     if(! $ignorarstatus)
     {

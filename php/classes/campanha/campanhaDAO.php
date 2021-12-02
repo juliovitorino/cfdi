@@ -28,6 +28,7 @@ interface CampanhaDAO extends DAO
 	public function listCampanhasUsuario($id_usuario);
 	public function updateStatus($id, $status);
 	public function listCampanhasStatus($status);
+	public function listCampanhasGMapsStatus($status);
 	public function updateProximoQrCode($idcampanha, $caqrid);
 	public function updateTotalCarimbosFabricados($idcampanha, $total);
 	public function updateTotalCarimbados($idcampanha);

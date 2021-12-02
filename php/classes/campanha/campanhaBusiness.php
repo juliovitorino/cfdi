@@ -31,6 +31,7 @@ interface CampanhaBusiness extends BusinessObject
 	public function isCampanhaAtiva($daofactory, $idcampanha);
 	public function atualizarStatus($daofactory, $idcampanha, $status);
 	public function listarCampanhasPorStatus($daofactory, $status);
+	public function listarCampanhasGMapsPorStatus($daofactory, $status);
 	public function atualizarProximoQrCode($daofactory, $idcampanha, $caqrid);
 	public function atualizarTotalCarimbosFabricados($daofactory, $idcampanha, $totalFabricar);
 	public function getCarimboLivre($daofactory, $idcampanha, $idusuario);

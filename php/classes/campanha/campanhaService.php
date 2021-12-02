@@ -14,6 +14,7 @@ interface CampanhaService extends AppService{
 	public function listarCampanhasUsuario($id_usuario);
 	public function autalizarStatusCampanha($id_campanha, $status);
 	public function listarCampanhasPorStatus($status);
+	public function listarCampanhasGMapsPorStatus($status);
 	public function criarCampanhasEmFila();
 	public function getCarimboLivre($idcampanha, $idusuario);
 	public function criarCampanhaPorParceiroCampanha($id_usuario, $id_campanha);

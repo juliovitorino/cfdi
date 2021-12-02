@@ -119,6 +119,27 @@ class MySqlKinghostCampanhaDAO implements CampanhaDAO
 		return $retorno;
 	}
 
+
+	public function listCampanhasGMapsStatus($status)
+	{
+		$retorno = array();
+
+		// prepara sessão, query, troca de valores, acoplagem do resultado e o fetch
+		$conexao = $this->daofactory->getSession();
+		$res = $conexao->query(DmlSqlCampanha::SELECT 
+		. 'WHERE ' . ' `' 
+		. DmlSqlCampanha::CAMP_IN_STATUS . "` = '" . $status . "' "
+		. ' AND `' . DmlSqlCampanha::CAMP_NU_LATITUDE . "` <> 0 "
+		. ' AND `' . DmlSqlCampanha::CAMP_NU_LONGITUDE . "` <> 0 ");
+
+		if ($res){
+			while ($row = $res->fetch_assoc()) {
+				array_push($retorno, $this->getDTO($row));
+			}
+		}
+		return $retorno;
+	}
+
 	public function listCampanhasUsuarioStatus($id_usuario, $status)	
 	{
 		$retorno = array();
@@ -609,6 +630,8 @@ class MySqlKinghostCampanhaDAO implements CampanhaDAO
 		$retorno->ratingCalculado = (double) $resultset[DmlSqlCampanha::CAMP_NU_RATING];
 		$retorno->permissaoCuringa = $resultset[DmlSqlCampanha::CAMP_IN_CURINGA];
 		$retorno->permissaoCashback = $resultset[DmlSqlCampanha::CAMP_IN_CASHBACK];
+		$retorno->latitude = floatval($resultset[DmlSqlCampanha::CAMP_NU_LATITUDE]);
+		$retorno->longitude = floatval($resultset[DmlSqlCampanha::CAMP_NU_LONGITUDE]);
 		$retorno->status = $resultset[DmlSqlCampanha::CAMP_IN_STATUS];
 		$retorno->statusdesc = VariavelCache::getInstance()->getStatusDesc($retorno->status);
 		$retorno->dataCadastro = Util::MySQLDate_to_DMYHMiS($resultset[DmlSqlCampanha::CAMP_DT_CADASTRO]);
