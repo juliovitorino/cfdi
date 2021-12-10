@@ -1540,6 +1540,7 @@ CREATE INDEX IX_CACA_CAMP_ID
 /*************************************************************************/
 CREATE TABLE `CAMPANHA_CASHBACK_CC` (
  `CACC_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID da Conta Corrente Cashback',
+ `CACC_ID_PARENT` int(11) DEFAULT NULL COMMENT 'ID Parent do CACC_ID',
  `CACA_ID` int(11) COMMENT 'ID da campanha x cashback',
  `CAMP_ID` int(11) COMMENT 'ID da campanha',
  `USUA_ID` int(11) NOT NULL COMMENT 'ID do usuário',
