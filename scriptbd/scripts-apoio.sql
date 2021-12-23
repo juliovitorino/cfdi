@@ -157,3 +157,31 @@ VALUES (
 ,:CACC_ID
 , 'D'
 );
+
+
+/*
+   #    ####### ####### #     #  #####     #    ####### 
+  # #      #    #       ##    # #     #   # #   #     # 
+ #   #     #    #       # #   # #        #   #  #     # 
+#     #    #    #####   #  #  # #       #     # #     # 
+#######    #    #       #   # # #       ####### #     # 
+#     #    #    #       #    ## #     # #     # #     # 
+#     #    #    ####### #     #  #####  #     # ####### 
+
+depois de executar a URL abaixo;
+http://elitefinanceira.com/producao/cfdi/php/classes/campanha/clientAdicionarMaisCarimbosCampanha.php?id_user=<código-do-usuário>&id_camp=<id-ca-campanha>
+
+executar a instrução DML para atualizar sequencialmente o campo CAQR_NU_ORDER de forma a regularizar a criação de novos QR Codes
+para uma determinada campanha de um cliente
+
+*/
+
+UPDATE CAMPANHA_QRCODES
+JOIN (SELECT @rank := 0) r
+SET CAQR_NU_ORDER=@rank:=@rank+1
+WHERE CAMP_ID=:CAMP_ID
+AND CAQR_IN_STATUS='A';
+
+
+
+
