@@ -1,11 +1,13 @@
 <?php
 
-//http://junta10.dsv:8080/cfdi/php/classes/gateway/imprimir-qrcodes.php?tokenid=94ff924c950e30271f2005c3018009e7f5f44d8d&cmpid=1
+//http://junta10.dsv:8080/cfdi/php/classes/gateway/imprimir-qrcodes.php?tokenid=94ff924c950e30271f2005c3018009e7f5f44d8d&cmpid=1&qtdeqr=100
+//https://elitefinanceira.com/producao/cfdi/php/classes/gateway/imprimir-qrcodes.php?tokenid=94ff924c950e30271f2005c3018009e7f5f44d8d&cmpid=1&qtdeqr=100
 
 
 // Obtem o token de sessao (pode ser dispositivo ou outro hardware qualquer)
 $token = $_GET['tokenid'];
 $campid = $_GET['cmpid'];
+$qtdeqr = isset($_GET['qtdeqr']) ? (int)$_GET['qtdeqr'] : 100 ;
 
 include_once '../../inc/validarTokenApp.php';
 
@@ -39,7 +41,7 @@ $premio = $campdto->recompensa;
 
 // Buscar uma lista de QRCodes livres da campanha
 $caqrsvc = new CampanhaQrCodeServiceImpl();
-$qrcodepaginas = $caqrsvc->listarCampanhaQrCodeIdCampanhaPorStatus($campid,"A",1,100);
+$qrcodepaginas = $caqrsvc->listarCampanhaQrCodeIdCampanhaPorStatus($campid,"A",1,$qtdeqr);
 
 if(count($qrcodepaginas->lst) == 0)
 {
@@ -130,14 +132,47 @@ div{
         $htmltrtd .= "            </tr>";
 
         $htmltrtd .= "            <tr>";
-        $htmltrtd .= "                <td><center style='font-size:10px;'><img src='https://chart.googleapis.com/chart?chs=$dim&cht=qr&chl=$qrcodes[$idx]'><br><span style='font-size:20px;'>$tickets[$idx]</span><div style='font-size:12px;'>Válido por 6 horas</div></center></td>";
+
+        // Checa se a 1a coluna tem elemento para evitar erro de runtime 'Undefined offset error in PHP'
+        if(isset($qrcodes[$idx]))
+        {
+          $htmltrtd .= "                <td><center style='font-size:10px;'><img src='https://chart.googleapis.com/chart?chs=$dim&cht=qr&chl=$qrcodes[$idx]'><br><span style='font-size:20px;'>$tickets[$idx]</span><div style='font-size:12px;'>Válido por 6 horas</div></center></td>";
+        } else {
+          //$htmltrtd .= "                <td><center style='font-size:10px;'><img src='https://chart.googleapis.com/chart?chs=$dim&cht=qr&chl=0'><br><span style='font-size:20px;'>000.000.000-00</span><div style='font-size:12px;'>Válido por 6 horas</div></center></td>";
+          $htmltrtd .= "                <td>&nbsp;</td>";
+        }
         $idx++;
-        $htmltrtd .= "                <td><center style='font-size:10px;'><img src='https://chart.googleapis.com/chart?chs=$dim&cht=qr&chl=$qrcodes[$idx]'><br><span style='font-size:20px;'>$tickets[$idx]</span><div style='font-size:12px;'>Válido por 6 horas</div></center></td>";
+
+        // Checa se a 2a coluna tem elemento para evitar erro de runtime 'Undefined offset error in PHP'
+        if(isset($qrcodes[$idx]))
+        {
+          $htmltrtd .= "                <td><center style='font-size:10px;'><img src='https://chart.googleapis.com/chart?chs=$dim&cht=qr&chl=$qrcodes[$idx]'><br><span style='font-size:20px;'>$tickets[$idx]</span><div style='font-size:12px;'>Válido por 6 horas</div></center></td>";
+        } else {
+          //$htmltrtd .= "                <td><center style='font-size:10px;'><img src='https://chart.googleapis.com/chart?chs=$dim&cht=qr&chl=0'><br><span style='font-size:20px;'>000.000.000-00</span><div style='font-size:12px;'>Válido por 6 horas</div></center></td>";
+          $htmltrtd .= "                <td>&nbsp;</td>";
+        }
         $idx++;
-        $htmltrtd .= "                <td><center style='font-size:10px;'><img src='https://chart.googleapis.com/chart?chs=$dim&cht=qr&chl=$qrcodes[$idx]'><br><span style='font-size:20px;'>$tickets[$idx]</span><div style='font-size:12px;'>Válido por 6 horas</div></center></td>";
+
+        // Checa se a 3a coluna tem elemento para evitar erro de runtime 'Undefined offset error in PHP'
+        if(isset($qrcodes[$idx]))
+        {
+          $htmltrtd .= "                <td><center style='font-size:10px;'><img src='https://chart.googleapis.com/chart?chs=$dim&cht=qr&chl=$qrcodes[$idx]'><br><span style='font-size:20px;'>$tickets[$idx]</span><div style='font-size:12px;'>Válido por 6 horas</div></center></td>";
+        } else {
+          //$htmltrtd .= "                <td><center style='font-size:10px;'><img src='https://chart.googleapis.com/chart?chs=$dim&cht=qr&chl=0'><br><span style='font-size:20px;'>000.000.000-00</span><div style='font-size:12px;'>Válido por 6 horas</div></center></td>";
+          $htmltrtd .= "                <td>&nbsp;</td>";
+        }
         $idx++;
-        $htmltrtd .= "                <td><center style='font-size:10px;'><img src='https://chart.googleapis.com/chart?chs=$dim&cht=qr&chl=$qrcodes[$idx]'><br><span style='font-size:20px;'>$tickets[$idx]</span><div style='font-size:12px;'>Válido por 6 horas</div></center></td>";
+
+        // Checa se a 4a coluna tem elemento para evitar erro de runtime 'Undefined offset error in PHP'
+        if(isset($qrcodes[$idx]))
+        {
+          $htmltrtd .= "                <td><center style='font-size:10px;'><img src='https://chart.googleapis.com/chart?chs=$dim&cht=qr&chl=$qrcodes[$idx]'><br><span style='font-size:20px;'>$tickets[$idx]</span><div style='font-size:12px;'>Válido por 6 horas</div></center></td>";
+        } else {
+          //$htmltrtd .= "                <td><center style='font-size:10px;'><img src='https://chart.googleapis.com/chart?chs=$dim&cht=qr&chl=0'><br><span style='font-size:20px;'>000.000.000-00</span><div style='font-size:12px;'>Válido por 6 horas</div></center></td>";
+          $htmltrtd .= "                <td>&nbsp;</td>";
+        }
         $idx++;
+
         $htmltrtd .= "            </tr>";
 
         $htmltrtd .= "            <tr class='tr-dash'>";
@@ -147,7 +182,7 @@ div{
         $htmltrtd .= "                <td>$parceiro<br>Campanha: $campdesc<br>Prêmio: <strong>$premio</strong></td>";
         $htmltrtd .= "            </tr>";
     
-        echo $htmltrtd;
+        echo $htmltrtd; 
     }
 
 ?>
